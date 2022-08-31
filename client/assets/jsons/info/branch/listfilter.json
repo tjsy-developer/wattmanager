@@ -1,0 +1,33 @@
+[
+	{
+		"text": "순번",
+		"width": 100
+	},
+	{
+		"text": "SEQ",
+		"align": {
+			"column": "br_seq",
+			"status": "desc"
+		}
+	},
+	{
+		"text": "기업 Alias + 본부 Alias",
+		"align": {
+			"column": "en_alias",
+			"status": "desc"
+		},
+		"edit": "disabled"
+	},
+	{
+		"text": "Alias",
+		"align": {
+			"column": "alias",
+			"status": "desc"
+		},
+		"edit": true
+	},
+	{
+		"text": "편집",
+		"width": 110
+	}
+]

@@ -1,0 +1,25 @@
+[
+	{
+		"text": "순번",
+		"width": 100
+	},
+	{
+		"text": "SEQ",
+		"align": {
+			"column": "en_seq",
+			"status": "desc"
+		}
+	},
+	{
+		"text": "Alias",
+		"align": {
+			"column": "alias",
+			"status": "desc"
+		},
+		"edit": true
+	},
+	{
+		"text": "편집",
+		"width": 110
+	}
+]

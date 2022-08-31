@@ -1,0 +1,108 @@
+{
+	"account": {
+		"user_id_check": "accountRest/user_id_check",
+		"en_list": "accountRest/en_list",
+		"hq_list": "accountRest/hq_list",
+		"br_list": "accountRest/br_list",
+		"user_insert": "accountRest/user_insert",
+		"user_id_pw_check": "accountRest/user_id_pw_check",
+		"user_name_check": "accountRest/user_name_check",
+		"user_email_check": "accountRest/user_email_check",
+		"en_list_where_enName": "accountRest/en_list_where_enName",
+		"select_id_where_reservation_uid": "accountRest/select_id_where_reservation_uid"
+	},
+	"user": {
+		"user_logout": "accountRest/user_logout",
+		"user_list": "userRest/user_list",
+		"user_info_one": "userRest/user_info_one",
+		"user_update": "userRest/user_update",
+		"user_delete": "userRest/user_delete",
+		"user_search": "userRest/user_search",
+		"user_list_count": "userRest/user_list_count"
+	},
+	"enterprise": {
+		"en_list": "enterpriseRest/en_list",
+		"en_info_one": "enterpriseRest/en_info_one",
+		"en_create": "enterpriseRest/en_create",
+		"en_update": "enterpriseRest/en_update",
+		"en_delete": "enterpriseRest/en_delete",
+		"en_list_count": "enterpriseRest/en_list_count"
+	},
+	"hq": {
+		"hq_list": "hqtsRest/hq_list",
+		"hq_info_one": "hqtsRest/hq_info_one",
+		"hq_create": "hqtsRest/hq_create",
+		"hq_update": "hqtsRest/hq_update",
+		"hq_delete": "hqtsRest/hq_delete",
+		"hq_list_count": "hqtsRest/hq_list_count"
+	},
+	"branch": {
+		"br_list": "branchRest/br_list",
+		"br_info_one": "branchRest/br_info_one",
+		"br_create": "branchRest/br_create",
+		"br_update": "branchRest/br_update",
+		"br_delete": "branchRest/br_delete",
+		"br_list_count": "branchRest/br_list_count"
+	},
+	"device": {
+		"dev_list": "deviceRest/dev_list",
+		"dev_info_one": "deviceRest/dev_info_one",
+		"dev_create": "deviceRest/dev_create",
+		"dev_update": "deviceRest/dev_update",
+		"dev_delete": "deviceRest/dev_delete",
+		"dev_list_count": "deviceRest/dev_list_count"
+	},
+	"app": {
+		"app_list": "appRest/app_list",
+		"app_info_one": "appRest/app_info_one",
+		"app_create": "appRest/app_create",
+		"app_update": "appRest/app_update",
+		"app_delete": "appRest/app_delete",
+		"app_code_list": "appRest/app_code_list",
+		"app_list_count": "appRest/app_list_count",
+		"app_info_copy": "appRest/app_info_copy"
+	},
+	"appCode": {
+		"app_code_list": "appCodeRest/app_code_list",
+		"app_code_info_one": "appCodeRest/app_code_info_one",
+		"app_code_create": "appCodeRest/app_code_create",
+		"app_code_update": "appCodeRest/app_code_update",
+		"app_code_delete": "appCodeRest/app_code_delete",
+		"app_code_list_count": "appCodeRest/app_code_list_count"
+	},
+	"attachment": {
+		"att_video_list": "attRest/att_video_list",
+		"att_video_list_count": "attRest/att_video_list_count",
+		"att_pic_list": "attRest/att_pic_list",
+		"att_pic_list_count": "attRest/att_pic_list_count",
+		"att_info_one": "attRest/att_info_one",
+		"att_update": "attRest/att_update",
+		"att_delete": "attRest/att_delete",
+		"fav_list": "attRest/fav_list",
+		"fav_insert": "attRest/fav_insert",
+		"fav_delete": "attRest/fav_delete",
+		"fav_list_count": "attRest/fav_list_count",
+		"att_member_list": "attRest/att_member_list",
+		"att_category_list": "attRest/att_category_list",
+		"att_belong_list": "attRest/att_belong_list",
+		"att_sub_video_list": "attRest/att_sub_video_list",
+		"att_return_page_number": "attRest/att_return_page_number",
+		"att_return_page_number_picture": "attRest/att_return_page_number_picture"
+	},
+	"memo": {
+		"memo_list": "memoRest/memo_list",
+		"memo_list_count": "memoRest/memo_list_count",
+		"memo_info_one": "memoRest/memo_info_one",
+		"memo_join_file": "memoRest/memo_join_file",
+		"memo_update": "memoRest/memo_update",
+		"memo_delete": "memoRest/memo_delete",
+		"memo_join_file_delete": "memoRest/memo_join_file_delete",
+		"file_delete": "memoRest/file_delete",
+		"exist_file_seq": "memoRest/exist_file_seq"
+	},
+	"upload": {
+		"upload_list": "fileRest/select_upload_history",
+		"upload_list_count": "fileRest/select_upload_history_count",
+		"upload_delete": "fileRest/delete_upload_history"
+	}
+}

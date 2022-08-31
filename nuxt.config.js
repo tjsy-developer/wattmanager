@@ -1,0 +1,127 @@
+export default {
+  mode: "universal",
+  /*
+   ** Headers of the page
+   */
+  head: {
+    meta: [
+      {
+        content: "text/html",
+        charset: "utf-8"
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1"
+      },
+      {
+        hid: "description",
+        name: "description",
+        content: process.env.npm_package_description || ""
+      },
+      {
+        // "http-equiv": "Content-Security-Policy",
+        content: "upgrade-insecure-requests"
+      }
+    ],
+    link: [
+      {
+        // eslint-disable-next-line prettier/prettier
+        rel: 'icon',
+        type: "image/png",
+        href: "/favicon_64.png"
+      }
+    ]
+  },
+
+  /*
+   ** Customize the progress-bar color
+   */
+  loading: {
+    color: "#fff"
+  },
+
+  /*
+   ** Global CSS
+   */
+  css: ["@assets/styles/style", "@assets/styles/font", "@assets/styles/quasar"],
+
+  /*
+   ** Plugins to load before mounting the App
+   */
+  plugins: [
+    "@plugins/globalComponents",
+    "@plugins/globalDirectives",
+    "@plugins/globalMethods",
+    "@plugins/vue-js-modal"
+  ],
+
+  /*
+   ** Nuxt.js dev-modules
+   */
+  buildModules: ["@nuxtjs/eslint-module"],
+
+  /*
+   ** Nuxt.js modules
+   */
+  modules: [
+    // Doc: https://axios.nuxtjs.org/usage
+    "@nuxtjs/axios",
+    "@nuxtjs/style-resources",
+    ["nuxt-i18n", require("./client/assets/scripts/initialize/locales.js")]
+  ],
+
+  /*
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+  axios: {
+    baseURL: "/"
+  },
+
+  /*
+   ** Build configuration
+   */
+  build: {
+    /*
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {},
+    postcss: {
+      plugins: {
+        "postcss-preset-env": {
+          autoprefixer: {
+            grid: true
+          }
+        }
+      }
+    },
+    extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? "source-map" : "inline-source-map"
+      }
+    }
+  },
+
+  srcDir: "client/",
+
+  styleResources: {
+    sass: ["@assets/styles/style.sass"]
+  },
+
+  router: {
+    base: "/"
+  },
+
+  generate: {
+    dir: ""
+  },
+
+  /*
+   ** Web Server configuration
+   */
+  server: {
+    // For Local
+    host: "0.0.0.0",
+    port: 8205
+  }
+}

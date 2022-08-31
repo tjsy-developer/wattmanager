@@ -1,0 +1,34 @@
+[
+	{
+		"text": "순번",
+		"width": 100
+	},
+	{
+		"text": "Alias",
+		"edit": true
+	},
+	{
+		"text": "Alias_EN",
+		"edit": true
+	},
+	{
+		"text": "PC 할당량",
+		"edit": true
+	},
+	{
+		"text": "Glass 할당량",
+		"edit": true
+	},
+	{
+		"text": "Mobile 할당량",
+		"edit": true
+	},
+	{
+		"text": "정렬 번호",
+		"edit": true
+	},
+	{
+		"text": "편집",
+		"width": 110
+	}
+]

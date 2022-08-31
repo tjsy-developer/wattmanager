@@ -1,0 +1,27 @@
+[
+	{
+		"text": "순번",
+		"width": 100
+	},
+	{
+		"text": "기업 코드",
+		"edit": "select",
+		"selectCompData": {}
+	},
+	{
+		"text": "Alias",
+		"edit": true
+	},
+	{
+		"text": "Alias_EN",
+		"edit": true
+	},
+	{
+		"text": "정렬 순서",
+		"edit": true
+	},
+	{
+		"text": "편집",
+		"width": 110
+	}
+]

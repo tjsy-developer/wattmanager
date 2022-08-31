@@ -1,0 +1,27 @@
+{
+	"domain":{
+		"backend_local": "http://localhost:8090/",
+		"backend1": "https://sg.korail.com:8101/",
+		"powertalk" : { 
+			"state" : [
+				"loginCheck",
+				"http://localhost:4500/login/login-check?jwt_token=",
+				"https://sg.korail.com:8102/login/login-check?jwt_token="
+			 ]
+		}
+	},
+	"powermemo": "https://sg.korail.com/storage/powermemo/korail",
+	"qr": "default",
+	"att_access_user": true,
+	"att_videoPlayPath": "https://sg.korail.com/Storage/powertalk/dev/Dashs/Src/",
+	"att_filePath": "https://sg.korail.com/storage/watttalk/korail/filebox/",
+	"detailFilePath": "/home/watt/hdd_ext/Storage/watttalk/korail/filebox/",
+	"fileUploadBackend": "https://sg.korail.com:8101/",
+	"useEnterprise": "watt",
+	"use_bento4": false,
+	"elecQR": false,
+	"elecFilePath": "/home/watt/hdd_ext/Storage/watttalk/korail/QR/file",
+	"elecFolderPath": "/home/watt/hdd_ext/Storage/watttalk/korail/QR/folder",
+	"fileBoxBackend": "https://sg.korail.com:8101/",
+	"separateBackendUploadPath": false
+}

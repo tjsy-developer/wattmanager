@@ -1,0 +1,23 @@
+[
+	{
+		"text": "내용",
+		"width": 150,
+		"edit": "textarea"
+	},
+	{
+		"text": "유효기간",
+		"width": 150,
+		"edit": true
+	},
+	{
+		"text": "작성자",
+		"width": 150,
+		"edit": true
+	},
+	{
+		"text": "소속",
+		"width": 150,
+		"edit": "select",
+		"selectCompData": {}
+	}
+]

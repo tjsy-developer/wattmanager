@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    background: none;
+    vertical-align: baseline;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    list-style-type: none;
+}
+
+body,
+div,
+button,
+span,
+input,
+textarea,
+img,
+i,
+a,
+label {
+    display: block;
+    position: relative;
+    float: left;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+}
+
+input {
+    outline: none;
+}
+
+::-webkit-input-placeholder {
+    color: #bbb;
+}
+
+:-ms-input-placeholder {
+    color: #bbb;
+}
+
+::-moz-placeholder {
+    color: #bbb;
+    opacity: 1;
+}
+
+:-moz-placeholder {
+    color: #bbb;
+}
+
+.buttonHover:hover {
+    background: #eee;
+}
+
+table {
+    display: inline-table;
+    border-collapse: collapse;
+    white-space: pre-wrap;
+}
+
+html,
+body,
+#__nuxt,
+#__layout {
+    width: 100%;
+    height: 100%;
+}
+
+td,
+th {
+    border: 1px solid grey;
+    text-align: left;
+    vertical-align: middle;
+}
+
+textarea {
+    resize: none;
+    overflow: hidden;
+}
+
+textarea:hover {
+    background: lightgray;
+}
+
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+#modalsContainer {
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+	background-color: rgba(0, 0, 0, 0.7);
+}
+
+#modalsContainer,
+.v--modal-overlay,
+.v--modal-background-click {
+	width: 100%;
+	height: 100%;
+}
+
+.pagination > div > div:first-child,
+.pagination > div > div > button:first-child,
+.pagination > div > div > button:last-child {
+	display: none;
+}
+
+.vue-ads-ml-1 {
+	font-size: 14px;
+	padding: 8px 14px;
+	margin: 0 4px;
+	background-color: white;
+	border: 1px solid #ddd;
+}
+
+.vue-ads-ml-1:not(.vue-ads-cursor-default):hover {
+	background-color: #ddd;
+}
+
+.vue-ads-bg-teal-500 {
+	color: white;
+	background-color: #4173ac;
+}
+
+#__nuxt {
+	overflow: auto;
+}
+
+/* @media screen and (max-width: 700px) {
+	.v--modal-box.v--modal {
+		left: 0px !important;
+		width: 100% !important;
+	}
+}
+@media screen and (min-width: 701px) {
+	.v--modal-box.v--modal {
+		width: 700px !important;
+	}
+} */

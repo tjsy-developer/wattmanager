@@ -1,0 +1,71 @@
+[
+	{
+		"text": "순번",
+		"width": 100
+	},
+	{
+		"text": "ID",
+		"align": {
+			"column": "id",
+			"status": "desc"
+		},
+		"edit": "disabled"
+	},
+	{
+		"text": "기업 코드",
+		"align": {
+			"column": "en_seq",
+			"status": "desc"
+		},
+		"edit": "select",
+		"selectCompData": {}
+	},
+	{
+		"text": "본부 코드",
+		"align": {
+			"column": "hq_seq",
+			"status": "desc"
+		},
+		"edit": "select",
+		"selectCompData": {}
+	},
+	{
+		"text": "지사 코드",
+		"align": {
+			"column": "br_seq",
+			"status": "desc"
+		},
+		"edit": "select",
+		"selectCompData": {}
+	},
+	{
+		"text": "이름",
+		"align": {
+			"column": "name",
+			"status": "desc"
+		},
+		"edit": true
+	},
+	{
+		"text": "이메일",
+		"align": {
+			"column": "auth",
+			"status": "desc"
+		},
+		"edit": "select",
+		"selectCompData": {}
+	},
+	{
+		"text": "내 사진",
+		"align": {
+			"column": "approval_status",
+			"status": "desc"
+		},
+		"edit": "select",
+		"selectCompData": {}
+	},
+	{
+		"text": "편집",
+		"width": 100
+	}
+]

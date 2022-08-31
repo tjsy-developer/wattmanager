@@ -1,0 +1,81 @@
+<template lang="pug">
+    .lodingBox.row.flex-center
+        .loading-container
+            .loading
+            #loading-text {{ $t("fileUploading") }}...
+</template>
+
+<style lang="sass" scoped>
+@keyframes rotate-loading
+    0%
+        transform: rotate(0deg)
+        -ms-transform: rotate(0deg)
+        -webkit-transform: rotate(0deg)
+        -o-transform: rotate(0deg)
+        -moz-transform: rotate(0deg)
+    100%
+        transform: rotate(360deg)
+        -ms-transform: rotate(360deg)
+        -webkit-transform: rotate(360deg)
+        -o-transform: rotate(360deg)
+        -moz-transform: rotate(360deg)
+
+@keyframes loading-text-opacity
+    0%  {opacity: 0}
+    20% {opacity: 1}
+    50% {opacity: 1}
+    100%{opacity: 0}
+
+.lodingBox
+    position: fixed
+    z-index: 2
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0, 0.7)
+    >div
+        z-index: 2
+        color: white
+
+.loading-container,
+.loading
+    height: 150px
+    position: relative
+    width: 150px
+    border-radius: 100%
+
+.loading-container
+    margin: 40px auto
+
+.loading
+    border: 4px solid transparent
+    border-color: transparent #fff transparent #FFF
+    -moz-animation: rotate-loading 1.5s linear 0s infinite normal
+    -moz-transform-origin: 50% 50%
+    -o-animation: rotate-loading 1.5s linear 0s infinite normal
+    -o-transform-origin: 50% 50%
+    -webkit-animation: rotate-loading 1.5s linear 0s infinite normal
+    -webkit-transform-origin: 50% 50%
+    animation: rotate-loading 1.5s linear 0s infinite normal
+    transform-origin: 50% 50%
+
+.loading-container:hover .loading
+    border-color: transparent #E45635
+
+
+#loading-text
+    -moz-animation: loading-text-opacity 2s linear 0s infinite normal
+    -o-animation: loading-text-opacity 2s linear 0s infinite normal
+    -webkit-animation: loading-text-opacity 2s linear 0s infinite normal
+    animation: loading-text-opacity 2s linear 0s infinite normal
+    color: #ffffff
+    font-family: "NanumSquare"
+    font-size: px
+    font-weight: bold
+    margin-top: 65px
+    opacity: 0
+    position: absolute
+    text-align: center
+    text-transform: uppercase
+    top: 0
+    width: 150px
+</style>

@@ -1,0 +1,27 @@
+[
+	{
+		"text": "순번",
+		"width": 100
+	},
+	{
+		"text": "지사 코드",
+		"width": 300,
+		"align": {
+			"column": "br_seq",
+			"status": "desc"
+		},
+		"edit": "disabled"
+	},
+	{
+		"text": "Alias",
+		"align": {
+			"column": "alias",
+			"status": "desc"
+		},
+		"edit": true
+	},
+	{
+		"text": "편집",
+		"width": 110
+	}
+]

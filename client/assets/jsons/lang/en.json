@@ -1,0 +1,426 @@
+{
+	"account": [
+		"QR Code is being created",
+		"After Device registration button, recognize QR Code",
+		"Please select Device type",
+		"This ID is available to join",
+		"This ID already exists",
+		"Enter ID",
+		"Please fill out all the contents",
+		"Please check ID",
+		"Password is not matched",
+		"Completion of User Registration",
+		"Failure of User Registration",
+		"ID format is from 4 to 50 letters in uppercase and lowercase letters/numeric characters",
+		"ACCOUNT JOIN",
+		"ID",
+		"Password",
+		"Password Check",
+		"Name",
+		"E-mail",
+		"CHECK",
+		"SIGN UP",
+		"Create QR",
+		"Device Type",
+		"This Name is available to join",
+		"This Name already exists",
+		"Enter Name",
+		"Please check Name",
+		"This EMail is available to join",
+		"This EMail already exists",
+		"Enter EMail",
+		"Please check EMail",
+		"ID CHECK",
+		"NAME CHECK",
+		"EMAIL CHECK"
+	],
+	"infoFilters": [
+		"NO.",
+		"Company",
+		"Department",
+		"Team",
+		"App name",
+		"App Package Name",
+		"App version",
+		"Edit",
+		"Approval",
+		"Name",
+		"Permission",
+		"Sort",
+		"Company",
+		"Company + Department",
+		"Email",
+		"Path + File Name",
+		"Date"
+	],
+	"infoCreateAndEditFilters": [
+		"App code",
+		"App Name(kor)",
+		"App Name(eng)"
+	],
+	"app": [
+		"List of App",
+		"Create of App information",
+		"Modify of App information",
+		"App information",
+		"Selection of Use on PC",
+		"Selection of Use on Glass",
+		"Use",
+		"Unused",
+		"Are you sure you want to delete the app?"
+	],
+	"memo": [
+		"Writer",
+		"Memo",
+		"List of Memo"
+	],
+	"attachment": [
+		"Please enter the subject",
+		"Modification completed",
+		"Modification failed",
+		"year",
+		"month"
+	],
+	"branch": [
+		"List of Team",
+		"Create Team information",
+		"Modify Team information",
+		"Team information",
+		"Are you sure you want to delete the branch?"
+	],
+	"device": [
+		"List of Device",
+		"Modification of Device information",
+		"Device information",
+		"Are you sure you want to delete the device?",
+		"This is a duplicate name",
+		"This is a duplicate English name."
+	],
+	"enterprise": [
+		"List of Company",
+		"Create Company information",
+		"Modify Company information",
+		"Company information",
+		"Are you sure you want to delete the company?"
+	],
+	"headquarters": [
+		"List of Department",
+		"Create Department information",
+		"Modify Department information",
+		"Department information",
+		"Are you sure you want to delete the headquarters?"
+	],
+	"user": [
+		"List of User",
+		"Modify User information",
+		"User information",
+		"App Setting",
+		"Are you sure you want to delete the user?",
+		"This is a duplicate email"
+	],
+	"home": [
+		"Account is not approved",
+		"Check ID/Password",
+		"Enter ID/Password",
+		"Please contact Administrator"
+	],
+	"getInfo": [
+		"Selection of Company",
+		"Selection of Department",
+		"Selection of Team",
+		"Selection of App code",
+		"Selection of Permission",
+		"User",
+		"Team",
+		"Dept.",
+		"Company",
+		"Selection of User Approval",
+		"Unauthorized",
+		"Authorized",
+		"Company",
+		"Dept",
+		"Team"
+	],
+	"filterBoxComp": "{0}. {1}",
+	"listComp": [
+		"List of Video",
+		"List of Photo",
+		"The video is now playing",
+		"Team",
+		"Filter conditions",
+		"Playing",
+		"Delete Favorites",
+		"Share",
+		"Save",
+		"Case Sort",
+		"Group",
+		"Date",
+		"Subject",
+		"",
+		"Deletion completed",
+		"Deletion Failed",
+		"The lower headquarters remain",
+		"The lower branches remain",
+		"Are you sure you want to delete the material?",
+		"Are you sure you want to delete your favorites?"
+	],
+	"listComp2": "{0} +{1}",
+	"memoModalComp": [
+		"Delete a File",
+		"Enter",
+		"Modify Memo",
+		"Delete Memo",
+		"Memo Deletion completed",
+		"Memo Deletion Failed",
+		"File Deletion completed",
+		"File Deletion Failed",
+		"Are you sure you want to delete the memo?",
+		"Are you sure you want to delete the file?",
+		"This is a memo being uploaded.",
+		"Failed to connect SFTP.",
+		"The file does not exist.",
+		"Failed to disconnect SFTP.",
+		"This is a deleted memo",
+		"This is a deleted file"
+	],
+	"searchBarComp": [
+		"Data",
+		"Video",
+		"Photo",
+		"Favorites",
+		"Search",
+		"Enter a key word to search",
+		"List of Favorites",
+		"Delete Search Terms"
+	],
+	"shareModalComp": [
+		"Email",
+		"Copy",
+		"Copy on the clipboard"
+	],
+	"videoPlayComp": [
+		"It is filtered based on the currently playing video."
+	],
+	"createAndEditComp": [
+		"Create",
+		"Modification",
+		"Cancel",
+		"Delete"
+	],
+	"footer": [
+		"Terms and Conditions",
+		"Privacy Policy",
+		"Limits of Liability and Legal Notice",
+		"The copyright of this content belongs to the copyright holder and if you use it without permission, you may be liable according to copyright laws."
+	],
+	"header": [
+		"Log out",
+		"Exit"
+	],
+	"btnsClick": [
+		"Creation completed",
+		"Creation Failed"
+	],
+	"headerComp": [
+		"User",
+		"Device",
+		"App",
+		"Company",
+		"Department",
+		"Team",
+		"Data"
+	], 
+	"downloadPopUpText": "Not supported",
+	"login logo text": "Smart Glasses AR Solution",
+	"find password": "Forgot your password",
+	"next": "Next",
+	"confirm": "Confirm",
+	"id": "ID",
+	"password": "Password",
+	"password check": "Password check",
+	"change password": "Change Password",
+	"e-mail": "e-mail",
+	"send": "Send",
+	"enter code": "Enter code",
+	"check your e-mail": "sent an email",
+	"check ID/e-mail": "Check ID/e-mail",
+	"check your code": "Check your code",
+	"completion of download": "Completion of download",
+	"the file is being downloaded": "The file is being downloaded",
+	"failure of download": "Failure of download",
+	"profile": "Profile",
+	"forgot": "Forgot password?",
+	"create account": "Create an account",
+	"login": "SIGN IN",
+	"profile text": [
+		"Company",
+		"Department",
+		"Team",
+		"Name",
+		"English Name",
+		"E-mail",
+		"My Photo"
+	],
+	"profilePassword": [
+		"Current Password",
+		"Password to change",
+		"Confirm Password",
+		"The current passwords do not match"
+	],
+	"maxSize": "Attached file size can be registered within 1MB",
+	"quota": [
+		"PC quota",
+		"Glass quota",
+		"Mobile quota"
+	],
+	"ExceededQuota": "Exceeded quota",
+	"log": [
+		"log",
+		"List of Log",
+		"message",
+		"save time"
+	],
+	"notice": [
+		"Notice",
+		"Content",
+		"Date of preparation",
+		"Effective date",
+		"User",
+		"Notice View",
+		"Notice Upload",
+		"Date",
+		"Are you sure you want to delete the announcement?"
+	],
+	"noticeUpload": [
+		"Upload",
+		"List",
+		"Team"
+	],
+	"safetyQR" : "Safety QR",
+	"powerQR": "Power QR",
+	"powerQR text" : [
+		"name",
+		"age",
+		"blood_type",
+		"medical_history",
+		"hqts",
+		"QR Create",
+		"QR Print",
+		"QR Resize"
+	],
+	"safetyQR text" : [
+		"pack",
+		"title",
+		"type",
+		"url",
+		"Safety video title",
+		"Safety video path"
+	],
+	"upload" : "File Upload",
+	"fileBox": "File Box",
+	"upload text" : [
+		"Enter the path to save the file",
+		"- You must enter an absolute path.",
+		"- The backslash (\\) must be entered twice.",
+		"ex) C:\\\\powertalktwo\\\\web\\\\powerstore-web\\\\apps",
+		"File",
+		"Select File",
+		"Upload",
+		"File save success",
+		"File save fail"
+	],
+	"fileBox text": "Please select a file to upload from my PC.",
+	"email confirm": [
+		"Email verification code sent",
+		"Enter email verification code"
+	],
+	"dateFormat": "The date does not fit the format",
+	"notEnterAlert" : "There is a value that you did not enter.",
+	"uploading": "Uploading",
+	"enter title" : "Please enter the subject",
+	"memo no data": "No image",
+	"lang": [
+		"Korean",
+		"English"
+	],
+	"date": ["-","-"," ",":",""],
+	"time": [" : ", " : ", ""],
+	"no spaces text": "Name cannot contain spaces",
+	"please select enterprise": "Please select a company first",
+	"please enter enterprise": "Please enter your company name",
+	"Upload progress text": [
+		"Requesting to create a recorded video",
+		"Creating recorded video",
+		"Uploading recorded video",
+		"Time required",
+		"Please wait",
+		"Video recording failed",
+		"request video recording again.",
+		"ASK"
+	],
+	"Upload progress short text": [
+		"Requesting video creation",
+		"Creating video",
+		"Uploading recorded video",
+		"Time required",
+		"Please wait",
+		"recording failed",
+		"ASK"
+	],
+	"none" : "none",
+	"appCopy" : "Copy",
+	"appCopy noneSelectBox": [
+		"Please select an app code",
+		"Please select a company",
+		"Please select headquarters",
+		"Please select a branch"
+	],
+	"Limit number of characters" : "It cannot exceed 1,000 characters",
+	"useOnPC" : "useOnPC",
+	"useOnGlass": "useOnGlass",
+	"appDetailJson": "appDetailJson",
+	"videoSecurity_1": "Securing video. Please wait a moment.",
+	"videoSecurity_2": "Video will be played after security enforcement.",
+	"personal info Unconsent": "Please check your consent to collect personal information.",
+	"personal info agree": "I agree to use personal information collection.",
+	"personal info agree check": "I agree",
+	"exist company": "The company has been confirmed.",
+	"not exist company": "A company that does not exist.",
+	"please check company": "Please check the company",
+	"enName": "Enterprise Name",
+	"memberNotice": [
+		"Notice",
+		"Members can enter the conference room after logging in",
+		"Close"
+	],
+	"noUploadFile" : "Please select a file to upload",
+	"deleteFile" : "Are you sure you want to delete the ",
+	"not invited meeting" : "You are not invited to the meeting",
+	"go to the contact screen": "Go to the Contacts screen",
+	"servicePreParation": "Service is being prepared",
+	"moveToChangedDomain": "Go to the changed domain.",
+	"fileUploading": "Uploading",
+	"domain guide" : "Domain Change Guide",
+	"changed domain Text" : [
+		"We have changed the domain of WhatTalk",
+		"from March 09, 2022 for better service.",
+		"On March 23, 2022, the secl.powertalk.kr",
+		"service will be shut down.",
+		"Go to change URL"
+	],
+	"QRcreationFailed": "QR creation failed",
+	"QRMaxValue": "The maximum is 21 * 21",
+	"elecFile": [
+		"Electronic file",
+		"Select file",
+		"Please select a QR file to generate"
+
+	],
+	"elecFolder": [
+		"Electronic folder",
+		"Folder name",
+		"Enter the folder name",
+		"Please enter the name of the QR creation folder"
+	]
+
+}

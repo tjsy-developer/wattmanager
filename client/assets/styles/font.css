@@ -1,0 +1,10 @@
+@import url(../font/nanumsquare.css);
+
+body {
+	font-family: 'NanumSquare', sans-serif;
+}
+
+span, a, button, input, select, option {
+	transform: skew(0.1deg);
+	font-family: 'NanumSquare', sans-serif;
+}

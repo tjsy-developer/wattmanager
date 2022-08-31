@@ -1,0 +1,22 @@
+[
+	{
+		"text": "제목",
+		"edit": true
+	},
+	{
+		"text": "사건분류",
+		"edit": true
+	},
+	{
+		"text": "참여자",
+		"edit": "disabled"
+	},
+	{
+		"text": "소속",
+		"edit": "disabled"
+	},
+	{
+		"text": "날짜",
+		"edit": "disabled"
+	}
+]

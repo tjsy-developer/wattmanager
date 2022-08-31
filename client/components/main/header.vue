@@ -1,0 +1,176 @@
+<template lang="pug">
+	.row.justify-center.mainHeader
+		.row.justify-between.items-center.maxWidth
+			button(v-if="$i18n.locale != 'ko'", @click="switchLocale('ko')").localeBtn 한국어
+			button(v-else-if="$i18n.locale != 'en'", @click="switchLocale('en')").localeBtn English
+			img(v-if="useEnterprise == 'samsung'" src="@/assets/images/samsung_logo_2.png").col-auto
+			img(v-if="useEnterprise == 'watt'" src="@/assets/images/logo_header.png").col-auto
+			img(v-if="useEnterprise == 'ex'" src="@/assets/images/ex_pm.png").col-auto
+			img(v-if="useEnterprise == 'cmss'" src="@/assets/images/logo_komipo_cloud.png").col-auto
+			img(v-if="useEnterprise == 'kdhc'" src="@/assets/images/logo_kdhc_cloud.png").col-auto
+			img(v-if="useEnterprise == 'korail'" src="@/assets/images/logo_korail_cloud.png").col-auto
+			.col-auto.row.menus
+				a(v-if="authority == '4' && elecQR", href="/qr/elecQr").col-auto QR
+				a(v-if="authority == '4' && qrStatus == 'safety'", href="/qr").col-auto {{ $t("safetyQR") }}
+				a(v-if="authority == '4' && qrStatus == 'power'", href="/qr").col-auto {{ $t("powerQR") }}
+				a(v-if="authority == '4'", href="/upload?page=1&viewType=upload").col-auto {{ $t("upload")}}
+				a(href="/upload?page=1&viewType=filebox").col-auto {{ $t("fileBox") }}
+				a(href="/notice?page=1").col-auto {{ $t("notice")[0] }}
+				a(href="/profile").col-auto {{ $t("profile") }}
+				a(v-if="authority != '0' && deviceType != '2'", href="/user?page=1").col-auto {{ $t("headerComp")[0] }}
+				a(v-if="authority != '0' && authority != '1' && deviceType != '2'", href="/device?page=1").col-auto {{ $t("headerComp")[1] }}
+				a(v-if="authority == '4' && deviceType != '2'", href="/app?page=1").col-auto {{ $t("headerComp")[2] }}
+				a(v-if="authority == '4' && deviceType != '2'", href="/enterprise?page=1").col-auto {{ $t("headerComp")[3] }}
+				a(v-if="authority == '4' && deviceType != '2'", href="/headquarters?page=1").col-auto {{ $t("headerComp")[4] }}
+				a(v-if="authority == '4' && deviceType != '2'", href="/branch?page=1").col-auto {{ $t("headerComp")[5] }}
+				a(:href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'", @click="clearLocalStorage").col-auto {{ $t("headerComp")[6] }}
+				button(@click="logoutBtnClick", v-if="logoutStatus != 0").col-auto {{ $t("header")[0] }}
+				button(@click="logoutBtnClose", v-if="logoutStatus == 0").col-auto {{ $t("header")[1] }}
+</template>
+
+<script>
+// eslint-disable-next-line camelcase
+import jwt_decode from "jwt-decode"
+import domain from "@/assets/jsons/domain/domain"
+export default {
+  data() {
+    return {
+      authority: undefined,
+      deviceType: undefined,
+      attViewAuth: false,
+      pageIndex: 0,
+      qrInfo: [],
+      qrStatus: domain.qr,
+      elecQR: domain.elecQR,
+      // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 관리
+      logoutStatus: 1,
+      useEnterprise: domain.useEnterprise
+    }
+  },
+  methods: {
+    switchLocale(locale) {
+      sessionStorage.setItem("languageCode", locale)
+      location.reload()
+    },
+    logoutBtnClick() {
+      const lang = sessionStorage.getItem("languageCode")
+      const jwtToken = localStorage.getItem("jwt")
+      localStorage.clear()
+      if (domain.domain.powertalk.state[0] === "loginCheck") {
+        if (window.location.hostname === "localhost") {
+          window.open(
+            domain.domain.powertalk.state[1] +
+              jwtToken +
+              "&login_type=3&lang=" +
+              lang,
+            "_self"
+          )
+        } else {
+          window.open(
+            domain.domain.powertalk.state[2] +
+              jwtToken +
+              "&login_type=3&lang=" +
+              lang,
+            "_self"
+          )
+        }
+      } else {
+        open("/", "_self")
+      }
+    },
+    clearLocalStorage() {
+      localStorage.removeItem("selectedFilters")
+      localStorage.removeItem("selectedFiltersOptions")
+    },
+    // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리로 접근 시 "종료" 버튼 클릭 시 창 닫기
+    logoutBtnClose() {
+      localStorage.clear()
+      window.close()
+    },
+    serviceInPreparation(e) {
+      e.preventDefault()
+      alert(this.$t("servicePreParation"))
+    }
+  },
+  mounted() {
+    // 파워톡 -> 파워매니저 영상관리로 접근 시 jwt_token을 파라미터로 보낸다.
+    console.log(this.$route.query.jwt_token)
+
+    if (this.$route.query.jwt_token !== undefined) {
+      // 파라미터로 받은 jwt_token을 복호화하여 로그인에 필요한 데이터를 담는다.
+      const decodeData = jwt_decode(this.$route.query.jwt_token)
+      console.log(decodeData)
+
+      localStorage.setItem("auth", decodeData.auth)
+      localStorage.setItem("userSeq", decodeData.user_seq)
+      localStorage.setItem("id", decodeData.id)
+      localStorage.setItem("hqSeq", decodeData.hq_seq)
+      localStorage.setItem("enSeq", decodeData.en_seq)
+      localStorage.setItem("brSeq", decodeData.br_seq)
+      localStorage.setItem("deviceType", decodeData.device_type)
+      localStorage.setItem("jwt", this.$route.query.jwt_token)
+
+      // 2021.04.14 ksh :: 로그인 버튼 숨김 설정
+      localStorage.setItem("logoutStatus", 0)
+    }
+
+    this.authority = localStorage.getItem("auth")
+    this.deviceType = localStorage.getItem("deviceType")
+
+    // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 숨김
+    this.logoutStatus = localStorage.getItem("logoutStatus")
+
+    if (!this.authority) open("/", "_self")
+
+    if (
+      this.$route.query.lang !== undefined &&
+      this.$route.query.lang !== null &&
+      this.$route.query.lang !== ""
+    ) {
+      if (this.$route.query.lang !== sessionStorage.getItem("languageCode")) {
+        sessionStorage.setItem("languageCode", this.$route.query.lang)
+        location.reload()
+      }
+    }
+
+    // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
+    // att_access_user = true 일 경우 기존 권한 조건
+    // eslint-disable-next-line eqeqeq
+    if (domain.att_access_user === false && this.authority == 0) {
+      // 일반사용자만 tab 권한 없음
+      this.attViewAuth = true
+    } else {
+      // 1. att_access_user 이 true 이거나
+      // 2. att_access_user 이 false 일경우 auth > 0 이라면 tab 권한 있음
+      this.attViewAuth = false
+    }
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+.mainHeader
+	width: 100%
+	height: $headerHeight
+	box-shadow: 0px 3px 10px #0000004A
+	z-index: 1
+
+.maxWidth
+	width: $contentMaxWidth
+
+.menus
+	padding-top: 10px
+
+.menus>a,
+.menus>button
+	font-size: 14px
+	font-weight: 800
+	margin-left: 15px
+	padding: 5px
+
+.localeBtn
+	position: absolute
+	right: 4px
+	top: 8px
+	font-size: 12px
+</style>
