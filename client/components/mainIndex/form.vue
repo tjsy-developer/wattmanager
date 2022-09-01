@@ -47,6 +47,9 @@
           .text
             span(@click="forgotPwdBtnClick").text1 {{ $t("forgot") }}
             span(@click="createAccountBtnClick").text2 {{ $t("create account") }}
+                  .col-12.row.justify-center.logoContainer
+          .personalAgreeBox(v-if="useEnterprise == 'korail'")
+        img(v-if="useEnterprise == 'korail'" src="@/assets/images/korail_bottom_logo.png").korailBottomLogo
     .text4Conatainer.row.col-12.justify-center
       .text4.col-12(:style="{marginTop: $i18n.locale == 'en' ? '30px' : '30px' }")
         span.justify-center Watt Talk 2.0
@@ -553,6 +556,12 @@ export default {
 .cmssMainLogo,
 .kdhcMainLogo
   height: 70px
+
+.korailBottomLogo
+  position: absolute
+  bottom: -60px
+   width: 90px
+  margin: auto
 
 .loginContentEnglishLogo
   width: 100%
