@@ -487,6 +487,7 @@ export default {
   font-size: 15px
   font-weight: 800
   border-radius: 5px
+  transform: none
 
 .input:nth-child(1)
   margin-top: 30px
