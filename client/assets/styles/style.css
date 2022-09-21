@@ -150,15 +150,20 @@ a {
 #__nuxt {
 	overflow: auto;
 }
+@media print {
 
-/* @media screen and (max-width: 700px) {
-	.v--modal-box.v--modal {
-		left: 0px !important;
-		width: 100% !important;
-	}
+    .mainHeader { display: none;}
+
+    @page {
+        /* margin: 0; */
+        /* overflow-x: visible; */
+        /* overflow-y: visible; */
+    }
+
+    body{
+        /* -webkit-print-color-adjust: exact !important; */
+        width: 210mm;
+        height: 297mm;
+        margin: 30mm 45mm 30mm 45mm; /* margin: auto auto; 로 자동 여백 설정도 가능 */
+   } 
 }
-@media screen and (min-width: 701px) {
-	.v--modal-box.v--modal {
-		width: 700px !important;
-	}
-} */

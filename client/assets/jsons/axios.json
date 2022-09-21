@@ -104,5 +104,8 @@
 		"upload_list": "fileRest/select_upload_history",
 		"upload_list_count": "fileRest/select_upload_history_count",
 		"upload_delete": "fileRest/delete_upload_history"
+	},
+	"call": {
+		"callHistory_list": "callHistoryRest/callHistory_list"
 	}
 }

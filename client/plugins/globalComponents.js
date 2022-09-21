@@ -12,7 +12,8 @@ import dataSearchBar from "@/components/data/searchBar"
 import dataVideoPlay from "@/components/data/videoPlay"
 import infiniteScroll from "@/components/infiniteScroll"
 import pagination from "@/components/pagination"
-import loadingBar from "@/components/loading"
+import loadingBar from "@/components/loadingModal/loading"
+import selectLoadingBar from "@/components/loadingModal/selectLoading"
 
 Vue.component("selectComp", selectComp)
 Vue.component("mainHeader", mainHeader)
@@ -27,3 +28,4 @@ Vue.component("dataVideoPlay", dataVideoPlay)
 Vue.component("infiniteScroll", infiniteScroll)
 Vue.component("pagination", pagination)
 Vue.component("loadingBar", loadingBar)
+Vue.component("selectLoadingBar", selectLoadingBar)

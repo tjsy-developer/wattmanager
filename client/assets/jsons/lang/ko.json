@@ -400,6 +400,7 @@
 	"servicePreParation": "서비스 준비 중입니다",
 	"moveToChangedDomain": "변경된 도메인으로 이동합니다.",
 	"fileUploading": "업로드 중",
+	"inquiring": "조회 중",
 	"domain guide" : "도메인 변경안내",
 	"changed domain Text" : [
 		"더 나은 서비스를 위해 2022년 03월 09일 부터",

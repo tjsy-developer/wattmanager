@@ -400,6 +400,7 @@
 	"servicePreParation": "Service is being prepared",
 	"moveToChangedDomain": "Go to the changed domain.",
 	"fileUploading": "Uploading",
+	"inquiring": "Inquiring",
 	"domain guide" : "Domain Change Guide",
 	"changed domain Text" : [
 		"We have changed the domain of WhatTalk",

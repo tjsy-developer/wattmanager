@@ -4,6 +4,7 @@
 		modals-container#modalsContainer
 		nuxt
 		loadingBar(v-if="fileUploadStatus" @setLoadingBar="set")
+		selectLoadingBar(v-if="inqueryStatus" @selectLoadingBar="setInqueryStatus")
 		mainFooter
 </template>
 
@@ -17,12 +18,17 @@ export default {
   data() {
     return {
       isLoaded: false,
-      fileUploadStatus: false
+      fileUploadStatus: false,
+      inqueryStatus: false
     }
   },
   methods: {
     set(status) {
       this.fileUploadStatus = status
+    },
+    setInqueryStatus(status) {
+      console.log(status)
+      this.inqueryStatus = status
     }
   },
   beforeMount() {
@@ -39,6 +45,7 @@ export default {
   },
   created() {
     this.$nuxt.$on("setLoadingBar", $event => this.set($event))
+    this.$nuxt.$on("selectLoadingBar", $event => this.setInqueryStatus($event))
   }
 }
 </script>
@@ -48,4 +55,8 @@ export default {
 	width: 100%
 	min-width: $contentMaxWidth
 	height: 100%
+
+@media print 
+	.mainFooter
+		display: none
 </style>
