@@ -422,6 +422,8 @@
 		"Folder name",
 		"Enter the folder name",
 		"Please enter the name of the QR creation folder"
-	]
+	],
+	"callHistory": "Call History",
+	"enter searchTerm": "Please enter a search term."
 
 }

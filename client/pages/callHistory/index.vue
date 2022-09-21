@@ -9,8 +9,8 @@
 						span.subLabel 검색 기간:
 						.row.items-center.justify-end
 							.row
-								input.dateBox(type="date" v-model="startDate")
-								input.dateBox(type="date" v-model="endDate")
+								input.dateBox(type="date" v-model="startDate" :max="endDate")
+								input.dateBox(type="date" v-model="endDate" :min="startDate")
 							.row
 								button(@click="setPeriod(1)").buttons.buttons--grey 1개월
 								button(@click="setPeriod(3)").buttons.buttons--grey 3개월
@@ -126,7 +126,7 @@ export default {
 			const [startDateTs, endDateTs] = this.convertToTimestamp()
 
 			if (!startDateTs || !endDateTs) {
-				alert("검색 기간을 입력해주세요.")
+				alert(this.$t("검색 기간을 입력해주세요."))
 				return
 			}
 

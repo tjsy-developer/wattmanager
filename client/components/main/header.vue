@@ -24,7 +24,7 @@
 				a(v-if="authority == '4' && deviceType != '2'", href="/headquarters?page=1").col-auto {{ $t("headerComp")[4] }}
 				a(v-if="authority == '4' && deviceType != '2'", href="/branch?page=1").col-auto {{ $t("headerComp")[5] }}
 				a(:href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'", @click="clearLocalStorage").col-auto {{ $t("headerComp")[6] }}
-				a(v-if="authority == '3'" :href="'/callHistory?page=1'") 통화내역
+				a(v-if="authority == '3'" :href="'/callHistory?page=1'") {{ $t("callHistory") }}
 				button(@click="logoutBtnClick", v-if="logoutStatus != 0").col-auto {{ $t("header")[0] }}
 				button(@click="logoutBtnClose", v-if="logoutStatus == 0").col-auto {{ $t("header")[1] }}
 </template>
