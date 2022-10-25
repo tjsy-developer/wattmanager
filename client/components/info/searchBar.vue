@@ -60,6 +60,9 @@ export default {
 	height: 38px
 	margin-left: 25px
 	border-radius: 2px
+	outline: none
+	font-size: 15px
+	font-weight: 600
 
 .searchDeleteBtn
 	position: absolute

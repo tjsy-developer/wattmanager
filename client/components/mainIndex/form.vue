@@ -484,10 +484,11 @@ export default {
   padding: 20px
   color: white
   background-color: #3e3e3e
-  font-size: 15px
-  font-weight: 800
+  font-size: 16px
+  font-weight: 600
   border-radius: 5px
-  transform: none
+  text-indent: 20px
+  outline: none
 
 .input:nth-child(1)
   margin-top: 30px

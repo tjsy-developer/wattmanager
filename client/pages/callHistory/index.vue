@@ -149,10 +149,16 @@ export default {
 				const callHistoryResult = res.data[0]
 				const entireCallTime = res.data[1]
 				
-				// 전체 통화건수 , 전체 통화 시간
+				// 전체 통화건수
 				this.entireCallCount = entireCallTime[0].call_count
-				this.entireCallTime = entireCallTime[0].call_total_time ? entireCallTime[0].call_total_time : "-"
 
+				// 전체 통화 시간 - 00:00:00 -> 00시간 00분 00초로 변환
+				if (entireCallTime[0].call_total_time) {
+					const splitentireCallTime = entireCallTime[0].call_total_time.split(":")
+					this.entireCallTime = `${splitentireCallTime[0]} ${this.$t("time")[0]}  ${splitentireCallTime[1]} ${this.$t("time")[1]} ${splitentireCallTime[0]} ${this.$t("time")[2]}`
+				} else {
+					this.entireCallTime = "-"
+				}
 				
 				this.compData.listData = []
 				this.compData.option = []
@@ -189,13 +195,15 @@ export default {
 		// 검색기간 , 참여자 조건으로 통화이력 조회
 		convertToTimestamp() {
 			console.log(this.startDate, this.endDate, this.selectedPartic)
-			const splitStartDate = this.startDate.split("-")
-			const splitEndDate = this.endDate.split("-")
 			// 참여자 목록 토글
 			this.toggleParticTable = this.selectedPartic
-			// TS :: timestamp
-			const startDateToTS = new Date(splitStartDate[0], splitStartDate[1]- 1, splitStartDate[2], 0,0,0).getTime()
-			const endDateToTS = new Date(splitEndDate[0], splitEndDate[1]- 1, splitEndDate[2], 23,59,59).getTime()
+
+			const splitStartDate = this.startDate.split("-")
+			const splitEndDate = this.endDate.split("-")
+
+			// TS :: timestamp 값으로 변환
+			const startDateToTS = new Date(splitStartDate[0], splitStartDate[1]- 1, splitStartDate[2], 0, 0, 0).getTime()
+			const endDateToTS = new Date(splitEndDate[0], splitEndDate[1]- 1, splitEndDate[2], 23, 59, 59).getTime()
 			console.log("timestamp", startDateToTS, endDateToTS)
 			console.log("dateTime", new Date(startDateToTS), new Date(endDateToTS))
 			return [startDateToTS, endDateToTS]
@@ -243,6 +251,8 @@ export default {
 @import "@/assets/styles/infoTitle"
 
 @media print
+	body
+		print-color-adjust: exact !important 
 	.page-break
 		break-inside: avoid
 		break-after: auto
@@ -252,12 +262,14 @@ export default {
 		padding: 20px
 	.list
 		width: 1200px !important
+	.listFilter
+		-webkit-print-color-adjust: exact
 	@page
 		margin: 0
 		padding: 20px
 		-webkit-print-color-adjust: exact !important
 		size: landscape
-
+	
 #printBox
 	page-break-before:always
 	
@@ -266,6 +278,8 @@ export default {
 	min-width: $contentMaxWidth
 	min-height: $contentHeight
 	background-color: #EFF0F1
+	print-color-adjust: exact
+	-webkit-print-color-adjust: exact
 
 .titleBar
 	margin-bottom: 36px
@@ -285,6 +299,8 @@ export default {
 	color: white
 	padding: 10px 35px
 	background: #1DBFA4 0% 0% no-repeat padding-box
+	print-color-adjust: exact
+	-webkit-print-color-adjust: exact
 	border-radius: 2px
 
 .list
@@ -297,6 +313,8 @@ export default {
 	padding: 16px 0 13px
 	margin-top: 10px
 	width: inherit
+	print-color-adjust: exact
+	-webkit-print-color-adjust: exact
 
 .listFilters>div>button,
 .listFilters>div>span
@@ -339,6 +357,8 @@ $contentImgSize: 30px
 	padding: 5px 0px
 	color: #fff
 	font-size: 13px
+	print-color-adjust: exact
+	-webkit-print-color-adjust: exact
 	&--grey
 		background: #707070 0% 0% no-repeat padding-box
 		&:hover
@@ -360,6 +380,19 @@ $contentImgSize: 30px
 	background: #fff
 	margin-right: 5px
 	margin-left: 5px
+	text-align: left
+	padding-left: 15px
+
+input[type="date"]::-webkit-calendar-picker-indicator
+	position: absolute
+	top: 7px
+	right: 2px
+	content: ''
+	width: 20px
+	height: 22px
+	background: url("../../assets/images/ic_calander.png") no-repeat
+	z-index: 1
+	cursor: pointer   
 
 .partList
 	border: 1px solid #ececec
@@ -393,5 +426,7 @@ $contentImgSize: 30px
 	color: fff
 	border: 1px solid #e5e5e5
 	font-size: 15px
+
+
 
 </style>

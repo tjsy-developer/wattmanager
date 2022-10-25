@@ -101,6 +101,7 @@ input[type=password]
 
 .password,
 .passwordCheck
+  outline: none
   font-size: 15px
   font-weight: 800
   padding: 16px

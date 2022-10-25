@@ -42,7 +42,7 @@ img {
 }
 
 input {
-    outline: none;
+    /* outline: none; */
 }
 
 ::-webkit-input-placeholder {
@@ -164,6 +164,5 @@ a {
         /* -webkit-print-color-adjust: exact !important; */
         width: 210mm;
         height: 297mm;
-        margin: 30mm 45mm 30mm 45mm; /* margin: auto auto; 로 자동 여백 설정도 가능 */
    } 
 }

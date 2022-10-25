@@ -490,6 +490,7 @@ export default {
 
 	>.input,
 	>select
+		outline: none
 		width: 100%
 		color: white
 		padding: 16px
@@ -504,6 +505,7 @@ export default {
 	.nameInput,
 	.emailInput,
 	.enInput
+		outline: none !important
 		width: 78.2%
 		color: white
 		padding: 15px 10px

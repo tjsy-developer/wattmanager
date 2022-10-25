@@ -122,6 +122,7 @@ button
 	background-color: #3E3E3E
 	opacity: 1
 	border: 1px solid #4B4B4B
+	outline: none
 	@media screen and (max-width: 768px)
 		padding: 12px 8px
 ::placeholder

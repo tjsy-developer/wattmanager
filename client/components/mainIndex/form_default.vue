@@ -404,12 +404,13 @@ export default {
   padding: 20px
   color: white
   background-color: #3e3e3e
-  font-size: 15px
-  font-weight: 800
+  font-size: 17px
+  font-weight: 600
+  outline: none
 
 .input:nth-child(1)
   margin-top: 35px
-  font-family: 'NanumSquare', sans-serif;
+  font-family: 'NanumSquare', sans-serif
 
 .input:nth-child(2)
   margin-top: 8px

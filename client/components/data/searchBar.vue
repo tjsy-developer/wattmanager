@@ -115,6 +115,9 @@ export default {
 	background: white
 	height: 38px
 	border-radius: 2px
+	outline: none
+	font-size: 15px
+	font-weight: 600
 
 .searchDeleteBtn
 	position: absolute

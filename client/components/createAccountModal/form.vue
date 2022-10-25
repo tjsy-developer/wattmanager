@@ -357,6 +357,7 @@ export default {
 // 	width: 1170px
 // 	height: 900px
 
+
 ::-webkit-scrollbar
   width: 4px
 
@@ -416,7 +417,8 @@ select
 			font-family: monospace
 
 	>.input,
-	>select,
+	> select,
+		outline: none !important
 		width: 100%
 		color: white
 		padding: 16px
@@ -442,6 +444,7 @@ select
 		font-weight: bold
 		margin-top: 10px
 		margin-right: 10px
+		outline: none
 		@media screen and (max-width: 768px)
 			// width: inherit
 			margin-right: 8px
