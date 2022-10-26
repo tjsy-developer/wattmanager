@@ -71,7 +71,7 @@ export default {
                 glass_app_range: setGlassAppRange,
                 image: this.selected[10],
                 pc_app_range: this.selected[11],
-                order_by_num: Number(getInfo.getInputValue(inputLength - 1)),
+                order_by_num: Number(getInfo.getInputValue(inputLength - 2)),
                 device_type: this.selected[12],
                 email: getInfo.getInputValue(2),
                 jwt: token
