@@ -1,7 +1,7 @@
 <template lang="pug">
   .filterBoxComp(v-if="compData")
     .row(v-if="compData != 'calendar'").search.items-center
-      input(:id="'filterBoxSearchInput'+titleBarFilterKey", :placeholder="$t('searchBarComp')[4]", @keyup.enter="searchBtnClick").col
+      input(:id="'filterBoxSearchInput'+titleBarFilterKey", :placeholder="$t('searchBarComp')[4]", @keyup.enter="searchBtnClick").col.filterBoxSearchInput
       button(@click="searchBtnClick").col-auto
         img(src="@/assets/images/list_icon_search.png")
     .filterList(v-if="compData != 'calendar'")
@@ -663,6 +663,9 @@ $filterListLinePos: 3px
   border-top: 1px dotted #707070
   border-left: 1px dotted #707070
   margin-left: $filterListLinePos
+
+.filterBoxSearchInput
+  outline: none
 
   >.filterListLineLeft
     position: absolute
