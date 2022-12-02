@@ -4,7 +4,9 @@
 		.row.justify-center.memolist
 			.row.justify-between.items-center.titleContainer.maxWidth
 				span.col-auto.title {{ $t("memo")[2] }}
-				changeViewType.col-auto
+				.col.row.justify-end
+					changeViewType.col-auto
+					a(:href="'attachment/memo/create'").col-auto.createBtn {{ $t("createAndEditComp")[0] }}
 				.row.col-12
 					button(v-if="$route.query.viewType == 'gallery'", v-for="memo in compData.listData", @click="memoBtnClick(memo)").row.memoBtn
 						.col-12(v-if="memo.thumbnailName != null").row.memoImgContainer
@@ -30,7 +32,6 @@
 							span.col-12.memoDate {{ getTimeZoneEndMinutes(memo.saveTime) }}
 							span.col-12.memoTitle {{ $t("memo")[0] }}ㅣ{{ memo.userName }}
 							span.col-12.memoText {{ $t("memo")[1] }}ㅣ{{ memo.contents }}
-				pagination(:compData="compData").col-12.memoPagination
 </template>
 
 <script>
@@ -294,4 +295,10 @@ $listViewMemoImgContainerHeight: 170px
 	top: 59%
 	color: #8d8d8d
 	font-size: small
+
+.createBtn
+	color: white
+	padding: 10px 35px
+	background: #1DBFA4 0% 0% no-repeat padding-box
+	border-radius: 2px
 </style>

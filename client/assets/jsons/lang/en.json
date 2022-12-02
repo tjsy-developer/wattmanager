@@ -72,7 +72,10 @@
 	"memo": [
 		"Writer",
 		"Memo",
-		"List of Memo"
+		"List of Memo",
+		"Write a memo",
+		"Memo save success",
+		"Memo save Fail"
 	],
 	"attachment": [
 		"Please enter the subject",
@@ -327,7 +330,8 @@
 		"Select File",
 		"Upload",
 		"File save success",
-		"File save fail"
+		"File save fail",
+		"Files cannot be uploaded."
 	],
 	"fileBox text": "Please select a file to upload from my PC.",
 	"email confirm": [
