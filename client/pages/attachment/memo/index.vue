@@ -32,6 +32,7 @@
 							span.col-12.memoDate {{ getTimeZoneEndMinutes(memo.saveTime) }}
 							span.col-12.memoTitle {{ $t("memo")[0] }}ㅣ{{ memo.userName }}
 							span.col-12.memoText {{ $t("memo")[1] }}ㅣ{{ memo.contents }}
+				pagination(:compData="compData").col-12.memoPagination
 </template>
 
 <script>
