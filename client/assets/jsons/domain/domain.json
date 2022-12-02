@@ -24,5 +24,6 @@
 	"elecFilePath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\QR\\\\file",
 	"elecFolderPath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\QR\\\\folder",
 	"fileBoxBackend": "https://dev.watttalk.kr:8221/",
-	"separateBackendUploadPath": false
+	"separateBackendUploadPath": false,
+	"powermemoSavefolder": "D:\\\\Storage\\\\sftp\\\\dev"
 }
