@@ -81,7 +81,7 @@ export default {
 		const self = this
 		// 메모 생성 api
 		this.$axios
-        .post("http://192.168.20.82:8080/PowerManagerBackend/" + "fileupload/memo_insert", formData, {
+        .post(domain.domain.backend1 + "fileupload/memo_insert", formData, {
 			headers: {
 				"Content-Type": "multipart/form-data; charset=UTF-8;",
 				"jwt": localStorage.getItem("jwt")

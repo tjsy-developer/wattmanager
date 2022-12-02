@@ -301,4 +301,5 @@ $listViewMemoImgContainerHeight: 170px
 	padding: 10px 35px
 	background: #1DBFA4 0% 0% no-repeat padding-box
 	border-radius: 2px
+	margin-right: 5px
 </style>
