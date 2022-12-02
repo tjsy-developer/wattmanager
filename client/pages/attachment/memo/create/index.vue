@@ -61,7 +61,7 @@ export default {
         formData.append("user_id", sessionStorage.getItem("logined"))
         // 파워매니저에서 업로드 했다라고 구분
         formData.append("memo_contents", this.memoContent)
-                // 메모 저장 위치
+        // 메모 저장 위치
         formData.append("save_folder", domain.powermemoSavefolder)
 
         // 선택한 파일을 차례대로 넣는다
@@ -76,32 +76,32 @@ export default {
         // for (const pair of formData.entries()) {
         //     console.log(pair[0], ", ", pair[1])
         // }
-		// 파일 업로드시 로딩바삽입
-		this.$nuxt.$emit("setLoadingBar", true)
-		const self = this
-		// 메모 생성 api
-		this.$axios
+        // 파일 업로드시 로딩바삽입
+        this.$nuxt.$emit("setLoadingBar", true)
+        const self = this
+        // 메모 생성 api
+        this.$axios
         .post(domain.domain.backend1 + "fileupload/memo_insert", formData, {
-			headers: {
-				"Content-Type": "multipart/form-data; charset=UTF-8;",
-				"jwt": localStorage.getItem("jwt")
-			}
+            headers: {
+                "Content-Type": "multipart/form-data; charset=UTF-8;",
+                "jwt": localStorage.getItem("jwt")
+            }
         })
         .then(function(res) {
             if (res) {
-				console.log(res)
-				self.$nuxt.$emit("setLoadingBar", false)
-				if (res.data.RESULT == '1000'){
-					alert(self.$t("memo")[4])
-                	history.go(-1)
-				} else {
-					alert(self.$t("memo")[5])
-				}
+                console.log(res)
+                self.$nuxt.$emit("setLoadingBar", false)
+                if (res.data.RESULT == '1000'){
+                    alert(self.$t("memo")[4])
+                    self.$router.push("/attachment/memo?page=1&viewType=gallery", "_self")
+                } else {
+                    alert(self.$t("memo")[5])
+                }
             }
         })
         .catch(function(error) {
             console.log("memo create error : ", error)
-			self.$nuxt.$emit("setLoadingBar", false)
+            self.$nuxt.$emit("setLoadingBar", false)
             alert(self.$t("memo")[5])
         })
     },
@@ -206,6 +206,7 @@ export default {
 		border: 1px solid #D9D9D9
 		margin-right: 10px
 		height: inherit
+		cursor: no-drop
 
 input[type="file"]::file-selector-button
 	background: white
