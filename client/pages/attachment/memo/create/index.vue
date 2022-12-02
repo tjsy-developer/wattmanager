@@ -73,9 +73,9 @@ export default {
         })
 
         //FormData의 값 확인
-        for (const pair of formData.entries()) {
-            console.log(pair[0], ", ", pair[1])
-        }
+        // for (const pair of formData.entries()) {
+        //     console.log(pair[0], ", ", pair[1])
+        // }
 		// 파일 업로드시 로딩바삽입
 		this.$nuxt.$emit("setLoadingBar", true)
 		const self = this
