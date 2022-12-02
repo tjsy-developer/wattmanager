@@ -15,7 +15,7 @@
 					.column.col
 						.col-12.row.justify-between.items-center.memoFiles(v-for="(cnt, cntIndex) in inserFileCnt")
 							input(type="text" readOnly).col-10.fileName
-							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp .pdf, .mp4" @change="extensionCheck").col.file
+							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4" @change="extensionCheck").col.file
 			.col-12.divisionLine
 			.col-12.row.justify-center.createBtns
 				button(@click="createBtnClick") {{ $t("noticeUpload")[0] }}
@@ -66,8 +66,10 @@ export default {
 
         // 선택한 파일을 차례대로 넣는다
         const fileEl = document.getElementsByClassName("file")
+		let uploadFileCnt = 0
         Array.from(fileEl).forEach((el) => {
             if (el.files[0]) {
+				uploadFileCnt++
                 formData.append("upload_files", el.files[0])
             }
         })
@@ -76,6 +78,11 @@ export default {
         // for (const pair of formData.entries()) {
         //     console.log(pair[0], ", ", pair[1])
         // }
+
+		if (uploadFileCnt == 0 && !this.memoContent) {
+			alert(this.$t("memo")[6])
+			return
+		}
         // 파일 업로드시 로딩바삽입
         this.$nuxt.$emit("setLoadingBar", true)
         const self = this
@@ -93,7 +100,7 @@ export default {
                 self.$nuxt.$emit("setLoadingBar", false)
                 if (res.data.RESULT == '1000'){
                     alert(self.$t("memo")[4])
-                    self.$router.push("/attachment/memo?page=1&viewType=gallery", "_self")
+                    window.open("/attachment/memo?page=1&viewType=gallery", "_self")
                 } else {
                     alert(self.$t("memo")[5])
                 }

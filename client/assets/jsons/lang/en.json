@@ -75,7 +75,8 @@
 		"List of Memo",
 		"Write a memo",
 		"Memo save success",
-		"Memo save Fail"
+		"Memo save Fail",
+		"No entries have been entered."
 	],
 	"attachment": [
 		"Please enter the subject",
