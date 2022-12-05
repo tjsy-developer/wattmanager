@@ -429,5 +429,6 @@
 		"QR생성 폴더명을 입력해주세요"
 	],
 	"callHistory": "통화이력",
-	"enter searchTerm": "검색 기간을 입력해주세요."
+	"enter searchTerm": "검색 기간을 입력해주세요.",
+	"open": "열기"
 }

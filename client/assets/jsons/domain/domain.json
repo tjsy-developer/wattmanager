@@ -1,29 +1,29 @@
 {
 	"domain":{
 		"backend_local": "http://localhost:8090/",
-		"backend1": "https://dev.watttalk.kr:8221/",
+		"backend1": "https://koraildev.watttalk.kr:8101/",
 		"powertalk" : { 
 			"state" : [
 				"loginCheck",
 				"http://localhost:4500/login/login-check?jwt_token=",
-				"https://dev.watttalk.kr:8224/login/login-check?jwt_token="
+				"https://koraildev.watttalk.kr:8102/login/login-check?jwt_token="
 			 ]
 		}
 	},
-	"powermemo": "https://dev.watttalk.kr:8222/storage/powermemo/powertalktwo",
-	"qr_filePath":  "https://dev.watttalk.kr:8222/Storage/powertalk/dev/QR/folder",	
+	"powermemo": "https://koraildev.watttalk.kr/sftp/watt",
+	"qr_filePath":  "https://koraildev.watttalk.kr/storage/watttalk/korail/QR/folder",
 	"qr": "default",
 	"att_access_user": true,
-	"att_videoPlayPath": "https://dev.watttalk.kr/Storage/powertalk/dev/Dashs/Src/",
-	"att_filePath": "https://dev.watttalk.kr/Storage/powertalk/dev/filebox/",
-	"detailFilePath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\filebox",
-	"fileUploadBackend": "https://dev.watttalk.kr:8221/",
-	"useEnterprise": "watt",
-	"use_bento4": true,
-	"elecQR": true,
-	"elecFilePath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\QR\\\\file",
-	"elecFolderPath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\QR\\\\folder",
-	"fileBoxBackend": "https://dev.watttalk.kr:8221/",
+	"att_videoPlayPath": "https://koraildev.watttalk.kr/Storage/powertalk/dev/Dashs/Src/",
+	"att_filePath": "https://koraildev.watttalk.kr/storage/watttalk/korail/filebox/",
+	"detailFilePath": "/home/watt/hdd_ext/Storage/watttalk/korail/filebox/",
+	"fileUploadBackend": "https://koraildev.watttalk.kr:8101/",
+	"useEnterprise": "korail",
+	"use_bento4": false,
+	"elecQR": false,
+	"elecFilePath": "/home/watt/hdd_ext/Storage/watttalk/korail/QR/file",
+	"elecFolderPath": "/home/watt/hdd_ext/Storage/watttalk/korail/QR/folder",
+	"fileBoxBackend": "https://koraildev.watttalk.kr:8101/",
 	"separateBackendUploadPath": false,
-	"powermemoSavefolder": "D:\\\\Storage\\\\sftp\\\\dev"
+	"powermemoSavefolder": "/home/sftpuser01/watt/"
 }
