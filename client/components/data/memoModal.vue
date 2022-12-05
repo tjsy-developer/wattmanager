@@ -6,6 +6,9 @@
 			.col-12(v-if="files.length != 0", v-for="(file, fileKey) in files", :key="fileKey").row.file
 				img(v-if="file.file_type == 'P'", :src="webServerFilePathJson.original + file.original_name").col-12
 				video(v-else-if="file.file_type == 'V'", :src="webServerFilePathJson.original + file.original_name", :poster="webServerFilePathJson.thumbnail + file.thumbnail_name", controls).col-12
+				img(v-else :src="webServerFilePathJson.thumbnail + file.thumbnail_name")
+				//- embed(v-if="file.file_type == 'F'" :src="webServerFilePathJson.original + file.original_name" width="927px" height="468px")
+				button(v-if="file.file_type == 'F'" @click="openPdf(webServerFilePathJson.original + file.original_name)").pdfViewFile PDF {{ $t("open") }}
 				button(:style="{right: editAuth || userId == compData.userId ? '140px' : '30px'}", @click="saveFileClick(file)").saveFile {{ $t("listComp")[8] }}
 				button(v-if="editAuth || userId == compData.userId", @click="deleteFileClick(file, fileKey)").deleteFile {{ $t("memoModalComp")[0] }}
 			.col-12(v-if="files.length == 0").empty
@@ -155,6 +158,15 @@ export default {
 
       return convertToDate
     },
+    openPdf(src) {
+      const win = window.open()
+      win.document.body.style.margin = "0px"
+      const embed = document.createElement("EMBED")
+      embed.setAttribute("src", src)
+      embed.setAttribute("width", "100%")
+      embed.setAttribute("height", "100%")
+      win.document.body.appendChild(embed)
+    },
     memoEditAuth(writerHqSeq, writerBrSeq) {
       /* 최종관리자, 기업관리자 인경우 기업,본부,지사를 따로 체크하지 않는다 */
       // console.log("my auth ==> ", this.auth)
@@ -204,6 +216,15 @@ export default {
     //   this.compData.userId
     // )
     autoSize(document.getElementById("memoModalTextarea"))
+
+    for(let i= 0; i < this.files.length; i ++) {
+      console.log(this.files[i])
+      const extension = this.files[i].original_name.split(".")
+      console.log(extension)
+      if (extension[extension.length - 1].toLowerCase() ==  "pdf") {
+        this.files[i].file_type = "F"
+      }
+    }
   }
 }
 </script>
@@ -234,6 +255,17 @@ export default {
 	height: 400px
 	background-color: #d3d3d3
 	text-align: center
+
+.pdfViewFile
+	position: absolute
+	width: 100px
+	height: 40px
+	top: 30px
+	right: 250px
+	color: white
+	background-color: #9e9e9e
+	&:hover
+		background-color: #757575
 
 .saveFile
 	position: absolute
@@ -315,4 +347,29 @@ export default {
 	top: 52%
 	color: #a5a5a5
 	font-size: large
+
+// .pdfView
+//   width: 923px
+//   height: 479px
+//   position: absolute
+//   z-index: 2
+//   display: flex
+//   align-items: center
+//   justify-content: center
+//   &:hover
+//     background: rgba(0, 0, 0, 0.2)
+//     .pdfOpen
+//       display: block
+
+// .pdfOpen
+//   display: none
+//   padding: 5px 20px
+//   color: black
+//   background: white
+//   border-radius: 4px
+//   text-align: center
+//   font-size: 16px
+//   &:hover
+//     background: #757575
+//     color: #fff
 </style>
