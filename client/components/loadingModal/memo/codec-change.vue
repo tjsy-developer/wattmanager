@@ -3,8 +3,8 @@
         <div class="modal-codec_content" v-if="codecStep == 0">
             <p> {{ $t("codecChange")[0] }} </p>
             <div>
-                <input type="text" class="file-name" name="" id="">
-                <input type="file" id="files" refs="file" accept=".mp4" @change="changeSelectFile">
+                <input type="text" class="file-name" name="" id="" readonly>
+                <input type="file" id="files" refs="file" accept=".mp4, .MP4" @change="changeSelectFile">
                 <label for="files" class="buttons buttons--grey" > {{ $t("codecChange")[1] }}</label>
             </div>
             <button class="buttons buttons--green" @click="videoEncoding">{{ $t("codecChange")[2] }}</button>
@@ -141,10 +141,14 @@ input::file-selector-button, #files
     width: 45vw
     font-size: 14px
     max-width: 240px
+    cursor: not-allowed
+    background: #fff
 
 .buttons
     border-radius: 6px
     color: white
+    &:hover
+        cursor: pointer
     &--green
         background-color: #1dbfa4
         padding: 5px 15px
