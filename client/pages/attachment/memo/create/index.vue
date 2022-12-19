@@ -15,7 +15,7 @@
 					.column.col
 						.col-12.row.justify-between.items-center.memoFiles(v-for="(cnt, cntIndex) in inserFileCnt")
 							input(type="text" readOnly).col-10.fileName
-							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4" @change="extensionCheck").col.file
+							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4" @change="checkExtension").col.file
 			.col-12.divisionLine
 			.col-12.row.justify-center.createBtns
 				button(@click="createBtnClick") {{ $t("noticeUpload")[0] }}
@@ -24,32 +24,119 @@
 
 <script>
 import domain from "@/assets/jsons/domain/domain"
-
+import codecCheckModal from "@/components/loadingModal/memo/codec-check"
 export default {
 
   layout: "main",
   data() {
     return {
-      enSeq: undefined,
-      id: undefined,
-      auth: undefined,
-      listFilters: undefined,
-      token: undefined,
-      inserFileCnt: 5,
-			memoContent: ""
+		enSeq: undefined,
+		id: undefined,
+		auth: undefined,
+		listFilters: undefined,
+		token: undefined,
+		inserFileCnt: 5,
+		memoContent: "",
+		target: ""
     }
   },
   methods: {
-		extensionCheck(e) {
-			console.log(e.target.files[0].name)
-			const extractExtension = e.target.files[0].name.split('.').pop().toLowerCase();
-			const possibleExtensions = ['jpg', 'png', 'jpeg', 'pdf', 'gif', 'bmp', 'mp4']
-			if (possibleExtensions.indexOf(extractExtension) == -1) {
-				alert(extractExtension + this.$t("upload text")[9]);
-				e.target.value = ""
+		// 인코딩 코덱 확인 알림 모달창
+		showModal(type) {
+			console.log("modal을 띄운다")
+			this.$modal.hide("codecCheckModal")
+			const modalsContainerStyle = document.getElementById("modalsContainer")
+			.style
+			modalsContainerStyle.display = "block"
+			this.$modal.show(
+				codecCheckModal,
+				{ modalStep: type },
+				{
+					name: "codecCheckModal",
+					width: 450,
+					height: 320,
+					clickToClose: false,
+					adaptive: true,
+					minWidth: 400,
+					minheight: 700,
+					styles: {
+						backgroundColor: "#fff"
+					}
+				},
+				{
+					"before-close": () => {
+						modalsContainerStyle.display = "none"
+					}
+				}
+			)
+		},
+		// mp4파일 삽입 시 인코딩가능한 코덱인지 확인
+		checkEncodingCodec(file) {
+			// param: 업로드할 파일, 폴더경로
+			const formData = new FormData()
+			formData.append("upload_file", file)
+			formData.append("save_folder", domain.powermemoSavefolder)
+
+			const self = this
+			// 로딩 바 삽입
+			this.showModal("checkingCodec")
+
+			// test Code
+			// const res = {RESULT : '1000', CODEC_NAME: 'hevc'}
+
+			this.$axios
+			.post(domain.domain.backend1 + "fileupload/get_codec_name", formData, {
+				headers: {
+					"Content-Type": "multipart/form-data; charset=UTF-8;",
+					"jwt": localStorage.getItem("jwt")
+				}
+			})
+			.then((res) => {
+				console.log(res)
+				if(res.data.RESULT == "1000") {
+					/*
+						h264 - 인코딩 가능한 코덱 파일
+						hevc - 인코딩 불가능한 코덱 파일 ( 코덱 변환 필요 )
+					*/
+					if (res.data.CODEC_NAME == "h264") {
+						self.showModal("possibleCodec")
+					} else if (res.data.CODEC_NAME == "hevc") {
+						self.showModal("impossibleCodec")
+						this.target.value = ""
+						this.target.previousSibling.value = ""
+					} else {
+						alert("memo file return codec name error")
+					}
+				} else {
+					throw res
+				}
+			})
+			.catch((err) => {
+				alert("Memo Create Error")
+				console.log(err)
+			})
+		},
+		checkExtension(e) {
+			if (e.target.files[0]) {
 				e.target.previousSibling.value = ""
+				const extractExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+				const possibleExtensions = ['jpg', 'png', 'jpeg', 'pdf', 'gif', 'bmp', "mp4"]		
+				
+				// mp4를 제외, 업로드 가능한 확장자 체크
+				if (possibleExtensions.indexOf(extractExtension) == -1) {
+					alert(extractExtension + this.$t("upload text")[9]);
+					e.target.value = ""
+					e.target.previousSibling.value = ""
+				} else {
+					e.target.previousSibling.value = e.target.files[0].name
+					// 파일이 mp4일 경우 인코딩이 가능한 코덱인지 확인
+					if(extractExtension == "mp4") {
+						this.checkEncodingCodec(e.target.files[0])
+						this.target = e.target
+					}
+				}
 			} else {
-				e.target.previousSibling.value = e.target.files[0].name
+				e.target.previousSibling.value = ""
 			}
 		},
     createBtnClick() {

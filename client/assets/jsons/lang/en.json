@@ -428,6 +428,28 @@
 		"Enter the folder name",
 		"Please enter the name of the QR creation folder"
 	],
+	"codecChange": [
+		"Select the file to change the video codec to.",
+		"Find file",
+		"Start to Change",
+		"Video codec is being changed.",
+		"Please wait.!",
+		"Video codec change completed!",
+		"End"
+	],
+	"codecCheck": [
+		"Checking if the video codec is",
+		"available in Chrome or Edge browser.",
+		"Please wait.!",
+		"This video is available.",
+		"Save",
+		"Chrome or Edge browsers cannot use",
+		"the HEVC (H.265) video codec.",
+		"Please upload after changing to",
+		"a usable video codec (H.264).",
+		"Change HEVC video codec to H.254",
+		"Cancle"
+	],
 	"callHistory": "Call History",
 	"enter searchTerm": "Please enter a search term.",
 	"open": "Open"
