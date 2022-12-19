@@ -15,7 +15,7 @@
             <p>{{ $t("codecCheck")[6] }}</p>
             <p>{{ $t("codecCheck")[7] }}</p>
             <p>{{ $t("codecCheck")[8] }}</p>
-            <a href="#" target="_blank" @click="codecConversion" class="modal_link">{{ $t("codecCheck")[9] }}</a>
+            <a target="_blank" @click="codecConversion" class="modal_link">{{ $t("codecCheck")[9] }}</a>
             <button class="buttons buttons--cancle" @click="cancleBtnClick">{{ $t("codecCheck")[10] }}</button>
         </div>
     </div>
