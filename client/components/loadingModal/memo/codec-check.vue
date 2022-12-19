@@ -69,10 +69,12 @@ export default {
         text-decoration: underline
         color: #0000ffd9
         margin-bottom: 15px
+        cursor: pointer
 .buttons
     padding: 5px 15px
     border-radius: 6px
     color: white
+    cursor: pointer
     &--save
         background-color: #1dbfa4
         margin-top: 25px
