@@ -4,7 +4,7 @@
             <p> {{ $t("codecChange")[0] }} </p>
             <div>
                 <input type="text" class="file-name" name="" id="" readonly>
-                <input type="file" id="files" refs="file" accept=".mp4, .MP4" @change="changeSelectFile">
+                <input type="file" id="files" refs="file" accept=".mp4, .mov" @change="changeSelectFile">
                 <label for="files" class="buttons buttons--grey" > {{ $t("codecChange")[1] }}</label>
             </div>
             <button class="buttons buttons--green" @click="videoEncoding">{{ $t("codecChange")[2] }}</button>
@@ -36,11 +36,26 @@ export default {
         changeSelectFile(e) {
             console.log(e)
             if (e.target.files[0]) {
-                e.target.previousSibling.previousElementSibling.value = e.target.files[0].name
-                this.file = e.target.files[0]
+                const extractExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+                const possibleExtensions = ["mp4", "mov"]
+				// mp4를 제외, 업로드 가능한 확장자 체크
+				if (possibleExtensions.indexOf(extractExtension) == -1) {
+					alert(extractExtension + this.$t("upload text")[9]);
+					e.target.value = ""
+					e.target.previousSibling.previousElementSibling.value = ""
+                    this.file = ""
+				} else {
+                    e.target.previousSibling.previousElementSibling.value = e.target.files[0].name
+                    this.file = e.target.files[0]
+				}
+
             }
         },
         videoEncoding() {
+            if (this.file == "") {
+                this.$t("codecChange")[7]
+                return
+            }
             const formData = new FormData()
             // 로그인한 사용자의 토큰 정보를 formData에 넣는다
             formData.append("jwt", localStorage.getItem("jwt"))

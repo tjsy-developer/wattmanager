@@ -15,7 +15,7 @@
 					.column.col
 						.col-12.row.justify-between.items-center.memoFiles(v-for="(cnt, cntIndex) in inserFileCnt")
 							input(type="text" readOnly).col-10.fileName
-							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4" @change="checkExtension").col.file
+							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4, .mov" @change="checkExtension").col.file
 			.col-12.divisionLine
 			.col-12.row.justify-center.createBtns
 				button(@click="createBtnClick") {{ $t("noticeUpload")[0] }}
@@ -112,7 +112,7 @@ export default {
 				}
 			})
 			.catch((err) => {
-				alert("Memo Create Error")
+				
 				console.log(err)
 			})
 		},
@@ -120,7 +120,7 @@ export default {
 			if (e.target.files[0]) {
 				e.target.previousSibling.value = ""
 				const extractExtension = e.target.files[0].name.split('.').pop().toLowerCase();
-				const possibleExtensions = ['jpg', 'png', 'jpeg', 'pdf', 'gif', 'bmp', "mp4"]		
+				const possibleExtensions = ['jpg', 'png', 'jpeg', 'pdf', 'gif', 'bmp', "mov", "mp4"]		
 				
 				// mp4를 제외, 업로드 가능한 확장자 체크
 				if (possibleExtensions.indexOf(extractExtension) == -1) {
@@ -130,7 +130,7 @@ export default {
 				} else {
 					e.target.previousSibling.value = e.target.files[0].name
 					// 파일이 mp4일 경우 인코딩이 가능한 코덱인지 확인
-					if(extractExtension == "mp4") {
+					if(extractExtension == "mp4" || extractExtension == "mov") {
 						this.checkEncodingCodec(e.target.files[0])
 						this.target = e.target
 					}
