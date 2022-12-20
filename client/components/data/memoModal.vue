@@ -216,15 +216,6 @@ export default {
     //   this.compData.userId
     // )
     autoSize(document.getElementById("memoModalTextarea"))
-
-    for(let i= 0; i < this.files.length; i ++) {
-      console.log(this.files[i])
-      const extension = this.files[i].original_name.split(".")
-      console.log(extension)
-      if (extension[extension.length - 1].toLowerCase() ==  "pdf") {
-        this.files[i].file_type = "F"
-      }
-    }
   }
 }
 </script>

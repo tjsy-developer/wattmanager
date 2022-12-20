@@ -48,7 +48,6 @@ export default {
       window.open(path, "_self")
     },
     getListCount() {
-      console.log("listCount 탔다")
       this.compData.getListDataParams.jwt = localStorage.getItem("jwt")
 
       return this.$axios
@@ -65,11 +64,7 @@ export default {
         })
     },
     getListData() {
-      console.log("listData 탔다")
       this.compData.getListDataParams.jwt = localStorage.getItem("jwt")
-      console.log(this.compData.getListDataUrl)
-      console.log("this.compData.getListDataParams")
-      console.log(this.compData.getListDataParams)
       return this.$axios
         .post(
           domain.domain.backend1 + this.compData.getListDataUrl,

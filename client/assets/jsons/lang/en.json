@@ -435,7 +435,8 @@
 		"Video codec is being changed.",
 		"Please wait.!",
 		"Video codec change completed!",
-		"End"
+		"End",
+		"Please select a file."
 	],
 	"codecCheck": [
 		"Checking if the video codec is",
