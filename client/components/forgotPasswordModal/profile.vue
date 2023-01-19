@@ -72,44 +72,56 @@ export default {
 	border: 1px solid #d9d9d9
 	padding: 30px
 	background-color: white
+  
 
 .icon
 	position: absolute
 	top: 10px
 	right: 10px
+  
 
 	>img
 		padding: 16px
+    
 
 .title
 	font-size: 18px
 	font-weight: bold
 	color: #26439a
 	margin-top: 20px
+  
 
 input[type=password]
 	font-family: auto
+  
 
 .password,
+  
 .newPassword,
+  
 .newPasswordCheck
 	font-size: 15px
 	font-weight: 800
 	padding: 16px
 	border: 1px solid #d9d9d9
+  
 
 .password
 	margin-top: 35px
+  
 
 .newPassword,
+  
 .newPasswordCheck
 	margin-top: 8px
+  
 
 .button
 	margin-top: 14px
 	padding: 16px
 	background: #26439a
 	color: #fff
+  
 
 @media screen and (max-width: 500px)
 	.profile

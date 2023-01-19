@@ -1,21 +1,29 @@
 <template lang="pug">
-	loginForm(@child="moveChangedDomain()")
+div.root
+		loginForm(@child="moveChangedDomain()")
+		inspectionAlertModal(v-if="test" :propsData="modalParameter" name="inspectionAlertModal" :clickToClose="false" @closeCheck="closeCheck").alert-modal
 </template>
 <script>
+import axiosJson from "@/assets/jsons/axios"
 import loginForm from "@/components/mainIndex/form"
 import transModal from "@/components/info/transModal"
+import inspectionAlertModal from "@/components/mainIndex/inspectionAlertModal"
+import domain from "@/assets/jsons/domain/domain"
+import cookieSetting from "@/assets/scripts/data/cookie"
 export default {
   data() {
     return {
-      changedDomain: ""
+      changedDomain: "",
+			modalParameter: {},
+			test: false,
+      checked: ""
     }
   },
   methods: {
     showModal() {
       const modalsContainerStyle = document.getElementById("modalsContainer")
-        .style
-      modalsContainerStyle.display = "block"
-
+      modalsContainerStyle.style
+        modalsContainerStyle.display = "block"
       this.$modal.show(
         transModal,
         { changedDomain: this.changeDomain },
@@ -51,14 +59,75 @@ export default {
       setTimeout(() => {
         location.href = this.changedDomain
       }, 500)
+    },
+    showInspectionAlert() {
+      console.log("###################################################")
+      let inspectionList = []
+      this.$axios
+        .post(domain.domain.backend1 + axiosJson.overhaul.overhaul_list, {})
+        .then((res) => {
+          if(res.data.length == 0) {
+            return
+          }
+          // console.log(res)
+          // console.log(res, "!!!!!!!!!!!!!!!!!!")
+          inspectionList[0] = res.data[0]
+          if (inspectionList[0].overhaul_flag == 1) {
+            this.modalParameter = {
+                inspectionDate: inspectionList[0].overhaul_date,
+                inspectionPhoneNum: inspectionList[0].overhaul_phone,
+                overhaulNumber: inspectionList[0].overhaul_number
+            }
+            const checkOverhaulNum = cookieSetting.getCookie("overhaulNum")
+            const checkCloseForDay = cookieSetting.getCookie("closeForDay")
+            // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 동일한 경우
+            if (checkOverhaulNum == inspectionList[0].overhaul_number) {
+              if (checkCloseForDay == "ture") {
+                console.log("오늘하루열지않기")
+								this.test = false
+              } else {
+                cookieSetting.delCookie("overhaulNum")
+                cookieSetting.delCookie("closeForDay")
+								this.test = true
+              }
+            } else {
+								this.test = true
+            }
+          } else {
+						this.test = false
+          }   
+        })
+    },
+		closeCheck(closeClick) {
+      console.log(closeClick, "!!!!!!!!!!!!!")
+      if (closeClick == "true") {
+        this.test = false
+      }
+      console.log(this.test, "@@@@@@@@@@@@@@@@@@")
+      return this.test
     }
   },
   mounted() {
     this.domainCheck()
+		this.$nextTick(
+    	this.showInspectionAlert()
+		) 
   },
   components: {
     loginForm,
-    transModal
+    transModal,
+		inspectionAlertModal
   }
 }
 </script>
+<style lang="sass">
+.root
+	width: 100%
+	height: 100%
+.alert-modal
+	width: 560px
+	height: 550px
+.btn
+	position: absolute
+	background-color: white
+</style>

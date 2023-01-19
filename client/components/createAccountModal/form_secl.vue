@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     close() {
-      this.$modal.hide("createAccountModal")
+      ("createAccountModal")
     },
     switchLocale(locale) {
       sessionStorage.setItem("languageCode", locale)

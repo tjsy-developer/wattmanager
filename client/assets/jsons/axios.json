@@ -107,5 +107,8 @@
 	},
 	"call": {
 		"callHistory_list": "callHistoryRest/callHistory_list"
+	},
+	"overhaul": {
+		"overhaul_list": "overhaulRest/overhaul"
 	}
 }

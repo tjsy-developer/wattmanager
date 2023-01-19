@@ -76,18 +76,24 @@ export default {
 
 ::-webkit-scrollbar
   width: 4px
+  
 
 ::-webkit-scrollbar-track
   background-color: #2f3542
+  
 
 ::-webkit-scrollbar-thumb
   background: #4D4D4D
   border-radius: 15px
+  
 
 input,
+	
 button
 	border-radius: 3px
+	
 .step1
+	
 	width: 100%
 	height: 100%
 	border: 1px solid #4D4D4D
@@ -100,20 +106,25 @@ button
 	position: absolute
 	top: 2px
 	right: 2px
+	
 
 	>img
 		padding: 5px
 		width: 20px
 		height: 20px
+		
 
 .title
 	font-size: 23px
 	font-weight: bold
 	color: white
 	//margin-top: 20px
+	
 
 .id,
+	
 .eMail,
+	
 .inputCode
 	font-size: 15px
 	font-weight: 800
@@ -123,15 +134,21 @@ button
 	opacity: 1
 	border: 1px solid #4B4B4B
 	outline: none
+	
+
 	@media screen and (max-width: 768px)
 		padding: 12px 8px
+		
 ::placeholder
 	color: #696969
+	
 
 
 .eMail,
+	
 .send
 	margin-top: 12px
+	
 
 .send
 	width: 100px
@@ -139,8 +156,10 @@ button
 	margin-left: 10px
 	color: #fff
 	background: #2386D2
+	
 	@media screen and (max-width: 768px)
 		padding: 12px 8px
+		
 
 .button
 	margin-top: 14px
@@ -148,15 +167,19 @@ button
 	padding: 16px
 	background: #2386D2
 	color: #fff
+	
 	@media screen and (max-width: 768px)
 		padding: 12px 8px
+		
 
 .pwBox
 	width: 455px
+	
 	// height: -webkit-fill-available
 
 input:focus
 	border: 2px solid #2386D2
+	
 
 label
 	color: white
@@ -165,11 +188,14 @@ label
 	margin-bottom: 5px
 	margin-top: 17px
 	padding-left: 10px
+	
 
 @media screen and (max-width: 500px)
 	.step1
 		padding: 14px
+		
 @media screen and (max-width: 400px)
 	.send
 		width: 60px
+		
 </style>

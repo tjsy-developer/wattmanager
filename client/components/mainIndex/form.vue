@@ -67,6 +67,7 @@ import guideAlertModal from "@/components/info/guideAlert"
 import notice from "@/components/notice"
 import domain from "@/assets/jsons/domain/domain"
 import cookieSetting from "@/assets/scripts/data/cookie"
+
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
 export default {
@@ -430,6 +431,7 @@ export default {
         document.getElementById("idInput").focus()
       }
     }
+    
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.delCookie("logined")
   }
@@ -437,6 +439,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.row.justify-center.items-center.index
 .index
   width: 100%
   // min-width: $contentMaxWidth
@@ -645,7 +648,6 @@ export default {
 @media screen and (max-width: 1023px) and (max-height: 768px)
   .indexRightContent
     display: flex
-
   .indexRight
     height: 100% !important
     align-item: center
@@ -665,7 +667,6 @@ export default {
 
   .signInBtn
     padding: 9px
-
   .input::placeholder
     font-size: 12px
 
