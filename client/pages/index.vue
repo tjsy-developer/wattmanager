@@ -22,8 +22,9 @@ export default {
   methods: {
     showModal() {
       const modalsContainerStyle = document.getElementById("modalsContainer")
-      modalsContainerStyle.style
+        .style
         modalsContainerStyle.display = "block"
+
       this.$modal.show(
         transModal,
         { changedDomain: this.changeDomain },
