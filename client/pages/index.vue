@@ -87,14 +87,18 @@ export default {
                 console.log("오늘하루열지않기")
 								this.test = false
               } else {
-                cookieSetting.delCookie("overhaulNum")
-                cookieSetting.delCookie("closeForDay")
+                // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 동일하지만
+                // 오늘하루 열지않기를 누르지 않은 경우
 								this.test = true
               }
             } else {
+              // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 다른경우
 								this.test = true
+                cookieSetting.delCookie("overhaulNum")
+                cookieSetting.delCookie("closeForDay")
             }
           } else {
+            // overhaul_flag 값이 1이 아닌 경우
 						this.test = false
           }   
         })
