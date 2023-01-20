@@ -126,9 +126,6 @@ export default {
 	width: 100%
 	height: 100%
 .alert-modal
-	width: 560px
+	width: 530px
 	height: 550px
-.btn
-	position: absolute
-	background-color: white
 </style>

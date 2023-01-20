@@ -3,15 +3,19 @@
     .inspectionAlertModal-component__header.row.justify-center.items-center
         p 시스템 점검 안내
     .inspectionAlertModal-component__body.column.justify-center.items-center
-        p 안정적인 서비스 제공을 위해 시스템 점검을 진행합니다.
-        p 점검 기간동안 홈페이지 이용이 불가하오니,
-        P 양해부탁드립니다.
-        p 점검 시간은 상황에 따라 조기종료 또는 지연될 수 있습니다.
-        p 감사합니다.
+        p(style="margin: 3px") 안정적인 서비스 제공을 위해 시스템 점검을 진행합니다.
+        p(style="margin: 3px") 점검 기간동안 홈페이지 이용이 불가하오니,
+        P(style="margin: 3px") 양해부탁드립니다.
+        p(style="margin: 3px") 점검 시간은 상황에 따라 조기종료 또는 지연될 수 있습니다.
+        p(style="margin: 3px") 감사합니다.
     .inspectionAlertModal-component__content.row.justify-center.items-center
         .show-inspection-content.column.justify-center.items-center
-            span.inspection-date 점 검 일 시 | {{ propsData.inspectionDate }}
-            span.inspection-phonNum 긴급연락번호 | {{ propsData.inspectionPhoneNum }}
+            .inspectionDate.row.items-center
+                p.inspection-date1.row.justify-center.items-center 점 검 일 시 | &nbsp;
+                p.inspection-date2.row.justify-center.items-center {{ propsData.inspectionDate }}
+            .inspectionPhone.row.items-center
+                p.inspection-phonNum1.row.justify-center.items-center 긴급연락번호 | &nbsp;
+                p.inspection-phonNum2.row.justify-center.items-center {{ propsData.inspectionPhoneNum }}
     .inspectionAlertModal-component__footer.row.justify-center.items-center
         input.close-for-day-btn(type="checkbox" value="true" v-model="checked")
         span.close-for-day-text 오늘하루 팝업창 열지 않기
@@ -64,21 +68,24 @@ export default {
     border-radius: 8px
     background: none
     background-color: white
-    top: 20%
-    left: 1%
+    top: 230px
+    left: 60px
     margin: 0px
-    position: absolute
+    position: fixed
 
     &__header
         font-size: 28px
-        top: 45px
+        font-weight: bold
+        top: 74px
         width: 100%
         height: 10%
+        margin: 0px
     &__body
-        font-size: 20px
-        top: 30px
+        font-size: 18px
+        top: 38px
         width: 100%
         height: 50%
+        margin: 0px
     &__content
         width: 100%
         height: 23%
@@ -90,13 +97,41 @@ export default {
             height: 100%
             background-color: rgba(224, 233, 245, 1)
             border-radius: 8px
-            font-size: 21px
+            font-size: 18px
             position: absolute
             z-index: 1
             top: 19.5px
-            .inspection-date
-            .inspection-phonNum
-                left: -82px
+            .inspectionDate
+                top: 10px
+                margin: 0px
+                width: 100%
+                height: 50%
+                .inspection-date1
+                    margin: 0px
+                    height: 100%
+                    font-weight: bold
+                    margin-left: 43px
+                    top: 15px
+                .inspection-date2
+                    margin: 0px
+                    height: 100%
+                    top: 15px
+            .inspectionPhone
+                bottom: 10px
+                margin: 0px
+                width: 100%
+                height: 50%
+                .inspection-phonNum1
+                    margin: 0px
+                    height: 100%
+                    font-weight: bold
+                    margin-left: 43px
+                    bottom: 15px
+                .inspection-phonNum2
+                    margin: 0px
+                    height: 100%
+                    bottom: 15px
+
     &__footer
         position: relative
         top: 10px
