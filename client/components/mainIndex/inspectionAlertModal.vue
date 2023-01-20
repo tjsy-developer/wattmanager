@@ -68,8 +68,8 @@ export default {
     border-radius: 8px
     background: none
     background-color: white
-    top: 15px
-    left: 15px
+    top: 10px
+    left: 10px
     margin: 0px
     position: fixed
 
