@@ -1,19 +1,27 @@
-<template lang="pug">
-	.column.pictureZoomIn.items-center
-		img.col(:src="imgSrc")
-		.topMenu.row.items-center
-			button(@click="fullscreenBtnClick")
-				img(src="@/assets/images/player_icon_fullscreen.png")
-			button(@click="cancelBtnClick")
-				img(src="@/assets/images/player_icon_cancel.png")
-		.title
-			span {{title}}
-		#maximize(v-show="isMaximize")
-			img(:src="imgSrc")
-			.row.justify-between.items-start
-				span.col {{title}}
-				button(@click="cancelBtnClick").col-auto
-					img(src="@/assets/images/player_icon_cancel.png")
+<template>
+	<div class="column pictureZoomIn items-center">
+		<img class="col" :src="imgSrc" />
+		<div class="topMenu row items-center">
+			<button @click="fullscreenBtnClick">
+				<img src="@/assets/images/player_icon_fullscreen.png" />
+			</button>
+			<button @click="cancelBtnClick">
+				<img src="@/assets/images/player_icon_cancel.png" />
+			</button>
+		</div>
+		<div class="title">
+			<span>{{title}}</span>
+		</div>
+		<div id="maximize" v-show="isMaximize">
+			<img :src="imgSrc" />
+			<div class="row justify-between items-start">
+				<span class="col">{{title}}</span>
+				<button class="col-auto" @click="cancelBtnClick">
+					<img src="@/assets/images/player_icon_cancel.png" />
+				</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

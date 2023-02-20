@@ -1,71 +1,100 @@
-<template lang="pug">
-  .row(v-if="selected").justify-center.videoPlay
-    .col-auto.row
-      .col.column.left
-        .securityWrap(v-if="selected.videoCheck == 'preparing'" style="width: 100%; height: 500px; border: 1px solid #D9D9D9")
-          img(src="@/assets/images/videoSecurity.gif").col-auto
-          span.securityText(style="margin-top: 10px;") {{ $t("videoSecurity_1") }}
-          span.securityText {{ $t("videoSecurity_2") }}
-        video(v-else :src="selected.video", :poster="selected.thumbnail", autoplay, controls, controlsList="nodownload" ).col-auto
-        .col.row.leftContents.content-start
-          .col-12.row
-            .col.row.items-center
-              span {{ selected.title?selected.title:"-" }}
-              button(@click="favoriteBtnClick")
-                img(v-if="selected.favorite", src="@/assets/images/player_icon_pin_a.png")
-                img(v-else, src="@/assets/images/player_icon_pin.png")
-            .col-auto.row.content-end
-              button(@click="shareBtnClick").row.items-center
-                img(src="@/assets/images/icon_share.png")
-                span {{ $t("listComp")[7] }}
-              button(@click="saveBtnClick").row.items-center
-                img(src="@/assets/images/icon_save.png")
-                span {{ $t("listComp")[8] }}
-              button(@click="editBtnClick").row.items-center
-                img(src="@/assets/images/icon_edit.png")
-                span {{ $t("infoFilters")[7] }}
-              button(@click="removeBtnClick").row.items-center
-                img(src="@/assets/images/icon_delete.png")
-                span {{ $t("createAndEditComp")[3] }}
-          .col-12.divisionLine
-          .col-12.row
-            .col-12
-              img(src="@/assets/images/icon_class.png")
-              span {{ $t("listComp")[9] }}
-              span I
-              span {{ selected.code ? selected.code : "-" }}
-            .col-12
-              img(src="@/assets/images/icon_member.png")
-              span {{ $t("listComp")[10] }}
-              span I
-              span {{ selected.people }}
-            .col-12
-              img(src="@/assets/images/icon_member.png")
-              span {{ $t("listComp")[3] }}
-              span I
-              span {{ selected.hq + " " + selected.branch }}
-            .col-12
-              img(src="@/assets/images/icon_date.png")
-              span {{ $t("listComp")[11] }}
-              span I
-              span {{ getTimeZoneEndSeconds(selected.date) }}
-      .col-auto.column.content-start.right
-        .col-auto.row.items-end
-          span {{ $t("listComp")[4] }}
-          span {{ $t("videoPlayComp")[0] }}
-        .col-auto
-          button(v-for="filter in filters", :style="{ background:filter.isChicked?'#0061D1':'#D0D5E5' }", @click="filterBtnClick(filter)") {{ filter.name }}
-        .col-auto.divisionLine
-        .col.row.content-start
-          button(v-if="rightListInfiniteScrollCompData.rightList", v-for="(filteredContent, filteredContentKey) in rightListInfiniteScrollCompData.rightList", :key="filteredContentKey", @click="filteredContentBtnClick(filteredContent)").col-12.row.content-start.filteredContents.items-center
-            //- video(:src="filteredContent.video", :poster="filteredContent.thumbnail").col-auto
-            img(:src="filteredContent.thumbnail").col-auto
-            .col.row
-              span.col-12 {{ filteredContent.title ? filteredContent.title : "-" }}
-              span.col-12 {{ rightListViewPeople(filteredContent) }}
-              span.col-12 {{ filteredContent.code ? filteredContent.code : "-" }}
-              span.col-12 {{ getTimeZoneEndSeconds(filteredContent.date) }}
-          rightListInfiniteScroll(:compData="rightListInfiniteScrollCompData").col-12
+<template>
+  <div v-if="selected" class="row justify-center videoPlay">
+    <div class="col-auto row">
+      <div class="col column left">
+        <div v-if="selected.videoCheck == 'preparing'" class="securityWrap" style="width: 100%; height: 500px; border: 1px solid #D9D9D9">
+          <img class="col-auto" src="@/assets/images/videoSecurity.gif" />
+          <span class="securityText" style="margin-top: 10px;">{{ $t("videoSecurity_1") }}</span>
+          <span class="securityText">{{ $t("videoSecurity_2") }}</span>
+        </div>
+        <video v-else class="col-auto" :src="selected.video" :poster="selected.thumbnail" autoplay controls controlsList="nodownload"></video>
+        <div class="col row leftContents content-start">
+          <div class="col-12 row">
+            <div class="col row items-center">
+              <span>{{ selected.title?selected.title:"-" }}</span>
+              <button @click="favoriteBtnClick">
+                <img v-if="selected.favorite" src="@/assets/images/player_icon_pin_a.png" />
+                <img v-else src="@/assets/images/player_icon_pin.png" />
+              </button>
+            </div>
+            <div class="col-auto row content-end">
+              <button class="row items-center" @click="shareBtnClick">
+                <img src="@/assets/images/icon_share.png" />
+                <span>{{ $t("listComp")[7] }}</span>
+              </button>
+              <button class="row items-center" @click="saveBtnClick">
+                <img src="@/assets/images/icon_save.png" />
+                <span>{{ $t("listComp")[8] }}</span>
+              </button>
+              <button class="row items-center" @click="editBtnClick">
+                <img src="@/assets/images/icon_edit.png" />
+                <span>{{ $t("infoFilters")[7] }}</span>
+              </button>
+              <button class="row items-center" @click="removeBtnClick">
+                <img src="@/assets/images/icon_delete.png" />
+                <span>{{ $t("createAndEditComp")[3] }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-12 divisionLine"></div>
+          <div class="col-12 row">
+            <div class="col-12">
+              <img src="@/assets/images/icon_class.png" />
+              <span>{{ $t("listComp")[9] }}</span>
+              <span>I</span>
+              <span>{{ selected.code ? selected.code : "-" }}</span>
+            </div>
+            <div class="col-12">
+              <img src="@/assets/images/icon_member.png" />
+              <span>{{ $t("listComp")[10] }}</span>
+              <span>I</span>
+              <span>{{ selected.people }}</span>
+            </div>
+            <div class="col-12">
+              <img src="@/assets/images/icon_member.png" />
+              <span>{{ $t("listComp")[3] }}</span>
+              <span>I</span>
+              <span>{{ selected.hq + " " + selected.branch }}</span>
+            </div>
+            <div class="col-12">
+              <img src="@/assets/images/icon_date.png" />
+              <span>{{ $t("listComp")[11] }}</span>
+              <span>I</span>
+              <span>{{ getTimeZoneEndSeconds(selected.date) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto column content-start right">
+        <div class="col-auto row items-end">
+          <span>{{ $t("listComp")[4] }}</span>
+          <span>{{ $t("videoPlayComp")[0] }}</span>
+        </div>
+        <div class="col-auto">
+          <button v-for="filter in filters" :style="{ background:filter.isChicked?'#0061D1':'#D0D5E5' }" @click="filterBtnClick(filter)">{{ filter.name }}</button>
+        </div>
+        <div class="col-auto divisionLine"></div>
+        <div class="col row content-start">
+          <button
+            v-if="rightListInfiniteScrollCompData.rightList"
+            class="col-12 row content-start filteredContents items-center"
+            v-for="(filteredContent, filteredContentKey) in rightListInfiniteScrollCompData.rightList"
+            :key="filteredContentKey"
+            @click="filteredContentBtnClick(filteredContent)"
+          >
+            <img class="col-auto" :src="filteredContent.thumbnail" />
+            <div class="col row">
+              <span class="col-12">{{ filteredContent.title ? filteredContent.title : "-" }}</span>
+              <span class="col-12">{{ rightListViewPeople(filteredContent) }}</span>
+              <span class="col-12">{{ filteredContent.code ? filteredContent.code : "-" }}</span>
+              <span class="col-12">{{ getTimeZoneEndSeconds(filteredContent.date) }}</span>
+            </div>
+          </button>
+          <rightListInfiniteScroll class="col-12" :compData="rightListInfiniteScrollCompData"></rightListInfiniteScroll>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,40 +1,46 @@
-<template lang="pug">
-  .col-6.column.items-center.accountRight
-    button(@click="close").icon
-      img(src="@/assets/images/ic_popup_finish.png")
-    .col.row.items-center
-      .maxWidth(v-if="!isCreateQR")
-        .row.justify-center.items-end.title
-          span.col-auto {{ $t("account")[12] }}
-          //-button(v-if="$i18n.locale != 'ko'", @click="switchLocale('ko')").col-auto.localeBtn / 한국어
-          //-button(v-else-if="$i18n.locale != 'en'", @click="switchLocale('en')").col-auto.localeBtn / English
-        input(id="accountID", :placeholder="$t('account')[13]", v-model="id" @keyup.enter="idCheckBtnClick").idInput.col
-        button(@click="idCheckBtnClick").idChkBtn.col-auto {{ $t("account")[18] }}
-        input(:placeholder="$t('account')[14]", v-model="password", type="password").input
-        input(:placeholder="$t('account')[15]", v-model="passwordCheck", type="password" ).input
-        input(id="accountName" :placeholder="$t('account')[16]", v-model="name" @keyup.enter="nameCheckBtnClick").nameInput.col
-        button(@click="nameCheckBtnClick").nameChkBtn.col-auto {{ $t("account")[18] }}
-        input(id="accountEMail" :placeholder="$t('account')[17]", v-model="EMail" @keyup.enter="emailCheckBtnClick").emailInput
-        button(@click="emailCheckBtnClick").nameChkBtn.col-auto {{ $t("account")[18] }}
-        input(id="enterpriseName" :placeholder='$t("enName")', v-model="enName" @keyup.enter="enterpriseCheckBtnClick").enInput
-        button(@click="enterpriseCheckBtnClick").nameChkBtn.col-auto {{ $t("account")[18] }}
-        //- selectComp(:compData="enterpriseCompData")
-        selectComp(:compData="hqCompData")
-        selectComp(:compData="branchCompData")
-        selectComp(:compData="deviceTypeCompData")
-        button(@click="signUpBtnClick").signUpBtn {{ !deviceTypeCompData.selectedValue || deviceTypeCompData.selectedValue == 3 ? $t("account")[19] : $t("account")[20] }}
-      .maxWidth.qrcode(v-else)
-        transition(name="qrcode", mode="out-in")
-          .emptyQrCode(v-if="!qrCodeImg", key="emptyQrCode").row.justify-center
-            .col-12.row.justify-center
-              .emptyQrCodeBox
-            span {{ $t("account")[0] }}
-          .loadQrCode(v-else, key="loadQrCode").row.jusdutify-center
-            .col-12.row.justify-center
-              img(:src="qrCodeImg" id="image")
-              //-VueQrcode(:value="value" :width="size")
-            span {{ $t("account")[1] }}
-    //-a(href="/").col-auto BACK
+<template>
+  <div class="col-6 column items-center accountRight">
+    <button class="icon" @click="close">
+      <img src="@/assets/images/ic_popup_finish.png" />
+    </button>
+    <div class="col row items-center">
+      <div v-if="!isCreateQR" class="maxWidth">
+        <div class="row justify-center items-end title">
+          <span class="col-auto">{{ $t("account")[12] }}</span>
+        </div>
+        <input class="idInput" id="accountID" :placeholder="$t('account')[13]" v-model="id" @keyup.enter="idCheckBtnClick" />
+        <button class="idChkBtn col-auto" @click="idCheckBtnClick">{{ $t("account")[18] }}</button>
+        <input class="input" :placeholder="$t('account')[14]" v-model="password" type="password" />
+        <input class="input" :placeholder="$t('account')[15]" v-model="passwordCheck" type="password" />
+        <input class="nameInput" id="accountName" :placeholder="$t('account')[16]" v-model="name" @keyup.enter="nameCheckBtnClick" />
+        <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
+        <input class="emailInput" id="accountEMail" :placeholder="$t('account')[17]" v-model="EMail" @keyup.enter="emailCheckBtnClick" />
+        <button class="nameChkBtn col-auto" @click="emailCheckBtnClick">{{ $t("account")[18] }}</button>
+        <input class="enInput" id="enterpriseName" :placeholder='$t("enName")' v-model="enName" @keyup.enter="enterpriseCheckBtnClick" />
+        <button class="nameChkBtn col-auto" @click="enterpriseCheckBtnClick">{{ $t("account")[18] }}</button>
+        <selectComp :compData="hqCompData"></selectComp>
+        <selectComp :compData="branchCompData"></selectComp>
+        <selectComp :compData="deviceTypeCompData"></selectComp>
+        <button class="signUpBtn" @click="signUpBtnClick">{{ !deviceTypeCompData.selectedValue || deviceTypeCompData.selectedValue == 3 ? $t("account")[19] : $t("account")[20] }}</button>
+      </div>
+      <div v-else class="maxWidth qrcode">
+        <transition name="qrcode" mode="out-in">
+          <div v-if="!qrCodeImg" class="emptyQrCode" key="emptyQrCode">
+            <div class="col-12 row justify-center">
+              <div class="emptyQrCodeBox"></div>
+              <span>{{ $t("account")[0] }}</span>
+            </div>
+          </div>
+          <div v-else class="loadQrCode" key="loadQrCode">
+            <div class="col-12 row justify-center">
+              <img :src="qrCodeImg" id="image" />
+            </div>
+            <span>{{ $t("account")[1] }}</span>
+          </div>
+        </transition>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -501,8 +507,12 @@ export default {
 		opacity: 1
 		border: 1px solid #4B4B4B
 
-	>.idInput,
-	.nameInput,
+	>.idInput
+    display: flex
+    flex-direction: column
+	.nameInput
+    display: flex
+    flex-direction: column
 	.emailInput,
 	.enInput
 		outline: none !important
@@ -546,9 +556,13 @@ export default {
 	color: #696969
 
 .qrcode
-	>.emptyQrCode,
+	>.emptyQrCode
+      display: flex
+      justify-content: center
 	>.loadQrCode
-		width: 100%
+      width: 100%
+      display: flex
+      justify-content: center
 
 		>span
 			margin-top: 20px

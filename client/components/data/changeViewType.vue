@@ -1,11 +1,14 @@
-<template lang="pug">
-	.row.justify-center.changeViewType
-		button(@click="viewTypeToggle(1)").col.galleryIcon
-			img(v-show="$route.query.viewType == 'gallery'", src="@/assets/images/bt_layout_gallery_a.png")
-			img(v-show="$route.query.viewType != 'gallery'", src="@/assets/images/bt_layout_gallery.png")
-		button.col.listIcon(@click="viewTypeToggle(2)")
-			img(v-show="$route.query.viewType == 'list'", src="@/assets/images/bt_layout_list_a.png")
-			img(v-show="$route.query.viewType != 'list'", src="@/assets/images/bt_layout_list.png")
+<template>
+  <div class="row justify-center changeViewType">
+    <button class="col galleryIcon" @click="viewTypeToggle(1)">
+      <img v-show="$route.query.viewType == 'gallery'" src="@/assets/images/bt_layout_gallery_a.png" />
+      <img v-show="$route.query.viewType != 'gallery'" src="@/assets/images/bt_layout_gallery.png" />
+    </button>
+    <button class="col listIcon" @click="viewTypeToggle(2)">
+      <img v-show="$route.query.viewType == 'list'" src="@/assets/images/bt_layout_list_a.png" />
+      <img v-show="$route.query.viewType != 'list'" src="@/assets/images/bt_layout_list.png" />
+    </button>
+  </div>
 </template>
 
 <script>

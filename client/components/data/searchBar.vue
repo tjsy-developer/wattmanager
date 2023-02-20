@@ -1,17 +1,52 @@
-<template lang="pug">
-	.row.justify-center.searchBar
-		.row.justify-between.items-center.maxWidth
-			span.col-auto.title {{ $t("searchBarComp")[0] }}
-			.col-auto.row
-				a(v-if="attViewAuth == false && deviceType != '2'", :href="'/attachment/video?page=1&viewType=' + $route.query.viewType", :style="{ background:$route.name == 'attachment-video' ? '#0061D1' : '#BFCCD6' }", @click="clearLocalStorage").col-auto.tab {{ $t("searchBarComp")[1] }}
-				a(v-if="attViewAuth == false && deviceType != '2'", :href="'/attachment/picture?page=1&viewType=' + $route.query.viewType", :style="{ background:$route.name == 'attachment-picture' ? '#0061D1' : '#BFCCD6' }", @click="clearLocalStorage").col-auto.tab {{ $t("searchBarComp")[2] }}
-				a(v-if="attViewAuth == false && deviceType != '2'", :href="'/attachment/favorite?page=1&viewType=' + $route.query.viewType", :style="{ background:$route.name == 'attachment-favorite' ? '#0061D1' : '#BFCCD6' }", @click="clearLocalStorage").col-auto.tab {{ $t("searchBarComp")[3] }}
-				a(:href="'/attachment/memo?page=1&viewType=' + $route.query.viewType", :style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }", @click="clearLocalStorage").col-auto.tab {{ $t("memo")[1] }}
-			.col-12.row.items-center.search
-				.col-auto.searchText {{ $t("searchBarComp")[4] }}
-				input(id="searchInput", @keyup.enter="searchBtnClick" v-model="inputVal").col.searchInput
-				img(v-if="inputVal!=''" src="@/assets/images/bt_input_delete.png" @click="deleteBtn").searchDeleteBtn
-				button(@click="searchBtnClick").col-auto.searchBtn {{ $t("searchBarComp")[4] }}
+<template>
+	<div class="row justify-center searchBar">
+		<div class="row justify-between items-center maxWidth">
+			<span class="col-auto title"> {{ $t("searchBarComp")[0] }}</span>
+			<div class="col-auto row">
+				<a
+					v-if="attViewAuth == false && deviceType != '2'"
+					class="col-auto tab"
+					:href="'/attachment/video?page=1&viewType=' + $route.query.viewType"
+					:style="{ background:$route.name == 'attachment-video' ? '#0061D1' : '#BFCCD6' }"
+					@click="clearLocalStorage"
+				>
+					{{ $t("searchBarComp")[1] }}
+				</a>
+				<a
+					v-if="attViewAuth == false && deviceType != '2'"
+					class="col-auto tab"
+					:href="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
+					:style="{ background:$route.name == 'attachment-picture' ? '#0061D1' : '#BFCCD6' }"
+					@click="clearLocalStorage"
+				>
+					{{ $t("searchBarComp")[2] }}
+				</a>
+				<a
+					v-if="attViewAuth == false && deviceType != '2'"
+					class="col-auto tab"
+					:href="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
+					:style="{ background:$route.name == 'attachment-favorite' ? '#0061D1' : '#BFCCD6' }"
+					@click="clearLocalStorage"
+				>
+					{{ $t("searchBarComp")[3] }}
+				</a>
+				<a
+					class="col-auto tab"
+					:href="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
+					:style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }"
+					@click="clearLocalStorage"
+				>
+					{{ $t("memo")[1] }}
+				</a>
+			</div>
+			<div class="col-12 row items-center search">
+				<div class="col-auto searchText">{{ $t("searchBarComp")[4] }}</div>
+				<input class="col searchInput" id="searchInput" @keyup.enter="searchBtnClick" v-model="inputVal" />
+				<img v-if="inputVal!=''" class="searchDeleteBtn" src="@/assets/images/bt_input_delete.png" @click="deleteBtn" />
+				<button class="col-auto searchBtn" @click="searchBtnClick">{{ $t("searchBarComp")[4] }}</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

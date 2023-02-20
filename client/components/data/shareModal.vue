@@ -1,19 +1,28 @@
-<template lang="pug">
-	.row.shareModal
-		.col-12.row.justify-between
-			.col-auto
-				span.shareText {{ $t("listComp")[7] }}
-			.col-auto
-				button(@click="closeBtnClick").closeBtn
-					img(src="@/assets/images/list_icon_filter_x.png").closeImg
-		.col-12.shareBtns
-			button(@click="eMailShareBtnClick").row.shareBtn
-				.col-12.row.justify-center.items-center.shareBtnImg
-					span e-mail
-				span.col-12.shareBtnText {{ $t("shareModalComp")[0] }}
-		.col-12.row.shareCopy
-			input(readonly, :value="url").col#shareCopyInput
-			button(@click="shareCopyBtnClick").col-auto {{ $t("shareModalComp")[1] }}
+<template>
+	<div class="row shareModal">
+		<div class="col-12 row justify-between">
+			<div class="col-auto">
+				<span class="shareText">{{ $t("listComp")[7] }}</span>
+			</div>
+			<div class="col-auto">
+				<button class="closeBtn" @click="closeBtnClick">
+					<img class="closeImg" src="@/assets/images/list_icon_filter_x.png" />
+				</button>
+			</div>
+		</div>
+		<div class="col-12 shareBtns">
+			<button class="row shareBtn" @click="eMailShareBtnClick">
+				<div class="col-12 row justify-center items-center shareBtnImg">
+					<span>e-mail</span>
+				</div>
+				<span class="col-12 shareBtnText">{{ $t("shareModalComp")[0] }}</span>
+			</button>
+		</div>
+		<div class="col-12 row shareCopy">
+			<input class="col" id="shareCopyInput" readonly, :value="url" />
+			<button class="col-auto" @click="shareCopyBtnClick">{{ $t("shareModalComp")[1] }}</button>
+		</div>
+	</div>
 </template>
 
 <script>

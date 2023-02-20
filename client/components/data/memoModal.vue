@@ -1,29 +1,44 @@
-<template lang="pug">
-	.column.content-start.memoModal
-		.col-auto.row.full-width.justify-end.colseButtonContainer
-			button(@click="closeClick").colseButton X
-		.col.row.full-width.contentsContainer
-			.col-12(v-if="files.length != 0", v-for="(file, fileKey) in files", :key="fileKey").row.file
-				img(v-if="file.file_type == 'P'", :src="webServerFilePathJson.original + file.original_name").col-12
-				video(v-else-if="file.file_type == 'V'", :src="webServerFilePathJson.original + file.original_name", :poster="webServerFilePathJson.thumbnail + file.thumbnail_name", controls).col-12
-				img(v-else :src="webServerFilePathJson.thumbnail + file.thumbnail_name")
-				//- embed(v-if="file.file_type == 'F'" :src="webServerFilePathJson.original + file.original_name" width="927px" height="468px")
-				button(v-if="file.file_type == 'F'" @click="openPdf(webServerFilePathJson.original + file.original_name)").pdfViewFile PDF {{ $t("open") }}
-				button(:style="{right: editAuth || userId == compData.userId ? '140px' : '30px'}", @click="saveFileClick(file)").saveFile {{ $t("listComp")[8] }}
-				button(v-if="editAuth || userId == compData.userId", @click="deleteFileClick(file, fileKey)").deleteFile {{ $t("memoModalComp")[0] }}
-			.col-12(v-if="files.length == 0").empty
-				img(src="@/assets/images/ic_image.png").memoEmptyImg
-				span.memoEmptyText {{ $t("memo no data")}}
-			section.col-12.row.content-start.memoModalSection
-				span.col-12.memoModalDate {{ getTimeZoneEndMinutes(compData.saveTime) }}
-				span.col-12.memoModalTitle {{ $t("memo")[0] }}ㅣ{{ compData.userName }}
-				section.col-12.row.memoModalSection2
-					span.col-auto {{ $t("memo")[1] }}
-					textarea(v-if="editAuth || userId == compData.userId", :placeholder="$t('memoModalComp')[1]").col#memoModalTextarea {{ compData.contents }}
-					span(v-else).col#memoModalSpan | {{ compData.contents }}
-				.col-12.row.justify-end.memoBtns
-					button(v-if="editAuth || userId == compData.userId", @click="saveBtnClick").memoModalSaveBtn {{ $t("memoModalComp")[2] }}
-					button(v-if="editAuth || userId == compData.userId", @click="deleteBtnClick").memoModalDeleteBtn {{ $t("memoModalComp")[3] }}
+<template>
+  <div class="column content-start memoModal">
+    <div class="col-auto row full-width justify-end colseButtonContainer">
+      <button class="colseButton" @click="closeClick">X</button>
+    </div>
+    <div class="col row full-width contentsContainer">
+      <div v-if="files.length != 0" v-for="(file, fileKey) in files" :key="fileKey" class="col-12 row file">
+        <img v-if="file.file_type == 'P'" class="col-12" :src="webServerFilePathJson.original + file.original_name" />
+        <video
+          v-else-if="file.file_type == 'V'"
+          class="col-12"
+          :src="webServerFilePathJson.original + file.original_name"
+          :poster="webServerFilePathJson.thumbnail + file.thumbnail_name"
+          controls
+        />
+        <img v-else :src="webServerFilePathJson.thumbnail + file.thumbnail_name" />
+        <button v-if="file.file_type == 'F'" class="pdfViewFile" @click="openPdf(webServerFilePathJson.original + file.original_name)">
+          PDF {{ $t("open") }}
+        </button>
+        <button class="saveFile" @click="saveFileClick(file)" :style="{right: editAuth || userId == compData.userId ? '140px' : '30px'}">{{ $t("listComp")[8] }}</button>
+        <button v-if="editAuth || userId == compData.userId" class="deleteFile" @click="deleteFileClick(file, fileKey)">{{ $t("memoModalComp")[0] }}</button>
+      </div>
+      <div class="col-12 empty" v-if="files.length == 0">
+        <img class="memoEmptyImg" src="@/assets/images/ic_image.png" />
+        <span class="memoEmptyText">{{ $t("memo no data")}}</span>
+      </div>
+      <section class="col-12 row content-start memoModalSection">
+        <span class="col-12 memoModalDate">{{ getTimeZoneEndMinutes(compData.saveTime) }}</span>
+        <span class="col-12 memoModalTitle">{{ $t("memo")[0] }}ㅣ{{ compData.userName }}</span>
+        <section class="col-12 row memoModalSection2">
+          <span class="col-auto">{{ $t("memo")[1] }}</span>
+          <textarea v-if="editAuth || userId == compData.userId" class="col" id="memoModalTextarea" :placeholder="$t('memoModalComp')[1]">{{ compData.contents }}</textarea>
+          <span v-else class="col" id="memoModalSpan">{{ compData.contents }}</span>
+        </section>
+        <div class="col-12 row justify-end memoBtns">
+          <button v-if="editAuth || userId == compData.userId" class="memoModalSaveBtn" @click="saveBtnClick">{{ $t("memoModalComp")[2] }}</button>
+          <button v-if="editAuth || userId == compData.userId" class="memoModalDeleteBtn" @click="deleteBtnClick">{{ $t("memoModalComp")[3] }}</button>
+        </div>
+      </section>
+    </div>
+  </div>
 </template>
 
 <script>

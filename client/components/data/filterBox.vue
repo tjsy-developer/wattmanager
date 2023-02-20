@@ -1,44 +1,87 @@
-<template lang="pug">
-  .filterBoxComp(v-if="compData")
-    .row(v-if="compData != 'calendar'").search.items-center
-      input(:id="'filterBoxSearchInput'+titleBarFilterKey", :placeholder="$t('searchBarComp')[4]", @keyup.enter="searchBtnClick").col.filterBoxSearchInput
-      button(@click="searchBtnClick").col-auto
-        img(src="@/assets/images/list_icon_search.png")
-    .filterList(v-if="compData != 'calendar'")
-      .row(v-for="(filter, filterKey) in compData" ).items-center
-        .col-auto.filterListLine(v-if="filter.group !== 'en_alias'")
-          .filterListLineLeft(v-if="filterKey != compData.length-1")
-        button(@click="filterBtnClick(filter)", :title="filter" v-if="filter.group !== 'en_alias'").col.row.items-center
-          .col-auto.checkbox.row.justify-center.items-center
-            .checkboxChicked(v-show="filterIsChecked(filter)")
-          span.col.filterText {{ filter.text }}
-        //- 기업
-        button.enFilterList(style="padding-left: 10px" v-show='filterViewAuth' @click="filterBtnClick(filter)", :title="filter" v-else).col.row.items-center
-          .col-auto.checkbox.row.justify-center.items-center
-            .checkboxChicked(v-show="AliasfilterIsChecked(filter, '')")
-          span.col.filterText {{ filter.text }}
-        button(@click="subordinateOpenClose(filter, filterKey, null, $event)" v-if="filter.group === 'en_alias' || filter.group === 'hq_alias' " v-show='filterViewAuth' :class="`EN${filter.text}`").col-auto.arrowBtn ▼
-        //- 본부
-        .div.row.col-12.hqFilterList(:class="[filterViewAuth ? 'close': '']" @click="filterBtnClick(hqFilterList)" v-for="(hqFilterList, hqFilterListrKey) in compData[filterKey].subGroup" :style="{paddingLeft: !filterViewAuth ? '13px' : '' }")
-          button(:title="filter" style="").col.row.items-center
-            .col-auto.checkbox.row.justify-center.items-center
-              .checkboxChicked(v-show="AliasfilterIsChecked(hqFilterList)")
-            span.col.filterText {{ hqFilterList.text }}
-          button(@click.stop="subordinateOpenClose(hqFilterList, hqFilterListrKey, null, $event)" :class="`HQ${hqFilterList.text}`").col-auto.arrowBtn {{ filterViewAuth ? '▼': !filterViewAuth && (hqFilterList.value[1] == loginUserHqseq) ? '▲' : '▼'}}
-          //- 지사
-          .div.row.col-12.brFilterList(:class="[filterViewAuth ? 'close': !filterViewAuth && (hqFilterList.value[1] == loginUserHqseq) ? '' : 'close']" @click.stop="filterBtnClick(brFilterList)" v-for="(brFilterList, brFilterListrKey) in compData[filterKey].subGroup[hqFilterListrKey].subGroup")
-            button(:title="filter").col.row.items-center
-              .col-auto.checkbox.row.justify-center.items-center
-                .checkboxChicked(v-show="AliasfilterIsChecked(brFilterList)")
-              span.col.filterText {{ brFilterList.text }}
-    .row.calendar(v-else)
-      .col-12.row.justify-between.yearBtns
-        button(@click="yearArrowBtnClick(1)").col-auto.yearArrow ◀
-        .col.row.justify-center
-          button {{year}}
-        button(@click="yearArrowBtnClick(2)").col-auto.yearArrow ▶
-      .col-3(v-for="month in 12").row.monthBtns
-        button(:style="{ color: dateFilterIsChecked(year, month) ? 'white' : undefined, backgroundColor: dateFilterIsChecked(year, month) ? '#0061D1' : undefined }", @click="monthBtnClick(year, month)").col {{ month }}
+<template>
+  <div v-if="compData" class="filterBoxComp">
+    <div v-if="compData != 'calendar'" class="row search items-center">
+      <input class="col filterBoxSearchInput" :id="'filterBoxSearchInput'+titleBarFilterKey" :placeholder="$t('searchBarComp')[4]" @keyup.enter="searchBtnClick" />
+      <button class="col-auto" @click="searchBtnClick">
+        <img src="@/assets/images/list_icon_search.png" />
+      </button>
+    </div>
+    <div v-if="compData != 'calendar'" class="filterList">
+      <div class="row items-center" v-for="(filter, filterKey) in compData" :key="filterKey">
+        <div v-if="filter.group !== 'en_alias'" class="col-auto filterListLine">
+          <div v-if="filterKey != compData.length-1" class="filterListLineLeft"></div>
+        </div>
+        <button v-if="filter.group !== 'en_alias'" class="col row items-center" @click="filterBtnClick(filter)" :title="filter">
+          <div class="col-auto checkbox row justify-center items-center">
+            <div class="checkboxChicked" v-show="filterIsChecked(filter)"></div>
+          </div>
+          <span class="col filterText">{{ filter.text }}</span>
+        </button>
+        <!-- 기업 -->
+        <button v-else class="enFilterList col row items-center" v-show='filterViewAuth' @click="filterBtnClick(filter)" :title="filter" style="padding-left: 10px">
+          <div class="col-auto checkbox row justify-center items-center">
+            <div class="checkboxChicked" v-show="AliasfilterIsChecked(filter, '')"></div>
+          </div>
+          <span class="col filterText">{{ filter.text }}</span>
+        </button>
+        <button v-if="filter.group === 'en_alias' || filter.group === 'hq_alias'" class="col-auto arrowBtn" @click="subordinateOpenClose(filter, filterKey, null, $event)" v-show='filterViewAuth' :class="`EN${filter.text}`">
+          ▼
+        </button>
+        <!-- 본부 -->
+        <div
+          class="div row col-12 hqFilterList"
+          :class="[filterViewAuth ? 'close': '']"
+          @click="filterBtnClick(hqFilterList)"
+          v-for="(hqFilterList, hqFilterListrKey) in compData[filterKey].subGroup"
+          :key="hqFilterListrKey"
+          :style="{paddingLeft: !filterViewAuth ? '13px' : '' }"
+        >
+          <button class="col row items-center" :title="filter" style="">
+            <div class="col-auto checkbox row justify-center items-center">
+              <div class="checkboxChicked" v-show="AliasfilterIsChecked(hqFilterList)"></div>
+            </div>
+            <span class="col filterText">{{ hqFilterList.text }}</span>
+          </button>
+          <button class="col-auto arrowBtn" @click.stop="subordinateOpenClose(hqFilterList, hqFilterListrKey, null, $event)" :class="`HQ${hqFilterList.text}`">
+            {{ filterViewAuth ? '▼': !filterViewAuth && (hqFilterList.value[1] == loginUserHqseq) ? '▲' : '▼'}}
+          </button>
+          <!-- 지사 -->
+          <div
+            class="div row col-12 brFilterList"
+            :class="[filterViewAuth ? 'close': !filterViewAuth && (hqFilterList.value[1] == loginUserHqseq) ? '' : 'close']"
+            @click.stop="filterBtnClick(brFilterList)"
+            v-for="(brFilterList, brFilterListrKey) in compData[filterKey].subGroup[hqFilterListrKey].subGroup"
+            :key="brFilterListrKey"
+          >
+            <button class="col row items-center" :title="filter">
+              <div class="col-auto checkbox row justify-center items-center">
+                <div class="checkboxChicked" v-show="AliasfilterIsChecked(brFilterList)"></div>
+              </div>
+              <span class="col filterText">{{ brFilterList.text }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="row calendar">
+      <div class="col-12 row justify-between yearBtns">
+        <button class="col-auto yearArrow" @click="yearArrowBtnClick(1)">◀</button>
+        <div class="col row justify-center">
+          <button>{{year}}</button>
+        </div>
+        <button class="col-auto yearArrow" @click="yearArrowBtnClick(2)">▶</button>
+      </div>
+      <div class="col-3 row monthBtns" v-for="month in 12">
+        <button
+          class="col"
+          @click="monthBtnClick(year, month)"
+          :style="{ color: dateFilterIsChecked(year, month) ? 'white' : undefined, backgroundColor: dateFilterIsChecked(year, month) ? '#0061D1' : undefined }"
+        >
+          {{ month }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,170 +1,259 @@
-<template lang="pug">
-	.row.justify-center.dataList
-		.row.justify-between.items-center.maxWidth
-			span(v-if="$route.name == 'attachment-video'").col-auto.title {{ $t("listComp")[0] }}
-			span(v-else-if="$route.name == 'attachment-picture'").col-auto.title {{ $t("listComp")[1] }}
-			span(v-else-if="$route.name == 'attachment-favorite'").col-auto.title.favoriteTitle {{ $t("searchBarComp")[6] }}
-			changeViewType(v-if="$route.name != 'attachment-favorite'").col-auto
-			.col-12.row.galleryView(v-if="$route.query.viewType == 'gallery' && $route.name != 'attachment-favorite'")
-				.row(v-for="(galleryContent, galleryContentKey) in compData.listData")
-					.col-12.contentImg(v-if="galleryContent.rate != 100 && $route.name == 'attachment-video'")
-						.row.justify-center.items-center.uploading
-								.row.col-12.justify-center
-									p.col-12.galleryProgressText(v-if="galleryContent.rate == 0 && galleryContent.recording_fail == null") {{ $t("Upload progress text")[0] }} <br> {{ $t("Upload progress text")[3] }} 
-									//- 2021-10-27 ksh 추가 : recording_fail 처리
-									p.col-12.galleryProgressText(v-else-if="galleryContent.rate == 0 && galleryContent.recording_fail == 'Y'") {{ $t("Upload progress text")[5] }} <br> {{ $t("Upload progress text")[6] }} <br>
-										.row.justify-center.items-center(v-if="galleryContent.recording_fail == 'Y'" style="margin-top: 10px")
-											button(@click="requestVideoRecording(galleryContent)").recordingBtn
-												img(src="@/assets/images/ic_reset.png").recordingBtnIcon
-												span.col-12.recordingBtnText {{ $t("Upload progress text")[7] }}
-									p.col-12.galleryProgressText(v-if="0 < galleryContent.rate &&galleryContent.rate < 90" ) {{ $t("Upload progress text")[1] }} <br> {{ $t("Upload progress text")[3] }}
-									p.col-12.galleryProgressText(v-if="90 <= galleryContent.rate") {{ $t("Upload progress text")[2] }} <br> {{ $t("Upload progress text")[4] }}
-									.row.col-8.prog(v-if="0 < galleryContent.rate && galleryContent.rate < 90 && galleryContent.recording_fail != 'Y'")
-										.progs#progressing(:style='{width: galleryContent.rate + "%"}')
-									p.col-12.gauge(v-if="0 < galleryContent.rate &&galleryContent.rate < 90" :style="{color: 60 <= galleryContent.rate ? 'white': 'black'}") {{ galleryContent.rate }} %
-					.col-12.contentImg(v-else-if="galleryContent.rate == 100" @mouseenter="contentImgMouseenter", @mouseleave="contentImgMouseleave")
-						.row(v-if="galleryContent.seq != $route.query.seq").justify-center.items-center.contentImgHover
-							button(v-if="galleryContent.rate == 100" @click="editBtnClick(galleryContent)")
-								img(src="@/assets/images/list_img_hover_icon_edit.png")
-							button(@click="downloadBtnClick(galleryContent)")
-								img(src="@/assets/images/list_img_hover_icon_download.png")
-							button(v-if="$route.name == 'attachment-video'", @click="videoPlayBtnClick(galleryContent)")
-								img(src="@/assets/images/list_img_hover_icon_play.png")
-							button(v-else-if="$route.name == 'attachment-picture'", @click.exact="picturePlayBtnClick($event, galleryContent)")
-								img(src="@/assets/images/list_img_hover_icon_preview.png")
-							button(@click="removeBtnClick(galleryContent)")
-								img(src="@/assets/images/list_img_hover_icon_delete.png")
-						img(v-if="$route.name == 'attachment-picture'", :src="galleryContent.img")
-						//- video(v-else-if="galleryContent.video" :src="galleryContent.video", :class="`video${galleryContentKey}`" style="display: none")
-						img(v-else-if="$route.name == 'attachment-video'", :src="galleryContent.thumbnail")
-						//- video(:id="`video${galleryContentKey}`" :src="galleryContent.video" style="visibility: hidden")
-						.col-12.row.justify-center.items-center.galleryCurrentPlaying(v-if="galleryContent.seq == $route.query.seq")
-							span(v-if="$route.name == 'attachment-video'") {{ $t("listComp")[2] }}
-					.col-12.row.contentTextBox
-						span.col-12.galleryViewTitle {{ galleryContent.title && galleryContent.title != " " ? galleryContent.title : $t("enter title") }}
-						.col-12.galleryViewDivisionLine
-						span.col-12.galleryViewPeople {{ galleryViewPeople(galleryContent) }}
-						span.col-12.galleryViewBelong {{ $t("listComp")[3] }} : {{ galleryContent.hq + " " + galleryContent.branch }}
-						span.col-12.galleryViewDate {{ getTimeZoneEndSeconds(galleryContent.date) }} {{ galleryContent.running_time !== null && galleryContent.running_time !== undefined ? "(" + getTotalVideoTime(galleryContent.running_time) + ")" : ''}}
-						img(v-if="galleryContent.code" src="@/assets/images/ic_tag.png").tagIcon
-						span.col-auto.galleryViewCode(v-if="galleryContent.code") {{ galleryContent.code }}
-						div.col-auto.galleryViewCode(v-else)  &nbsp
-						//-viewType==list header code
-			.col-12.row.listView(v-else-if="$route.query.viewType == 'list' && $route.name != 'attachment-favorite'")
-				.col-12.row.items-center.filter
-					.col-auto.row.items-center
-						img(src="@/assets/images/list_icon_filter_bk.png")
-						span.filterTitle {{ $t("listComp")[4] }}
-					.col-auto.row.items-center
-						button(v-for="selectedFilter in selectedFilters"
-						@click="filterBoxBtnClick(selectedFilter)" v-if="selectedFilter.group !== 'hq_alias' && selectedFilter.group !== 'en_alias'").col-auto.row.items-center.filterBox
-							span(v-if="selectedFilter.group === 'br_alias'") {{ loginUserAuth < 4 ? selectedFilter.upperText + " " + selectedFilter.text :  selectedFilter.topUpperText + " " + selectedFilter.upperText + " " + selectedFilter.text}}
-							span(v-else) {{ selectedFilter.text || selectedFilter }}
-							img(src="@/assets/images/list_icon_filter_x.png").filterBoxXIcon
-				.col-12.row.items-center.titleBar
-					.col-auto.row.justify-center.titleBarFilters(v-for="(titleBarFilter, titleBarFilterKey) in titleBarFilters")
-						button(@click="alignBtnClick(titleBarFilter)")
-							img(v-if="$route.query.column == titleBarFilter.align.column && $route.query.status == 'asc'", src="@/assets/images/list_icon_arrow_up.png", :style="{opacity:$route.query.column == titleBarFilter.align.column ? 1 : 0.5}").alignIcon
-							img(v-else, src="@/assets/images/list_icon_arrow_down.png", :style="{opacity:$route.query.column == titleBarFilter.align.column ? 1 : 0.5}").alignIcon
-							span.titleText {{ titleBarFilter.text }}
-						button(v-if="titleBarFilter.filterList", @click="filterBtnClick(titleBarFilter, titleBarFilterKey)")
-							img(src="@/assets/images/list_icon_filter_wh.png")
-						filterBox(v-show="titleBarFilter.isFilterClicked", :compData="titleBarFilter.filterList", ref="childFilterBox" @dataSetting="setData" :selectedFilters="selectedFilters", :titleBarFilterKey="titleBarFilterKey",  :getFilterListUrl="titleBarFilter.getFilterListUrl", :titleBarFilterAlign="titleBarFilter.align", v-click-outside="clickOutsideEvent")
-						//-viewType==list data output 
-				.col-12.row.items-center.listViewList(v-for="(listContent, listContentKey) in compData.listData")
-					.col-auto.row.items-center(v-if="listContent.rate !== 100 && listContent.seq != $route.query.seq").listViewUploading
-						.row(v-if="listContent.seq != $route.query.seq" v-show="true").justify-center.items-center.uploading
-								.row.col-12.justify-center
-									p.col-12.listProgressText(v-if="0 == listContent.rate && listContent.recording_fail != 'Y'") {{ $t("Upload progress short text")[0] }} <br> {{ $t("Upload progress short text")[3] }}
-									//- 2021-10-27 ksh 추가 : recording_fail 처리
-									p.col-12.listProgressText(v-else-if="listContent.rate == 0 && listContent.recording_fail == 'Y'") {{ $t("Upload progress short text")[5] }} <br>
-										.row.justify-center.items-center(v-if="listContent.recording_fail == 'Y'" style="margin-top: 4px")
-											button(@click="requestVideoRecording(listContent)").listRecordingBtn
-												img(src="@/assets/images/ic_reset_14.png").listRecordingBtnIcon
-												span.col-12.listRecordingBtnText {{ $t("Upload progress short text")[6] }}
-									p.col-12.listProgressText(v-if="0 < listContent.rate && listContent.rate < 90") {{ $t("Upload progress short text")[1] }} <br> {{ $t("Upload progress short text")[3] }}
-									p.col-12.listProgressText(v-if="90 <= listContent.rate") {{ $t("Upload progress short text")[2] }} <br> {{ $t("Upload progress short text")[4] }}
-									.row.col-9.prog(v-if="0 < listContent.rate && listContent.rate < 90" style="height: 12px; margin-top: 2px")
-										.progs#progressing(:style='{width: listContent.rate + "%", "height": "12px"}')
-										p.col-12.listProgressGage(v-if="0 < listContent.rate && listContent.rate < 90" :style="{color: 70 <= listContent.rate ? 'white': 'black'}") {{ listContent.rate }} %
-					.col-auto.row.items-center(v-if="listContent.rate == 100 || listContent.seq == $route.query.seq")
-						//- video(:class="`video${listContentKey}`" :src="listContent.video" style="visibility: hidden")
-						button(@click="$route.name == 'attachment-video'? videoPlayBtnClick(listContent):$route.name == 'attachment-picture'?picturePlayBtnClick(undefined, listContent):undefined").listContentVideoBtn
-							img(v-if="$route.name== 'attachment-picture'", :src="listContent.img").listViewImg
-							img(v-else-if="$route.name== 'attachment-video'", :src="listContent.thumbnail").listViewImg
-							//- video(:id="`video${listContentKey}`" :src="listContent.video" style="display: none")
-							.col-12.row.justify-center.items-center.listCurrentPlaying(v-if="listContent.seq == $route.query.seq")
-								span(v-if="$route.name == 'attachment-video'") {{ $t("listComp")[5] }}
-					.col-auto.column.items-center.listViewPeople
-						span {{ listViewPeople(listContent) }}
-					span.col {{ listContent.title?listContent.title:"-" }}
-					span.col-auto.listViewCode {{ listContent.code?listContent.code:"-" }}
-					span.col-auto.listViewBelong {{ listContent.hq }} <br> {{listContent.branch}}
-					.col-auto.column.items-center.listViewDate
-						span {{ getTimeZoneEndSeconds(listContent.date).split(" ")[0] }}
-						span {{ getTimeZoneEndSeconds(listContent.date).split(" ")[1] }}
-						span(v-if="listContent.running_time != null && listContent.running_time !== undefined") {{ "(" + getTotalVideoTime(listContent.running_time) + ")" }}
-					.col-auto.row.listViewIcons(:style="{width:listContent.rate != 100 ? '154px' : undefined}")
-						button(v-if="listContent.rate == 100" @click="editBtnClick(listContent)")
-							img(src="@/assets/images/list_icon_edit.png")
-						button(v-if="listContent.rate == 100" @click="favoriteBtnClick(listContent, listContentKey)" :style="{marginLeft: listContent.rate !== 100 ? '84px': undefined}")
-							img(v-if="listContent.favorite", src="@/assets/images/list_icon_pin_on.png")
-							img(v-else, src="@/assets/images/list_icon_pin.png")
-						button(v-if="listContent.rate == 100" @click="downloadBtnClick(listContent)" )
-							img(src="@/assets/images/list_icon_download.png")
-						button(v-if="listContent.rate == 100" @click="removeBtnClick(listContent)" :style="{marginRight: listContent.rate !== 100 ? '0px': undefined}")
-							img(src="@/assets/images/ic_trash.png")
-			.col-12.row(v-else, v-for="(favoriteContent, favoriteContentKey) in compData.listData").favoriteContent
-				.col-auto(@mouseenter="contentImgMouseenter", @mouseleave="contentImgMouseleave")
-					.row(v-if="favoriteContent.seq != $route.query.seq").justify-center.items-center.contentImgHover
-						button(@click="editBtnClick(favoriteContent)")
-							img(src="@/assets/images/list_img_hover_icon_edit.png")
-						button(@click="downloadBtnClick(favoriteContent)")
-							img(src="@/assets/images/list_img_hover_icon_download.png")
-						button(v-if="favoriteContent.video", @click="videoPlayBtnClick(favoriteContent)")
-							img(src="@/assets/images/list_img_hover_icon_play.png")
-						button(v-else-if="favoriteContent.img", @click.exact="picturePlayBtnClick($event, favoriteContent)")
-							img(src="@/assets/images/list_img_hover_icon_preview.png")
-						button(@click="removeBtnClick(favoriteContent)")
-							img(src="@/assets/images/list_img_hover_icon_delete.png")
-					img(v-if="favoriteContent.img", :src="favoriteContent.img")
-					img(v-else-if="favoriteContent.video", :src="favoriteContent.thumbnail")
-					.col-12.row.justify-center.items-center.galleryCurrentPlaying(v-if="favoriteContent.seq == $route.query.seq")
-						span(v-if="favoriteContent.fileType == 'video'") {{ $t("listComp")[2] }}
-				.col.row.content-start
-					.col-12.row
-						.col
-							span {{ favoriteContent.title }}
-						.col-auto
-							button(@click="removeFavoriteBtnClick(favoriteContent)").row.items-center
-								img(src="@/assets/images/icon_delete.png")
-								span {{ $t("listComp")[6] }}
-							button(@click="shareBtnClick(favoriteContent)").row.items-center
-								img(src="@/assets/images/icon_share.png")
-								span {{ $t("listComp")[7] }}
-							button(@click="downloadBtnClick(favoriteContent)").row.items-center
-								img(src="@/assets/images/icon_save.png")
-								span {{ $t("listComp")[8] }}
-							button(@click="editBtnClick(favoriteContent)").row.items-center
-								img(src="@/assets/images/icon_edit.png")
-								span {{ $t("infoFilters")[7] }}
-					.col-12.row.content-end
-						.col-12
-							img(src="@/assets/images/icon_class.png")
-							span {{ $t("listComp")[9] }}
-							span I
-							span {{ favoriteContent.code?favoriteContent.code:"-" }}
-						.col-12
-							img(src="@/assets/images/icon_member.png")
-							span {{ $t("listComp")[10] }}
-							span I
-							span {{ listViewPeople(favoriteContent) }}
-						.col-12
-							img(src="@/assets/images/icon_date.png")
-							span {{ $t("listComp")[11] }}
-							span I
-							span {{ getTimeZoneEndSeconds(favoriteContent.date) }}
-		pagination(:compData="compData").col-12
+<template>
+  <div class="row justify-center dataList">
+    <div class="row justify-between items-center maxWidth">
+      <span v-if="$route.name == 'attachment-video'" class="col-auto title">{{ $t("listComp")[0] }}</span>
+      <span v-else-if="$route.name == 'attachment-picture'" class="col-auto title">{{ $t("listComp")[1] }}</span>
+      <span v-else-if="$route.name == 'attachment-favorite'" class="col-auto title favoriteTitle">{{ $t("searchBarComp")[6] }}</span>
+      <changeViewType v-if="$route.name != 'attachment-favorite'" class="col-auto"></changeViewType>
+      <div v-if="$route.query.viewType == 'gallery' && $route.name != 'attachment-favorite'" class="col-12 row galleryView">
+        <div class="row" v-for="(galleryContent, galleryContentKey) in compData.listData" :key="galleryContentKey">
+          <div v-if="galleryContent.rate != 100 && $route.name == 'attachment-video'" class="col-12 contentImg">
+            <div class="row justify-center items-center uploading">
+              <div class="row col-12 justify-center">
+                <p v-if="galleryContent.rate == 0 && galleryContent.recording_fail == null" class="col-12 galleryProgressText">{{ $t("Upload progress text")[0] }} <br> {{ $t("Upload progress text")[3] }}</p>
+                <p v-else-if="galleryContent.rate == 0 && galleryContent.recording_fail == 'Y'" class="col-12 galleryProgressText">
+                  {{ $t("Upload progress text")[5] }} <br>
+                  {{ $t("Upload progress text")[6] }} <br>
+                  <div v-if="galleryContent.recording_fail == 'Y'" style="margin-top: 10px" class="row justify-center items-center">
+                    <button class="recordingBtn" @click="requestVideoRecording(galleryContent)">
+                      <img class="recordingBtnIcon" src="@/assets/images/ic_reset.png" />
+                      <span class="col-12 recordingBtnText">{{ $t("Upload progress text")[7] }}</span>
+                    </button>
+                  </div>
+                </p>
+                <p v-if="0 < galleryContent.rate &&galleryContent.rate < 90" class="col-12 galleryProgressText">{{ $t("Upload progress text")[1] }} <br> {{ $t("Upload progress text")[3] }}</p>
+                <p v-if="90 <= galleryContent.rate" class="col-12 galleryProgressText">{{ $t("Upload progress text")[2] }} <br> {{ $t("Upload progress text")[4] }}</p>
+                <div v-if="0 < galleryContent.rate && galleryContent.rate < 90 && galleryContent.recording_fail != 'Y'" class="row col-8 prog">
+                  <div class="progs" id="progressing" :style='{width: galleryContent.rate + "%"}'></div>
+                </div>
+                <p v-if="0 < galleryContent.rate &&galleryContent.rate < 90" :style="{color: 60 <= galleryContent.rate ? 'white': 'black'}" class="col-12 gauge">{{ galleryContent.rate }} %</p>
+              </div>
+            </div>
+          </div>
+          <div v-else-if="galleryContent.rate == 100" class="col-12 contentImg" @mouseenter="contentImgMouseenter" @mouseleave="contentImgMouseleave">
+            <div v-if="galleryContent.seq != $route.query.seq" class="row justify-center items-center contentImgHover">
+              <button v-if="galleryContent.rate == 100" @click="editBtnClick(galleryContent)">
+                <img src="@/assets/images/list_img_hover_icon_edit.png" />
+              </button>
+              <button @click="downloadBtnClick(galleryContent)">
+                <img src="@/assets/images/list_img_hover_icon_download.png" />
+              </button>
+              <button v-if="$route.name == 'attachment-video'" @click="videoPlayBtnClick(galleryContent)">
+                <img src="@/assets/images/list_img_hover_icon_play.png" />
+              </button>
+              <button v-else-if="$route.name == 'attachment-picture'", @click.exact="picturePlayBtnClick($event, galleryContent)">
+                <img src="@/assets/images/list_img_hover_icon_preview.png" />
+              </button>
+              <button @click="removeBtnClick(galleryContent)">
+                <img src="@/assets/images/list_img_hover_icon_delete.png" />
+              </button>
+            </div>
+            <img v-if="$route.name == 'attachment-picture'" :src="galleryContent.img" />
+            <img v-else-if="$route.name == 'attachment-video'" :src="galleryContent.thumbnail" />
+            <div v-if="galleryContent.seq == $route.query.seq" class="col-12 row justify-center items-center galleryCurrentPlaying">
+              <span v-if="$route.name == 'attachment-video'">{{ $t("listComp")[2] }}</span>
+            </div>
+          </div>
+          <div class="col-12 row contentTextBox">
+            <span class="col-12 galleryViewTitle">{{ galleryContent.title && galleryContent.title != " " ? galleryContent.title : $t("enter title") }}</span>
+            <div class="col-12 galleryViewDivisionLine"></div>
+            <span class="col-12 galleryViewPeople">{{ galleryViewPeople(galleryContent) }}</span>
+            <span class="col-12 galleryViewBelong">{{ $t("listComp")[3] }} : {{ galleryContent.hq + " " + galleryContent.branch }}</span>
+            <span class="col-12 galleryViewDate">
+              {{ getTimeZoneEndSeconds(galleryContent.date) }} {{ galleryContent.running_time !== null && galleryContent.running_time !== undefined ? "(" + getTotalVideoTime(galleryContent.running_time) + ")" : ''}}
+            </span>
+            <img v-if="galleryContent.code" class="tagIcon" src="@/assets/images/ic_tag.png" />
+            <span v-if="galleryContent.code" class="col-auto.galleryViewCode">{{ galleryContent.code }}</span>
+            <div v-else class="col-auto galleryViewCode">&nbsp</div>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="$route.query.viewType == 'list' && $route.name != 'attachment-favorite'" class="col-12 row listView">
+        <div class="col-12 row items-center filter">
+          <div class="col-auto row items-center">
+            <img src="@/assets/images/list_icon_filter_bk.png" />
+            <span class="filterTitle">{{ $t("listComp")[4] }}</span>
+          </div>
+          <div class="col-auto row items-center">
+            <button
+              v-if="selectedFilter.group !== 'hq_alias' && selectedFilter.group !== 'en_alias'"
+              class="col-auto row items-center filterBox"
+              v-for="selectedFilter in selectedFilters"
+						  @click="filterBoxBtnClick(selectedFilter)"
+            >
+              <span v-if="selectedFilter.group === 'br_alias'">
+                {{ loginUserAuth < 4 ? selectedFilter.upperText + " " + selectedFilter.text :  selectedFilter.topUpperText + " " + selectedFilter.upperText + " " + selectedFilter.text}}
+              </span>
+              <span class="v-else">{{ selectedFilter.text || selectedFilter }}</span>
+              <img class="filterBoxXIcon" src="@/assets/images/list_icon_filter_x.png" />
+            </button>
+          </div>
+        </div>
+        <div class="col-12 row items-center titleBar">
+          <div class="col-auto row justify-center titleBarFilters" v-for="(titleBarFilter, titleBarFilterKey) in titleBarFilters" :key="titleBarFilterKey">
+            <button @click="alignBtnClick(titleBarFilter)">
+              <img v-if="$route.query.column == titleBarFilter.align.column && $route.query.status == 'asc'" class="alignIcon" src="@/assets/images/list_icon_arrow_up.png" :style="{opacity:$route.query.column == titleBarFilter.align.column ? 1 : 0.5}" />
+              <img v-else, src="@/assets/images/list_icon_arrow_down.png" class="alignIcon" :style="{opacity:$route.query.column == titleBarFilter.align.column ? 1 : 0.5}" />
+              <span class="titleText">{{ titleBarFilter.text }}</span>
+            </button>
+            <button v-if="titleBarFilter.filterList" @click="filterBtnClick(titleBarFilter, titleBarFilterKey)">
+              <img src="@/assets/images/list_icon_filter_wh.png" />
+            </button>
+            <filterBox
+              v-show="titleBarFilter.isFilterClicked"
+              :compData="titleBarFilter.filterList"
+              ref="childFilterBox"
+              @dataSetting="setData"
+              :selectedFilters="selectedFilters"
+              :titleBarFilterKey="titleBarFilterKey"
+              :getFilterListUrl="titleBarFilter.getFilterListUrl"
+              :titleBarFilterAlign="titleBarFilter.align"
+              v-click-outside="clickOutsideEvent"
+            ></filterBox>
+          </div>
+        </div>
+        <div class="col-12 row items-center listViewList" v-for="(listContent, listContentKey) in compData.listData" :key="listContentKey">
+          <div v-if="listContent.rate !== 100 && listContent.seq != $route.query.seq" class="col-auto row items-center listViewUploading">
+            <div v-if="listContent.seq != $route.query.seq" class="row justify-center items-center uploading" v-show="true">
+              <div class="row col-12 justify-center">
+                <p v-if="0 == listContent.rate && listContent.recording_fail != 'Y'" class="col-12.listProgressText">
+                  {{ $t("Upload progress short text")[0] }} <br> {{ $t("Upload progress short text")[3] }}
+                </p>
+                <p v-else-if="listContent.rate == 0 && listContent.recording_fail == 'Y'" class="col-12 listProgressText">
+                  {{ $t("Upload progress short text")[5] }} <br>
+                  <div v-if="listContent.recording_fail == 'Y'" class="row justify-center items-center" style="margin-top: 4px">
+                    <button class="listRecordingBtn" @click="requestVideoRecording(listContent)">
+                      <img class="listRecordingBtnIcon" src="@/assets/images/ic_reset_14.png" />
+                      <span class="col-12 listRecordingBtnText">{{ $t("Upload progress short text")[6] }}</span>
+                    </button>
+                  </div>
+                </p>
+                <p v-if="0 < listContent.rate && listContent.rate < 90" class="col-12 listProgressText">
+                  {{ $t("Upload progress short text")[1] }} <br> {{ $t("Upload progress short text")[3] }}
+                </p>
+                <p v-if="90 <= listContent.rate" class="col-12.listProgressText">{{ $t("Upload progress short text")[2] }} <br> {{ $t("Upload progress short text")[4] }}</p>
+                <div v-if="0 < listContent.rate && listContent.rate < 90" class="row col-9 prog" style="height: 12px; margin-top: 2px">
+                  <div class="progs" id="progressing" :style='{width: listContent.rate + "%", "height": "12px"}'></div>
+                  <p v-if="0 < listContent.rate && listContent.rate < 90" class="col-12 listProgressGage" :style="{color: 70 <= listContent.rate ? 'white': 'black'}">
+                    {{ listContent.rate }} %
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="listContent.rate == 100 || listContent.seq == $route.query.seq" class="col-auto row items-center">
+            <button
+              class="listContentVideoBtn"
+              @click="$route.name == 'attachment-video'? videoPlayBtnClick(listContent):$route.name == 'attachment-picture'?picturePlayBtnClick(undefined, listContent):undefined"
+            >
+              <img v-if="$route.name== 'attachment-picture'" class="listViewImg" :src="listContent.img" />
+              <img v-else-if="$route.name== 'attachment-video'" class="listViewImg" :src="listContent.thumbnail" />
+              <div v-if="listContent.seq == $route.query.seq" class="col-12 row justify-center items-center listCurrentPlaying">
+                <span v-if="$route.name == 'attachment-video'">{{ $t("listComp")[5] }}</span>
+              </div>
+            </button>
+          </div>
+          <div class="col-auto column items-center listViewPeople">
+            <span>{{ listViewPeople(listContent) }}</span>
+          </div>
+          <span class="col">{{ listContent.title?listContent.title:"-" }}</span>
+          <span class="col-auto.listViewCode">{{ listContent.code?listContent.code:"-" }}</span>
+          <span class="col-auto.listViewBelong">{{ listContent.hq }} <br> {{listContent.branch}}</span>
+          <div class="col-auto column items-center listViewDate">
+            <span>{{ getTimeZoneEndSeconds(listContent.date).split(" ")[0] }}</span>
+            <span>{{ getTimeZoneEndSeconds(listContent.date).split(" ")[1] }}</span>
+          </div>
+          <div class="col-auto row listViewIcons" :style="{width:listContent.rate != 100 ? '154px' : undefined}">
+            <button v-if="listContent.rate == 100" @click="editBtnClick(listContent)">
+              <img src="@/assets/images/list_icon_edit.png" />
+            </button>
+            <button v-if="listContent.rate == 100" @click="favoriteBtnClick(listContent, listContentKey)" :style="{marginLeft: listContent.rate !== 100 ? '84px': undefined}">
+              <img v-if="listContent.favorite" src="@/assets/images/list_icon_pin_on.png" />
+              <img v-else src="@/assets/images/list_icon_pin.png" />
+            </button>
+            <button v-if="listContent.rate == 100" @click="downloadBtnClick(listContent)" >
+              <img src="@/assets/images/list_icon_download.png" />
+            </button>
+            <button v-if="listContent.rate == 100" @click="removeBtnClick(listContent)" :style="{marginRight: listContent.rate !== 100 ? '0px': undefined}">
+              <img src="@/assets/images/ic_trash.png" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div v-else class="col-12 row favoriteContent" v-for="(favoriteContent, favoriteContentKey) in compData.listData" :key="favoriteContentKey">
+        <div class="col-auto" @mouseenter="contentImgMouseenter", @mouseleave="contentImgMouseleave">
+          <div v-if="favoriteContent.seq != $route.query.seq" class="row justify-center items-center contentImgHover">
+            <button @click="editBtnClick(favoriteContent)">
+              <img src="@/assets/images/list_img_hover_icon_edit.png" />
+            </button>
+            <button @click="downloadBtnClick(favoriteContent)">
+              <img src="@/assets/images/list_img_hover_icon_download.png" />
+            </button>
+            <button v-if="favoriteContent.video", @click="videoPlayBtnClick(favoriteContent)">
+              <img src="@/assets/images/list_img_hover_icon_play.png" />
+            </button>
+            <button v-else-if="favoriteContent.img", @click.exact="picturePlayBtnClick($event, favoriteContent)">
+              <img src="@/assets/images/list_img_hover_icon_preview.png" />
+            </button>
+            <button @click="removeBtnClick(favoriteContent)">
+              <img src="@/assets/images/list_img_hover_icon_delete.png" />
+            </button>
+          </div>
+          <img v-if="favoriteContent.img" :src="favoriteContent.img" />
+          <img v-else-if="favoriteContent.video" :src="favoriteContent.thumbnail" />
+          <div v-if="favoriteContent.seq == $route.query.seq" class="col-12 row justify-center items-center galleryCurrentPlaying">
+            <span v-if="favoriteContent.fileType == 'video'">{{ $t("listComp")[2] }}</span>
+          </div>
+        </div>
+        <div class="col row content-start">
+          <div class="col-12 row">
+            <div class="col">
+              <span>{{ favoriteContent.title }}</span>
+            </div>
+            <div class="col-auto">
+              <button class="row items-center" @click="removeFavoriteBtnClick(favoriteContent)">
+                <img src="@/assets/images/icon_delete.png" />
+                <span>{{ $t("listComp")[6] }}</span>
+              </button>
+              <button class="row items-center" @click="shareBtnClick(favoriteContent)">
+                <img src="@/assets/images/icon_share.png" />
+                <span>{{ $t("listComp")[7] }}</span>
+              </button>
+              <button class="row items-center" @click="downloadBtnClick(favoriteContent)">
+                <img src="@/assets/images/icon_save.png" />
+                <span>{{ $t("listComp")[8] }}</span>
+              </button>
+              <button class="row items-center" @click="editBtnClick(favoriteContent)">
+                <img src="@/assets/images/icon_edit.png" />
+                <span>{{ $t("infoFilters")[7] }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-12 row content-end">
+            <div class="col-12">
+              <img src="@/assets/images/icon_class.png" />
+              <span>{{ $t("listComp")[9] }}</span>
+              <span>I</span>
+              <span>{{ favoriteContent.code?favoriteContent.code:"-" }}</span>
+            </div>
+            <div class="col-12">
+              <img src="@/assets/images/icon_member.png" />
+              <span>{{ $t("listComp")[10] }}</span>
+              <span>I</span>
+              <span>{{ listViewPeople(favoriteContent) }}</span>
+            </div>
+            <div class="col-12">
+              <img src="@/assets/images/icon_date.png" />
+              <span>{{ $t("listComp")[11] }}</span>
+              <span>I</span>
+              <span>{{ getTimeZoneEndSeconds(favoriteContent.date) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pagination class="col-12" :compData="compData"></pagination>
+  </div>
 </template>
 
 <script>
