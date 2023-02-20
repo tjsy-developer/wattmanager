@@ -1,16 +1,19 @@
-<template lang="pug">
-	.row.justify-center.step1
-		button(@click="close").icon
-			img(src="@/assets/images/ic_popup_finish.png")
-		.row.justify-center.items-center.pwBox
-			span.col-12.text-center.title {{ $t("find password") }}
-			label.col-12 {{ $t("email confirm")[0] }}
-			input(:placeholder="$t('id')", v-model="compData.inputId").col-12.id
-			input(:placeholder="$t('e-mail')", v-model="inputEMail").col.eMail
-			button(@click="send").col-auto.send {{ $t("send") }}
-			label.col-12 {{ $t("email confirm")[1] }}
-			input(:placeholder="$t('enter code')", v-model="inputCode").col-12.inputCode
-			button(@click="next").col-12.button {{ $t("next") }}
+<template>
+	<div class="row justify-center step1">
+		<button class="icon" @click="close">
+			<img src="@/assets/images/ic_popup_finish.png" />
+		</button>
+		<div class="row justify-center items-center pwBox">
+			<span class="col-12 text-center title">{{ $t("find password") }}</span>
+			<label class="col-12">{{ $t("email confirm")[0] }}</label>
+			<input class="col-12 id" :placeholder="$t('id')" v-model="compData.inputId" />
+			<input class="col eMail" :placeholder="$t('e-mail')" v-model="inputEMail" />
+			<button class="col-auto send" @click="send">{{ $t("send") }}</button>
+			<label class="col-12">{{ $t("email confirm")[1] }}</label>
+			<input class="col-12 inputCode" :placeholder="$t('enter code')" v-model="inputCode" />
+			<button class="col-12 button" @click="next">{{ $t("next") }}</button>
+		</div>
+	</div>
 </template>
 
 <script>

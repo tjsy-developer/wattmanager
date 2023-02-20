@@ -1,13 +1,17 @@
-<template lang="pug">
-  .row.step2
-    button(@click="close").icon
-      img(src="@/assets/images/list_icon_filter_x.png")
-    span.col-12.text-center.title {{ $t("change password") }}
-    .row.justify-center.pwWidth
-      .pwBox.row
-        input(:placeholder="$t('password')", type="password", v-model="password").col-12.password
-        input(:placeholder="$t('password check')", type="password", v-model="passwordCheck").col-12.passwordCheck
-        button(@click="confirm").col-12.button {{ $t("confirm") }}
+<template>
+  <div class="row step2">
+    <button class="icon" @click="close">
+      <img src="@/assets/images/list_icon_filter_x.png" />
+    </button>
+    <span class="col-12 text-center title">{{ $t("change password") }}</span>
+    <div class="row justify-center pwWidth">
+      <div class="pwBox row">
+        <input class="col-12 password" :placeholder="$t('password')" type="password" v-model="password" />
+        <input class="col-12 passwordCheck" :placeholder="$t('password check')" type="password" v-model="passwordCheck" />
+        <button class="col-12 button" @click="confirm">{{ $t("confirm") }}</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

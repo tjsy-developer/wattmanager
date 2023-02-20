@@ -1,12 +1,14 @@
-<template lang="pug">
-	.row.content-center.profile
-		button(@click="close").icon
-			img(src="@/assets/images/list_icon_filter_x.png")
-		span.col-12.text-center.title {{ $t("change password") }}
-		input(:placeholder="$t('profilePassword')[0]", type="password", v-model="password").col-12.password
-		input(:placeholder="$t('profilePassword')[1]", type="password", v-model="newPassword").col-12.newPassword
-		input(:placeholder="$t('profilePassword')[2]", type="password", v-model="newPasswordCheck").col-12.newPasswordCheck
-		button(@click="confirm").col-12.button {{ $t("confirm") }}
+<template>
+  <div class="row content-center profile">
+    <button class="icon" @click="close">
+      <img src="@/assets/images/list_icon_filter_x.png" />
+    </button>
+    <span class="col-12 text-center title">{{ $t("change password") }}</span>
+    <input class="col-12 password" :placeholder="$t('profilePassword')[0]" type="password" v-model="password" />
+    <input class="col-12 newPassword" :placeholder="$t('profilePassword')[1]" type="password" v-model="newPassword" />
+    <input class="col-12 newPasswordCheck" :placeholder="$t('profilePassword')[2]" type="password" v-model="newPasswordCheck" />
+    <button class="col-12 button" @click="confirm"></button>
+  </div>
 </template>
 
 <script>

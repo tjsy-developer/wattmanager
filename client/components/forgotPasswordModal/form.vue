@@ -1,7 +1,8 @@
-<template lang="pug">
-	.row.content-center.forgotPasswordModal
-		step1(v-if="!compData.canNextStep", :compData="compData").col-12
-		step2(v-else, :compData="compData").col-12
+<template>
+  <div class="row content-center forgotPasswordModal">
+    <step1 v-if="!compData.canNextStep" class="col-12" :compData="compData"></step1>
+    <step2 v-else class="col-12" :compData="compData"></step2>
+  </div>
 </template>
 
 <script>
