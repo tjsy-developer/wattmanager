@@ -1,7 +1,8 @@
-<template lang="pug">
-	#default
-		modals-container#modalsContainer
-		nuxt
+<template>
+  <div id="default">
+    <modals-container id="modalsContainer"></modals-container>
+    <nuxt></nuxt>
+  </div>
 </template>
 
 <script>

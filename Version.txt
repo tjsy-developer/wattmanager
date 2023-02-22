@@ -1,5 +1,7 @@
 v2.5.4
-- markup 작업 :components folder (2/23 완)
+markup 작업
+-components folder (2/23 완)
+-layouts folder (2/23 완)
 
 v2.5.3
 - 점검 안내 팝업창 생성

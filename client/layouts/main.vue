@@ -1,11 +1,12 @@
-<template lang="pug">
-	#main(v-show="isLoaded")
-		mainHeader
-		modals-container#modalsContainer
-		nuxt
-		loadingBar(v-if="fileUploadStatus" @setLoadingBar="set")
-		selectLoadingBar(v-if="inqueryStatus" @selectLoadingBar="setInqueryStatus")
-		mainFooter
+<template>
+  <div v-show="isLoaded" id="main">
+    <mainHeader></mainHeader>
+    <modals-container id="modalsContainer"></modals-container>
+    <nuxt></nuxt>
+    <loadingBar v-if="fileUploadStatus" @setLoadingBar="set"></loadingBar>
+    <selectLoadingBar v-if="inqueryStatus" @selectLoadingBar="setInqueryStatus"></selectLoadingBar>
+    <mainFooter></mainFooter>
+  </div>
 </template>
 
 <script>
