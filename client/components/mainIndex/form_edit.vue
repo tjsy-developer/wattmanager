@@ -1,47 +1,50 @@
-<template lang="pug">
-.row.justify-center.items-center.index
-  .row.justify-center.items-center.indexWin
-    //-img(src="@/assets/images/login_banner.png").indexWinImg.col-6
-    .lang
-      .row.localeBtn.globalRight.cursor-pointer
-        .col-12.localeBtn(class="selected" @click="state = !state")
-          img(v-if="langImg == 'ko'" :src="koflag").culLangImg
-          img(v-else-if="langImg == 'en'" :src="enflag").culLangImg
-          span {{ curLang }}
-          img(src="@/assets/images/bt_kr-en.png")
-        .col-12.localeBtn.cursor-pointer( v-show ="langImg != 'ko' && state") 
-          img(src="@/assets/images/img.png")
-          span(style="width:60%;" @click.prevent="switchLocale('ko', $event)") {{ $t("lang")[0] }}
-        .col-12.localeBtn.cursor-pointer( v-show ="langImg != 'en' && state")
-          //- .col-12.localeBtn.cursor-pointer( v-show ="$i18n.locale != 'en' && state")
-          img(src="@/assets/images/american.png")
-          span(style="width:60%;" @click.prevent="switchLocale('en', $event)") {{ $t("lang")[1] }}    
-    .col-6.row.items-center.indexRight
-      .column.col.items-center.indexRightContent
-        .col-12.row.justify-center
-          img(v-if="useEnterprise == 'samsung'" src="@/assets/images/samsung_logo.png").loginContentLogo
-          //- img(src="@/assets/images/kpjb_logo.png").loginContentLogo
-          //-img(src="@/assets/images/samsung_engineering_logo.png").loginContentLogo
-          //- img(src="@/assets/images/komipo_logo.png").loginContentLogo
-          //- img(src="@/assets/images/login_logo.png").loginContentLogo
-          //- span.col-12.text-center.loginContentLogoText {{ $t("login logo text") }}
-          //- img(v-if="$i18n.locale == 'en'" src="@/assets/images/logo_watt_en.png").loginContentEnglishLogo
-          //- img(v-else-if="$i18n.locale == 'ko'" src="@/assets/images/logo_watt.png").loginContentLogo
-          img(v-if="useEnterprise == 'watt' && langImg == 'ko'", src="@/assets/images/logo_watt.png").loginContentLogo
-          img(v-else-if="useEnterprise == 'watt' && langImg == 'en'", src="@/assets/images/logo_watt_en.png").loginContentEnglishLogo
-          //- img(src="@/assets/images/logo_komipo.png").loginContentLogo
-        .col-12.maxWidth
-          input(id="idInput", placeholder="ID", @keyup.enter="signInBtnClick").input
-          input(id="pwdInput", placeholder="Password", type="password", @keyup.enter="signInBtnClick").input
-          button(@click="signInBtnClick").signInBtn {{ $t("login") }}
-          .text
-            span(@click="forgotPwdBtnClick").text1 {{ $t("forgot") }}
-            span(@click="createAccountBtnClick").text2 {{ $t("create account") }}
-        .text4(:style="{marginTop: $i18n.locale == 'en' ? '30px' : '30px' }")
-          span.col-12.row.justify-center Power Talk 2.0
-        .text4
-          span.col-12.row.justify-center Copyright © 2020 WATT CO.LTD. All Rights Reserved.
-    //-notice
+<template>
+  <div class="row justify-center items-center index">
+    <div class="row justify-center items-center indexWin">
+      <div class="lang">
+        <div class="row localeBtn globalRight cursor-pointer">
+          <div class="col-12 localeBtn" :class="'selected'" @click="state = !state">
+            <img v-if="langImg == 'ko'" class="culLangImg" :src="koflag" />
+            <img v-else-if="langImg == 'en'" class="culLangImg" :src="enflag" />
+            <span>{{ curLang }}</span>
+            <img src="@/assets/images/bt_kr-en.png" />
+          </div>
+          <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'ko' && state">
+            <img src="@/assets/images/img.png" />
+            <span style="width:60%;" @click.prevent="switchLocale('ko', $event)">{{ $t("lang")[0] }}</span>
+          </div>
+          <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'en' && state">
+            <img src="@/assets/images/american.png" />
+            <span style="width:60%;" @click.prevent="switchLocale('en', $event)">{{ $t("lang")[1] }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 row items-center indexRight">
+        <div class="column col items-center indexRightContent">
+          <div class="col-12 row justify-center">
+            <img v-if="useEnterprise == 'samsung'" class="loginContentLogo" src="@/assets/images/samsung_logo.png" />
+            <img v-if="useEnterprise == 'watt' && langImg == 'ko'" class="loginContentLogo" src="@/assets/images/logo_watt.png" />
+            <img v-else-if="useEnterprise == 'watt' && langImg == 'en'" class="loginContentEnglishLogo" src="@/assets/images/logo_watt_en.png" />
+          </div>
+          <div class="col-12 maxWidth">
+            <input class="input" id="idInput" placeholder="ID" @keyup.enter="signInBtnClick" />
+            <input class="input" id="pwdInput" placeholder="Password" type="password" @keyup.enter="signInBtnClick" />
+            <button class="signInBtn" @click="signInBtnClick">{{ $t("login") }}</button>
+            <div class="text">
+              <span class="text1" @click="forgotPwdBtnClick">{{ $t("forgot") }}</span>
+              <span class="text2" @click="createAccountBtnClick">{{ $t("create account") }}</span>
+            </div>
+          </div>
+          <div class="text4" :style="{marginTop: $i18n.locale == 'en' ? '30px' : '30px' }">
+            <span class="col-12 row justify-center">Power Talk 2.0</span>
+          </div>
+          <div class="text4">
+            <span class="col-12 row justify-center">Copyright © 2020 WATT CO.LTD. All Rights Reserved.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

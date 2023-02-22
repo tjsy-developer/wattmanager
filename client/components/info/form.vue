@@ -1,14 +1,18 @@
-<template lang="pug">
-	.row.content-start.form
-		.col-12.row.justify-center
-			span.formTitle(v-if="compData.title != false") {{ compData.title }}
-			infoSearchBar(v-if="compData.search != false").col-12
-			.col-12.row.justify-center
-				.row.justify-between.createDiv
-					span.col-auto.createTitle(v-if="compData.listTitle != false") {{ compData.listTitle }}
-					a(v-if="compData.canCreate", :href="$route.name + '/create'").col-auto.createBtn {{ $t("createAndEditComp")[0] }}
-			infoList(:compData="compData").col-8
-		pagination(:compData="compData").col-12
+<template>
+	<div class="row content-start form">
+		<div class="col-12 row justify-center">
+			<span v-if="compData.title != false" class="formTitle">{{ compData.title }}</span>
+			<infoSearchBar v-if="compData.search != false" class="col-12"></infoSearchBar>
+			<div class="col-12 row justify-center">
+				<div class="row justify-between createDiv">
+					<span v-if="compData.listTitle != false" class="col-auto createTitle">{{ compData.listTitle }}</span>
+					<a v-if="compData.canCreate" class="col-auto createBtn" :href="$route.name + '/create'">{{ $t("createAndEditComp")[0] }}</a>
+				</div>
+			</div>
+			<infoList class="col-8" :compData="compData"></infoList>
+		</div>
+		<pagination class="col-12" :compData="compData"></pagination>
+	</div>
 </template>
 
 <script>

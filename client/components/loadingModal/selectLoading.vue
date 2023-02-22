@@ -1,9 +1,13 @@
-<template lang="pug">
-    .lodingBox.row.flex-center
-        .loading-container
-            .loading
-            #loading-text {{ $t("inquiring") }}...
+<template>
+    <div class="lodingBox row flex-center">
+        <div class="loading-container">
+            <div class="loading"></div>
+            <div id="loading-text">{{ $t("inquiring") }}...</div>
+        </div>
+    </div>
 </template>
+
+<script></script>
 
 <style lang="sass" scoped>
 @keyframes rotate-loading

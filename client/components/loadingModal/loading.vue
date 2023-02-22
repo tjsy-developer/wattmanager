@@ -1,9 +1,14 @@
-<template lang="pug">
-    .lodingBox.row.flex-center
-        .loading-container
-            .loading
-            #loading-text {{ $t("fileUploading") }}...
+<template>
+    <div class="lodingBox row flex-center">
+        <div class="loading-container">
+            <div class="loading"></div>
+            <div id="loading-text">{{ $t("fileUploading") }}...</div>
+        </div>
+    </div>
 </template>
+
+// markup 작업으로 script가 없이 template에 $t 사용 불가하여 script 만 추가.
+<script></script>
 
 <style lang="sass" scoped>
 @keyframes rotate-loading

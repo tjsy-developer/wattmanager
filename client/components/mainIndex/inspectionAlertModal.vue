@@ -1,25 +1,33 @@
-<template lang="pug">
-.inspectionAlertModal-component
-    .inspectionAlertModal-component__header.row.justify-center.items-center
-        p 시스템 점검 안내
-    .inspectionAlertModal-component__body.column.justify-center.items-center
-        p(style="margin: 3px") 안정적인 서비스 제공을 위해 시스템 점검을 진행합니다.
-        p(style="margin: 3px") 점검 기간동안 홈페이지 이용이 불가하오니,
-        P(style="margin: 3px") 양해부탁드립니다.
-        p(style="margin: 3px") 점검 시간은 상황에 따라 조기종료 또는 지연될 수 있습니다.
-        p(style="margin: 3px") 감사합니다.
-    .inspectionAlertModal-component__content.row.justify-center.items-center
-        .show-inspection-content.column.justify-center.items-center
-            .inspectionDate.row.items-center
-                p.inspection-date1.row.justify-center.items-center 점 검 일 시 | &nbsp;
-                p.inspection-date2.row.justify-center.items-center {{ propsData.inspectionDate }}
-            .inspectionPhone.row.items-center
-                p.inspection-phonNum1.row.justify-center.items-center 긴급연락번호 | &nbsp;
-                p.inspection-phonNum2.row.justify-center.items-center {{ propsData.inspectionPhoneNum }}
-    .inspectionAlertModal-component__footer.row.justify-center.items-center
-        input.close-for-day-btn(type="checkbox" value="true" v-model="checked")
-        span.close-for-day-text 오늘하루 팝업창 열지 않기
-        button.close-btn(@click="close()") 닫기
+<template>
+    <div class="inspectionAlertModal-component">
+        <div class="inspectionAlertModal-component__header row justify-center items-center">
+            <p>시스템 점검 안내</p>
+        </div>
+        <div class="inspectionAlertModal-component__body column justify-center items-center">
+            <p style="margin: 3px">안정적인 서비스 제공을 위해 시스템 점검을 진행합니다.</p>
+            <p style="margin: 3px">점검 기간동안 홈페이지 이용이 불가하오니,</p>
+            <p style="margin: 3px">양해부탁드립니다.</p>
+            <p style="margin: 3px">점검 시간은 상황에 따라 조기종료 또는 지연될 수 있습니다.</p>
+            <p style="margin: 3px">감사합니다.</p>
+        </div>
+        <div class="inspectionAlertModal-component__content row justify-center items-center">
+            <div class="show-inspection-content column justify-center items-center">
+                <div class="inspectionDate row items-center">
+                    <p class="inspection-date1 row justify-center items-center">점 검 일 시 | &nbsp;</p>
+                    <p class="inspection-date2 row justify-center items-center">{{ propsData.inspectionDate }}</p>
+                </div>
+                <div class="inspectionPhone row items-center">
+                    <p class="inspection-phonNum1 row justify-center items-center">긴급연락번호 | &nbsp;</p>
+                    <p class="inspection-phonNum2 row justify-center items-center">{{ propsData.inspectionPhoneNum }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="inspectionAlertModal-component__footer row justify-center items-center">
+            <input class="close-for-day-btn" type="checkbox" value="true" v-model="checked" />
+            <span class="close-for-day-text">오늘하루 팝업창 열지 않기</span>
+            <button class="close-btn" @click="close()">닫기</button>
+        </div>
+    </div>
 </template>
 
 <script>

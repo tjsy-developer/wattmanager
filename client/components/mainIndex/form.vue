@@ -1,61 +1,75 @@
-<template lang="pug">
-.row.justify-center.items-center.index
-  .row.justify-center.items-center.indexWin
-    //-img(src="@/assets/images/login_banner.png").indexWinImg.col-6
-    .lang
-      .row.localeBtn.globalRight.cursor-pointer
-        .col-12.localeBtn(class="selected" @click="state = !state")
-          img(v-if="langImg == 'ko'" :src="koflag").culLangImg
-          img(v-else-if="langImg == 'en'" :src="enflag").culLangImg
-          span {{ curLang }}
-          img(src="@/assets/images/bt_kr-en.png")
-        .col-12.localeBtn.cursor-pointer( v-show ="langImg != 'ko' && state") 
-          img(src="@/assets/images/img.png")
-          span(style="width:60%;" @click.prevent="switchLocale('ko', $event)") {{ $t("lang")[0] }}
-        .col-12.localeBtn.cursor-pointer( v-show ="langImg != 'en' && state")
-          //- .col-12.localeBtn.cursor-pointer( v-show ="$i18n.locale != 'en' && state")
-          img(src="@/assets/images/american.png")
-          span(style="width:60%;" @click.prevent="switchLocale('en', $event)") {{ $t("lang")[1] }}    
-    .col-6.row.items-center.indexRight
-      .column.col-12.items-center.indexRightContent
-        .col-12.row.justify-center.logoContainer
-          img(v-if="useEnterprise == 'samsung'" src="@/assets/images/samsung_logo.png").loginContentLogo
-          img(v-if="useEnterprise == 'watt' && langImg == 'ko'", src="@/assets/images/logo_watt.png" style="margin-top: 15px").loginContentLogo
-          img(v-else-if="useEnterprise == 'watt' && langImg == 'en'", src="@/assets/images/logo_watt_en.png").loginContentEnglishLogo
-          img(v-if="useEnterprise == 'ex'" src="@/assets/images/ex_pt_login.png").loginContentLogo.exMainLogo 
-          img(v-if="useEnterprise == 'cmss'" src="@/assets/images/logo_komipo.png").loginContentLogo.cmssMainLogo
-          img(v-if="useEnterprise == 'kdhc'" src="@/assets/images/logo_kdhc.png").loginContentLogo.kdhcMainLogo
-          img(v-if="useEnterprise == 'korail'" src="@/assets/images/logo_korail.png").loginContentLogo.korailMainLogo
-        .col-12.maxWidth(v-if="useEnterprise == 'samsung'")
-          input(id="idInput", placeholder="ID", @keyup.enter="focusingByDevice").input
-          input(id="pwdInput", placeholder="Password", type="password", @keyup.enter="enterLoginBtnClick").input
-          img(@click="pwdActivation($event)" src="@/assets/images/ic_password_disabled.png").pwdView
-          button(@click="signInBtnClick").signInBtn {{ $t("login") }}
-          .text
-            span(@click="forgotPwdBtnClick").text1 {{ $t("forgot") }}
-            span(@click="createAccountBtnClick").text2 {{ $t("create account") }}
-          .personalAgreeBox(v-if="useEnterprise == 'samsung'")
-            span {{ $t("personal info agree") }}
-            span {{ $t("personal info agree check") }}
-            input(type="checkbox" v-model="consentvalue" ,
-						@change="consentChecked").checkBox
-        .col-12.maxWidth(v-else)
-          input(id="idInput", placeholder="ID", @keyup.enter="focusingByDevice").input
-          input(id="pwdInput", placeholder="Password", type="password", @keyup.enter="login").input
-          img(@click="pwdActivation($event)" src="@/assets/images/ic_password_disabled.png").pwdView
-          button(@click="login").signInBtn {{ $t("login") }}
-          .text
-            span(@click="forgotPwdBtnClick").text1 {{ $t("forgot") }}
-            span(@click="createAccountBtnClick").text2 {{ $t("create account") }}
-                  .col-12.row.justify-center.logoContainer
-          .personalAgreeBox(v-if="useEnterprise == 'korail'")
-        img(v-if="useEnterprise == 'korail'" src="@/assets/images/korail_bottom_logo.png").korailBottomLogo
-    .text4Conatainer.row.col-12.justify-center
-      .text4.col-12(:style="{marginTop: $i18n.locale == 'en' ? '30px' : '30px' }")
-        span.justify-center Watt Talk 2.0
-      .text4.col-12
-        span.justify-center Copyright © 2020 WATT CO.LTD. All Rights Reserved.
-    //-notice
+<template>
+  <div class="row justify-center items-center index">
+    <div class="row justify-center items-center indexWin">
+      <div class="lang">
+        <div class="row localeBtn globalRight cursor-pointer">
+          <div class="col-12 localeBtn" :class="'selected'" @click="state = !state">
+            <img v-if="langImg == 'ko'" class="culLangImg" :src="koflag" />
+            <img v-else-if="langImg == 'en'" class="culLangImg" :src="enflag" />
+            <span>{{ curLang }}</span>
+            <img src="@/assets/images/bt_kr-en.png" />
+          </div>
+          <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'ko' && state">
+            <img src="@/assets/images/img.png" />
+            <span style="width:60%;" @click.prevent="switchLocale('ko', $event)">{{ $t("lang")[0] }}</span>
+          </div>
+          <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'en' && state">
+            <img src="@/assets/images/american.png" />
+            <span style="width:60%;" @click.prevent="switchLocale('en', $event)">{{ $t("lang")[1] }}    </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 row items-center indexRight">
+        <div class="column col-12 items-center indexRightContent">
+          <div class="col-12 row justify-center logoContainer">
+            <img v-if="useEnterprise == 'samsung'" class="loginContentLogo" src="@/assets/images/samsung_logo.png" />
+            <img v-if="useEnterprise == 'watt' && langImg == 'ko'" class="loginContentLogo" src="@/assets/images/logo_watt.png" style="margin-top: 15px" />
+            <img v-else-if="useEnterprise == 'watt' && langImg == 'en'" class="loginContentEnglishLogo" src="@/assets/images/logo_watt_en.png" />
+            <img v-if="useEnterprise == 'ex'" class="loginContentLogo exMainLogo" src="@/assets/images/ex_pt_login.png" />
+            <img v-if="useEnterprise == 'cmss'" class="loginContentLogo cmssMainLogo" src="@/assets/images/logo_komipo.png" />
+            <img v-if="useEnterprise == 'kdhc'" class="loginContentLogo kdhcMainLogo" src="@/assets/images/logo_kdhc.png" />
+            <img v-if="useEnterprise == 'korail'" class="loginContentLogo korailMainLogo" src="@/assets/images/logo_korail.png" />
+          </div>
+          <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
+            <input class="input" id="idInput" placeholder="ID" @keyup.enter="focusingByDevice" />
+            <input class="input" id="pwdInput" placeholder="Password" type="password" @keyup.enter="enterLoginBtnClick" />
+            <img class="pwdView" @click="pwdActivation($event)" src="@/assets/images/ic_password_disabled.png" />
+            <button class="signInBtn" @click="signInBtnClick">{{ $t("login") }}</button>
+            <div class="text">
+              <span class="text1" @click="forgotPwdBtnClick">{{ $t("forgot") }}</span>
+              <span class="text2" @click="createAccountBtnClick">{{ $t("create account") }}</span>
+            </div>
+            <div v-if="useEnterprise == 'samsung'" class="personalAgreeBox">
+              <span>{{ $t("personal info agree") }}</span>
+              <span>{{ $t("personal info agree check") }}</span>
+              <input class="checkBox" type="checkbox" v-model="consentvalue" @change="consentChecked" />
+            </div>
+          </div>
+          <div v-else class="col-12 maxWidth">
+            <input class="input" id="idInput" placeholder="ID" @keyup.enter="focusingByDevice" />
+            <input class="input" id="pwdInput" placeholder="Password" type="password" @keyup.enter="login" />
+            <img class="pwdView" @click="pwdActivation($event)" src="@/assets/images/ic_password_disabled.png" />
+            <button class="signInBtn" @click="login">{{ $t("login") }}</button>
+            <div class="text">
+              <span class="text1" @click="forgotPwdBtnClick">{{ $t("forgot") }}</span>
+              <span class="text2" @click="createAccountBtnClick">{{ $t("create account") }}</span>
+                    <div class="col-12 row justify-center logoContainer"></div>
+            </div>
+            <div v-if="useEnterprise == 'korail'" class="personalAgreeBox"></div>
+          </div>
+          <img v-if="useEnterprise == 'korail'" class="korailBottomLogo" src="@/assets/images/korail_bottom_logo.png" />
+        </div>
+      </div>
+      <div class="text4Conatainer row col-12 justify-center">
+        <div class="text4 col-12" :style="{marginTop: $i18n.locale == 'en' ? '30px' : '30px' }">
+          <span class="justify-center">Watt Talk 2.0</span>
+        </div>
+        <div class="text4 col-12">
+          <span class="justify-center">Copyright © 2020 WATT CO.LTD. All Rights Reserved.</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

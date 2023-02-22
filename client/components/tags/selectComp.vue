@@ -1,19 +1,22 @@
-<template lang="pug">
-	select(
-		:id="compData.id"
+<template>
+  <select
+    :id="compData.id"
 		:class="compData.class"
 		@change="selectChange"
 		v-model="compData.selectedText"
 		:multiple="this.compData.selectedText && this.compData.selectedText.constructor == Array"
 		:disabled="this.compData.disabled"
-	)
-		option(v-if="compData.placeholder", disabled, :value="compData.placeholder") {{ compData.placeholder }}
-		option(
-			v-for="(option, optionKey) in compData.options"
+  >
+    <option v-if="compData.placeholder" disabled :value="compData.placeholder">{{ compData.placeholder }}</option>
+    <option
+      v-for="(option, optionKey) in compData.options"
 			:key="optionKey"
 			:id="compData.id?compData.id+optionKey:undefined"
 			:value="option.value == 0 ? '0' : option.value ? option.value : option == 0 ? '0' : option"
-		) {{ $i18n.locale === 'ko' ? option.text :  option.en_text }}
+    >
+      {{ $i18n.locale === 'ko' ? option.text :  option.en_text }}
+    </option>
+  </select>
 </template>
 
 <script>

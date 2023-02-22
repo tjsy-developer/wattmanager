@@ -1,6 +1,14 @@
-<template lang="pug">
-	.row.justify-center.pagination
-		VueAdsPagination(v-if="compData.listData.length != 0", :page="compData.getListDataParams.page-1", :itemsPerPage="itemsPerPage", :maxVisiblePages="10", :totalItems="totalItems", @page-change="pageChange")
+<template>
+  <div class="row justify-center pagination">
+    <VueAdsPagination
+      v-if="compData.listData.length != 0"
+      :page="compData.getListDataParams.page-1"
+      :itemsPerPage="itemsPerPage"
+      :maxVisiblePages="10"
+      :totalItems="totalItems"
+      @page-change="pageChange"
+    ></VueAdsPagination>
+  </div>
 </template>
 
 <script>

@@ -1,13 +1,16 @@
-<template lang="pug">
-  .items-center.quideAlert
-    .guideTitle
-      span {{  $t("memberNotice")[0] }}
-    .line
-    .guideTextBox.row
-      div.col-12
-        span.col-12 {{  $t("memberNotice")[1] }}
-      button(@click="close") {{  $t("memberNotice")[2] }}
-    
+<template>
+	<div class="items-center quideAlert">
+		<div class="guideTitle">
+			<span>{{  $t("memberNotice")[0] }}</span>
+		</div>
+		<div class="line"></div>
+		<div class="guideTextBox row">
+			<div class="div col-12">
+				<span class="col-12">{{  $t("memberNotice")[1] }}</span>
+			</div>
+			<button @click="close">{{  $t("memberNotice")[2] }}</button>
+		</div>
+	</div>
 </template>
 
 <script>

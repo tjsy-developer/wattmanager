@@ -1,10 +1,12 @@
-<template lang="pug">
-	.col-12.row.justify-center.search
-		.col-auto.row.items-center
-			.col-auto.searchText {{ $t("searchBarComp")[4] }}
-			input(id="searchInput", @keyup.enter="searchBtnClick" v-model="inputVal").col.searchInput
-			img(v-if="inputVal!=undefined" src="@/assets/images/bt_input_delete.png" @click="deleteBtn" :alt="$t('searchBarComp')[7]").searchDeleteBtn
-			button(@click="searchBtnClick").col-auto.searchBtn {{ $t("searchBarComp")[4] }}
+<template>
+	<div class="col-12 row justify-center search">
+		<div class="col-auto row items-center">
+			<div class="col-auto searchText">{{ $t("searchBarComp")[4] }}</div>
+			<input class="col searchInput" id="searchInput" @keyup.enter="searchBtnClick" v-model="inputVal" />
+			<img v-if="inputVal!=undefined" class="searchDeleteBtn" src="@/assets/images/bt_input_delete.png" @click="deleteBtn" :alt="$t('searchBarComp')[7]" />
+			<button class="col-auto searchBtn" @click="searchBtnClick">{{ $t("searchBarComp")[4] }}</button>
+		</div>
+	</div>
 </template>
 
 <script>

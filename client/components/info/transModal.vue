@@ -1,46 +1,46 @@
-<template lang="pug">
-  .items-center.quideAlert
-    .guideTitle
-      span {{ $t("domain guide") }}
-      //- span Domain Change Guide
-      .row.localeBtn.globalRight.cursor-pointer
-        .col-12.localeBtn(class="selected" @click="state = !state")
-          img(v-if="langImg == 'ko'" :src="koflag").culLangImg
-          img(v-else-if="langImg == 'en'" :src="enflag").culLangImg
-          span {{ curLang }}
-          img(src="@/assets/images/bt_kr-en.png")
-        .col-12.localeBtn.cursor-pointer( v-show ="langImg != 'ko' && state") 
-          img(src="@/assets/images/img.png")
-          span(style="width:60%;" @click.prevent="switchLocale('ko', $event)") {{ $t("lang")[0] }}
-        .col-12.localeBtn.cursor-pointer( v-show ="langImg != 'en' && state")
-          //- .col-12.localeBtn.cursor-pointer( v-show ="$i18n.locale != 'en' && state")
-          img(src="@/assets/images/american.png")
-          span(style="width:60%;" @click.prevent="switchLocale('en', $event)") {{ $t("lang")[1] }}    
-      
-    .line
-    .guideTextBox.row
-      .text1.col-12
-        span {{ $t("changed domain Text")[0] }}
-        //- span We have changed the domain of WhatTalk
-        span {{ $t("changed domain Text")[1] }}
-        //- span from March 09, 2022 for better service.
-      //- .contour.row.justify-center(style="border: 1px solid #2386D2")
-      .changeNotice.row.col-12.justify-center
-        .domain {{ $t("domain guide") }}
-        //- .domain Domain Change Guide
-      .text2.col-9.row.justify-center
-        span.col-12 {{ this.beforeUrl }}
-        span ▼ ▼
-        span.col-12 {{ this.afterUrl }}
-      //- .contour.row.justify-center(style="margin-top: 20px")
-      .text3.row.justify-center.col-12
-        span.col-12 {{ $t("changed domain Text")[2] }}
-        //- span.col-12 On March 23, 2022, the secl.powertalk.kr
-        span.col-12 {{ $t("changed domain Text")[3] }}
-        //- span.col-12 service will be shut down.
-        a(:href="this.afterUrl") {{ $t("changed domain Text")[4] }}
-        //- a(:href="this.afterUrl") Go to change URL
-    //-   button(@click="close") {{  $t("memberNotice")[2] }}
+<template>
+  <div class="items-center quideAlert">
+    <div class="guideTitle">
+      <span>{{ $t("domain guide") }}</span>
+      <div class="row localeBtn globalRight cursor-pointer">
+        <!-- 확인 필요 -->
+        <div class="col-12 localeBtn" :class="'selected'" @click="state = !state">
+          <img v-if="langImg == 'ko'" class="culLangImg" :src="koflag" />
+          <img v-else-if="langImg == 'en'" class="culLangImg" :src="enflag" />
+          <span>{{ curLang }}</span>
+          <img src="@/assets/images/bt_kr-en.png" />
+        </div>
+        <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'ko' && state">
+          <img src="@/assets/images/img.png" />
+          <span style="width:60%;" @click.prevent="switchLocale('ko', $event)">{{ $t("lang")[0] }}</span>
+        </div>
+        <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'en' && state">
+          <img src="@/assets/images/american.png" />
+          <span style="width:60%;" @click.prevent="switchLocale('en', $event)">{{ $t("lang")[1] }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="line"></div>
+    <div class="guideTextBox row">
+      <div class="text1 col-12">
+        <span>{{ $t("changed domain Text")[0] }}</span>
+        <span>{{ $t("changed domain Text")[1] }}</span>
+      </div>
+      <div class="changeNotice row col-12 justify-center">
+        <div class="domain">{{ $t("domain guide") }}</div>
+      </div>
+      <div class="text2 col-9 row justify-center">
+        <span class="col-12">{{ this.beforeUrl }}</span>
+        <span>▼ ▼</span>
+        <span class="col-12">{{ this.afterUrl }}</span>
+      </div>
+      <div class="text3 row justify-center col-12">
+        <span class="col-12">{{ $t("changed domain Text")[2] }}</span>
+        <span class="col-12">{{ $t("changed domain Text")[3] }}</span>
+        <a :href="this.afterUrl">{{ $t("changed domain Text")[4] }}</a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,32 +1,41 @@
-<template lang="pug">
-	.row.justify-center.mainHeader
-		.row.justify-between.items-center.maxWidth
-			button(v-if="$i18n.locale != 'ko'", @click="switchLocale('ko')").localeBtn 한국어
-			button(v-else-if="$i18n.locale != 'en'", @click="switchLocale('en')").localeBtn English
-			img(v-if="useEnterprise == 'samsung'" src="@/assets/images/samsung_logo_2.png").col-auto
-			img(v-if="useEnterprise == 'watt'" src="@/assets/images/logo_header.png").col-auto
-			img(v-if="useEnterprise == 'ex'" src="@/assets/images/ex_pm.png").col-auto
-			img(v-if="useEnterprise == 'cmss'" src="@/assets/images/logo_komipo_cloud.png").col-auto
-			img(v-if="useEnterprise == 'kdhc'" src="@/assets/images/logo_kdhc_cloud.png").col-auto
-			img(v-if="useEnterprise == 'korail'" src="@/assets/images/logo_korail_cloud.png").col-auto
-			.col-auto.row.menus
-				a(v-if="authority == '4' && elecQR", href="/qr/elecQr").col-auto QR
-				a(v-if="authority == '4' && qrStatus == 'safety'", href="/qr").col-auto {{ $t("safetyQR") }}
-				a(v-if="authority == '4' && qrStatus == 'power'", href="/qr").col-auto {{ $t("powerQR") }}
-				a(v-if="authority == '4'", href="/upload?page=1&viewType=upload").col-auto {{ $t("upload")}}
-				a(href="/upload?page=1&viewType=filebox").col-auto {{ $t("fileBox") }}
-				a(href="/notice?page=1").col-auto {{ $t("notice")[0] }}
-				a(href="/profile").col-auto {{ $t("profile") }}
-				a(v-if="authority != '0' && deviceType != '2'", href="/user?page=1").col-auto {{ $t("headerComp")[0] }}
-				a(v-if="authority != '0' && authority != '1' && deviceType != '2'", href="/device?page=1").col-auto {{ $t("headerComp")[1] }}
-				a(v-if="authority == '4' && deviceType != '2'", href="/app?page=1").col-auto {{ $t("headerComp")[2] }}
-				a(v-if="authority == '4' && deviceType != '2'", href="/enterprise?page=1").col-auto {{ $t("headerComp")[3] }}
-				a(v-if="authority == '4' && deviceType != '2'", href="/headquarters?page=1").col-auto {{ $t("headerComp")[4] }}
-				a(v-if="authority == '4' && deviceType != '2'", href="/branch?page=1").col-auto {{ $t("headerComp")[5] }}
-				a(:href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'", @click="clearLocalStorage").col-auto {{ $t("headerComp")[6] }}
-				a(v-if="authority == '3'" :href="'/callHistory?page=1'") {{ $t("callHistory") }}
-				button(@click="logoutBtnClick", v-if="logoutStatus != 0").col-auto {{ $t("header")[0] }}
-				button(@click="logoutBtnClose", v-if="logoutStatus == 0").col-auto {{ $t("header")[1] }}
+<template>
+  <div class="row justify-center mainHeader">
+    <div class="row justify-between items-center maxWidth">
+      <button v-if="$i18n.locale != 'ko'" class="localeBtn" @click="switchLocale('ko')">한국어</button>
+      <button v-else-if="$i18n.locale != 'en'" class="localeBtn" @click="switchLocale('en')">English</button>
+      <img v-if="useEnterprise == 'samsung'" class="col-auto" src="@/assets/images/samsung_logo_2.png" />
+      <img v-if="useEnterprise == 'watt'" class="col-auto" src="@/assets/images/logo_header.png" />
+      <img v-if="useEnterprise == 'ex'" class="col-auto" src="@/assets/images/ex_pm.png" />
+      <img v-if="useEnterprise == 'cmss'" class="col-auto" src="@/assets/images/logo_komipo_cloud.png" />
+      <img v-if="useEnterprise == 'kdhc'" class="col-auto" src="@/assets/images/logo_kdhc_cloud.png" />
+      <img v-if="useEnterprise == 'korail'" class="col-auto" src="@/assets/images/logo_korail_cloud.png" />
+      <div class="col-auto row menus">\
+        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">QR</a>
+        <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
+        <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
+        <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
+        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
+        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
+        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
+        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
+        <a
+          class="col-auto"
+          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
+          @click="clearLocalStorage"
+        >
+          {{ $t("headerComp")[6] }}
+        </a>
+        <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
+        <button v-if="logoutStatus != 0" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
+        <button v-if="logoutStatus == 0" class="col-auto" @click="logoutBtnClose">{{ $t("header")[1] }}</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

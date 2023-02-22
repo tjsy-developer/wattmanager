@@ -1,23 +1,27 @@
-<template lang="pug">
-	.col-auto.row.notice
-		.col-12
-			button(@click="noticeClick").noticeBtn.row.items-center
-				img(src="@/assets/images/ic_notice_w.png")
-				span {{ $t("notice")[0] }}
-		.col-12(v-show="isOpened").row.container.items-start
-			.col-12.row.items-center.title
-				.titleIcon
-					img(src="@/assets/images/ic_notice_r.png")
-				span.titleText {{ $t("notice")[0] }}
-				.space
-				button(@click="noticeClick").titleClose
-					img(src="@/assets/images/ic_close.png")
-			.col-12.row.listContainer.content-start
-				button.col-12(@click="listContainerClick(notice)", v-for="notice in list").list.row
-					span(:style="{webkitLineClamp: notice.isClicked ? 'unset' : 3 }").listText.col {{ notice.content }}
-					span(v-if="notice.isClicked").listIcon.col-auto ▲
-					span(v-else).listIcon.col-auto ▼
-</template>
+<template>
+  <div class="col-auto row notice">
+    <div class="col-12">
+      <button class="noticeBtn row items-center" @click="noticeClick">
+        <img src="@/assets/images/ic_notice_w.png" />
+        <span>{{ $t("notice")[0] }}</span>
+      </button>
+    </div>
+    <div class="col-12 row container items-start" v-show="isOpened">
+      <div class="col-12 row items-center title">
+        <div class="titleIcon">
+          <img src="@/assets/images/ic_notice_r.png" />
+        </div>
+        <span class="titleText">{{ $t("notice")[0] }}</span>
+        <div class="space"></div>
+        <button class="col-12 list row" @click="listContainerClick(notice)" v-for="notice in list">
+          <span class="listText col" :style="{webkitLineClamp: notice.isClicked ? 'unset' : 3 }">{{ notice.content }}</span>
+          <span v-if="notice.isClicked" class="listIcon col-auto">▲</span>
+          <span v-else class="listIcon col-auto">▼</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</template></template>
 
 <script>
 import domain from "@/assets/jsons/domain/domain"

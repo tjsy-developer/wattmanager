@@ -1,9 +1,11 @@
-<template lang="pug">
-  .row.content-center.justify-center.step1
-    button(@click="close").icon
-      img(src="@/assets/images/ic_popup_finish.png")
-    koForm(v-if="$i18n.locale == 'ko'" @consentValToggle="consentValToggle" :consentStatus="consentStatus")
-    enForm(v-if="$i18n.locale == 'en'" @consentValToggle="consentValToggle" :consentStatus="consentStatus")
+<template>
+  <div class="row content-center justify-center step1">
+    <button class="icon" @click="close">
+      <img src="@/assets/images/ic_popup_finish.png" />
+    </button>
+    <koForm v-if="$i18n.locale == 'ko'" @consentValToggle="consentValToggle" :consentStatus="consentStatus"></koForm>
+    <enForm v-if="$i18n.locale == 'en'" @consentValToggle="consentValToggle" :consentStatus="consentStatus"></enForm>
+  </div>
 </template>
 
 <script>

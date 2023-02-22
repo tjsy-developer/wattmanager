@@ -1,39 +1,75 @@
-<template lang="pug">
-	.row.content-start.list
-		.col-12.row.listFilters
-			div(v-for="bar in compData.listFilters", :class="[ bar.width?'col-auto':'col' ]", :style="{ width: bar.width+'px' }").row.justify-center
-				button(v-if="bar.align", @click="alignBtnClick(bar)").row.items-center
-					span.titleBarText {{bar.text}}
-					img(v-if="$route.query.column == bar.align.column && $route.query.status == 'asc' && compData.align !== false", src="@/assets/images/list_icon_arrow_up.png", :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}").alignIcon
-					img(v-else-if="compData.align !== false" , src="@/assets/images/list_icon_arrow_down.png", :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}").alignIcon
-				span(v-else) {{bar.text}}
-		.col-12.row.contents
-			.col-12(v-for="(contents, contentskey) in compData.listData", :key="contentskey").row
-				span(:style="{ width: compData.listFilters[0].width+'px' }") {{ contents[contents.length-1].seq ? contents[contents.length-1].seq : contents[contents.length-1].order_by_num }}
-				.row.justify-center.items-center.content(
-					v-for="(content, contentKey) in contents",
+<template>
+  <div class="row content-start list">
+    <div class="col-12 row listFilters">
+      <div class="div row justify-center" v-for="bar in compData.listFilters" :class="[ bar.width?'col-auto':'col' ]" :style="{ width: bar.width+'px' }">
+        <button v-if="bar.align" class="row items-center" @click="alignBtnClick(bar)">
+          <span class="titleBarText">{{bar.text}}</span>
+          <img
+            v-if="$route.query.column == bar.align.column && $route.query.status == 'asc' && compData.align !== false"
+            class="alignIcon"
+            src="@/assets/images/list_icon_arrow_up.png"
+            :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}"
+          />
+          <img v-else-if="compData.align !== false" class="alignIcon" src="@/assets/images/list_icon_arrow_down.png" :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}" />
+        </button>
+        <span v-else>{{bar.text}}</span>
+      </div>
+    </div>
+    <div class="col-12 row contents">
+      <div class="col-12 row" v-for="(contents, contentskey) in compData.listData" :key="contentskey">
+        <span :style="{ width: compData.listFilters[0].width+'px' }">
+          {{ contents[contents.length-1].seq ? contents[contents.length-1].seq : contents[contents.length-1].order_by_num }}
+        </span>
+        <div
+          class="row justify-center items-center content"
+          v-for="(content, contentKey) in contents"
 					v-if="contentKey != contents.length-1"
-					:key="contentKey",
-					:class="[ compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width?'col-auto':'col' ]",
-					:style="{ width: compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width+'px' }"
-				)
-					img(v-if="compData.deviceTypeList && contentKey == 0 && compData.title == $t('user')[2] || compData.deviceTypeList && contentKey == 1 && compData.title == $t('device')[2]" :src="deviceTypeIcons[compData.deviceTypeList[contentskey]-1]").col-auto
-					span(:style="{maxWidth: compData.deviceTypeList && contentKey == 0 && compData.title == $t('user')[2] || compData.deviceTypeList && contentKey == 1 && compData.title == $t('device')[2] ? 'calc(100% - 30px)' : undefined }").col-auto {{ content }}
-				.row(:class="[ compData.listFilters[compData.listFilters.length-1].width?'col-auto':'col' ]", :style="{ width: compData.listFilters[compData.listFilters.length-1].width+'px' }").justify-center
-					a(v-if="contents[contents.length-1].auth && $route.name != 'upload'", :href="$route.name + '/edit?seq=' + contents[contents.length-1].seq")
-						img(src="@/assets/images/member_list_icon_edit.png")
-					a(v-else-if="contents[contents.length-1].auth == false && $route.name == 'user'", :href="$route.name + '/edit?seq=' + contents[contents.length-1].seq")
-					.upload(v-else-if="$route.name == 'upload'")
-						button(v-if="$route.query.viewType == 'upload'" style="padding-right: 10px;" disabled)
-							img(src="@/assets/images/list_icon_download.png")
-						button(v-if="$route.query.viewType == 'upload'" disabled)
-							img(src="@/assets/images/ic_trash.png")
-						button(v-if="$route.query.viewType == 'filebox'" @click="downloadBtn(`${filePath}${contents[contents.length-1].fileName}`)" style="padding-right: 10px;")
-							img(src="@/assets/images/list_icon_download.png")
-						button(v-if="$route.query.viewType == 'filebox'" @click="deleteUploadList(contents[contents.length-1].seq, contents[contents.length-1].fileName)")
-							img(src="@/assets/images/ic_trash.png")
-					a(v-else , :href="$route.name + '/edit?seq=' + contents[0]")
-						img(src="@/assets/images/member_list_icon_edit.png")
+					:key="contentKey"
+					:class="[ compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width?'col-auto':'col' ]"
+					:style="{ width: compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width+'px' }"  
+        >
+          <img
+            v-if="compData.deviceTypeList && contentKey == 0 && compData.title == $t('user')[2] || compData.deviceTypeList && contentKey == 1 && compData.title == $t('device')[2]"
+            class="col-auto"
+            :src="deviceTypeIcons[compData.deviceTypeList[contentskey]-1]"
+          />
+          <span
+            class="col-auto"
+            :style="{maxWidth: compData.deviceTypeList && contentKey == 0 && compData.title == $t('user')[2] || compData.deviceTypeList && contentKey == 1 && compData.title == $t('device')[2] ? 'calc(100% - 30px)' : undefined }"
+          >
+            {{ content }}
+          </span>
+        </div>
+        <div
+          class="justify-center"
+          :class="[ compData.listFilters[compData.listFilters.length-1].width?'col-auto':'col' ]"
+          :style="{ width: compData.listFilters[compData.listFilters.length-1].width+'px' }"
+        >
+          <a v-if="contents[contents.length-1].auth && $route.name != 'upload'" :href="$route.name + '/edit?seq=' + contents[contents.length-1].seq">
+            <img src="@/assets/images/member_list_icon_edit.png" />
+          </a>
+          <a v-else-if="contents[contents.length-1].auth == false && $route.name == 'user'" :href="$route.name + '/edit?seq=' + contents[contents.length-1].seq"></a>
+          <div v-else-if="$route.name == 'upload'" class="upload">
+            <button v-if="$route.query.viewType == 'upload'" style="padding-right: 10px;" disabled>
+              <img src="@/assets/images/list_icon_download.png" />
+            </button>
+            <button v-if="$route.query.viewType == 'upload'" disabled>
+              <img src="@/assets/images/ic_trash.png" />
+            </button>
+            <button v-if="$route.query.viewType == 'filebox'" @click="downloadBtn(`${filePath}${contents[contents.length-1].fileName}`)" style="padding-right: 10px;">
+              <img src="@/assets/images/list_icon_download.png" />
+            </button>
+            <button v-if="$route.query.viewType == 'filebox'" @click="deleteUploadList(contents[contents.length-1].seq, contents[contents.length-1].fileName)">
+              <img src="@/assets/images/ic_trash.png" />
+            </button>
+          </div>
+          <a v-else :href="$route.name + '/edit?seq=' + contents[0]">
+            <img src="@/assets/images/member_list_icon_edit.png" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

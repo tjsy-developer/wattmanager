@@ -1,45 +1,56 @@
-<template lang="pug">
-	.form
-		.title
-			p Consent to collect and use personal information <br>and to providepersonal information to third parties
-		.content
-			p Samsung Engineering Co., Ltd. (hereinafter referred to as the company) complies with the privacy regulations under the Personal Information Protection Act and is committed to protecting personal information.  
+<template>
+	<div class="form">
+		<div class="title">
+			<p>Consent to collect and use personal information <br>and to providepersonal information to third parties</p>
+		</div>
+		<div class="content">
+			<p>Samsung Engineering Co., Ltd. (hereinafter referred to as the company) complies with the privacy regulations under the Personal Information Protection Act and is committed to protecting personal information.</p>
 
-			.line
-			p.topic ● Consent to collect and use personal information
-			p.topicText - Purpose of collection and use: Operation of non-face-to-face video call service using smart glass and video call storage video viewing
-			p.topic ● Personal information items collected and used and the retention period
+			<div class="line"></div>
+			<p class="topic">● Consent to collect and use personal information</p>
+			<p class="topicText">- Purpose of collection and use: Operation of non-face-to-face video call service using smart glass and video call storage video viewing</p>
+			<p class="topic">● Personal information items collected and used and the retention period</p>
 
-			p
-				table 
-					tr 
-						td Collection Items
-						td Retention<br> period
-					//- tr 
-					//- 	td 아이디, 비밀번호, 성명, 이메일, 소속
-					//- 	td 회원 탈퇴시 까지
-					tr 
-						td 
-							span Video call history (face, voice), images of files shared during the call 
-							span (original data is not saved separately)
-						td 1 year
-			p.subheading ● Disclaimer of consent and disadvantages to refusal of consent
-			p.subText - You have the right to refuse to consent to the collection and use of personal information in this Agreement. However, if rejected, the system may be restricted.
+			<p>
+				<table>
+					<tr>
+						<td>Collection Items</td>
+						<td>Retention<br> period</td>
+					</tr>
+					<tr>
+						<td>
+							<span>Video call history (face, voice), images of files shared during the call </span>
+							<span>(original data is not saved separately)</span>
+						</td>
+						<td>1 year</td>
+					</tr>
+				</table>
+			</p>
+			<p class="subheading">● Disclaimer of consent and disadvantages to refusal of consent</p>
+			<p class="subText">- You have the right to refuse to consent to the collection and use of personal information in this Agreement. However, if rejected, the system may be restricted.</p>
 
-			p.topic ●	Notification of entrustment of personal information
-			p.topicText - The company entrusts the processing of personal information to an external specialized company for the implementation of services and the convenience of users as follows : <br>The relevant statutes stipulate matters necessary for the safe management of personal information in the event of a consignment contract.
-			.line
-			p.subheading 
-				label Name of the trustee
-				span : Watts Co., Ltd.
-			p.subheading 
-				label Contents of entrusted work
-				span : System operation and maintenance
-			p.subheading(style="margin-bottom: 0px")
-				label Contact
-				span : 82-70-7124-2588
-			.agreeBtnBox
-				button(@click="consentStatusChecked" :style="{background: receiveStatus ? '#2386D2' : '#5b5b5b'}") {{ this.statusText }}
+			<p class="topic">●	Notification of entrustment of personal information</p>
+			<p class="topicText">
+				- The company entrusts the processing of personal information to an external specialized company for the implementation of services and the convenience of users as follows : <br>The relevant statutes stipulate matters necessary for the safe management of personal information in the event of a consignment contract.
+			</p>
+			<div class="line"></div>
+			<p class="subheading">
+				<label>Name of the trustee</label>
+				<span>: Watts Co., Ltd.</span>
+			</p>
+			<p class="subheading">
+				<label>Contents of entrusted work</label>
+				<span>: System operation and maintenance</span>
+			</p>
+			<p class="subheading" style="margin-bottom: 0px">
+				<label>Contact</label>
+				<span>: 82-70-7124-2588</span>
+			</p>
+			<div class="agreeBtnBox">
+				<button @click="consentStatusChecked" :style="{background: receiveStatus ? '#2386D2' : '#5b5b5b'}">{{ this.statusText }}</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

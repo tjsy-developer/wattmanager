@@ -1,46 +1,61 @@
-<template lang="pug">
-	.row.justify-center.content-start.infoCreateAndEditContainer
-		.col-12(v-if="compData.listTitle").row.justify-center.titleBar
-			span {{ compData.listTitle }}
-		.col-12.row.justify-center.content-start
-			span(v-if="compData.createAndEditTitle" :class="[ $route.name == 'app-edit' || $route.name == 'app-create' ? 'col':'col-12' ]").createTitle {{ compData.createAndEditTitle }}
-			span(v-if="$route.name == 'app-edit' || $route.name == 'app-create'").appInfoText {{ $t("app")[3] }}
-			selectComp(v-if="$route.name == 'app-edit' || $route.name == 'app-create'", :compData="enList").appCopyEnterprise.col-1
-			selectComp(v-if="$route.name == 'app-edit' || $route.name == 'app-create'", :compData="hqList").appCopyHeadquaters.col-1
-			selectComp(v-if="$route.name == 'app-edit' || $route.name == 'app-create'", :compData="brList").appCopyBranch.col-1
-			button(v-if="$route.name == 'app-edit' || $route.name == 'app-create'"  @click="appInfoCopy").col-1.appCopyBtn {{ $t("appCopy") }}
-			.col-12(v-if="compData.type != 'edit'" style="margin-top:50px; ").row.justify-left.infoImg
-				img(v-if="compData.type == 'pictureEdit'", :src="compData.selected[0]")
-				//- video(v-else-if="compData.type == 'videoEdit'", :src="compData.selected[0].src", :poster="compData.selected[0].thumbnail", controls, preload="none", controlsList="nodownload")
-			//- button(v-if="contentKey == 1" @click="appInfoCopy").col-1.appCopyBtn {{ $t("appCopy") }}		
-			.col-12.row(v-if="content.edit", v-for="(content, contentKey) in compData.listFilters")
-				.col-12.divisionLine
-				.col-12.row.editOptions.items-center
-					span(:style="{ minWidth: compData.createAndEditSpanSize + 'px' }").col-auto {{ content.text }}
-					selectComp(v-if="content.edit == 'select'", :compData="content.selectCompData?content.selectCompData:undefined").col.selectCompClass
-					.col(v-else-if="content.edit == 'checkbox'")
-						.appSettingContents(v-for="(checkbox, checkboxKey) in content.checkboxCompData.list", :key="checkboxKey")
-							input(type="number" v-model="checkbox.sort").appSettingSort
-							label.row.items-center.checkbox
-								input(type="checkbox", :value="checkbox.value", v-model="content.checkboxCompData.selected").col-auto
-								span.col-auto {{ checkbox.text }}
-					textarea#textarea.detailJson(v-else-if="content.edit == 'textarea'", :rows="rows", spellcheck="false" @keydown="resize($event)").col.textareaClass {{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}
-					.fileTypeInputContainer(v-else-if="content.edit == 'file'")
-						img(:src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" )#fileTypeInputImg
-						input(type="file", accept="image/*", @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput")#fileTypeInput.fileTypeInput
-					input(
-						v-else,
-						:value="compData.type == 'edit' ? compData.selected[contentKey-1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]",
-						:disabled="content.edit=='disabled'"
-					).col
-			.col-12.divisionLine
-			.col-12(v-if="compData.type=='create'").createBtns
-				button(@click="createBtnClick") {{ $t("createAndEditComp")[0] }}
-				button(@click="cancleBtnClick") {{ $t("createAndEditComp")[2] }}
-			.col-12(v-else).editBtns
-				button(@click="editBtnClick") {{ $t("createAndEditComp")[1] }}
-				button(@click="cancleBtnClick") {{ $t("createAndEditComp")[2] }}
-				button(@click="deleteBtnClick") {{ $route.name == "profile" ? $t("change password") : $t("createAndEditComp")[3] }}
+<template>
+  <div class="row justify-center content-start infoCreateAndEditContainer">
+    <div class="col-12 row justify-center titleBar">
+      <span>{{ compData.listTitle }}</span>
+    </div>
+    <div class="col-12 row justify-center content-start">
+      <span v-if="compData.createAndEditTitle" class="createTitle" :class="[ $route.name == 'app-edit' || $route.name == 'app-create' ? 'col':'col-12' ]">
+        {{ compData.createAndEditTitle }}
+      </span>
+      <span v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appInfoText">{{ $t("app")[3] }}</span>
+      <selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyEnterprise col-1" :compData="enList"></selectComp>
+      <selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyHeadquaters col-1" :compData="hqList"></selectComp>
+      <selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyBranch col-1" :compData="brList"></selectComp>
+      <button v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="col-1 appCopyBtn"  @click="appInfoCopy">{{ $t("appCopy") }}</button>
+      <div v-if="compData.type != 'edit'" class="row justify-left infoImg" style="margin-top:50px; ">
+        <img v-if="compData.type == 'pictureEdit'" :src="compData.selected[0]" />
+      </div>
+      <div v-if="content.edit" class="col-12 row" v-for="(content, contentKey) in compData.listFilters" :key="contentKey">
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row editOptions items-center">
+          <span class="col-auto" :style="{ minWidth: compData.createAndEditSpanSize + 'px' }">{{ content.text }}</span>
+          <selectComp v-if="content.edit == 'select'" class="col selectCompClass" :compData="content.selectCompData?content.selectCompData:undefined"></selectComp>
+          <div v-else-if="content.edit == 'checkbox'" class="col">
+            <div class="appSettingContents" v-for="(checkbox, checkboxKey) in content.checkboxCompData.list" :key="checkboxKey">
+              <input class="appSettingSort" type="number" v-model="checkbox.sort" />
+              <label class="row items-center checkbox">
+                <input class="col-auto" type="checkbox" :value="checkbox.value" v-model="content.checkboxCompData.selected" />
+                <span class="col-auto">{{ checkbox.text }}</span>
+              </label>
+            </div>
+          </div>
+          <textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)">
+            {{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}
+          </textarea>
+          <div v-else-if="content.edit == 'file'" class="fileTypeInputContainer">
+            <img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
+            <input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />
+          </div>
+          <input
+            v-else
+            class="col"
+            :value="compData.type == 'edit' ? compData.selected[contentKey-1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
+            :disabled="content.edit=='disabled'"
+           />
+        </div>
+      </div>
+      <div class="col-12 divisionLine"></div>
+      <div v-if="compData.type=='create'" class="col-12 createBtns">
+        <button @click="createBtnClick">{{ $t("createAndEditComp")[0] }}</button>
+        <button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
+      </div>
+      <div v-else class="col-12 editBtns">
+        <button @click="editBtnClick">{{ $t("createAndEditComp")[1] }}</button>
+        <button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
+        <button @click="deleteBtnClick">{{ $route.name == "profile" ? $t("change password") : $t("createAndEditComp")[3] }}</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

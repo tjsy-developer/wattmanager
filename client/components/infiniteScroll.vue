@@ -1,10 +1,14 @@
-<template lang="pug">
-	.row.justify-center.infiniteScroll
-		.col-auto.row.justify-center
-			.col-12(style="height:1px")
-			infinite-loading(v-if="compData.listData.length" spinner="spiral" @infinite="infiniteScroll")
-				template(slot="no-more") &nbsp
-				template(slot="no-results") &nbsp
+<template>
+  <div class="row justify-center infiniteScroll">
+    <div class="col-auto row justify-center">
+      <div class="col-12" style="height:1px">
+        <infinite-loading v-if="compData.listData.length" spinner="spiral" @infinite="infiniteScroll">
+          <template slot="no-more">&nbsp</template>
+          <template slot="no-results">&nbsp</template>
+        </infinite-loading>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
