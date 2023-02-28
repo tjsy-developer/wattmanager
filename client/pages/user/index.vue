@@ -1,5 +1,5 @@
-<template lang="pug">
-	infoForm(:compData="compData")
+<template>
+  <infoForm :compData="compData"></infoForm>
 </template>
 
 <script>

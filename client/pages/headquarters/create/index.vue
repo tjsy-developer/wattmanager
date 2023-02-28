@@ -1,5 +1,5 @@
-<template lang="pug">
-	infoCreateAndEdit(:compData="compData")
+<template>
+  <infoCreateAndEdit :compData="compData"></infoCreateAndEdit>
 </template>
 
 <script>

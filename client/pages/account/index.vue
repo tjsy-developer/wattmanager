@@ -1,37 +1,50 @@
-<template lang="pug">
-	.row.justify-center.items-center.account
-		.row.justify-center.items-center.accountWin
-			img(src="@/assets/images/login_banner.png").accountWinImg.col-6
-			.col-6.column.items-center.accountRight
-				.col.row.items-center
-					.maxWidth(v-if="!isCreateQR")
-						.row.justify-center.items-end.title
-							span.col-auto ACCOUNT JOIN
-							button(v-if="$i18n.locale != 'ko'", @click="switchLocale('ko')").col-auto.localeBtn / 한국어
-							button(v-else-if="$i18n.locale != 'en'", @click="switchLocale('en')").col-auto.localeBtn / English
-						input(id="accountID", placeholder="ID", v-model="id").input
-						button(@click="idCheckBtnClick").signUpBtn ID CHECK
-						input(placeholder="Password", v-model="password", type="password").input
-						input(placeholder="Password Check", v-model="passwordCheck", type="password").input
-						input(placeholder="Name", v-model="name").input
-						input(placeholder="E-mail", v-model="EMail").input
-						selectComp(:compData="deviceTypeCompData")
-						selectComp(:compData="enterpriseCompData")
-						selectComp(:compData="hqCompData")
-						selectComp(:compData="branchCompData")
-						button(@click="signUpBtnClick").signUpBtn {{ !deviceTypeCompData.selectedValue || deviceTypeCompData.selectedValue == 3 ? "SIGN UP" : "Create QR" }}
-					.maxWidth.qrcode(v-else)
-						transition(name="qrcode", mode="out-in")
-							.emptyQrCode(v-if="!qrCodeImg", key="emptyQrCode").row.justify-center
-								.col-12.row.justify-center
-									.emptyQrCodeBox
-								span {{ $t("account")[0] }}
-							.loadQrCode(v-else, key="loadQrCode").row.justify-center
-								.col-12.row.justify-center
-									img(:src="qrCodeImg" id="image")
-									//-VueQrcode(:value="value" :width="size")
-								span {{ $t("account")[1] }}
-				a(href="/").col-auto BACK
+<template>
+  <div class="row justify-center items-center account">
+    <div class="row justify-center items-center accountWin">
+      <img class="accountWinImg col-6" src="@/assets/images/login_banner.png" />
+      <div class="col-6 column items-center accountRight">
+        <div class="col row items-center">
+          <div v-if="!isCreateQR" class="maxWidth">
+            <div class="row justify-center items-end title">
+              <span class="col-auto">ACCOUNT JOIN</span>
+              <button v-if="$i18n.locale != 'ko'" class="col-auto localeBtn" @click="switchLocale('ko')">/ 한국어</button>
+              <button v-else-if="$i18n.locale != 'en'" class="col-auto localeBtn" @click="switchLocale('en')">/ English</button>
+            </div>
+            <input class="input" id="accountID" placeholder="ID" v-model="id" />
+            <button class="signUpBtn" @click="idCheckBtnClick">ID CHECK</button>
+            <input class="input" placeholder="Password" v-model="password" type="password" />
+            <input class="input" placeholder="Password Check" v-model="passwordCheck" type="password" />
+            <input class="input" placeholder="Name" v-model="name" />
+            <input class="input" placeholder="E-mail" v-model="EMail" />
+            <selectComp :compData="deviceTypeCompData"></selectComp>
+            <selectComp :compData="enterpriseCompData"></selectComp>
+            <selectComp :compData="hqCompData"></selectComp>
+            <selectComp :compData="branchCompData"></selectComp>
+            <button class="signUpBtn" @click="signUpBtnClick">
+              {{ !deviceTypeCompData.selectedValue || deviceTypeCompData.selectedValue == 3 ? "SIGN UP" : "Create QR" }}
+            </button>
+          </div>
+          <div v-else class="maxWidth qrcode">
+            <transition name="qrcode" mode="out-in">
+              <div v-if="!qrCodeImg" class="emptyQrCode row justify-center" key="emptyQrCode">
+                <div class="col-12 row justify-center">
+                  <div class="emptyQrCodeBox"></div>
+                  <span>{{ $t("account")[0] }}</span>
+                </div>
+              </div>
+              <div class="loadQrCode row justify-center">
+                <div class="col-12 row justify-center">
+                  <img :src="qrCodeImg" id="image" />
+                </div>
+                <span>{{ $t("account")[1] }}</span>
+              </div>
+            </transition>
+          </div>
+        </div>
+        <a class="col-auto" href="/">BACK</a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

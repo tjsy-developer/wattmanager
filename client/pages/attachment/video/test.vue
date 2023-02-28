@@ -1,5 +1,5 @@
-<template lang="pug">
-  //- video(muted controls)#video
+<template>
+  <!-- video(muted controls)#video -->
 </template>
 
 <script>

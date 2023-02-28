@@ -1,31 +1,43 @@
-<template lang="pug">
-	.row.justify-center.content-start.infoCreateAndEditContainer
-		.col-12.row.justify-center.titleBar
-			span(v-if="uploadOrFilebox == 'upload'") {{ $t("upload") }}
-			span(v-else) {{ $t("fileBox") }}
-		.col-12.row.justify-center.items-center
-			.col-12.divisionLine
-			.col-12.row.inputOptions.items-center.justify-center
-				.col-12.row.inputOptions.items-center(v-if="uploadOrFilebox == 'upload'")
-					p.col-12.discript {{ $t("upload text")[0] }}
-					p.col-12.discript {{ $t("upload text")[1] }}
-					p.col-12.discript {{ $t("upload text")[2] }}
-					p.col-12.discript {{ $t("upload text")[3] }}
-				.row.items-center.justify-center(v-else).fileBoxWrap
-					span.fileBoxSentence {{ $t("fileBox text") }}
-				.col-12.divisionLine
-				.col-12.row.inputOptions.items-center
-				span.col-auto {{ $t("upload text")[4] }}
-				input.col-9(v-model="detailPath" v-if="uploadOrFilebox == 'upload'")
-				div.col-9(v-if="uploadOrFilebox == 'filebox'" contentEditable="false" v-model="selectionFileName" style="background: white; max-height: 300px; height: auto; min-height: 30px; padding: 5px")#fileBoxFileName
-				input(type="file", accept="*", @change='fileSelect()' ref="uploadFiles" multiple).col.fileSelectBtn
-				//- img(src="@/assets/images/icons8-xls-48.png")
-				//-input(type="file", accept="image/*", @change="fileTypeInputChange($event, contentKey-1)")#fileTypeInput.fileTypeInput
-				.col-12.divisionLine
-			.col-12.row.inputOptions.items-center
-			.col-12.uploadBtn
-				button(@click="submit") {{ $t("upload text")[6] }}
-		infoForm(:compData="compData")
+<template>
+  <div class="row justify-center content-start infoCreateAndEditContainer">
+    <div class="col-12 row justify-center titleBar">
+      <span v-if="uploadOrFilebox == 'upload'">{{ $t("upload") }}</span>
+      <span v-else>{{ $t("fileBox") }}</span>
+    </div>
+    <div class="col-12 row justify-center items-center">
+      <div class="col-12 divisionLine"></div>
+      <div class="col-12 row inputOptions items-center justify-center">
+        <div v-if="uploadOrFilebox == 'upload'" class="col-12 row inputOptions items-center">
+          <p class="col-12 discript">{{ $t("upload text")[0] }}</p>
+          <p class="col-12 discript">{{ $t("upload text")[1] }}</p>
+          <p class="col-12 discript">{{ $t("upload text")[2] }}</p>
+          <p class="col-12 discript">{{ $t("upload text")[3] }}</p>
+        </div>
+        <div v-else class="row items-center justify-center fileBoxWrap">
+          <span class="fileBoxSentence">{{ $t("fileBox text") }}</span>
+        </div>
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row inputOptions items-center"></div>
+        <span class="col-auto">{{ $t("upload text")[4] }}</span>
+        <input class="col-9" v-model="detailPath" v-if="uploadOrFilebox == 'upload'" />
+        <div
+          v-if="uploadOrFilebox == 'filebox'"
+          class="col-9"
+          contentEditable="false"
+          v-bind:value="selectionFileName"
+          style="background: white; max-height: 300px; height: auto; min-height: 30px; padding: 5px"
+          id="fileBoxFileName"
+        ></div>
+        <input class="col fileSelectBtn" type="file" accept="*" @change='fileSelect()' ref="uploadFiles" multiple />
+        <div class="col-12 divisionLine"></div>
+      </div>
+      <div class="col-12 row inputOptions items-center"></div>
+      <div class="col-12 uploadBtn">
+        <button @click="submit">{{ $t("upload text")[6] }}</button>
+      </div>
+    </div>
+    <infoForm :compData="compData"></infoForm>
+  </div>
 </template>
 
 <script>
@@ -105,12 +117,12 @@ export default {
     }
   },
   methods: {
-    // ÆÄÀÏ ¼±ÅÃ½Ã input text¿¡ ÆÄÀÏ¸íÀ» ³Ö¾îÁØ´Ù.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã½ï¿½ input textï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ø´ï¿½.
     fileSelect() {
       this.uploadFiles = this.$refs.uploadFiles.files
 
       if (this.uploadOrFilebox === "filebox") {
-        // FormDataÀÇ °ª È®ÀÎ
+        // FormDataï¿½ï¿½ ï¿½ï¿½ È®ï¿½ï¿½
         const fileBoxFileNameBox = document.getElementById("fileBoxFileName")
         fileBoxFileNameBox.innerHTML = ""
         // const extensionArr = [
@@ -145,23 +157,23 @@ export default {
     submit() {
       // eslint-disable-next-line prefer-const
       const formData = new FormData()
-      // ÆÄÀÏ¾÷·Îµå ¸Þ´º: upload Å¸ÀÔ ÆÄ¶ó¹ÌÅÍ¸¦, ÆÄÀÏÇÔ ¸Þ´º : filebox Å¸ÀÔ ÆÄ¶ó¹ÌÅÍ¸¦ º¸³¿
+      // ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½Îµï¿½ ï¿½Þ´ï¿½: upload Å¸ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½Í¸ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ : filebox Å¸ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
       formData.append(
         "type",
         // eslint-disable-next-line eqeqeq
         this.uploadOrfileBox == "upload" ? "upload" : "filebox"
       )
-      // ·Î±×ÀÎÇÑ »ç¿ëÀÚÀÇ ÅäÅ« Á¤º¸¸¦ formData¿¡ ³Ö´Â´Ù
+      // ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å« ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ formDataï¿½ï¿½ ï¿½Ö´Â´ï¿½
       formData.append("jwt", localStorage.getItem("jwt"))
 
-      // ÆÄ¿ö¸Å´ÏÀú¿¡¼­ ¾÷·Îµå Çß´Ù¶ó°í ±¸ºÐ
+      // ï¿½Ä¿ï¿½ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½ß´Ù¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
       formData.append("pmUpload", true)
 
-      // ¾÷·ÎµåÇÒ ÆÄÀÏÀÌ ¼±ÅÃµÇÁö¾ÊÀ½
+      // ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       if (this.uploadFiles.length === 0) {
         alert(this.$t("noUploadFile"))
         return
-        // ÆÄÀÏ¾÷·Îµå ÆäÀÌÁö¿¡¼­ »ó¼¼°æ·Î¸¦ ¹ÌÀÔ·ÂÇßÀ»¶§
+        // ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ó¼¼°ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       } else if (this.detailPath === "" && this.uploadOrfileBox === "upload") {
         alert(this.$t("upload text")[0])
         return
@@ -174,23 +186,23 @@ export default {
           ? this.detailPath.trim()
           : domain.detailFilePath
       )
-      // ¼±ÅÃÇÑ ÆÄÀÏÀ» Â÷·Ê´ë·Î ³Ö´Â´Ù
+      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ê´ï¿½ï¿½ ï¿½Ö´Â´ï¿½
       for (let i = 0; i < this.uploadFiles.length; i++) {
         formData.append("uploadFiles", this.uploadFiles[i])
       }
 
-      // FormDataÀÇ °ª È®ÀÎ
+      // FormDataï¿½ï¿½ ï¿½ï¿½ È®ï¿½ï¿½
       // for (const pair of formData.entries()) {
       //   console.log(pair[0] + ", " + pair[1])
       // }}
 
-      // ÆÄÀÏ ¾÷·Îµå½Ã ·Îµù¹Ù»ðÀÔ
+      // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½ ï¿½Îµï¿½ï¿½Ù»ï¿½ï¿½ï¿½
       // alert(this.loadingBarStatus)
       this.loadingBarStatus = true
       this.$nuxt.$emit("setLoadingBar", this.loadingBarStatus)
 
-      /* ¾÷·Îµå Å¬¸¯ ÆäÀÌÁö°¡ ÆÄÀÏÇÔ && doamin.separateBackendUploadPath == true (ÆÄÀÏ¾÷·Îµå ¹é¿£µå °æ·Î ºÐ¸®)
-        ÀÏ °æ¿ì¿¡¸¸ (ÆÄÀÏÇÔ ¹é¿£µå °æ·Î¸¦ È£ÃâÇÑ´Ù.) */
+      /* ï¿½ï¿½ï¿½Îµï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ && doamin.separateBackendUploadPath == true (ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½Îµï¿½ ï¿½é¿£ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ð¸ï¿½)
+        ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½é¿£ï¿½ï¿½ ï¿½ï¿½Î¸ï¿½ È£ï¿½ï¿½ï¿½Ñ´ï¿½.) */
       if (
         this.uploadOrfileBox === "filebox" &&
         domain.separateBackendUploadPath
@@ -200,7 +212,7 @@ export default {
         this.fileuploadApi = domain.domain.backend1
       }
 
-      // ¾÷·Îµå api¸¦ È£Ãâ
+      // ï¿½ï¿½ï¿½Îµï¿½ apiï¿½ï¿½ È£ï¿½ï¿½
       const self = this
       this.$axios
         .post(this.fileuploadApi + "fileupload/", formData, {
@@ -209,7 +221,7 @@ export default {
           }
         })
         .then(function(res) {
-          // ÆÄÀÏ ¾÷·Îµå½Ã ·Îµù¹Ù»ðÀÔ
+          // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½ ï¿½Îµï¿½ï¿½Ù»ï¿½ï¿½ï¿½
           self.loadingBarStatus = false
           self.$nuxt.$emit("setLoadingBar", self.loadingBarStatus)
 

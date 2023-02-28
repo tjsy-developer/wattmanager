@@ -1,21 +1,33 @@
-<template lang="pug">
-	.row.justify-center.content-start.infoDetail
-		.col-12.row.justify-center.titleBar
-			span {{ $t("notice")[0] }}
-		.col-12.row.justify-center.content-start
-			span.col-12.createTitle {{ $t("notice")[5] }}
-			.col-12.row(v-if="content.edit", v-for="(content, contentKey) in listFilters")
-				.col-12.divisionLine
-				.col-12.row.editOptions.items-center
-					span.col-auto {{ content.text }}
-					selectComp(v-if="content.edit == 'select'", :compData="content.selectCompData?content.selectCompData:undefined", disabled).col.selectCompClass
-					textarea(v-else-if="content.edit == 'textarea'", rows=10, spellcheck="false", :readonly=" auth == 4 || auth == 3 && enSeq == selected[3] ? undefined : 'readonly'").col.textareaClass {{ selected[contentKey] }}
-					input(v-else, :placeholder="contentKey == 1 ? '0000-00-00' : ''", :value="contentKey == 1 ? getTimeZone(selected[contentKey]) : selected[contentKey]", :disabled="auth == 4 && contentKey != 2 || auth == 3 && enSeq == selected[3] && contentKey != 2 ? undefined : 'disabled'").col
-			.col-12.divisionLine
-			.col-12.row.justify-end.editBtns
-				button(v-if="auth == 4 || auth == 3 && enSeq == selected[3]", @click="editBtnClick").editBtn {{ $t("createAndEditComp")[1] }}
-				button(v-if="auth == 4 || auth == 3 && enSeq == selected[3]", @click="deleteBtnClick").deleteBtn {{ $t("createAndEditComp")[3] }}
-				button(@click="cancelBtnClick").cancelBtn {{ $t("noticeUpload")[1] }}
+<template>
+  <div class="row justify-center content-start infoDetail">
+    <div class="col-12 row justify-center titleBar">
+      <span>{{ $t("notice")[0] }}</span>
+    </div>
+    <div class="col-12 row justify-center content-start">
+      <span class="col-12 createTitle">{{ $t("notice")[5] }}</span>
+      <div v-if="content.edit" class="col-12 row" v-for="(content, contentKey) in listFilters">
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row editOptions items-center">
+          <span class="col-auto">{{ content.text }}</span>
+          <selectComp v-if="content.edit == 'select'" class="col selectCompClass" :compData="content.selectCompData?content.selectCompData:undefined" disabled></selectComp>
+          <textarea v-else-if="content.edit == 'textarea'" class="col textareaClass" rows=10 spellcheck="false" :readonly=" auth == 4 || auth == 3 && enSeq == selected[3] ? undefined : 'readonly'">{{ selected[contentKey] }}</textarea>
+          <input
+            v-else
+            class="col"
+            :placeholder="contentKey == 1 ? '0000-00-00' : ''"
+            :value="contentKey == 1 ? getTimeZone(selected[contentKey]) : selected[contentKey]"
+            :disabled="auth == 4 && contentKey != 2 || auth == 3 && enSeq == selected[3] && contentKey != 2 ? undefined : 'disabled'"
+          />
+        </div>
+      </div>
+      <div class="col-12 divisionLine"></div>
+      <div class="col-12 row justify-end editBtns">
+        <button v-if="auth == 4 || auth == 3 && enSeq == selected[3]" class="editBtn" @click="editBtnClick">{{ $t("createAndEditComp")[1] }}</button>
+        <button v-if="auth == 4 || auth == 3 && enSeq == selected[3]" class="deleteBtn" @click="deleteBtnClick">{{ $t("createAndEditComp")[3] }}</button>
+        <button class="cancelBtn" @click="cancelBtnClick">{{ $t("noticeUpload")[1] }}</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

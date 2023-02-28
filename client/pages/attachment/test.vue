@@ -1,6 +1,7 @@
-<template lang="pug">
-		video(id="videoPlayer" autoplay controls)
+<template>
+  <video id="videoPlayer" autoplay controls></video>
 </template>
+
 <script>
 import { MediaPlayer } from "dashjs"
 export default {

@@ -1,8 +1,9 @@
-<template lang="pug">
-  .row.content-start.video
-    dataSearchBar
-    dataVideoPlay(:compData="compData")
-    dataList(v-show="!$route.query.seq || $route.query.seq && compData.isVideoPlayDataLoaded", :compData="compData")
+<template>
+  <div class="row content-start video">
+    <dataSearchBar></dataSearchBar>
+    <dataVideoPlay :compData="compData"></dataVideoPlay>
+    <dataList v-show="!$route.query.seq || $route.query.seq && compData.isVideoPlayDataLoaded" :compData="compData"></dataList>
+  </div>
 </template>
 
 <script>

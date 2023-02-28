@@ -1,7 +1,8 @@
-<template lang="pug">
-	.row.content-start.data
-		dataSearchBar
-		dataList
+<template>
+	<div class="row content-start data">
+		<dataSearchBar></dataSearchBar>
+		<dataList></dataList>
+	</div>
 </template>
 
 <script>

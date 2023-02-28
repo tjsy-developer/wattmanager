@@ -1,20 +1,35 @@
-<template lang="pug">
-	.row.justify-center.content-start.infoCreate
-		.col-12.row.justify-center.titleBar
-			span {{ $t("notice")[0] }}
-		.col-12.row.justify-center.content-start
-			span.col-12.createTitle {{ $t("notice")[6] }}
-			.col-12.row(v-if="content.edit", v-for="(content, contentKey) in listFilters")
-				.col-12.divisionLine
-				.col-12.row.editOptions.items-center
-					span.col-auto {{ content.text }}
-					selectComp(v-if="content.edit == 'select'", :compData="content.selectCompData?content.selectCompData:undefined", :disabled="auth == 4 ? undefined : 'disabled'").col.selectCompClass
-					textarea(v-else-if="content.edit == 'textarea'", rows=10, spellcheck="false").col.textareaClass
-					input(v-else, :placeholder="contentKey == 1 ? '0000-00-00' : ''", :value="contentKey == 2 ? id : undefined", :disabled="contentKey != 2 ? undefined : 'disabled'").col
-			.col-12.divisionLine
-			.col-12.row.justify-end.createBtns
-				button(@click="createBtnClick") {{ $t("noticeUpload")[0] }}
-				button(@click="cancleBtnClick") {{ $t("noticeUpload")[1] }}
+<template>
+  <div class="row justify-center content-start infoCreate">
+    <div class="col-12 row justify-center titleBar">
+      <span>{{ $t("notice")[0] }}</span>
+    </div>
+    <div class="col-12 row justify-center content-start">
+      <span class="col-12 createTitle">{{ $t("notice")[6] }}</span>
+      <div v-if="content.edit" class="col-12 row" v-for="(content, contentKey) in listFilters">
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row editOptions items-center">
+          <span class="col-auto">{{ content.text }}</span>
+          <selectComp
+            v-if="content.edit == 'select'"
+            class="col selectCompClass"
+            :compData="content.selectCompData?content.selectCompData:undefined"
+            :disabled="auth == 4 ? undefined : 'disabled'"
+          ></selectComp>
+          <textarea v-else-if="content.edit == 'textarea'" class="col textareaClass" rows="10" spellcheck="false"></textarea>
+          <input
+            v-else class="col"
+            :placeholder="contentKey == 1 ? '0000-00-00' : ''"
+            :value="contentKey == 2 ? id : undefined" :disabled="contentKey != 2 ? undefined : 'disabled'"
+          />
+        </div>
+      </div>
+      <div class="col-12 divisionLine"></div>
+      <div class="col-12 row justify-end createBtns">
+        <button @click="createBtnClick">{{ $t("noticeUpload")[0] }}</button>
+        <button @click="cancleBtnClick">{{ $t("noticeUpload")[1] }}</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

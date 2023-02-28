@@ -1,7 +1,8 @@
-<template lang="pug">
-  .row.content-start.data
-    dataSearchBar
-    dataList(:compData="compData")
+<template>
+  <div class="row content-start data">
+    <dataSearchBar></dataSearchBar>
+    <dataList :compData="compData"></dataList>
+  </div>
 </template>
 
 <script>

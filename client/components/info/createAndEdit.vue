@@ -29,9 +29,7 @@
               </label>
             </div>
           </div>
-          <textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)">
-            {{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}
-          </textarea>
+          <textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)">{{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}</textarea>
           <div v-else-if="content.edit == 'file'" class="fileTypeInputContainer">
             <img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
             <input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />

@@ -1,5 +1,5 @@
-<template lang="pug">
-	infoCreateAndEdit(v-if="compData.selected", :compData="compData")
+<template>
+  <infoCreateAndEdit v-if="compData.selected" :compData="compData"></infoCreateAndEdit>
 </template>
 
 <script>

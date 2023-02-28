@@ -1,7 +1,8 @@
-<template lang="pug">
-div.root
-		loginForm(@child="moveChangedDomain()")
-		inspectionAlertModal(v-if="test" :propsData="modalParameter" name="inspectionAlertModal" :clickToClose="false" @closeCheck="closeCheck").alert-modal
+<template>
+  <div class="root">
+    <loginForm @child="moveChangedDomain()"></loginForm>
+    <inspectionAlertModal v-if="test" class="alert-modal" :propsData="modalParameter" name="inspectionAlertModal" :clickToClose="false" @closeCheck="closeCheck"></inspectionAlertModal>
+  </div>
 </template>
 <script>
 import axiosJson from "@/assets/jsons/axios"

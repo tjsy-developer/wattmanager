@@ -1,25 +1,34 @@
-<template lang="pug">
-	.row.justify-center.content-start.infoCreate
-		.col-12.row.justify-center.titleBar
-			span {{ $t("memo")[1] }}
-		.col-12.row.justify-center.content-start
-			span.col-12.createTitle {{ $t("memo")[3] }}
-			.col-12.row
-				.col-12.divisionLine
-				.col-12.row.editOptions.items-center
-					span.col-auto {{ $t("notice")[1] }}
-					textarea(rows=10, spellcheck="false" v-model="memoContent").col.textareaClass
-				.col-12.divisionLine
-				.col-12.row.editOptions.items-center
-					span.col-auto {{ $t("upload text")[4] }}
-					.column.col
-						.col-12.row.justify-between.items-center.memoFiles(v-for="(cnt, cntIndex) in inserFileCnt")
-							input(type="text" readOnly).col-10.fileName
-							input(type="file"  :name="`file${cntIndex}`", accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4, .mov" @change="checkExtension").col.file
-			.col-12.divisionLine
-			.col-12.row.justify-center.createBtns
-				button(@click="createBtnClick") {{ $t("noticeUpload")[0] }}
-				button(@click="cancleBtnClick") {{ $t("createAndEditComp")[2] }}
+<template>
+	<div class="row justify-center content-start infoCreate">
+		<div class="col-12 row justify-center titleBar">
+			<span>{{ $t("memo")[1] }}</span>
+		</div>
+		<div class="col-12 row justify-center content-start">
+			<span class="col-12 createTitle">{{ $t("memo")[3] }}</span>
+			<div class="col-12 row">
+				<div class="col-12 divisionLine"></div>
+				<div class="col-12 row editOptions items-center">
+					<span class="col-auto">{{ $t("notice")[1] }}</span>
+					<textarea class="col textareaClass" rows=10 spellcheck="false" v-model="memoContent"></textarea>
+				</div>
+				<div class="col-12 divisionLine"></div>
+				<div class="col-12 row editOptions items-center">
+					<span class="col-auto">{{ $t("upload text")[4] }}</span>
+					<div class="column col">
+						<div class="col-12 row justify-between items-center memoFiles" v-for="(cnt, cntIndex) in inserFileCnt" :key="cntIndex">
+							<input class="col-10 fileName" type="text" readOnly />
+							<input class="col file" type="file"  :name="`file${cntIndex}`" accept=".jpg, .png, .jpeg, .gif, .bmp, .pdf, .mp4, .mov" @change="checkExtension" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 divisionLine"></div>
+			<div class="col-12 row justify-center createBtns">
+				<button @click="createBtnClick">{{ $t("noticeUpload")[0] }}</button>
+				<button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

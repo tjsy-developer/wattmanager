@@ -1,65 +1,97 @@
-<template lang="pug">
-	.row.content-start.notice
-		.col-12.row.justify-center
-			.col-12(v-if="compData.listTitle").row.justify-center.titleBar
-				span {{ compData.title }}
-			.col-12#printBox.row.justify-center
-				.col-12.row.justify-end.list
-					.col.row.justify-end.items-center
-						span.subLabel 검색 기간:
-						.row.items-center.justify-end
-							.row
-								input.dateBox(type="date" v-model="startDate" :max="endDate")
-								input.dateBox(type="date" v-model="endDate" :min="startDate")
-							.row
-								button(@click="setPeriod(1)").buttons.buttons--grey 1개월
-								button(@click="setPeriod(3)").buttons.buttons--grey 3개월
-								button(@click="setPeriod(6)").buttons.buttons--grey 6개월
-								button(@click="setPeriod(12)").buttons.buttons--grey 1년
-							.row.items-center.justify-end(style="margin-left: 20px")
-								select.partList(style="display: none" v-model="selectedPartic")
-									option(value="") 선택안함
-									option(value=option v-for="option in compData.option") {{ option }}
-								button(@click="getCallHistory").buttons.buttons--green 조회
-								button(@click="print()").buttons.buttons--blue 프린트
-					//- .col-4.row.justify-end.items-center
-					//- 	span.subLabel(style="display: none") 참여자:
-
-				//- 통화 이력 division 시작위치
-				.col-12.row.justify-end.list
-					.col-4.row.items-end
-						span.row.items-end.col-auto.subTitle {{ compData.listTitle }}
-						a(v-if="compData.auth == 4 || compData.auth == 3", :href="$route.name + '/create'").col-auto.createBtn {{ $t("createAndEditComp")[0] }}
-					.col-8.row.justify-end.items-end
-						span.displayDetails ◎ 전체 통화 건수 : {{ entireCallCount }} 건
-						span.displayDetails ◎ 전체 통화 시간 : {{ entireCallTime }}
-				.col-12.content-start.list
-					.col-12.row.listFilters
-						div(v-for="bar in compData.listFilters", :class="[ bar.width?'col-auto':'col' ]", :style="{ width: bar.width+'%' }").row.justify-center
-							button(v-if="bar.align").row.items-center
-								span.titleBarText {{ bar.text }}
-								img(v-if="$route.query.column == bar.align.column && $route.query.status == 'asc'", src="@/assets/images/list_icon_arrow_up.png", :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}").alignIcon
-								img(v-else, src="@/assets/images/list_icon_arrow_down.png", :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}").alignIcon
-							span(v-else) {{ bar.text }}
-					.col-12.row.contents.page-break(v-for="(bars, listIndex) in compData.listData" v-if="compData.listData")
-						div.content
-							span(v-for="(bar, fileterIndex) in bars"  :key="fileterIndex" :style="{width: compData.listFilters[fileterIndex].width + '%'}") {{ bar }}
-					.col-12.row.no-data-division(v-if="compData.listData.length == 0")
-						.co-12 조회된 데이터가 없습니다.
-				//- 참여자 통화 시간 division 시작위치
-				.divisionLine.col-12
-				.col-12.row.justify-end.list(v-if="false")
-					.col-12.row.items-end
-						span.row.items-end.col-auto.subTitle 참여자 통화 시간
-						a(v-if="compData.auth == 4 || compData.auth == 3", :href="$route.name + '/create'").col-auto.createBtn {{ $t("createAndEditComp")[0] }}
-				.col-12.row.content-start.list.individual-list(v-if="false")
-					.row.listFilters
-						div(v-for="bar in compData.individualList",:style="{ width: 250 +'px' }").row.justify-center
-							span {{ bar.text }}
-					.col-12.row.contents(v-for="(bars, listIndex) in compData.participantsList")
-						div.content
-							span(v-for="(bar, fileterIndex) in bars" :key="fileterIndex" :style="{width: 250 + 'px'}") {{ bar }}
+<template>
+	<div class="row content-start notice">
+		<div class="col-12 row justify-center">
+			<div v-if="compData.listTitle" class="col-12 row justify-center titleBar">
+				<span>{{ compData.title }}</span>
+			</div>
+			<div class="col-12 row justify-center" id="printBox">
+				<div class="col-12 row justify-end list">
+					<div class="col row justify-end items-center">
+						<span class="subLabel">검색 기간:</span>
+						<div class="row items-center justify-end">
+							<div class="row">
+								<input class="dateBox" type="date" v-model="startDate" :max="endDate" />
+								<input class="dateBox" type="date" v-model="endDate" :min="startDate" />
+							</div>
+							<div class="row">
+								<button class="buttons buttons--grey" @click="setPeriod(1)">1개월</button>
+								<button class="buttons buttons--grey" @click="setPeriod(3)">3개월</button>
+								<button class="buttons buttons--grey" @click="setPeriod(6)">6개월</button>
+								<button class="buttons buttons--grey" @click="setPeriod(12)">1년</button>
+							</div>
+							<div class="row items-center justify-end" style="margin-left: 20px">
+								<select class="partList" style="display: none" v-model="selectedPartic">
+									<option value="">선택안함</option>
+									<option value=option v-for="option in compData.option">{{ option }}</option>
+								</select>
+								<button class="buttons buttons--green" @click="getCallHistory">조회</button>
+								<button class="buttons buttons--green" @click="print()">프린트</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 통화 이력 division 시작위치 -->
+				<div class="col-12 row justify-end list">
+					<div class="col-4 row items-end">
+						<span class="row items-end col-auto subTitle">{{ compData.listTitle }}</span>
+						<a v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :href="$route.name + '/create'">
+							{{ $t("createAndEditComp")[0] }}
+						</a>
+					</div>
+					<div class="col-8 row justify-end items-end">
+						<span class="displayDetails">◎ 전체 통화 건수 : {{ entireCallCount }} 건</span>
+						<span class="displayDetails">◎ 전체 통화 시간 : {{ entireCallTime }}</span>
+					</div>
+				</div>
+				<div class="col-12 content-start list">
+					<div class="col-12 row listFilters">
+						<div class="row justify-center" v-for="bar in compData.listFilters" :class="[ bar.width?'col-auto':'col' ]" :style="{ width: bar.width+'%' }">
+							<button v-if="bar.align" class="row items-center">
+								<span class="titleBarText">{{ bar.text }}</span>
+								<img v-if="$route.query.column == bar.align.column && $route.query.status == 'asc'" class="alignIcon" src="@/assets/images/list_icon_arrow_up.png" :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}" />
+								<img v-else class="alignIcon" src="@/assets/images/list_icon_arrow_down.png" :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}" />
+							</button>
+							<span v-else>{{ bar.text }}</span>
+						</div>
+					</div>
+					<div v-if="compData.listData" class="col-12 row contents page-break" v-for="(bars, listIndex) in compData.listData" :key="listIndex">
+						<div class="content">
+							<span v-for="(bar, fileterIndex) in bars" :key="fileterIndex" :style="{width: compData.listFilters[fileterIndex].width + '%'}">
+								{{ bar }}
+							</span>
+						</div>
+					</div>
+					<div v-if="compData.listData.length == 0" class="col-12 row no-data-division">
+						<span class="col-12">조회된 데이터가 없습니다.</span>
+					</div>
+				</div>
+				<!-- 참여자 통화 시간 division 시작위치 -->
+				<div class="divisionLine col-12"></div>
+				<div v-if="false" class="col-12 row justify-end list">
+					<div class="col-12 row items-end">
+						<span class="row items-end col-auto subTitle">참여자 통화 시간</span>
+						<a v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :href="$route.name + '/create'">
+							{{ $t("createAndEditComp")[0] }}
+						</a>
+					</div>
+				</div>
+				<div v-if="false" class="col-12 row content-start list individual-list">
+					<div class="row listFilters">
+						<div class="row justify-center" v-for="bar in compData.individualList" :style="{ width: 250 +'px' }">
+							<span>{{ bar.text }}</span>
+						</div>
+					</div>
+					<div class="col-12 row contents" v-for="(bars, listIndex) in compData.participantsList" :key="listIndex">
+						<div class="content">
+							<span v-for="(bar, fileterIndex) in bars" :key="fileterIndex" :style="{width: 250 + 'px'}">{{ bar }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
+
 <script>
 import filtersJson from "@/assets/jsons/info/callHistory/filters"
 import getFilters from "@/assets/scripts/info/getFilters"

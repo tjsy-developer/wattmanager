@@ -41,7 +41,7 @@
               <button v-if="$route.name == 'attachment-video'" @click="videoPlayBtnClick(galleryContent)">
                 <img src="@/assets/images/list_img_hover_icon_play.png" />
               </button>
-              <button v-else-if="$route.name == 'attachment-picture'", @click.exact="picturePlayBtnClick($event, galleryContent)">
+              <button v-else-if="$route.name == 'attachment-picture'" @click.exact="picturePlayBtnClick($event, galleryContent)">
                 <img src="@/assets/images/list_img_hover_icon_preview.png" />
               </button>
               <button @click="removeBtnClick(galleryContent)">
@@ -63,7 +63,7 @@
               {{ getTimeZoneEndSeconds(galleryContent.date) }} {{ galleryContent.running_time !== null && galleryContent.running_time !== undefined ? "(" + getTotalVideoTime(galleryContent.running_time) + ")" : ''}}
             </span>
             <img v-if="galleryContent.code" class="tagIcon" src="@/assets/images/ic_tag.png" />
-            <span v-if="galleryContent.code" class="col-auto.galleryViewCode">{{ galleryContent.code }}</span>
+            <span v-if="galleryContent.code" class="col-auto galleryViewCode">{{ galleryContent.code }}</span>
             <div v-else class="col-auto galleryViewCode">&nbsp</div>
           </div>
         </div>
@@ -84,7 +84,7 @@
               <span v-if="selectedFilter.group === 'br_alias'">
                 {{ loginUserAuth < 4 ? selectedFilter.upperText + " " + selectedFilter.text :  selectedFilter.topUpperText + " " + selectedFilter.upperText + " " + selectedFilter.text}}
               </span>
-              <span class="v-else">{{ selectedFilter.text || selectedFilter }}</span>
+              <span v-else>{{ selectedFilter.text || selectedFilter }}</span>
               <img class="filterBoxXIcon" src="@/assets/images/list_icon_filter_x.png" />
             </button>
           </div>
@@ -116,7 +116,7 @@
           <div v-if="listContent.rate !== 100 && listContent.seq != $route.query.seq" class="col-auto row items-center listViewUploading">
             <div v-if="listContent.seq != $route.query.seq" class="row justify-center items-center uploading" v-show="true">
               <div class="row col-12 justify-center">
-                <p v-if="0 == listContent.rate && listContent.recording_fail != 'Y'" class="col-12.listProgressText">
+                <p v-if="0 == listContent.rate && listContent.recording_fail != 'Y'" class="col-12 listProgressText">
                   {{ $t("Upload progress short text")[0] }} <br> {{ $t("Upload progress short text")[3] }}
                 </p>
                 <p v-else-if="listContent.rate == 0 && listContent.recording_fail == 'Y'" class="col-12 listProgressText">
@@ -131,7 +131,7 @@
                 <p v-if="0 < listContent.rate && listContent.rate < 90" class="col-12 listProgressText">
                   {{ $t("Upload progress short text")[1] }} <br> {{ $t("Upload progress short text")[3] }}
                 </p>
-                <p v-if="90 <= listContent.rate" class="col-12.listProgressText">{{ $t("Upload progress short text")[2] }} <br> {{ $t("Upload progress short text")[4] }}</p>
+                <p v-if="90 <= listContent.rate" class="col-12 listProgressText">{{ $t("Upload progress short text")[2] }} <br> {{ $t("Upload progress short text")[4] }}</p>
                 <div v-if="0 < listContent.rate && listContent.rate < 90" class="row col-9 prog" style="height: 12px; margin-top: 2px">
                   <div class="progs" id="progressing" :style='{width: listContent.rate + "%", "height": "12px"}'></div>
                   <p v-if="0 < listContent.rate && listContent.rate < 90" class="col-12 listProgressGage" :style="{color: 70 <= listContent.rate ? 'white': 'black'}">
@@ -157,8 +157,8 @@
             <span>{{ listViewPeople(listContent) }}</span>
           </div>
           <span class="col">{{ listContent.title?listContent.title:"-" }}</span>
-          <span class="col-auto.listViewCode">{{ listContent.code?listContent.code:"-" }}</span>
-          <span class="col-auto.listViewBelong">{{ listContent.hq }} <br> {{listContent.branch}}</span>
+          <span class="col-auto listViewCode">{{ listContent.code?listContent.code:"-" }}</span>
+          <span class="col-auto listViewBelong">{{ listContent.hq }} <br> {{listContent.branch}}</span>
           <div class="col-auto column items-center listViewDate">
             <span>{{ getTimeZoneEndSeconds(listContent.date).split(" ")[0] }}</span>
             <span>{{ getTimeZoneEndSeconds(listContent.date).split(" ")[1] }}</span>
@@ -181,7 +181,7 @@
         </div>
       </div>
       <div v-else class="col-12 row favoriteContent" v-for="(favoriteContent, favoriteContentKey) in compData.listData" :key="favoriteContentKey">
-        <div class="col-auto" @mouseenter="contentImgMouseenter", @mouseleave="contentImgMouseleave">
+        <div class="col-auto" @mouseenter="contentImgMouseenter" @mouseleave="contentImgMouseleave">
           <div v-if="favoriteContent.seq != $route.query.seq" class="row justify-center items-center contentImgHover">
             <button @click="editBtnClick(favoriteContent)">
               <img src="@/assets/images/list_img_hover_icon_edit.png" />
@@ -189,10 +189,10 @@
             <button @click="downloadBtnClick(favoriteContent)">
               <img src="@/assets/images/list_img_hover_icon_download.png" />
             </button>
-            <button v-if="favoriteContent.video", @click="videoPlayBtnClick(favoriteContent)">
+            <button v-if="favoriteContent.video" @click="videoPlayBtnClick(favoriteContent)">
               <img src="@/assets/images/list_img_hover_icon_play.png" />
             </button>
-            <button v-else-if="favoriteContent.img", @click.exact="picturePlayBtnClick($event, favoriteContent)">
+            <button v-else-if="favoriteContent.img" @click.exact="picturePlayBtnClick($event, favoriteContent)">
               <img src="@/assets/images/list_img_hover_icon_preview.png" />
             </button>
             <button @click="removeBtnClick(favoriteContent)">

@@ -1,32 +1,45 @@
-<template lang="pug">
-	.row.content-start.notice
-		.col-12.row.justify-center
-			.col-12(v-if="compData.listTitle").row.justify-center.titleBar
-				span {{ compData.title }}
-			.col-12.row.justify-center
-				.row.justify-between.subTitleDiv
-					span.col-auto.subTitle {{ compData.listTitle }}
-					a(v-if="compData.auth == 4 || compData.auth == 3", :href="$route.name + '/create'").col-auto.createBtn {{ $t("createAndEditComp")[0] }}
-			.col-12.row.content-start.list
-				.col-12.row.listFilters
-					div(v-for="bar in compData.listFilters", :class="[ bar.width?'col-auto':'col' ]", :style="{ width: bar.width+'px' }").row.justify-center
-						button(v-if="bar.align", @click="alignBtnClick(bar)").row.items-center
-							span.titleBarText {{bar.text}}
-							img(v-if="$route.query.column == bar.align.column && $route.query.status == 'asc'", src="@/assets/images/list_icon_arrow_up.png", :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}").alignIcon
-							img(v-else, src="@/assets/images/list_icon_arrow_down.png", :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}").alignIcon
-						span(v-else) {{bar.text}}
-				.col-12.row.contents
-					a(v-for="(contents, contentskey) in compData.listData", :key="contentskey", :href="$route.name + '/detail?seq=' + contents[contents.length-1]").contentA.col-12.row
-						span(:style="{ width: compData.listFilters[0].width+'px' }") {{contentskey+1+compData.contentsPerPage*($route.query.page -1)}}
-						.row.justify-center.items-center.content(
-							v-for="(content, contentKey) in contents",
-							v-if="contentKey != contents.length-1",
-							:key="contentKey",
-							:class="[ compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width?'col-auto':'col' ]",
+<template>
+  <div class="row content-start notice">
+    <div class="col-12 row justify-center">
+      <div class="col-12 row justify-center titleBar">
+        <span>{{ compData.title }}</span>
+      </div>
+      <div class="col-12 row justify-center">
+        <div class="row justify-between subTitleDiv">
+          <span class="col-auto subTitle">{{ compData.listTitle }}</span>
+          <a v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :href="$route.name + '/create'">{{ $t("createAndEditComp")[0] }}</a>
+        </div>
+      </div>
+      <div class="col-12 row content-start list">
+        <div class="col-12 row listFilters">
+          <div class="row justify-center" v-for="bar in compData.listFilters" :class="[ bar.width?'col-auto':'col' ]" :style="{ width: bar.width+'px' }">
+            <button v-if="bar.align" class="row items-center" @click="alignBtnClick(bar)">
+              <span class="titleBarText">{{bar.text}}</span>
+              <img v-if="$route.query.column == bar.align.column && $route.query.status == 'asc'" class="alignIcon" src="@/assets/images/list_icon_arrow_up.png" :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}" />
+              <img v-else class="alignIcon" src="@/assets/images/list_icon_arrow_down.png" :style="{opacity:$route.query.column == bar.align.column ? 1 : 0.5}" />
+            </button>
+            <span v-else>{{bar.text}}</span>
+          </div>
+        </div>
+        <div class="col-12 row contents">
+          <a class="contentA col-12 row" v-for="(contents, contentskey) in compData.listData" :key="contentskey" :href="$route.name + '/detail?seq=' + contents[contents.length-1]">
+            <span :style="{ width: compData.listFilters[0].width+'px' }">{{contentskey+1+compData.contentsPerPage*($route.query.page -1)}}</span>
+            <div
+              class="row justify-center items-center content"
+              v-for="(content, contentKey) in contents"
+							v-if="contentKey != contents.length-1"
+							:key="contentKey"
+							:class="[ compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width?'col-auto':'col' ]"
 							:style="{ width: compData.listFilters[contentKey+1] && compData.listFilters[contentKey+1].width+'px' }"
-						)
-							span.col-auto {{ contentKey == 1 || contentKey == 2 ? getTimeZone(content) : content }}
-		pagination(:compData="compData").col-12
+            >
+              <span class="col-auto">{{ contentKey == 1 || contentKey == 2 ? getTimeZone(content) : content }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <pagination class="col-12" :compData="compData"></pagination>
+  </div>
 </template>
 
 <script>

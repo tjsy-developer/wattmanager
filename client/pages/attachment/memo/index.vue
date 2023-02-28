@@ -1,38 +1,53 @@
-<template lang="pug">
-	.row.content-start.memo
-		dataSearchBar
-		.row.justify-center.memolist
-			.row.justify-between.items-center.titleContainer.maxWidth
-				span.col-auto.title {{ $t("memo")[2] }}
-				.col.row.justify-end
-					changeViewType.col-auto
-					a(:href="'attachment/memo/create'").col-auto.createBtn {{ $t("createAndEditComp")[0] }}
-				.row.col-12
-					button(v-if="$route.query.viewType == 'gallery'", v-for="memo in compData.listData", @click="memoBtnClick(memo)").row.memoBtn
-						.col-12(v-if="memo.thumbnailName != null").row.memoImgContainer
-							img(:src="webServerFilePathJson.thumbnail + memo.thumbnailName").memoImg
-							.col-12(v-if="memo.fileType == 'V'").row.justify-center.items-center.markImg
-								img(src="@/assets/images/list_icon_play50.png")
-						div(v-else).col-12.empty
-							img(src="@/assets/images/ic_image.png").memoGalleyEmptyImg
-							span.memoGalleyEmptyText {{ $t("memo no data")}}
-						section.col-12.row.memoSection
-							span.col-12.memoDate {{ getTimeZoneEndMinutes(memo.saveTime) }}
-							span.col-12.memoTitle {{ $t("memo")[0] }}ㅣ{{ memo.userName }}
-							span.col-12.memoText {{ $t("memo")[1] }}ㅣ{{ memo.contents }}
-					button(v-else, @click="memoBtnClick(memo)").col-12.row.items-center.listViewMemoBtn
-						.col-auto(v-if="memo.thumbnailName != null").row.listViewMemoImgContainer
-							img(:src="webServerFilePathJson.thumbnail + memo.thumbnailName").memoImg
-							.col-12(v-if="memo.fileType == 'V'").row.justify-center.items-center.markImg
-								img(src="@/assets/images/list_icon_play50.png")
-						div(v-else).col-auto.listViewEmpty
-							img(src="@/assets/images/ic_image.png").memolistViewEmptyImg
-							span.memolistViewEmptyText {{ $t("memo no data")}}
-						section.col.row.listViewMemoSection
-							span.col-12.memoDate {{ getTimeZoneEndMinutes(memo.saveTime) }}
-							span.col-12.memoTitle {{ $t("memo")[0] }}ㅣ{{ memo.userName }}
-							span.col-12.memoText {{ $t("memo")[1] }}ㅣ{{ memo.contents }}
-				pagination(:compData="compData").col-12.memoPagination
+<template>
+  <div class="row content-start memo">
+    <dataSearchBar></dataSearchBar>
+    <div class="row justify-center memolist">
+      <div class="row justify-between items-center titleContainer maxWidth">
+        <span class="col-auto title">{{ $t("memo")[2] }}</span>
+        <div class="col row justify-end">
+          <changeViewType class="col-auto"></changeViewType>
+          <a class="col-auto createBtn" :href="'attachment/memo/create'">{{ $t("createAndEditComp")[0] }}</a>
+        </div>
+        <div class="row col-12">
+          <button v-if="$route.query.viewType == 'gallery'" class="row memoBtn" v-for="memo in compData.listData" @click="memoBtnClick(memo)">
+            <div v-if="memo.thumbnailName != null" class="col-12 row memoImgContainer">
+              <img class="memoImg" :src="webServerFilePathJson.thumbnail + memo.thumbnailName" />
+              <div v-if="memo.fileType == 'V'" class="col-12 row justify-center items-center markImg">
+                <img src="@/assets/images/list_icon_play50.png" />
+              </div>
+            </div>
+            <div v-else class="col-12 empty">
+              <img class="memoGalleyEmptyImg" src="@/assets/images/ic_image.png" />
+              <span class="memoGalleyEmptyText">{{ $t("memo no data")}}</span>
+            </div>
+            <section class="col-12 row memoSection">
+              <span class="col-12 memoDate">{{ getTimeZoneEndMinutes(memo.saveTime) }}</span>
+              <span class="col-12 memoTitle">{{ $t("memo")[0] }}ㅣ{{ memo.userName }}</span>
+              <span class="col-12 memoText">{{ $t("memo")[1] }}ㅣ{{ memo.contents }}</span>
+            </section>
+          </button>
+          <button v-else class="col-12 row items-center listViewMemoBtn" @click="memoBtnClick(memo)">
+            <div v-if="memo.thumbnailName != null" class="col-auto row listViewMemoImgContainer">
+              <img class="memoImg" :src="webServerFilePathJson.thumbnail + memo.thumbnailName" />
+              <div v-if="memo.fileType == 'V'" class="col-12 row justify-center items-center markImg">
+                <img src="@/assets/images/list_icon_play50.png" />
+              </div>
+            </div>
+            <div v-else class="col-auto listViewEmpty">
+              <img class="memolistViewEmptyImg" src="@/assets/images/ic_image.png" />
+              <span class="memolistViewEmptyText">{{ $t("memo no data")}}</span>
+            </div>
+            <section class="col row listViewMemoSection">
+              <span class="col-12 memoDate">{{ getTimeZoneEndMinutes(memo.saveTime) }}</span>
+              <span class="col-12 memoTitle">{{ $t("memo")[0] }}ㅣ{{ memo.userName }}</span>
+              <span class="col-12 memoText">{{ $t("memo")[1] }}ㅣ{{ memo.contents }}</span>
+            </section>
+          </button>
+        </div>
+        <pagination class="col-12 memoPagination" :compData="compData"></pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

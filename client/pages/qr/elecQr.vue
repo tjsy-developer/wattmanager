@@ -1,37 +1,42 @@
-<template lang="pug">
-.row.justify-center.content-start.qrCreateContainer
-	.col-12.row.justify-center.titleBar
-		span QR
-	.col-12.row.content-start
-		.row.col-12.justify-end(style="height: 50px;")
-			.tab.active.row.justify-center.items-center(@click.self="fileType(1, $event)")  {{ $t("elecFile")[0] }}
-			.tab.row.justify-center.items-center(@click.self="fileType(0, $event)") {{ $t("elecFolder")[0] }}
-		.col-12.divisionLine(style="margin-top: 0px;")
-		.col-12.row.inputOptions.items-center
-			.col-12.row.inputOptions.items-center
-			span.col-auto.row.justify-center {{ type == 1 ? $t("elecFile")[1] : $t("elecFolder")[1] }}
-			div.col.electFileInputBox(v-if="type == 1" contentEditable="false" id="elecFileName")
-			input.col-2.fileSelectBtn(v-if="type == 1" type="file", accept="*", @change='fileSelect()' ref="uploadFiles" multiple style="margin-left: 14px;")
-			input.col.electFolderInputBox(v-if="type == 0" v-model="enterFolderPath" id="elecFolderPath" :placeholder="$t('elecFolder')[2]" style="margin-right: 10px; padding-left: 10px;")
-			.col-12.divisionLine
-		.col-12.createBtns
-			//- button(@click="fileUpload") 파일업로드
-			button(@click="readyState ? fileUpload() : QRCreateBtnClick(curQrInfo.QRList, curQrInfo.QRName)") {{ $t("powerQR text")[5] }}
-			button(@click="QRprintBtnClick") {{ $t("powerQR text")[6] }}
-			.col.resizeContainer
-				span.label {{ $t("powerQR text")[7] }} (cm)
-				span W:
-				input(v-model="qrWidth" name="W" @keyup="QRresizeBtnClick($event)").qrWidth
-				span X
-				span H:
-				input(v-model="qrHeight" name="H" @keyup="QRresizeBtnClick($event)").qrHeight
-			//- select(@change="QRresizeBtnClick($event)").qrResize
-			//- 	option(value="" disabled="disabled" selected).resizeOption {{ $t("powerQR text")[7] }}
-			//- 	option(v-for="(opt) in option" :value="opt.px").resizeOption {{ opt.cm }}
-		.col-12.justify-center(:v-if="isCreateQR").qrContainer
-			.col-12(v-for="(item) in qrCodeImg").qrContain 
-				img(:src="item.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px'}" ).safetyQR
-				span {{ item.name }}
+<template>
+  <div class="row justify-center content-start qrCreateContainer">
+    <div class="col-12 row justify-center titleBar">
+      <span>QR</span>
+    </div>
+    <div class="col-12 row content-start">
+      <div class="row col-12 justify-end" style="height: 50px;">
+        <div class="tab active row justify-center items-center" @click.self="fileType(1, $event)">{{ $t("elecFile")[0] }}</div>
+        <div class="tab row justify-center items-center" @click.self="fileType(0, $event)">{{ $t("elecFolder")[0] }}</div>
+      </div>
+      <div class="col-12 divisionLine" style="margin-top: 0px"></div>
+      <div class="col-12 row inputOptions items-center">
+        <div class="col-12 row inputOptions items-center"></div>
+        <span class="col-auto row justify-center">{{ type == 1 ? $t("elecFile")[1] : $t("elecFolder")[1] }}</span>
+        <div v-if="type == 1" class="col electFileInputBox" contentEditable="false" id="elecFileName"></div>
+        <input v-if="type == 1" class="col-2 fileSelectBtn" type="file" accept="*" @change='fileSelect()' ref="uploadFiles" multiple style="margin-left: 14px;" />
+        <input v-if="type == 0" class="col electFolderInputBox" v-model="enterFolderPath" id="elecFolderPath" :placeholder="$t('elecFolder')[2]" style="margin-right: 10px; padding-left: 10px;" />
+        <div class="col-12 divisionLine"></div>
+      </div>
+      <div class="col-12 createBtns">
+        <button @click="readyState ? fileUpload() : QRCreateBtnClick(curQrInfo.QRList, curQrInfo.QRName)">{{ $t("powerQR text")[5] }}</button>
+        <button @click="QRprintBtnClick">{{ $t("powerQR text")[6] }}</button>
+        <div class="col resizeContainer">
+          <span class="label">{{ $t("powerQR text")[7] }} (cm)</span>
+          <span>W:</span>
+          <input class="qrWidth" v-model="qrWidth" name="W" @keyup="QRresizeBtnClick($event)" />
+          <span>X</span>
+          <span>H:</span>
+          <input class="qrHeight" v-model="qrHeight" name="H" @keyup="QRresizeBtnClick($event)" />
+        </div>
+      </div>
+      <div :v-if="isCreateQR" class="col-12 justify-center qrContainer">
+        <div class="col-12 qrContain" v-for="(item) in qrCodeImg">
+          <img clas="safetyQR" :src="item.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px'}" />
+          <span>{{ item.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import QRCode from "qrcode"

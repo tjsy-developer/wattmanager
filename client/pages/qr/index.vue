@@ -1,6 +1,6 @@
-<template lang="pug">
-		powerQr(v-if="state == 'power'")
-		safetyQr(v-else-if="state == 'safety'")
+<template>
+  <powerQr v-if="state == 'power'"></powerQr>
+  <safetyQr v-else-if="state == 'safety'"></safetyQr>
 </template>
 
 <script>

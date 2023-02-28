@@ -1,47 +1,53 @@
-<template lang="pug">
-.row.justify-center.content-start.qrCreateContainer
-	.col-12.row.justify-center.titleBar
-		span {{ $t("powerQR") }}
-	.col-12.row.content-start
-		.col-12.divisionLine
-		.col-12.row.inputOptions.items-center
-			span.col-auto {{ $t("powerQR text")[0] }}
-			input.col(v-model="name")
-			.col-12.divisionLine
-			.col-12.row.inputOptions.items-center
-			span.col-auto {{ $t("powerQR text")[1] }}
-			input.col(v-model="age")
-			.col-12.divisionLine
-			.col-12.row.inputOptions.items-center
-			span.col-auto {{ $t("powerQR text")[2] }}
-			input.col(v-model="blood_type")
-			.col-12.divisionLine
-			.col-12.row.inputOptions.items-center
-			span.col-auto {{ $t("powerQR text")[3] }}
-			input.col(v-model="medical_history")
-			.col-12.divisionLine
-			.col-12.row.inputOptions.items-center
-			span.col-auto {{ $t("powerQR text")[4] }}
-			input.col(v-model="hqts")
-			.col-12.divisionLine
-		.col-12.createBtns
-			button(@click="QRCreateBtnClick") {{ $t("powerQR text")[5] }}
-			button(@click="QRprintBtnClick") {{ $t("powerQR text")[6] }}
-			.col.resizeContainer
-				span.label {{ $t("powerQR text")[7] }} (cm)
-				span W:
-				input(v-model="qrWidth" name="W" @keyup="QRresizeBtnClick($event)").qrWidth
-				span X
-				span H:
-				input(v-model="qrHeight" name="H" @keyup="QRresizeBtnClick($event)").qrHeight
-			//- select(@change="QRresizeBtnClick($event)").qrResize
-			//- 	option(value="" disabled="disabled" selected).resizeOption {{ $t("powerQR text")[7] }}
-			//- 	option(v-for="(opt) in option" :value="opt.px").resizeOption {{ opt.cm }}
-		.col-12.justify-center(:v-if="isCreateQR").qrContainer
-			.col-12(v-for="(item) in qrCodeImg").qrContain 
-				img(:src="item.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px'}" ).safetyQR
-				span {{ item.name }}
+<template>
+  <div class="row justify-center content-start qrCreateContainer">
+    <div class="col-12 row justify-center titleBar">
+      <span>{{ $t("powerQR") }}</span>
+    </div>
+    <div class="col-12 row content-start">
+      <div class="col-12 divisionLine"></div>
+      <div class="col-12 row inputOptions items-center">
+        <span class="col-auto">{{ $t("powerQR text")[0] }}</span>
+        <input class="col" v-model="name" />
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row inputOptions items-center"></div>
+        <div class="col-auto">{{ $t("powerQR text")[1] }}</div>
+        <input class="col" v-model="age" />
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row inputOptions items-center"></div>
+        <span class="col-auto">{{ $t("powerQR text")[2] }}</span>
+        <input class="col" v-model="blood_type" />
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row inputOptions items-center"></div>
+        <span clas="col=auto">{{ $t("powerQR text")[3] }}</span>
+        <input class="col" v-model="medical_history" />
+        <div class="col-12 divisionLine"></div>
+        <div class="col-12 row inputOptions items-center"></div>
+        <span class="col-auto">{{ $t("powerQR text")[4] }}</span>
+        <input class="col" v-model="hqts" />
+        <div class="col-12 divisionLine"></div>
+      </div>
+      <div class="col-12 createBtns">
+        <button @click="QRCreateBtnClick">{{ $t("powerQR text")[5] }}</button>
+        <button @click="QRprintBtnClick">{{ $t("powerQR text")[6] }}</button>
+        <div class="col resizeContainer">
+          <span class="label">{{ $t("powerQR text")[7] }} (cm)</span>
+          <span>W:</span>
+          <input class="qrWidth" v-model="qrWidth" name="W" @keyup="QRresizeBtnClick($event)" />
+          <span>X</span>
+          <span>H:</span>
+          <input class="qrHeight" v-model="qrHeight" name="H" @keyup="QRresizeBtnClick($event)" />
+        </div>
+      </div>
+      <div :v-if="isCreateQR" class="col-12 justify-center qrContainer">
+        <div class="col-12 qrContain" v-for="(item) in qrCodeImg">
+          <img class="safetyQR" :src="item.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px'}" />
+          <span>{{ item.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script>
 import QRCode from "qrcode"
 
