@@ -141,7 +141,9 @@ export default {
           name: "createAccountModal",
           width: innerWidth <= 700 ? "90%" : 700,
           height: innerHeight <= 886 ? "90%" : 886,
-          clickToClose: false
+          clickToClose: false,
+          scrollable: true,
+          adaptive: true
         },
         {
           "before-close": () => {
