@@ -1,3 +1,6 @@
+v2.5.51
+- 한국전력공사 로고 추가건
+
 v2.5.5
 -createAccountModal -> adaptive scrollbar 설정
 
