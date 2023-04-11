@@ -29,6 +29,7 @@
             <img v-if="useEnterprise == 'cmss'" class="loginContentLogo cmssMainLogo" src="@/assets/images/logo_komipo.png" />
             <img v-if="useEnterprise == 'kdhc'" class="loginContentLogo kdhcMainLogo" src="@/assets/images/logo_kdhc.png" />
             <img v-if="useEnterprise == 'korail'" class="loginContentLogo korailMainLogo" src="@/assets/images/logo_korail.png" />
+            <img v-if="useEnterprise == 'kepco'" class="loginContentLogo" src="@/assets/images/logo_kepco_watttalk.png" />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
             <input class="input" id="idInput" placeholder="ID" @keyup.enter="focusingByDevice" />
@@ -349,10 +350,17 @@ export default {
 
                   // 와트톡
                 } else {
-                  window.open(
-                    domain.domain.powertalk.state[2] + self.params,
-                    "_self"
-                  )
+                    if (window.location.hostname == 'kepco.watttalk.kr') {
+                       window.open(
+                          "https://" + window.location.hostname + ":8224/login/login-check?jwt_token=" + self.params,
+                          "_self"
+                        )
+                     } else {
+                        window.open(
+                          domain.domain.powertalk.state[2] + self.params,
+                          "_self"
+                        )
+                     }
                 }
                 /* powertalk1으로 이동 */
               } else {
@@ -447,7 +455,11 @@ export default {
         document.getElementById("idInput").focus()
       }
     }
-    
+
+    // 한국 전력공사 로고이미지 변경
+    if(window.location.hostname == 'kepco.watttalk.kr') {
+      this.useEnterprise = "kepco"
+    }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.delCookie("logined")
   }

@@ -9,6 +9,7 @@
       <img v-if="useEnterprise == 'cmss'" class="col-auto" src="@/assets/images/logo_komipo_cloud.png" />
       <img v-if="useEnterprise == 'kdhc'" class="col-auto" src="@/assets/images/logo_kdhc_cloud.png" />
       <img v-if="useEnterprise == 'korail'" class="col-auto" src="@/assets/images/logo_korail_cloud.png" />
+      <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
       <div class="col-auto row menus">
         <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">QR</a>
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
@@ -76,13 +77,24 @@ export default {
             "_self"
           )
         } else {
-          window.open(
-            domain.domain.powertalk.state[2] +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-            "_self"
-          )
+            // 한국전력공사 로고이미지 변경
+          if(window.location.hostname == 'kepco.watttalk.kr') {
+             window.open(
+              'https://' + window.location.hostname + ':8224/login/login-check?jwt_token=' +
+                jwtToken +
+                "&login_type=3&lang=" +
+                lang,
+              "_self"
+             )
+          } else {
+            window.open(
+              domain.domain.powertalk.state[2] +
+                jwtToken +
+                "&login_type=3&lang=" +
+                lang,
+              "_self"
+            )
+          }
         }
       } else {
         open("/", "_self")
@@ -104,7 +116,6 @@ export default {
   },
   mounted() {
     // 파워톡 -> 파워매니저 영상관리로 접근 시 jwt_token을 파라미터로 보낸다.
-    console.log(this.$route.query.jwt_token)
 
     if (this.$route.query.jwt_token !== undefined) {
       // 파라미터로 받은 jwt_token을 복호화하여 로그인에 필요한 데이터를 담는다.
@@ -153,6 +164,11 @@ export default {
       // 1. att_access_user 이 true 이거나
       // 2. att_access_user 이 false 일경우 auth > 0 이라면 tab 권한 있음
       this.attViewAuth = false
+    }
+
+     // 한국 전력공사 로고이미지 변경
+    if(window.location.hostname == 'kepco.watttalk.kr') {
+      this.useEnterprise = "kepco"
     }
   }
 }
