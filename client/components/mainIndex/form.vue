@@ -3,70 +3,181 @@
     <div class="row justify-center items-center indexWin">
       <div class="lang">
         <div class="row localeBtn globalRight cursor-pointer">
-          <div class="col-12 localeBtn" :class="'selected'" @click="state = !state">
+          <div
+            class="col-12 localeBtn"
+            :class="'selected'"
+            @click="state = !state"
+          >
             <img v-if="langImg == 'ko'" class="culLangImg" :src="koflag" />
             <img v-else-if="langImg == 'en'" class="culLangImg" :src="enflag" />
             <span>{{ curLang }}</span>
             <img src="@/assets/images/bt_kr-en.png" />
           </div>
-          <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'ko' && state">
+          <div
+            class="col-12 localeBtn cursor-pointer"
+            v-show="langImg != 'ko' && state"
+          >
             <img src="@/assets/images/img.png" />
-            <span style="width:60%;" @click.prevent="switchLocale('ko', $event)">{{ $t("lang")[0] }}</span>
+            <span
+              style="width: 60%"
+              @click.prevent="switchLocale('ko', $event)"
+              >{{ $t("lang")[0] }}</span
+            >
           </div>
-          <div class="col-12 localeBtn cursor-pointer" v-show ="langImg != 'en' && state">
+          <div
+            class="col-12 localeBtn cursor-pointer"
+            v-show="langImg != 'en' && state"
+          >
             <img src="@/assets/images/american.png" />
-            <span style="width:60%;" @click.prevent="switchLocale('en', $event)">{{ $t("lang")[1] }}    </span>
+            <span style="width: 60%" @click.prevent="switchLocale('en', $event)"
+              >{{ $t("lang")[1] }}
+            </span>
           </div>
         </div>
       </div>
       <div class="col-6 row items-center indexRight">
         <div class="column col-12 items-center indexRightContent">
           <div class="col-12 row justify-center logoContainer">
-            <img v-if="useEnterprise == 'samsung'" class="loginContentLogo" src="@/assets/images/samsung_logo.png" />
-            <img v-if="useEnterprise == 'watt' && langImg == 'ko'" class="loginContentLogo" src="@/assets/images/logo_watt.png" style="margin-top: 15px" />
-            <img v-else-if="useEnterprise == 'watt' && langImg == 'en'" class="loginContentEnglishLogo" src="@/assets/images/logo_watt_en.png" />
-            <img v-if="useEnterprise == 'ex'" class="loginContentLogo exMainLogo" src="@/assets/images/ex_pt_login.png" />
-            <img v-if="useEnterprise == 'cmss'" class="loginContentLogo cmssMainLogo" src="@/assets/images/logo_komipo.png" />
-            <img v-if="useEnterprise == 'kdhc'" class="loginContentLogo kdhcMainLogo" src="@/assets/images/logo_kdhc.png" />
-            <img v-if="useEnterprise == 'korail'" class="loginContentLogo korailMainLogo" src="@/assets/images/logo_korail.png" />
-            <img v-if="useEnterprise == 'kepco'" class="loginContentLogo" src="@/assets/images/logo_kepco_watttalk.png" />
+            <img
+              v-if="useEnterprise == 'samsung'"
+              class="loginContentLogo"
+              src="@/assets/images/samsung_logo.png"
+            />
+            <img
+              v-if="useEnterprise == 'watt' && langImg == 'ko'"
+              class="loginContentLogo"
+              src="@/assets/images/logo_watt.png"
+              style="margin-top: 15px"
+            />
+            <img
+              v-else-if="useEnterprise == 'watt' && langImg == 'en'"
+              class="loginContentEnglishLogo"
+              src="@/assets/images/logo_watt_en.png"
+            />
+            <img
+              v-if="useEnterprise == 'ex'"
+              class="loginContentLogo exMainLogo"
+              src="@/assets/images/ex_pt_login.png"
+            />
+            <img
+              v-if="useEnterprise == 'cmss'"
+              class="loginContentLogo cmssMainLogo"
+              src="@/assets/images/logo_komipo.png"
+            />
+            <img
+              v-if="useEnterprise == 'kdhc'"
+              class="loginContentLogo kdhcMainLogo"
+              src="@/assets/images/logo_kdhc.png"
+            />
+            <img
+              v-if="useEnterprise == 'korail'"
+              class="loginContentLogo korailMainLogo"
+              src="@/assets/images/logo_korail.png"
+            />
+            <img
+              v-if="useEnterprise == 'kepco'"
+              class="loginContentLogo"
+              src="@/assets/images/logo_kepco_watttalk.png"
+            />
+            <img
+              v-if="useEnterprise == 'dlenc'"
+              class="loginContentLogo"
+              src="@/assets/images/dlenc_logo.png"
+            />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
-            <input class="input" id="idInput" placeholder="ID" @keyup.enter="focusingByDevice" />
-            <input class="input" id="pwdInput" placeholder="Password" type="password" @keyup.enter="enterLoginBtnClick" />
-            <img class="pwdView" @click="pwdActivation($event)" src="@/assets/images/ic_password_disabled.png" />
-            <button class="signInBtn" @click="signInBtnClick">{{ $t("login") }}</button>
+            <input
+              class="input"
+              id="idInput"
+              placeholder="ID"
+              @keyup.enter="focusingByDevice"
+            />
+            <input
+              class="input"
+              id="pwdInput"
+              placeholder="Password"
+              type="password"
+              @keyup.enter="enterLoginBtnClick"
+            />
+            <img
+              class="pwdView"
+              @click="pwdActivation($event)"
+              src="@/assets/images/ic_password_disabled.png"
+            />
+            <button class="signInBtn" @click="signInBtnClick">
+              {{ $t("login") }}
+            </button>
             <div class="text">
-              <span class="text1" @click="forgotPwdBtnClick">{{ $t("forgot") }}</span>
-              <span class="text2" @click="createAccountBtnClick">{{ $t("create account") }}</span>
+              <span class="text1" @click="forgotPwdBtnClick">{{
+                $t("forgot")
+              }}</span>
+              <span class="text2" @click="createAccountBtnClick">{{
+                $t("create account")
+              }}</span>
             </div>
             <div v-if="useEnterprise == 'samsung'" class="personalAgreeBox">
               <span>{{ $t("personal info agree") }}</span>
               <span>{{ $t("personal info agree check") }}</span>
-              <input class="checkBox" type="checkbox" v-model="consentvalue" @change="consentChecked" />
+              <input
+                class="checkBox"
+                type="checkbox"
+                v-model="consentvalue"
+                @change="consentChecked"
+              />
             </div>
           </div>
           <div v-else class="col-12 maxWidth">
-            <input class="input" id="idInput" placeholder="ID" @keyup.enter="focusingByDevice" />
-            <input class="input" id="pwdInput" placeholder="Password" type="password" @keyup.enter="login" />
-            <img class="pwdView" @click="pwdActivation($event)" src="@/assets/images/ic_password_disabled.png" />
+            <input
+              class="input"
+              id="idInput"
+              placeholder="ID"
+              @keyup.enter="focusingByDevice"
+            />
+            <input
+              class="input"
+              id="pwdInput"
+              placeholder="Password"
+              type="password"
+              @keyup.enter="login"
+            />
+            <img
+              class="pwdView"
+              @click="pwdActivation($event)"
+              src="@/assets/images/ic_password_disabled.png"
+            />
             <button class="signInBtn" @click="login">{{ $t("login") }}</button>
             <div class="text">
-              <span class="text1" @click="forgotPwdBtnClick">{{ $t("forgot") }}</span>
-              <span class="text2" @click="createAccountBtnClick">{{ $t("create account") }}</span>
-                    <div class="col-12 row justify-center logoContainer"></div>
+              <span class="text1" @click="forgotPwdBtnClick">{{
+                $t("forgot")
+              }}</span>
+              <span class="text2" @click="createAccountBtnClick">{{
+                $t("create account")
+              }}</span>
+              <div class="col-12 row justify-center logoContainer"></div>
             </div>
-            <div v-if="useEnterprise == 'korail'" class="personalAgreeBox"></div>
+            <div
+              v-if="useEnterprise == 'korail'"
+              class="personalAgreeBox"
+            ></div>
           </div>
-          <img v-if="useEnterprise == 'korail'" class="korailBottomLogo" src="@/assets/images/korail_bottom_logo.png" />
+          <img
+            v-if="useEnterprise == 'korail'"
+            class="korailBottomLogo"
+            src="@/assets/images/korail_bottom_logo.png"
+          />
         </div>
       </div>
       <div class="text4Conatainer row col-12 justify-center">
-        <div class="text4 col-12" :style="{marginTop: $i18n.locale == 'en' ? '30px' : '30px' }">
+        <div
+          class="text4 col-12"
+          :style="{ marginTop: $i18n.locale == 'en' ? '30px' : '30px' }"
+        >
           <span class="justify-center">Watt Talk 2.0</span>
         </div>
         <div class="text4 col-12">
-          <span class="justify-center">Copyright © 2020 WATT CO.LTD. All Rights Reserved.</span>
+          <span class="justify-center"
+            >Copyright © 2020 WATT CO.LTD. All Rights Reserved.</span
+          >
         </div>
       </div>
     </div>
@@ -74,14 +185,14 @@
 </template>
 
 <script>
-import axiosJson from "@/assets/jsons/axios"
-import forgotPasswordModal from "@/components/forgotPasswordModal/form"
-import personalInfoModal from "@/components/personalInfoModal/form"
-import createAccountModal from "@/components/createAccountModal/form"
-import guideAlertModal from "@/components/info/guideAlert"
-import notice from "@/components/notice"
-import domain from "@/assets/jsons/domain/domain"
-import cookieSetting from "@/assets/scripts/data/cookie"
+import axiosJson from "@/assets/jsons/axios";
+import forgotPasswordModal from "@/components/forgotPasswordModal/form";
+import personalInfoModal from "@/components/personalInfoModal/form";
+import createAccountModal from "@/components/createAccountModal/form";
+import guideAlertModal from "@/components/info/guideAlert";
+import notice from "@/components/notice";
+import domain from "@/assets/jsons/domain/domain";
+import cookieSetting from "@/assets/scripts/data/cookie";
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
@@ -104,14 +215,14 @@ export default {
       isMember: false,
       reservId: undefined,
       params: "",
-      reservUserId: ""
-    }
+      reservUserId: "",
+    };
   },
   methods: {
     forgotPwdBtnClick() {
-      const modalsContainerStyle = document.getElementById("modalsContainer")
-        .style
-      modalsContainerStyle.display = "block"
+      const modalsContainerStyle =
+        document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
 
       this.$modal.show(
         forgotPasswordModal,
@@ -120,19 +231,19 @@ export default {
           name: "forgotPasswordModal",
           width: innerWidth <= 700 ? "90%" : 700,
           height: innerHeight <= 468 ? "90%" : 468,
-          clickToClose: false
+          clickToClose: false,
         },
         {
           "before-close": () => {
-            modalsContainerStyle.display = "none"
-          }
+            modalsContainerStyle.display = "none";
+          },
         }
-      )
+      );
     },
     createAccountBtnClick() {
-      const modalsContainerStyle = document.getElementById("modalsContainer")
-        .style
-      modalsContainerStyle.display = "block"
+      const modalsContainerStyle =
+        document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
 
       this.$modal.show(
         // eslint-disable-next-line eqeqeq
@@ -144,26 +255,26 @@ export default {
           height: innerHeight <= 886 ? "90%" : 886,
           clickToClose: false,
           scrollable: true,
-          adaptive: true
+          adaptive: true,
         },
         {
           "before-close": () => {
-            modalsContainerStyle.display = "none"
-          }
+            modalsContainerStyle.display = "none";
+          },
         }
-      )
+      );
     },
     switchLocale(locale, e) {
-      sessionStorage.setItem("languageCode", locale)
-      this.curLang = e.target.innerHTML
-      this.flag = e.target.previousSibling.src
-      location.reload()
+      sessionStorage.setItem("languageCode", locale);
+      this.curLang = e.target.innerHTML;
+      this.flag = e.target.previousSibling.src;
+      location.reload();
     },
     // 개인정보 수집 동의 체크 시 수집동의서 modal show
     consentStatusChecked(changedValue) {
-      const modalsContainerStyle = document.getElementById("modalsContainer")
-        .style
-      modalsContainerStyle.display = "block"
+      const modalsContainerStyle =
+        document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
 
       this.$modal.show(
         personalInfoModal,
@@ -173,14 +284,14 @@ export default {
           // width: innerWidth <= 500 ? 320 : 700,
           width: 700,
           height: 886,
-          clickToClose: false
+          clickToClose: false,
         },
         {
           "before-close": () => {
-            modalsContainerStyle.display = "none"
-          }
+            modalsContainerStyle.display = "none";
+          },
         }
-      )
+      );
     },
     // 수집동의서 모달에 props로 함수 넘김
     consentVal(val) {
@@ -188,61 +299,61 @@ export default {
         // 엔터키로 수집동의서 모달을 열었을경우
         // eslint-disable-next-line eqeqeq
         if (!this.directCheck) {
-          this.consentvalue = true
-          this.login()
+          this.consentvalue = true;
+          this.login();
         } else {
-          this.consentvalue = true
-          this.$modal.hide("personalInfoModal")
+          this.consentvalue = true;
+          this.$modal.hide("personalInfoModal");
         }
       }
     },
     focusingByDevice() {
-      const deviceType = this.deviceCheck()
+      const deviceType = this.deviceCheck();
       if (deviceType === "Mobile") {
-        document.getElementById("pwdInput").focus()
+        document.getElementById("pwdInput").focus();
       } else if (deviceType === "PC" && this.useEnterprise === "samsung") {
-        this.enterLoginBtnClick()
+        this.enterLoginBtnClick();
       } else if (deviceType === "PC" && this.useEnterprise !== "samsung") {
-        this.login()
+        this.login();
       }
     },
     // 엔터키로 로그인 접근
     enterLoginBtnClick() {
-      this.directCheck = false
-      const userId = document.getElementById("idInput").value
-      const userPwd = document.getElementById("pwdInput").value
+      this.directCheck = false;
+      const userId = document.getElementById("idInput").value;
+      const userPwd = document.getElementById("pwdInput").value;
       if (userId && userPwd) {
         if (this.consentvalue) {
-          this.login()
+          this.login();
         } else {
-          this.consentStatusChecked(this.consentvalue)
+          this.consentStatusChecked(this.consentvalue);
         }
-      } else alert(this.$t("home")[2])
+      } else alert(this.$t("home")[2]);
     },
     // 마우스로 직접 로그인 버튼 클릭해서 접근
     signInBtnClick() {
-      const userId = document.getElementById("idInput").value
-      const userPwd = document.getElementById("pwdInput").value
+      const userId = document.getElementById("idInput").value;
+      const userPwd = document.getElementById("pwdInput").value;
       if (userId && userPwd) {
         if (this.consentvalue) {
-          this.login()
+          this.login();
         } else {
-          alert(this.$t("personal info Unconsent"))
+          alert(this.$t("personal info Unconsent"));
         }
-      } else alert(this.$t("home")[2])
+      } else alert(this.$t("home")[2]);
     },
     // 수집동의서 동의를 직접 클릭 후 consentvalue 값이 변경될때 실행
     consentChecked() {
-      this.directCheck = true
+      this.directCheck = true;
       // 체크박스가 체크되어있는경우 체크박스 해제 상태로 변경
       if (this.consentvalue) {
-        this.consentStatusChecked(this.consentvalue)
+        this.consentStatusChecked(this.consentvalue);
       }
     },
     guideAlert() {
-      const modalsContainerStyle = document.getElementById("modalsContainer")
-        .style
-      modalsContainerStyle.display = "block"
+      const modalsContainerStyle =
+        document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
 
       this.$modal.show(
         guideAlertModal,
@@ -255,37 +366,37 @@ export default {
           pivotX: 0.5,
           pivotY: 0.5,
           styles: {
-            left: "10% !important"
-          }
+            left: "10% !important",
+          },
         },
         {
           "before-close": () => {
-            modalsContainerStyle.display = "none"
-          }
+            modalsContainerStyle.display = "none";
+          },
         }
-      )
+      );
     },
     // 로그인 함수
     login() {
       // powertalk -> watttalk 도메인 변경 모달을 강제로 닫고 로그인시도할때
-      const href = window.location.href
+      const href = window.location.href;
       if (href.includes("powertalk")) {
-        this.$emit("child")
-        return
+        this.$emit("child");
+        return;
       }
       // 2021.04.14 ksh :: 파워톡 -> 파워매니저 영상관리 접근 시 로그아웃 숨김으로 인해 등록했던 localStorage를 초기화
-      localStorage.removeItem("logoutStatus")
-      const userId = document.getElementById("idInput").value
-      const userPwd = document.getElementById("pwdInput").value
-      const self = this
+      localStorage.removeItem("logoutStatus");
+      const userId = document.getElementById("idInput").value;
+      const userPwd = document.getElementById("pwdInput").value;
+      const self = this;
       this.$axios
         .post(domain.domain.backend1 + axiosJson.account.user_id_pw_check, {
           id: userId,
-          password: userPwd
+          password: userPwd,
         })
-        .then(function(response) {
+        .then(function (response) {
           // eslint-disable-next-line no-unused-vars
-          const lang = sessionStorage.getItem("languageCode")
+          const lang = sessionStorage.getItem("languageCode");
 
           if (response.data[0] === 1) {
             /* sessionStorage ID 기억기능 추가 */
@@ -295,21 +406,21 @@ export default {
             // cookieSetting.setCookie("logined", userId, 3)
 
             /* 로그인 사용자의 정보 저장 */
-            localStorage.setItem("jwt", response.data[2])
-            console.log(response.data[1])
-            localStorage.setItem("userSeq", response.data[1].user_seq)
-            localStorage.setItem("enSeq", response.data[1].en_seq)
-            localStorage.setItem("hqSeq", response.data[1].hq_seq)
-            localStorage.setItem("brSeq", response.data[1].br_seq)
-            localStorage.setItem("auth", response.data[1].auth)
-            localStorage.setItem("id", response.data[1].id)
-            localStorage.setItem("deviceType", response.data[1].device_type)
-            sessionStorage.setItem("logined", response.data[1].id)
+            localStorage.setItem("jwt", response.data[2]);
+            console.log(response.data[1]);
+            localStorage.setItem("userSeq", response.data[1].user_seq);
+            localStorage.setItem("enSeq", response.data[1].en_seq);
+            localStorage.setItem("hqSeq", response.data[1].hq_seq);
+            localStorage.setItem("brSeq", response.data[1].br_seq);
+            localStorage.setItem("auth", response.data[1].auth);
+            localStorage.setItem("id", response.data[1].id);
+            localStorage.setItem("deviceType", response.data[1].device_type);
+            sessionStorage.setItem("logined", response.data[1].id);
 
             if (response.data[1].auth === 4)
-              window.open("/attachment/video?page=1&viewType=gallery", "_self")
+              window.open("/attachment/video?page=1&viewType=gallery", "_self");
             else if (response.data[1].device_type === 2)
-              window.open("/attachment/memo?page=1&viewType=gallery", "_self")
+              window.open("/attachment/memo?page=1&viewType=gallery", "_self");
             // 수정
             else {
               // 회원이 이메일로 회의실입장하려고 하는 경우
@@ -323,20 +434,20 @@ export default {
                   "&login_type=1&lang=" +
                   lang +
                   "&reservId=" +
-                  self.reservId
+                  self.reservId;
                 // 이메일을 타고 들어온 회원이지만 (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
               } else if (self.isMember && self.reservUserId !== userId) {
                 alert(
                   self.$t("not invited meeting") +
                     "\n" +
                     self.$t("go to the contact screen")
-                )
-                self.params = response.data[2] + "&login_type=1&lang=" + lang
+                );
+                self.params = response.data[2] + "&login_type=1&lang=" + lang;
                 // 이메일을 타고들어온 회원이 아님  && (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
               } else {
-                self.params = response.data[2] + "&login_type=1&lang=" + lang
+                self.params = response.data[2] + "&login_type=1&lang=" + lang;
               }
-              console.log(self.params)
+              console.log(self.params);
 
               /* 와트톡 로그인 체크 페이지로 이동 */
               // eslint-disable-next-line no-lonely-if
@@ -346,124 +457,129 @@ export default {
                   window.open(
                     domain.domain.powertalk.state[1] + self.params,
                     "_self"
-                  )
+                  );
 
                   // 와트톡
                 } else {
-                    if (window.location.hostname == 'kepco.watttalk.kr') {
-                       window.open(
-                          "https://" + window.location.hostname + ":8224/login/login-check?jwt_token=" + self.params,
-                          "_self"
-                        )
-                     } else {
-                        window.open(
-                          domain.domain.powertalk.state[2] + self.params,
-                          "_self"
-                        )
-                     }
+                  if (window.location.hostname == "kepco.watttalk.kr") {
+                    window.open(
+                      "https://" +
+                        window.location.hostname +
+                        ":8224/login/login-check?jwt_token=" +
+                        self.params,
+                      "_self"
+                    );
+                  } else {
+                    window.open(
+                      domain.domain.powertalk.state[2] + self.params,
+                      "_self"
+                    );
+                  }
                 }
                 /* powertalk1으로 이동 */
               } else {
                 const randomNumber =
-                  Math.floor(Math.random() * (10000 - 1 + 1)) + 1
-                window.open("/powertalk/index.html?" + randomNumber, "_self")
+                  Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+                window.open("/powertalk/index.html?" + randomNumber, "_self");
               }
             }
           } else if (response.data[0] === 2) {
             if (self.useEnterprise === "samsung") {
-              self.$modal.hide("personalInfoModal")
-              self.consentvalue = false
+              self.$modal.hide("personalInfoModal");
+              self.consentvalue = false;
             }
-            alert(self.$t("home")[0])
+            alert(self.$t("home")[0]);
           } else {
             if (self.useEnterprise === "samsung") {
-              self.$modal.hide("personalInfoModal")
-              self.consentvalue = false
+              self.$modal.hide("personalInfoModal");
+              self.consentvalue = false;
             }
-            alert(self.$t("home")[1])
+            alert(self.$t("home")[1]);
           }
         })
-        .catch(function(error) {
-          console.log(error)
-        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     // 패스워드 보기 활성화/비활성화
     pwdActivation(e) {
-      const pwdInput = document.getElementById("pwdInput")
+      const pwdInput = document.getElementById("pwdInput");
       if (e.target.classList.contains("Active")) {
-        e.target.classList.remove("Active")
-        e.target.src = require("@/assets/images/ic_password_disabled.png")
-        pwdInput.type = "password"
+        e.target.classList.remove("Active");
+        e.target.src = require("@/assets/images/ic_password_disabled.png");
+        pwdInput.type = "password";
       } else {
-        e.target.classList.add("Active")
-        console.log(e)
-        e.target.src = require("@/assets/images/ic_password.png")
-        pwdInput.type = "text"
+        e.target.classList.add("Active");
+        console.log(e);
+        e.target.src = require("@/assets/images/ic_password.png");
+        pwdInput.type = "text";
       }
-    }
+    },
   },
   mounted() {
-    const currentLang = sessionStorage.getItem("languageCode")
+    const currentLang = sessionStorage.getItem("languageCode");
     if (sessionStorage.getItem("languageCode") != null) {
-      this.langImg = sessionStorage.getItem("languageCode")
+      this.langImg = sessionStorage.getItem("languageCode");
     }
     // 초기 언어 설정
     // eslint-disable-next-line eqeqeq
     if (currentLang == "ko") {
-      this.curLang = this.$t("lang")[0]
+      this.curLang = this.$t("lang")[0];
     } else {
-      this.curLang = this.$t("lang")[1]
+      this.curLang = this.$t("lang")[1];
     }
-    const memberReservId = this.$route.query.reservId
+    const memberReservId = this.$route.query.reservId;
     if (memberReservId) {
-      console.log("reservID -> return userID")
-      const self = this
+      console.log("reservID -> return userID");
+      const self = this;
       /* 회원이 이메일로 회의실 입장시도할 경우 reservId로 UserId 를 조회한다 --> 초대된 사용자인지 검증을 위함 */
       this.$axios
         .post(
           domain.domain.backend1 +
             axiosJson.account.select_id_where_reservation_uid,
           {
-            reservation_uid: memberReservId
+            reservation_uid: memberReservId,
           }
         )
-        .then(function(response) {
-          console.log("reservId로 ID조회")
-          console.log(response)
-          self.reservUserId = response.data
+        .then(function (response) {
+          console.log("reservId로 ID조회");
+          console.log(response);
+          self.reservUserId = response.data;
         })
-        .catch(function(error) {
-          console.log(error)
-        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
       /* 회원이 이메일로 회의실 접근할 경우 안내모달 띄움 */
-      this.guideAlert()
-      this.isMember = true
-      this.reservId = memberReservId
-      document.getElementById("idInput").focus()
+      this.guideAlert();
+      this.isMember = true;
+      this.reservId = memberReservId;
+      document.getElementById("idInput").focus();
     } else {
       /* 기존에 로그인해서 쿠키에 저장되어있던 사용자의 ID를 가져온다 */
-      const loginedId = cookieSetting.getCookie("logined")
+      const loginedId = cookieSetting.getCookie("logined");
 
       /* 쿠키에 저장되어있던 사용자의 ID가 있다면 아이디입력칸에 ID를 넣어주고
 		  비밀번호입력에 커서를 위치시킨다
 			ID가 없다면 아이디 입력칸에 커서를 위치시킨다 */
       if (loginedId) {
-        document.getElementById("idInput").value = `${loginedId}`
-        document.getElementById("pwdInput").focus()
+        document.getElementById("idInput").value = `${loginedId}`;
+        document.getElementById("pwdInput").focus();
       } else {
-        document.getElementById("idInput").focus()
+        document.getElementById("idInput").focus();
       }
     }
 
     // 한국 전력공사 로고이미지 변경
-    if(window.location.hostname == 'kepco.watttalk.kr') {
-      this.useEnterprise = "kepco"
+    if (window.location.hostname == "kepco.watttalk.kr") {
+      this.useEnterprise = "kepco";
+    } else if (window.location.hostname == "dlenc.watttalk.kr") {
+      this.useEnterprise = "dlenc";
     }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.delCookie("logined")
-  }
-}
+  },
+};
 </script>
 
 <style lang="sass" scoped>
@@ -483,7 +599,6 @@ export default {
   width: 618px
   height: 550px
   border: 1px solid #4D4D4D
-
 
 .indexWinImg
   height: 100%
@@ -523,7 +638,7 @@ export default {
 
 .input:nth-child(1)
   margin-top: 30px
-  font-family: 'NanumSquare', sans-serif;
+  font-family: 'NanumSquare', sans-serif
 
 .input:nth-child(2)
   margin-top: 8px
@@ -569,22 +684,23 @@ export default {
     width: 100%
 
 .personalAgreeBox
-	width: 100%
-	margin-top: 10px
+  width: 100%
+  margin-top: 10px
 	// margin-bottom: 70px
-	align-items: center
-	display: flex
-	justify-content: center
-	>span
-		color: white
-		font-size: 14px
-		&:nth-child(2)
-			margin-left: 5px
-	>input
-		margin-left: 5px
+  align-items: center
+  display: flex
+  justify-content: center
+  >span
+    color: white
+    font-size: 14px
+    &:nth-child(2)
+      margin-left: 5px
+  >input
+    margin-left: 5px
 
 .loginContentLogo
   width: 100% //komipo
+  max-width: 280px
 
 .cmssMainLogo,
 .kdhcMainLogo
@@ -593,7 +709,7 @@ export default {
 .korailBottomLogo
   position: absolute
   bottom: -60px
-   width: 90px
+  width: 90px
   margin: auto
 
 .loginContentEnglishLogo
@@ -645,33 +761,33 @@ export default {
     text-align: center
 
 .localeBtn
-	color: white
-	top: 1px
+  color: white
+  top: 1px
 
 .globalRight
-	position: absolute
-	right: -9px
-	top: 3px
-	width: 90px
-	border: 1px solid #4d4d4d
-	>div
-		padding: 2px 5px
-		padding-left: 6px
-		border: 1px solid #4d4d4d
-		&:first-child
-			border-top: none
-			background: #393939
-		>img
-			&:first-child
-				margin-top: 2px
-				height: 11px
-				width: 14px
-				margin-right: 8px
-			&:last-child
-				margin-top: 4px
-				margin-left: 8px
-		>span:not(:first-child)
-			font-size: 11px
+  position: absolute
+  right: -9px
+  top: 3px
+  width: 90px
+  border: 1px solid #4d4d4d
+  >div
+    padding: 2px 5px
+    padding-left: 6px
+    border: 1px solid #4d4d4d
+    &:first-child
+      border-top: none
+      background: #393939
+    >img
+      &:first-child
+        margin-top: 2px
+        height: 11px
+        width: 14px
+        margin-right: 8px
+      &:last-child
+        margin-top: 4px
+        margin-left: 8px
+    >span:not(:first-child)
+      font-size: 11px
 
 @media screen and (max-width: 1023px) and (max-height: 768px)
   .indexRightContent
@@ -729,8 +845,8 @@ export default {
     margin-bottom: 0px
 
 @media screen and (max-width: 420px)
-	.personalAgreeBox
-		white-space: nowrap
-		>span
-			font-size: 13px
+  .personalAgreeBox
+    white-space: nowrap
+    >span
+      font-size: 13px
 </style>
