@@ -63,7 +63,7 @@ export default {
       }, 500)
     },
     showInspectionAlert() {
-      console.log("###################################################")
+      // console.log("###################################################")
       let inspectionList = []
       this.$axios
         .post(domain.domain.backend1 + axiosJson.overhaul.overhaul_list, {})
@@ -85,7 +85,7 @@ export default {
             // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 동일한 경우
             if (checkOverhaulNum == inspectionList[0].overhaul_number) {
               if (checkCloseForDay == "ture") {
-                console.log("오늘하루열지않기")
+                // console.log("오늘하루열지않기")
 								this.test = false
               } else {
                 // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 동일하지만
