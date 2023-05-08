@@ -53,7 +53,6 @@ export default {
             if (this.checked == "true") {
                 cookieSetting.setCookie("overhaulNum", this.propsData.overhaulNumber, 24)
                 cookieSetting.setCookie("closeForDay", "ture", 24)
-                console.log("###########")
             } else {
                 return
             }
@@ -62,7 +61,6 @@ export default {
         close() {
             this.closeForDay()
             const closeClick = "true"
-            console.log(this.checked, "###########")
             this.$emit("closeCheck", closeClick)
         }
     }

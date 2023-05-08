@@ -32,7 +32,10 @@
 		"Please check EMail",
 		"ID CHECK",
 		"NAME CHECK",
-		"EMAIL CHECK"
+		"EMAIL CHECK",
+		"Phone Number  ('-' not allowed)  ",
+		"VERIFY",
+		"Birthday   (e.g 000000)"
 	],
 	"infoFilters": [
 		"NO.",
@@ -215,7 +218,9 @@
 		"Terms and Conditions",
 		"Privacy Policy",
 		"Limits of Liability and Legal Notice",
-		"The copyright of this content belongs to the copyright holder and if you use it without permission, you may be liable according to copyright laws."
+		"The copyright of this content belongs to the copyright holder and if you use it without permission, you may be liable according to copyright laws.",
+		"Trade name: DL E&C   Business number: 676-87-01904   Business address: Dongil-ro 134 D Tower, Jongno-gu, Seoul   Representative number: 02)2011-7114   Representative name: Ma Chang-min",
+		"Trade name: Watts Co., Ltd (Supplier) Business number: 570-87-01945 Business address: Pangyo Innovation Lab Knowledge Intervention Center No. 605, Geumto-ro 80beon-gil, Sujeong-gu, Seonam-si, Gyeonggi-do, Representative number: 070-7124-2588 Representative name: Kim Jin-myung"
 	],
 	"header": [
 		"Log out",
@@ -256,6 +261,7 @@
 	"forgot": "Forgot password?",
 	"create account": "Create an account",
 	"login": "SIGN IN",
+	"changePhoneNumber": "Change cell phone" ,
 	"profile text": [
 		"Company",
 		"Department",
@@ -263,6 +269,7 @@
 		"Name",
 		"English Name",
 		"E-mail",
+		"Cell Phone",
 		"My Photo"
 	],
 	"profilePassword": [
@@ -453,6 +460,12 @@
 	],
 	"callHistory": "Call History",
 	"enter searchTerm": "Please enter a search term.",
-	"open": "Open"
+	"open": "Open",
+	"verify": [
+		"Verify with Cell phone",
+		"Please use your cell phone",
+		"to verify your identity",
+		"Verify"
+	]
 
 }

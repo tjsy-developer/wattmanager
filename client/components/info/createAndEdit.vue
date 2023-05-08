@@ -40,6 +40,7 @@
             :value="compData.type == 'edit' ? compData.selected[contentKey-1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
             :disabled="content.edit=='disabled'"
            />
+           <button v-if="useEnterprise == 'dlenc' && contentKey == 8" class="changePhone-btn">{{ $t("changePhoneNumber") }}</button>
         </div>
       </div>
       <div class="col-12 divisionLine"></div>
@@ -71,6 +72,7 @@ export default {
       profileImage: "",
       rows: 5,
       cnt: 0,
+      useEnterprise: undefined,
       // 앱 복사 기업 리스트
       enList: getInfo.enterprise().then(res => {
         getInfo.enList.options = res
@@ -247,6 +249,17 @@ export default {
     //   }
     // }
   },
+  mounted() {
+    // dlenc 분기처리
+    if (window.location.hostname == "dlenc.watttalk.kr") {
+      this.useEnterprise = "dlenc"
+    }
+    // dlenc 이면 휴대폰 번호 부분 제거
+    if (this.compData.type == "edit" && this.useEnterprise != "dlenc") {
+      console.log("탔다")
+      this.compData.listFilters.splice(8, 1)
+    }
+  },
   beforeDestroy() {
     if (this.profileImage !== "") {
       URL.revokeObjectURL(this.profileImage)
@@ -392,4 +405,12 @@ export default {
 	background-color: white
 	margin-bottom: 20px
 	margin-left: 10px
+.changePhone-btn
+  width: 130px
+  height: 38px
+  font-size: 14px
+  text-align: center
+  background: #008BCF
+  margin-left: 10px
+  color: white
 </style>

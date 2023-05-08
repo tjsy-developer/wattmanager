@@ -202,7 +202,7 @@ export default {
                           self.$t("infoFilters")[14],
                           self.$t("user")[3],
                           self.$t("infoFilters")[11],
-                          self.$t("profile text")[6],
+                          self.$t("profile text")[7],
                           self.$t("infoFilters")[7]
                         ],
                         filtersJson

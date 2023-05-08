@@ -82,7 +82,7 @@
             <img
               v-if="useEnterprise == 'dlenc'"
               class="loginContentLogo"
-              src="@/assets/images/dlenc_logo.png"
+              src="@/assets/images/dlenc_login_logo.png"
             />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
@@ -175,9 +175,14 @@
           <span class="justify-center">Watt Talk 2.0</span>
         </div>
         <div class="text4 col-12">
-          <span class="justify-center"
-            >Copyright © 2020 WATT CO.LTD. All Rights Reserved.</span
-          >
+          <span v-if="useEnterprise == 'dlenc'" class="justify-center">
+            {{ $t("footer")[4] }}<br>
+				    {{ $t("footer")[5] }}<br><br>
+            Copyright © 2020 WATT CO.LTD. All Rights Reserved.
+          </span>
+          <span v-else class="justify-center">
+            Copyright © 2020 WATT CO.LTD. All Rights Reserved.
+          </span>
         </div>
       </div>
     </div>
@@ -193,6 +198,7 @@ import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import domain from "@/assets/jsons/domain/domain";
 import cookieSetting from "@/assets/scripts/data/cookie";
+import verifyModal from "@/components/verifyPhoneModal/verifyModal"
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
@@ -215,7 +221,7 @@ export default {
       isMember: false,
       reservId: undefined,
       params: "",
-      reservUserId: "",
+      reservUserId: ""
     };
   },
   methods: {
@@ -416,7 +422,19 @@ export default {
             localStorage.setItem("id", response.data[1].id);
             localStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
-
+            // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
+            if (window.location.hostname == "dlenc.watttalk.kr") {
+              let modalType
+              if (response.data[1].auth === 4) {
+                modalType = 1
+              } else if (response.data[1].device_type === 2) {
+                modalType = 2
+              } else {
+                modalType = 3
+              }
+              self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
+              return
+            }
             if (response.data[1].auth === 4)
               window.open("/attachment/video?page=1&viewType=gallery", "_self");
             else if (response.data[1].device_type === 2)
@@ -515,6 +533,41 @@ export default {
         pwdInput.type = "text";
       }
     },
+    openVerifyModal(params, userId, userPwd, lang, modalType) {
+      const modalsContainerStyle =
+        document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
+      const modalParameter = {
+        loginData: params,
+        isMember: this.isMember,
+        reservUserId: this.reservUserId,
+        reservId: this.reservId,
+        id: userId,
+        pwd: userPwd,
+        language: lang,
+        type: modalType
+      }
+
+      this.$modal.show(
+        // eslint-disable-next-line eqeqeq
+        verifyModal,
+        {
+          propsData: modalParameter
+        },
+        {
+          name: "verifyModal",
+          width: 400,
+          height: 588,
+          clickToClose: false,
+          adaptive: true,
+        },
+        {
+          "before-close": () => {
+            modalsContainerStyle.display = "none";
+          },
+        }
+      );
+    }
   },
   mounted() {
     const currentLang = sessionStorage.getItem("languageCode");
@@ -686,7 +739,6 @@ export default {
 .personalAgreeBox
   width: 100%
   margin-top: 10px
-	// margin-bottom: 70px
   align-items: center
   display: flex
   justify-content: center

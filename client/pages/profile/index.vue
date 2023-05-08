@@ -15,6 +15,7 @@ export default {
       defaultProfileBlob: "",
       deviceType: 0,
       auth: 0,
+      useEnterprise: undefined,
       compData: {
         self: this,
         userSeq: undefined,
@@ -52,6 +53,10 @@ export default {
           },
           {
             text: this.$t("profile text")[6],
+            edit: "disabled"
+          },
+          {
+            text: this.$t("profile text")[7],
             edit: "file"
           },
           {}
@@ -101,7 +106,15 @@ export default {
                     getSelf.deviceType == 3 && getSelf.auth != 4
                       ? getInfo.getInputValue(6)
                       : getInfo.getInputValue(5),
-                  image: this.selected[7],
+                  // image: this.selected[7],
+                  image:
+                    getSelf.useEnterprise == "dlenc"
+                      ? this.selected[7]
+                      : this.selected[6],
+                  phoneNumber:
+                    getSelf.useEnterprise == "dlenc"
+                      ? getInfo.getInputValue(6)
+                      : undefined,
                   jwt: localStorage.getItem("jwt")
                 })
                 .then(function(res) {
@@ -204,6 +217,7 @@ export default {
                 res.data.name,
                 res.data.name_en,
                 res.data.email,
+                res.data.phoneNum,
                 res.data.image ? self.hexToAscii(res.data.image) : undefined
               ]
             })
@@ -222,6 +236,7 @@ export default {
             res.data.name,
             res.data.name_en,
             res.data.email,
+            res.data.phoneNum,
             undefined
           ]
         }

@@ -16,6 +16,9 @@
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
         <input class="emailInput" id="accountEMail" :placeholder="$t('account')[17]" v-model="EMail" @keyup.enter="emailCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="emailCheckBtnClick">{{ $t("account")[18] }}</button>
+        <input v-if="useEnterprise == 'dlenc'" class="phoneInput" id="phoneNumber" :placeholder="$t('account')[33]" v-model="phoneNum" />
+        <button v-if="useEnterprise == 'dlenc'" class="phoneChkBtn col-auto">{{ $t("account")[34] }}</button>
+        <input v-if="useEnterprise == 'dlenc'" class="input" id="birthday" :placeholder="$t('account')[35]" v-model="birthday" type="birthday" />
         <selectComp :compData="deviceTypeCompData"></selectComp>
         <selectComp :compData="enterpriseCompData"></selectComp>
         <selectComp :compData="hqCompData"></selectComp>
@@ -61,6 +64,8 @@ export default {
       EMail: undefined,
       EMailCheck: undefined,
       enSeqCheck: undefined,
+      birthday: undefined,
+      useEnterprise: domain.useEnterprise,
       deviceTypeCompData: {
         placeholder: this.$i18n.t("account")[21],
         options: getInfo.deviceTypeObj(),
@@ -349,6 +354,9 @@ export default {
   },
   mounted() {
     getInfo.setLang(this.$t("getInfo"))
+    if (window.location.hostname == 'dlenc.watttalk.kr') {
+      this.useEnterprise = "dlenc"
+    }
   }
 }
 </script>
@@ -457,6 +465,8 @@ select
 			margin-right: 8px
 			padding: 10px 8px
 			font-size: 13px
+  
+  
 
 	>.signUpBtn
 		width: 100%
@@ -477,11 +487,44 @@ select
 			// width: inherit
 			font-size: 13px
 			padding: 10px 0px
-			// margin-right: 10px
-
+			// margin-right: 10px'
+    
+  
 ::placeholder
 	color: #696969
 
+
+.phoneInput
+  width: 77.5%
+  color: white
+  padding: 15px 10px
+  background-color: #3E3E3E
+  opacity: 1
+  border: 1px solid #4B4B4B
+  font-size: 15px
+  font-weight: bold
+  margin-top: 10px
+  margin-right: 10px
+  outline: none
+  @media screen and (max-width: 768px)
+    // width: inherit
+    margin-right: 8px
+    padding: 10px 8px
+    font-size: 13px
+
+.phoneChkBtn
+  width: 19.5%
+  padding: 15px
+  margin-top: 11px
+  background: #2386D2
+  color: white
+  float: right
+  @media screen and (max-width: 768px)
+    font-size: 13px
+    padding: 10px 0px
+
+
+.birthdayInput
 .qrcode
 	>.emptyQrCode
     display: flex
