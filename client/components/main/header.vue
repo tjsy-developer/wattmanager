@@ -89,7 +89,7 @@ export default {
              )
           }  else if (window.location.hostname == 'dlenc.watttalk.kr') {
             window.open(
-              'https://' + window.location.hostname + ':8102/login/login-check?jwt_tojen=' +
+              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
               lang,
