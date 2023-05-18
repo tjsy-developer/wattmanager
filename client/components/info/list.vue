@@ -41,7 +41,7 @@
           </span>
         </div>
         <div
-          class="justify-center"
+          class="row justify-center align-center"
           :class="[ compData.listFilters[compData.listFilters.length-1].width?'col-auto':'col' ]"
           :style="{ width: compData.listFilters[compData.listFilters.length-1].width+'px' }"
         >

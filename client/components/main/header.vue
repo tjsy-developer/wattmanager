@@ -95,6 +95,14 @@ export default {
               lang,
               "_self"
             )
+          }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+            window.open(
+              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
+              jwtToken +
+              "&login_type=3&lang=" +
+              lang,
+              "_self"
+            )
           }else {
             window.open(
               domain.domain.powertalk.state[2] +
@@ -180,6 +188,8 @@ export default {
       this.useEnterprise = "kepco"
     }
     if (window.location.hostname == 'dlenc.watttalk.kr') {
+      this.useEnterprise = "dlenc"
+    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
   }

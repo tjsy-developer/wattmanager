@@ -356,6 +356,8 @@ export default {
     getInfo.setLang(this.$t("getInfo"))
     if (window.location.hostname == 'dlenc.watttalk.kr') {
       this.useEnterprise = "dlenc"
+    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+      this.useEnterprise = "dlenc"
     }
   }
 }

@@ -253,9 +253,11 @@ export default {
     // dlenc 분기처리
     if (window.location.hostname == "dlenc.watttalk.kr") {
       this.useEnterprise = "dlenc"
+    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+      this.useEnterprise = "dlenc"
     }
     // dlenc 이면 휴대폰 번호 부분 제거
-    if (this.compData.type == "edit" && this.useEnterprise != "dlenc") {
+    if (this.compData.type == "edit" && this.$route.name == "profile" && this.useEnterprise != "dlenc") {
       console.log("탔다")
       this.compData.listFilters.splice(8, 1)
     }

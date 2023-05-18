@@ -218,6 +218,7 @@ export default {
       enflag: require("@/assets/images/american.png"),
       directCheck: true,
       useEnterprise: domain.useEnterprise,
+      // useEnterprise: "dlenc",
       isMember: false,
       reservId: undefined,
       params: "",
@@ -434,6 +435,28 @@ export default {
               }
               self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
               return
+            } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
+              let modalType
+              if (response.data[1].auth === 4) {
+                modalType = 1
+              } else if (response.data[1].device_type === 2) {
+                modalType = 2
+              } else {
+                modalType = 3
+              }
+              self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
+              return
+            } else if (self.useEnterprise == "dlenc") {
+              let modalType
+              if (response.data[1].auth === 4) {
+                modalType = 1
+              } else if (response.data[1].device_type === 2) {
+                modalType = 2
+              } else {
+                modalType = 3
+              }
+              self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
+              return
             }
             if (response.data[1].auth === 4)
               window.open("/attachment/video?page=1&viewType=gallery", "_self");
@@ -627,6 +650,8 @@ export default {
     if (window.location.hostname == "kepco.watttalk.kr") {
       this.useEnterprise = "kepco";
     } else if (window.location.hostname == "dlenc.watttalk.kr") {
+      this.useEnterprise = "dlenc";
+    } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
     }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */

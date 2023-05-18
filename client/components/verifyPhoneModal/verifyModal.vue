@@ -16,7 +16,7 @@
                     {{ $t("verify")[2] }}
                 </span>
             </div>
-            <button class="verify-btn">
+            <button class="verify-btn" @click="verify()">
                 <span>{{ $t("verify")[3] }}</span>
             </button>
         </div>
@@ -25,6 +25,8 @@
 
 <script>
 import domain from "@/assets/jsons/domain/domain";
+import { danalVerify } from "@/assets/scripts/danalVerify"
+
 export default {
     props: {
         propsData: {
@@ -35,77 +37,17 @@ export default {
     methods: {
         close() {
             this.$modal.hide("verifyModal")
-            this.login()
         },
-        login() {
-            let params
-            const loginData = this.propsData.loginData
-            const isMember = this.propsData.isMember
-            const reservUserId = this.propsData.reservUserId
-            const userId = this.propsData.id
-            const reservId = this.propsData.reservId
-            const lang = this.propsData.language
-            // 회원이 이메일로 회의실입장하려고 하는 경우
-            /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
-            2. isMember -> 이메일을 클릭하여 들어왔는지판단(회원판단) (true == 이메일로 접근) */
-            // 두가지 조건이 만족하면 회원입장 페이지로 이동
-            if (this.propsData.type == 1) {
-                window.open("/attachment/video?page=1&viewType=gallery", "_self");
-            } else if (this.propsData.type == 2) {
-                window.open("/attachment/memo?page=1&viewType=gallery", "_self");
-            } else if (this.propsData.type == 3) {
-                if (isMember && reservUserId === userId) {
-                    params =
-                        loginData +
-                        "&login_type=1&lang=" +
-                        lang +
-                        "&reservId=" +
-                        reservId;
-                // 이메일을 타고 들어온 회원이지만 (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
-                } else if (isMember && reservUserId !== userId) {
-                    alert(
-                        this.$t("not invited meeting") +
-                        "\n" +
-                        this.$t("go to the contact screen")
-                    );
-                    params = loginData + "&login_type=1&lang=" + lang;
-                    // 이메일을 타고들어온 회원이 아님  && (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
-                } else {
-                    params = loginData + "&login_type=1&lang=" + lang;
-                }
-                console.log(params);
-
-                /* 와트톡 로그인 체크 페이지로 이동 */
-                // eslint-disable-next-line no-lonely-if
-                if (domain.domain.powertalk.state[0] === "loginCheck") {
-                    // 로컬
-                    if (window.location.hostname === "localhost") {
-                        window.open(
-                        domain.domain.powertalk.state[1] + params,
-                        "_self"
-                        );
-
-                        // 와트톡
-                    } else if (window.location.hostname == "dlenc.watttalk.kr") {
-                        window.open(
-                            "https://" +
-                                window.location.hostname +
-                                ":8102/login/login-check?jwt_token=" +
-                                params,
-                            "_self"
-                        );
-                    } else {
-                        window.open(
-                            domain.domain.powertalk.state[2] + params,
-                            "_self"
-                        );
-                    }
-                    /* powertalk1으로 이동 */
-                } else {
-                    const randomNumber = Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
-                    window.open("/powertalk/index.html?" + randomNumber, "_self");
-                }
+        verify() {
+            const params ={
+                loginDat: this.propsData.loginData,
+                isMember: this.propsData.isMember,
+                userId: this.propsData.id,
+                reservId: this.propsData.reservId,
+                lang: this.propsData.language,
+                type: this.propsData.type
             }
+            danalVerify(params)
         }
     }
 }

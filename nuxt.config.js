@@ -4,6 +4,9 @@ export default {
    ** Headers of the page
    */
   head: {
+    script: [
+      { src : 'https://cdn.iamport.kr/v1/iamport.js' }
+    ],
     meta: [
       {
         content: "text/html",

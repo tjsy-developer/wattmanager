@@ -27,32 +27,38 @@ export default {
         editBtnClick() {
           const token = localStorage.getItem("jwt")
           const pattern = /\s/g
-          if (getInfo.getInputValue(3).match(pattern)) {
-            alert(this.nameSpaceCheck)
-          } else if (getInfo.getInputValue(4).match(pattern)) {
-            alert(this.nameSpaceCheck)
+          const reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g
+          if (getInfo.getInputValue(3).match(reg) || getInfo.getInputValue(4).match(reg)) {
+            alert("이름에 특수문자를 사용할 수 없습니다")
           } else {
-            btnsClick.edit2(
-              this.listFilters,
-              domain.domain.backend1 + "deviceRest/dev_update",
-              {
-                dev_seq: this.devSeq,
-                en_seq: getInfo.getSelectValue(this.listFilters, 4),
-                hq_seq: getInfo.getSelectValue(this.listFilters, 5),
-                br_seq: getInfo.getSelectValue(this.listFilters, 6),
-                device_id: this.selected[1],
-                product_num: getInfo.getInputValue(0),
-                serial_num: getInfo.getInputValue(2),
-                device_name: getInfo.getInputValue(3),
-                device_name_en: getInfo.getInputValue(4),
-                approval_status: getInfo.getSelectValue(this.listFilters, 9),
-                order_by_num: Number(getInfo.getInputValue(5)),
-                device_type: this.selected[10],
-                jwt: token
-              },
-              0
-            )
+            if (getInfo.getInputValue(3).match(pattern)) {
+              alert(this.nameSpaceCheck)
+            } else if (getInfo.getInputValue(4).match(pattern)) {
+              alert(this.nameSpaceCheck)
+            } else {
+              btnsClick.edit2(
+                this.listFilters,
+                domain.domain.backend1 + "deviceRest/dev_update",
+                {
+                  dev_seq: this.devSeq,
+                  en_seq: getInfo.getSelectValue(this.listFilters, 4),
+                  hq_seq: getInfo.getSelectValue(this.listFilters, 5),
+                  br_seq: getInfo.getSelectValue(this.listFilters, 6),
+                  device_id: this.selected[1],
+                  product_num: getInfo.getInputValue(0),
+                  serial_num: getInfo.getInputValue(2),
+                  device_name: getInfo.getInputValue(3),
+                  device_name_en: getInfo.getInputValue(4),
+                  approval_status: getInfo.getSelectValue(this.listFilters, 9),
+                  order_by_num: Number(getInfo.getInputValue(5)),
+                  device_type: this.selected[10],
+                  jwt: token
+                },
+                0
+              )
+            }
           }
+          
         },
         deleteBtnClick() {
           const token = localStorage.getItem("jwt")
