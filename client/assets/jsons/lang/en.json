@@ -358,6 +358,7 @@
 	"date": ["-","-"," ",":",""],
 	"time": [" : ", " : ", ""],
 	"no spaces text": "Name cannot contain spaces",
+	"no special characters": "Name cannot comtain special characters",
 	"please select enterprise": "Please select a company first",
 	"please enter enterprise": "Please enter your company name",
 	"Upload progress text": [

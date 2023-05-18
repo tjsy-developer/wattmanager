@@ -24,12 +24,13 @@ export default {
         type: "edit",
         selected: [],
         nameSpaceCheck: this.$t("no spaces text"),
+        nameSpecialCheck: this.$t("no special characters"),
         editBtnClick() {
           const token = localStorage.getItem("jwt")
           const pattern = /\s/g
           const reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g
           if (getInfo.getInputValue(3).match(reg) || getInfo.getInputValue(4).match(reg)) {
-            alert("이름에 특수문자를 사용할 수 없습니다")
+            alert(this.nameSpecialCheck)
           } else {
             if (getInfo.getInputValue(3).match(pattern)) {
               alert(this.nameSpaceCheck)
