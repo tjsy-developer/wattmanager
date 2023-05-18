@@ -351,6 +351,7 @@
 	"date": ["년 ","월 ","일 ","시 ","분"],
 	"time": ["시간 ", "분 ", "초"],
 	"no spaces text": "이름에 공백을 포함할 수 없습니다.",
+	"no special characters": "이름에 특수문자를 포함할 수 없습니다.",
 	"please select enterprise": "기업명을 먼저 확인해주세요",
 	"please enter enterprise": "기업명을 입력해주세요",
 	"Upload progress text": [
