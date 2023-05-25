@@ -40,7 +40,7 @@
             :value="compData.type == 'edit' ? compData.selected[contentKey-1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
             :disabled="content.edit=='disabled'"
            />
-           <button v-if="useEnterprise == 'dlenc' && contentKey == 8" class="changePhone-btn">{{ $t("changePhoneNumber") }}</button>
+           <button v-if="useEnterprise == 'dlenc' && contentKey == 8 && $route.name == 'profile'" class="changePhone-btn" @click="changePhoneBtnClick">{{ $t("changePhoneNumber") }}</button>
         </div>
       </div>
       <div class="col-12 divisionLine"></div>
@@ -62,6 +62,7 @@
 import domain from "@/assets/jsons/domain/domain"
 import axiosJson from "@/assets/jsons/axios"
 import getInfo from "@/assets/scripts/info/getInfo"
+import { danalVerify } from "@/assets/scripts/danalVerify"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 
@@ -174,6 +175,14 @@ export default {
         }
         // return Math.round(textContent.length / 161) + this.rows - 1
       }
+    },
+    async changePhoneBtnClick() {
+      console.log(this.compData.selected, "========")
+      const params = {
+        UserInfo: this.compData,
+        editFunc: this.compData.editBtnClick
+      }
+      danalVerify(params, 2)
     },
     // - 앱정보 복사
     appInfoCopy() {

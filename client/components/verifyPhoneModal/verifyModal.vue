@@ -47,7 +47,7 @@ export default {
                 lang: this.propsData.language,
                 type: this.propsData.type
             }
-            danalVerify(params)
+            danalVerify(params, 0)
         }
     }
 }

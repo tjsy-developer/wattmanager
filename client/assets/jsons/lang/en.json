@@ -35,7 +35,10 @@
 		"EMAIL CHECK",
 		"Phone Number  ('-' not allowed)  ",
 		"VERIFY",
-		"Birthday   (e.g 000000)"
+		"Birthday   (e.g 000000)",
+		"Enter Birthday",
+		"Enter Phone Number",
+		"Please check Verify first"
 	],
 	"infoFilters": [
 		"NO.",
@@ -467,6 +470,9 @@
 		"Please use your cell phone",
 		"to verify your identity",
 		"Verify"
+	],
+	"policy": [
+		"Privacy Policy"
 	]
 
 }

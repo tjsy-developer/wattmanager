@@ -169,9 +169,12 @@
       </div>
       <div class="text4Conatainer row col-12 justify-center">
         <div
-          class="text4 col-12"
+          class="text4 col-12 row justify-center"
           :style="{ marginTop: $i18n.locale == 'en' ? '30px' : '30px' }"
         >
+          <button v-if="useEnterprise == 'dlenc'" class="policy-btn" @click="policyBtnClick()">
+            <span>{{ $t("policy")[0] }}</span>
+          </button>
           <span class="justify-center">Watt Talk 2.0</span>
         </div>
         <div class="text4 col-12">
@@ -218,7 +221,6 @@ export default {
       enflag: require("@/assets/images/american.png"),
       directCheck: true,
       useEnterprise: domain.useEnterprise,
-      // useEnterprise: "dlenc",
       isMember: false,
       reservId: undefined,
       params: "",
@@ -423,6 +425,9 @@ export default {
             localStorage.setItem("id", response.data[1].id);
             localStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
+            if (userId == "administrator" || userId == "mediaserver" || userId == "wattsupport1" || userId == "wattsupport2") {
+              console.log("관리자접근")
+            }
             // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
             if (window.location.hostname == "dlenc.watttalk.kr") {
               let modalType
@@ -916,7 +921,9 @@ export default {
     margin-top: 0px
 
   .text4Conatainer
-    display: none
+    display: flex
+    justify-content: center
+    align-items: center
 
   .personalAgreeBox
     margin-bottom: 0px
@@ -926,4 +933,8 @@ export default {
     white-space: nowrap
     >span
       font-size: 13px
+
+.policy-btn
+  color: white
+  font-size: 5px
 </style>

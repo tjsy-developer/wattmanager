@@ -16,9 +16,22 @@
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
         <input class="emailInput" id="accountEMail" :placeholder="$t('account')[17]" v-model="EMail" @keyup.enter="emailCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="emailCheckBtnClick">{{ $t("account")[18] }}</button>
-        <input v-if="useEnterprise == 'dlenc'" class="phoneInput" id="phoneNumber" :placeholder="$t('account')[33]" v-model="phoneNum" />
-        <button v-if="useEnterprise == 'dlenc'" class="phoneChkBtn col-auto">{{ $t("account")[34] }}</button>
         <input v-if="useEnterprise == 'dlenc'" class="input" id="birthday" :placeholder="$t('account')[35]" v-model="birthday" type="birthday" />
+        <input
+          v-if="useEnterprise == 'dlenc'"
+          class="phoneInput"
+          id="phoneNumber"
+          :placeholder="$t('account')[33]"
+          v-model="phoneNum"
+          @keyup.endter="phoneCheckBtnClick"
+        />
+        <button
+          v-if="useEnterprise == 'dlenc'"
+          class="phoneChkBtn col-auto"
+          @click="phoneCheckBtnClick"
+        >
+          {{ $t("account")[34] }}
+        </button>
         <selectComp :compData="deviceTypeCompData"></selectComp>
         <selectComp :compData="enterpriseCompData"></selectComp>
         <selectComp :compData="hqCompData"></selectComp>
@@ -50,6 +63,7 @@ import QRCode from "qrcode"
 import getInfo from "@/assets/scripts/info/getInfo"
 import axiosJson from "@/assets/jsons/axios"
 import domain from "@/assets/jsons/domain/domain"
+import { danalVerify } from "@/assets/scripts/danalVerify"
 
 export default {
   components: {},
@@ -64,7 +78,10 @@ export default {
       EMail: undefined,
       EMailCheck: undefined,
       enSeqCheck: undefined,
+      phoneNum: undefined,
+      phoneCheck: undefined,
       birthday: undefined,
+      verifyCheck: false,
       useEnterprise: domain.useEnterprise,
       deviceTypeCompData: {
         placeholder: this.$i18n.t("account")[21],
@@ -194,22 +211,56 @@ export default {
         alert(this.$t("please select enterprise"))
       }
     },
+    async phoneCheckBtnClick() {
+      if (!this.birthday) {
+        alert(this.$t("account")[36])
+      } else if (!this.phoneNum) {
+        alert(this.$t("account")[37])
+      } else {
+        if (this.name) {
+          const params = {
+            name: this.name,
+            birthday: this.birthday,
+            phone: this.phoneNum
+          }
+          danalVerify(params, 1)
+          this.phoneCheck = this.phoneNum
+        }
+      }
+    },
     signUpBtnClick() {
+      const checkVerify = sessionStorage.getItem("verify")
+      console.log(checkVerify)
       if (this.deviceTypeCompData.selectedValue === 3) {
         // eslint-disable-next-line no-global-assign
         self = this
-        if (
-          !this.id ||
-          !this.password ||
-          !this.passwordCheck ||
-          !this.name ||
-          !this.EMail ||
-          !this.enterpriseCompData.selectedValue ||
-          !this.hqCompData.selectedValue ||
-          !this.branchCompData.selectedValue
-        )
+        if (this.useEnterprise == "dlenc") {
+          if (
+            !this.id ||
+            !this.password ||
+            !this.passwordCheck ||
+            !this.name ||
+            !this.EMail ||
+            !this.enterpriseCompData.selectedValue ||
+            !this.hqCompData.selectedValue ||
+            !this.branchCompData.selectedValue ||
+            !this.phoneNum ||
+            !this.birthday
+          )
           return alert(this.$t("account")[6])
-
+        } else {
+          if (
+            !this.id ||
+            !this.password ||
+            !this.passwordCheck ||
+            !this.name ||
+            !this.EMail ||
+            !this.enterpriseCompData.selectedValue ||
+            !this.hqCompData.selectedValue ||
+            !this.branchCompData.selectedValue
+          )
+            return alert(this.$t("account")[6])
+        }
         if (this.id !== this.idCheck) {
           document.getElementById("accountID").focus()
           return alert(this.$t("account")[7])
@@ -237,6 +288,14 @@ export default {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
+        if (!checkVerify) {
+          return alert(this.$t("account")[38])
+        } else if (checkVerify == false) {
+          return alert(this.$t("account")[29])
+        }
+        if (this.phoneNum != this.phoneCheck) {
+          return alert(this.$t("account")[38])
+        }
 
         this.$axios
           // .post(axiosJson.account.user_insert, {
@@ -248,6 +307,7 @@ export default {
             en_seq: this.enterpriseCompData.selectedValue,
             hq_seq: this.hqCompData.selectedValue,
             br_seq: this.branchCompData.selectedValue,
+            phone_number: this.phoneNum,
             device_type: this.deviceTypeCompData.selectedValue
           })
           .then(function(response) {
@@ -270,7 +330,9 @@ export default {
           !this.EMail ||
           !this.enterpriseCompData.selectedValue ||
           !this.hqCompData.selectedValue ||
-          !this.branchCompData.selectedValue
+          !this.branchCompData.selectedValue ||
+          !this.phoneNum ||
+          !this.birthday
         )
           return alert(this.$t("account")[6])
 
@@ -299,6 +361,14 @@ export default {
         if (this.enSeqCheck !== this.enterpriseCompData.selectedValue) {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
+        }
+        if (!checkVerify) {
+          return alert(this.$t("account")[38])
+        } else if (checkVerify == false) {
+          return alert(this.$t("account")[29])
+        }
+        if (this.phoneNum != this.phoneCheck) {
+          return alert(this.$t("account")[38])
         }
         // Qr생성 true
         this.isCreateQR = true
@@ -359,6 +429,9 @@ export default {
     } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
+  },
+  beforeDestroy() {
+    sessionStorage.removeItem("verify")
   }
 }
 </script>

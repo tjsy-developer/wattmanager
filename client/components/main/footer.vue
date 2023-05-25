@@ -1,6 +1,7 @@
 <template>
 	<div class="row justify-center mainFooter">
 		<div class="row maxWidth">
+			<button v-if="useEnterprise == 'dlenc'" class="policy-btn" @click="policyBtnClick()">{{ $t("policy")[0] }}</button>
 			<div class="col-12 divisionLine"></div>
 			<!-- DL EnC 상호명 추가 -->
 			<span v-if="useEnterprise == 'dlenc'" class="col-12 text">
@@ -30,8 +31,8 @@ export default {
 		} else if (window.location.hostname == "dlenc.watttalk.kr") {
 			this.useEnterprise = "dlenc";
 		}else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
+			this.useEnterprise = "dlenc"
+		}
 	}
 }
 
@@ -44,11 +45,15 @@ export default {
 
 .maxWidth
 	width: $contentMaxWidth
+	display: flex
+	justify-content: center
+	align-items: center
 
+.policy-btn
+	margin-top: 42px
 .divisionLine
 	height: 1px !important
 	border: 1px solid #D9D9D9
-	margin-top: 42px
 
 .text
 	font-size: 10px
