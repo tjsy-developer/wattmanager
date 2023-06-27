@@ -1,29 +1,29 @@
 {
 	"domain":{
-		"backend_local": "http://localhost:8090/",
-		"backend1": "https://dev.watttalk.kr:8221/",
+		"backend_local": "http://192.168.20.131:9090/",
+		"backend1": "https://dlenc.watttalk.kr:8101/",
 		"powertalk" : { 
 			"state" : [
 				"loginCheck",
 				"http://localhost:4500/login/login-check?jwt_token=",
-				"https://dev.watttalk.kr:8221/login/login-check?jwt_token="
+				"https://dlenc.watttalk.kr:8102/login/login-check?jwt_token="
 			 ]
 		}
 	},
-	"powermemo": "https://dev.watttalk.kr:8222/storage/sftp/dev",
-	"qr_filePath":  "https://dev.watttalk.kr:8222/Storage/powertalk/dev/QR/folder",	
+	"powermemo": "https://dlenc.watttalk.kr/sftp/dlenc",
+	"powermemoSavefolder": "/home/sftproot/dlenc/",
+	"qr_filePath":  "https://dlenc.watttalk.kr/storage/watttalk/dlenc/QR/folder",
 	"qr": "default",
 	"att_access_user": true,
-	"att_videoPlayPath": "https://dev.watttalk.kr/Storage/powertalk/dev/Dashs/Src/",
-	"att_filePath": "https://dev.watttalk.kr/Storage/powertalk/dev/filebox/",
-	"detailFilePath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\filebox",
-	"fileUploadBackend": "https://dev.watttalk.kr:8221/",
-	"useEnterprise": "watt",
-	"use_bento4": true,
-	"elecQR": true,
-	"elecFilePath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\QR\\\\file",
-	"elecFolderPath": "D:\\\\Storage\\\\powertalk\\\\dev\\\\QR\\\\folder",
-	"fileBoxBackend": "https://dev.watttalk.kr:8221/",
-	"separateBackendUploadPath": false,
-	"powermemoSavefolder": "D:\\\\Storage\\\\sftp\\\\dev"
+	"att_videoPlayPath": "https://dlenc.watttalk.kr/Storage/powertalk/dev/Dashs/Src/",
+	"att_filePath": "https://dlenc.watttalk.kr/storage/watttalk/dlenc/filebox/",
+	"detailFilePath": "/home/watt/hdd_ext/Storage/watttalk/dlenc/filebox/",
+	"fileUploadBackend": "https://dlenc.watttalk.kr:8101/",
+	"useEnterprise": "dlenc",
+	"use_bento4": false,
+	"elecQR": false,
+	"elecFilePath": "/home/watt/hdd_ext/Storage/watttalk/dlenc/QR/file",
+	"elecFolderPath": "/home/watt/hdd_ext/Storage/watttalk/dlenc/QR/folder",
+	"fileBoxBackend": "https://dlenc.watttalk.kr:8101/",
+	"separateBackendUploadPath": false
 }
