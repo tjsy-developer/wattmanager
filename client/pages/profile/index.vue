@@ -15,11 +15,12 @@ export default {
       defaultProfileBlob: "",
       deviceType: 0,
       auth: 0,
-      useEnterprise: undefined,
+      useEnterprise: domain.useEnterprise,
       compData: {
         self: this,
         userSeq: undefined,
         listTitle: this.$t("profile"),
+        check2Factor: "",
         listFilters: [
           {},
           {
@@ -56,6 +57,10 @@ export default {
             edit: "disabled"
           },
           {
+            text: this.$t("profile text")[8],
+            edit: "disabled"
+          },
+          {
             text: this.$t("profile text")[7],
             edit: "file"
           },
@@ -66,6 +71,8 @@ export default {
         selected: [],
         nameSpaceCheck: this.$t("no spaces text"),
         editBtnClick() {
+          const deviceType = localStorage.getItem("deviceType")
+          console.log(this.selected, "selected")
           const getSelf = this.self
           const getInput = document.querySelectorAll("input")
           try {
@@ -90,7 +97,6 @@ export default {
               //   console.log("null")
               //   console.log(getInfo.getInputValue(5))
               // }
-
               getSelf.$axios
                 // .post("userRest/user_update_my", {
                 .post(domain.domain.backend1 + "userRest/user_update_my", {
@@ -108,13 +114,17 @@ export default {
                       : getInfo.getInputValue(5),
                   // image: this.selected[7],
                   image:
-                    getSelf.useEnterprise == "dlenc"
-                      ? this.selected[7]
-                      : this.selected[6],
-                  phoneNumber:
-                    getSelf.useEnterprise == "dlenc"
-                      ? getInfo.getInputValue(6)
-                      : undefined,
+                    getSelf.check2Factor == "True" && deviceType != 2
+                      ? this.selected[9]
+                      : this.selected[7],
+                  phone_number:
+                    getSelf.check2Factor == "True" && deviceType != 2
+                      ? getInfo.getInputValue(7)
+                      : "",
+                  birthday:
+                    getSelf.check2Factor == "True" && deviceType != 2
+                    ? getInfo.getInputValue(8)
+                    : "",
                   jwt: localStorage.getItem("jwt")
                 })
                 .then(function(res) {
@@ -189,6 +199,12 @@ export default {
     }
   },
   mounted() {
+    if (window.location.hostname == 'dlenc.watttalk.kr') {
+      // dlenc 분기처리!!
+      this.useEnterprise = "dlenc"
+    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+      this.useEnterprise = "dlenc"
+    }
     const getUserSeq = Number(localStorage.getItem("userSeq"))
     this.compData.userSeq = getUserSeq
     const self = this
@@ -200,53 +216,132 @@ export default {
       })
       .then(function(res) {
         console.log(res)
+        sessionStorage.setItem("deviceType", res.data.device_type)
+        self.$axios
+          .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+            en_seq: res.data.en_seq,
+            hq_seq: res.data.hq_seq,
+            br_seq: res.data.br_seq
+          })
+          .then((response) => {
+            const jsonFactorList = response.data[0].app_detail_json
+            const factorList = JSON.parse(jsonFactorList)
+            self.check2Factor = factorList["2factor"]
+            if (self.useEnterprise != "dlenc") {
+              self.check2Factor = "False"
+            }
+          })
+          .catch((err) => {
+            if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+              self.check2Factor = "False"
+            } else {
+              console.log("2Factor Error :", err)
+            }
+          })
+          .then(() => {
+            if (res.data.image) {
+              fetch(self.hexToAscii(res.data.image))
+                .then(response => response.blob())
+                .then(function(resultBlob) {
+                  // const blobURL = URL.createObjectURL(resultBlob)
+                  self.defaultProfileBlob = URL.createObjectURL(resultBlob)
+                  console.log("profile blobURL: ", self.defaultProfileBlob)
+                  if (self.check2Factor == "True") {
+                    if (res.data.id == "administrator" || sessionStorage.getItem("deviceType") == 2){
+                      self.compData.listFilters.splice(8, 2)
+                      self.compData.selected = [
+                        res.data.id,
+                        res.data.en_alias,
+                        res.data.hq_alias,
+                        res.data.br_alias,
+                        res.data.name,
+                        res.data.name_en,
+                        res.data.email,
+                        res.data.image ? self.hexToAscii(res.data.image) : undefined
+                      ]
+                    } else {
+                      self.compData.selected = [
+                        res.data.id,
+                        res.data.en_alias,
+                        res.data.hq_alias,
+                        res.data.br_alias,
+                        res.data.name,
+                        res.data.name_en,
+                        res.data.email,
+                        res.data.phone_number,
+                        res.data.birthday,
+                        res.data.image ? self.hexToAscii(res.data.image) : undefined
+                      ]
+                    }
+                  } else {
+                    self.compData.listFilters.splice(8, 2)
+                    self.compData.selected = [
+                        res.data.id,
+                        res.data.en_alias,
+                        res.data.hq_alias,
+                        res.data.br_alias,
+                        res.data.name,
+                        res.data.name_en,
+                        res.data.email,
+                        res.data.image ? self.hexToAscii(res.data.image) : undefined
+                      ]
+                  }
+                })
 
-        if (res.data.image) {
-          fetch(self.hexToAscii(res.data.image))
-            .then(response => response.blob())
-            .then(function(resultBlob) {
-              // const blobURL = URL.createObjectURL(resultBlob)
-              self.defaultProfileBlob = URL.createObjectURL(resultBlob)
-              console.log("profile blobURL: ", self.defaultProfileBlob)
-
-              self.compData.selected = [
-                res.data.id,
-                res.data.en_alias,
-                res.data.hq_alias,
-                res.data.br_alias,
-                res.data.name,
-                res.data.name_en,
-                res.data.email,
-                res.data.phoneNum,
-                res.data.image ? self.hexToAscii(res.data.image) : undefined
-              ]
-            })
-
-          // 사용자에게 보여주는 blob 처리된 이미지 src 적용
-          setTimeout(() => {
-            const profileImage = document.getElementById("fileTypeInputImg")
-            profileImage.src = self.defaultProfileBlob
-          }, 1000)
-        } else {
-          self.compData.selected = [
-            res.data.id,
-            res.data.en_alias,
-            res.data.hq_alias,
-            res.data.br_alias,
-            res.data.name,
-            res.data.name_en,
-            res.data.email,
-            res.data.phoneNum,
-            undefined
-          ]
-        }
+              // 사용자에게 보여주는 blob 처리된 이미지 src 적용
+              setTimeout(() => {
+                const profileImage = document.getElementById("fileTypeInputImg")
+                profileImage.src = self.defaultProfileBlob
+              }, 1000)
+            } else {
+              if (self.check2Factor == "True") {
+                if (res.data.id == "administrator" || sessionStorage.getItem("deviceType") == 2) {
+                  self.compData.listFilters.splice(8, 2)
+                  self.compData.selected = [
+                    res.data.id,
+                    res.data.en_alias,
+                    res.data.hq_alias,
+                    res.data.br_alias,
+                    res.data.name,
+                    res.data.name_en,
+                    res.data.email,
+                    undefined
+                  ]
+                } else {
+                  self.compData.selected = [
+                    res.data.id,
+                    res.data.en_alias,
+                    res.data.hq_alias,
+                    res.data.br_alias,
+                    res.data.name,
+                    res.data.name_en,
+                    res.data.email,
+                    res.data.phone_number,
+                    res.data.birthday,
+                    undefined
+                  ]
+                }
+              } else {
+                self.compData.listFilters.splice(8, 2)
+                self.compData.selected = [
+                  res.data.id,
+                  res.data.en_alias,
+                  res.data.hq_alias,
+                  res.data.br_alias,
+                  res.data.name,
+                  res.data.name_en,
+                  res.data.email,
+                  undefined
+                ]
+              }
+            }
+          })
       })
       .catch(function(error) {
         console.log("user profile page error : ", error)
       })
     this.deviceType = localStorage.getItem("deviceType")
     this.auth = localStorage.getItem("auth")
-    console.log(this.deviceType, this.auth)
     // eslint-disable-next-line eqeqeq
     if (this.deviceType == 3 && this.auth != 4) {
       this.compData.listFilters[6].edit = true

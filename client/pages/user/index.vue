@@ -28,7 +28,7 @@ export default {
             this.$t("infoFilters")[10],
             this.$t("infoFilters")[8],
             this.$t("infoFilters")[11],
-            this.$t("infoFilters")[7]
+            this.$t("infoFilters")[7],
           ],
           filtersJson
         ),

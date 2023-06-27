@@ -249,16 +249,16 @@
                     <span>① The company designates a person in charge of personal information management as follows to protect users' personal information and handle complaints and inquiries related to personal information.</span>
                     <span>[Personal Information Management Manager]</span>
                     <div class="content__indent">
-                        <span>1. Name: Hong</span>
-                        <span>2. Phone number: 070/0000/0000</span>
-                        <span>3. Email address: @wattsoulution.co.kr</span>
+                        <span>1. Name: Kim Young Joon</span>
+                        <span>2. Phone number: 070/7124/2561</span>
+                        <span>3. Email address: watt@wattsolution.co.kr</span>
                     </div>
                     <span>The data subject may request the following department to view personal information under Article 35 of the Personal Information Protection Act. Watt will try to expedite the request for access to personal information by the data subject.</span>
                     <span>[Personal Information Access Request Receipt and Processing Department]</span>
                     <div class="content__indent">
-                        <span>1. Name: Hong</span>
-                        <span>2. Phone number: 070/0000/0000</span>
-                        <span>3. Email address: @wattsoulution.co.kr</span>
+                        <span>1. Name: Kim Young Joon</span>
+                        <span>2. Phone number: 070/7124/2561</span>
+                        <span>3. Email address: watt@wattsolution.co.kr</span>
                     </div>
                     <span>③ If you need to report or consult other personal information infringement, please contact the institution below.</span>
                     <div class="content__indent">

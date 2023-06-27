@@ -1,3 +1,5 @@
+import domain from "@/assets/jsons/domain/domain"
+import axiosJson from "@/assets/jsons/axios"
 import axios from "axios"
 
 // type: 0 => 로그인; 1 => 회원가입; 2 => 내정보 휴대폰번호 변경;
@@ -13,26 +15,28 @@ export const danalVerify = (logInData, type) => {
             m_redirect_url: '/',
             // mobile popup
             popup: false,
-            name: logInData.name,
             phone: logInData.phone
         },
         // 승인 or 실패시 callBack Function
         async function (rsp) {
-            console.log(rsp.imp_uid)
             const { success, error_msg } = rsp
+            let alertTxt
             if (success) {
-                alert(`본인인증 성공`)
-                const impParams = rsp.imp_uid
-                const certifyData = await getCertification(impParams)
-                if (type == 0) {
-                    login(logInData)
-                } else if (type == 1) {
-                    sessionStorage.setItem("verify", true)
-                } else if (type == 2) {
-                    sessionStorage.setItem("verify", true)
+                // 인증 정보를 가져오는 부분
+                // 추후 type이 0인 경우 return 받은 휴대폰 번호 까지 비교! (로그인 시 본인 인증)
+                // 나머지는 휴대폰 번호 비교 필요 없음.(계정 생성 및 휴대폰번호 변경 시)
+                const userInfo = await getUserInfo(rsp.imp_uid)
+                if (logInData.birthday == userInfo.birthday) {
+                    alertTxt = alertText("match", logInData.lang)
+                    alert(alertTxt)
+                    afterVerify(type, logInData, userInfo.birthday)
+                } else {
+                    alertTxt = alertText("unmatch", logInData.lang)
+                    alert(alertTxt)
                 }
             } else {
-                alert(`본인인증 실패: ${error_msg}`)
+                alertTxt = alertText("fail", logInData.lang)
+                alert(`${alertTxt}: ${error_msg}`)
                 if (type != 0) {
                     sessionStorage.setItem("verify", false)
                 }
@@ -40,6 +44,17 @@ export const danalVerify = (logInData, type) => {
         }
     )
 }
+// 인증 성공 후 type별 실행 function
+function afterVerify(type, logInInfo, birthday) {
+    if (type == 0) {
+        login(logInInfo)
+    } else if (type == 1) {
+        singUpCheck(logInInfo.phone, birthday)
+    } else if (type == 2) {
+        changePhone(logInInfo)
+    }
+}
+// 본인 인증 후 로그인
 function login(logInData) {
     let params
     const loginData = logInData.loginData
@@ -47,7 +62,7 @@ function login(logInData) {
     const reservUserId = logInData.reservUserId
     const userId = logInData.id
     const reservId = logInData.reservId
-    const lang = logInData.language
+    const lang = logInData.lang
     const logInType = logInData.type
     // 회원이 이메일로 회의실입장하려고 하는 경우
     /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
@@ -77,7 +92,6 @@ function login(logInData) {
         } else {
             params = loginData + "&login_type=1&lang=" + lang;
         }
-        console.log(params);
 
         /* 와트톡 로그인 체크 페이지로 이동 */
         // eslint-disable-next-line no-lonely-if
@@ -119,33 +133,63 @@ function login(logInData) {
         }
     }
 }
-async function getCertification(params) {
-    console.log(params, "==============================")
-    const { imp_uid } = params // request의 body에서 imp_uid 추출
-    console.log(imp_uid, "==========")
-    try {
-        // 인증 토큰 발급 받기
-        const options = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        const getToken = await axios.post('https://api.iamport.kr/users/getToken', {
-            imp_key: '5072156752128376', // REST API키
-            imp_secret: 'ye1LTvOn17hLG6kXd81hANil8TrEcpyUmXUNsgnjwCONVdY82aY9W7OQFSXF07IV3WJ6ZiRaH7M2sc9h', // REST API Secret
-            }, options
-        )
-        const { access_token } = getToken.data // 인증 토큰
-        console.log(access_token)
-        
-        const getCertifications = await axios.get(`https://api.iamport.kr/certifications/` + params, {
-            headers: { Authorization: access_token }
+// iamport 에서 받은 imp_uid를 토대로 백엔드에서 토큰 생성 및 토큰으로 이름, 생년월일과 같은 개인정보를 가져오는 부분
+async function getUserInfo(params) {
+    let userInfo
+        await axios
+        .post(domain.domain.backend1 + axiosJson.account.verify_iamport, {
+            jwt: localStorage.getItem("jwt"),
+            imp_uid: params
         })
-        const certificationsInfo = getCertifications.data // 조회한 인증 정보
-        console.log(certificationsInfo, "=====")
-        return certificationsInfo
-    } catch (e) {
-        console.log("날탔다?")
-        console.error(e)
+        .then((response) => {
+            const res = response.data[0]
+            if (res) {
+                // birthday return 형식이 yyyy-mm-dd
+                const birth = res.birthday.replace(/-/g, '')
+                userInfo = {
+                    name: res.name,
+                    birthday: birth
+                }
+            }
+        })
+        .catch((err) => {
+            console.log("getUserInfo Error : ", err)
+        })
+    return userInfo
+}
+function singUpCheck(phoneNum, birthday) {
+    sessionStorage.setItem("verify", true)
+    sessionStorage.setItem("phoneNum", phoneNum)
+    sessionStorage.setItem("birthday", birthday)
+    window.dispatchEvent(new Event("sessionStorageUpdated"))
+}
+function changePhone(logInInfo) {
+    sessionStorage.setItem("verify", true)
+    sessionStorage.setItem("phoneNum", logInInfo.phone)
+    window.dispatchEvent(new Event("sessionStorageUpdated"))
+    logInInfo.closeFunc()
+}
+// langCode와 type에 따라서 alert문구 지정
+function alertText(type, langCode) {
+    let alertTxt
+    if (type == "match") {
+        if (langCode == "ko") {
+            alertTxt = "인증이 완료되었습니다."
+        } else {
+            alertTxt = "Verified"
+        }
+    } else if (type == "unmatch") {
+        if (langCode == "ko") {
+            alertTxt = "등록된 정보와 인증 정보가 일치하지 않습니다."
+        } else {
+            alertTxt = "Registered information and authentication information are different."
+        }
+    } else if (type == "fail") {
+        if (langCode == "ko") {
+            alertTxt = "인증에 실패하였습니다."
+        } else {
+            alertTxt = "Identification failed."
+        }
     }
+    return alertTxt
 }

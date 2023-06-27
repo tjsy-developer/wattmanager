@@ -249,16 +249,16 @@
                     <span>① 회사는 이용자의 개인정보를 보호하고 개인정보와 관련한 불만사항 및 문의를 처리하기 위하여 아래와 같이 개인정보 관리 책임자를 지정하고 있습니다.</span>
                     <span>[개인정보 관리 책임자]</span>
                     <div class="content__indent">
-                        <span>1. 성명 : 홍길동</span>
-                        <span>2. 전화번호 : 070/0000/0000</span>
-                        <span>3. 전자우편주소(e-mail) : @wattsoulution.co.kr</span>
+                        <span>1. 성명 : 김영준</span>
+                        <span>2. 전화번호 : 070/7124/2561</span>
+                        <span>3. 전자우편주소(e-mail) : watt@wattsolution.co.kr</span>
                     </div>
                     <span>② 정보주체는 개인정보 보호법 제 35조에 따른 개인정보의 열람 청구를 아래의 부서에 할 수 있습니다. 와트는 정보주체의 개인정보 열람청구가 신속하게 처리되도록 노력하겠습니다.</span>
                     <span>[개인정보 열람청구 접수 및 처리 부서]</span>
                     <div class="content__indent">
-                        <span>1. 성명 : 홍길동</span>
-                        <span>2. 전화번호 : 070/0000/0000</span>
-                        <span>3. 전자우편주소(e-mail) : @wattsoulution.co.kr</span>
+                        <span>1. 성명 : 김영준</span>
+                        <span>2. 전화번호 : 070/7124/2561</span>
+                        <span>3. 전자우편주소(e-mail) : watt@wattsolution.co.kr</span>
                     </div>
                     <span>③ 기타 개인정보침해에 대한 신고 또는 상담이 필요하신 경우에는 아래 기관으로 문의하시기 바랍니다.</span>
                     <div class="content__indent">

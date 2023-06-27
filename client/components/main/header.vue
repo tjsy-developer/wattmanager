@@ -188,6 +188,7 @@ export default {
       this.useEnterprise = "kepco"
     }
     if (window.location.hostname == 'dlenc.watttalk.kr') {
+      // dlenc 분기처리!!
       this.useEnterprise = "dlenc"
     }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"

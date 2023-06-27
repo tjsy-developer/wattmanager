@@ -203,6 +203,7 @@ import domain from "@/assets/jsons/domain/domain";
 import cookieSetting from "@/assets/scripts/data/cookie";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal"
 
+
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
 export default {
@@ -224,7 +225,8 @@ export default {
       isMember: false,
       reservId: undefined,
       params: "",
-      reservUserId: ""
+      reservUserId: "",
+      check2Factor: ""
     };
   },
   methods: {
@@ -416,7 +418,6 @@ export default {
 
             /* 로그인 사용자의 정보 저장 */
             localStorage.setItem("jwt", response.data[2]);
-            console.log(response.data[1]);
             localStorage.setItem("userSeq", response.data[1].user_seq);
             localStorage.setItem("enSeq", response.data[1].en_seq);
             localStorage.setItem("hqSeq", response.data[1].hq_seq);
@@ -425,110 +426,150 @@ export default {
             localStorage.setItem("id", response.data[1].id);
             localStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
-            if (userId == "administrator" || userId == "mediaserver" || userId == "wattsupport1" || userId == "wattsupport2") {
-              console.log("관리자접근")
-            }
-            // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
-            if (window.location.hostname == "dlenc.watttalk.kr") {
-              let modalType
-              if (response.data[1].auth === 4) {
-                modalType = 1
-              } else if (response.data[1].device_type === 2) {
-                modalType = 2
-              } else {
-                modalType = 3
-              }
-              self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
-              return
-            } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
-              let modalType
-              if (response.data[1].auth === 4) {
-                modalType = 1
-              } else if (response.data[1].device_type === 2) {
-                modalType = 2
-              } else {
-                modalType = 3
-              }
-              self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
-              return
-            } else if (self.useEnterprise == "dlenc") {
-              let modalType
-              if (response.data[1].auth === 4) {
-                modalType = 1
-              } else if (response.data[1].device_type === 2) {
-                modalType = 2
-              } else {
-                modalType = 3
-              }
-              self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType);
-              return
-            }
-            if (response.data[1].auth === 4)
-              window.open("/attachment/video?page=1&viewType=gallery", "_self");
-            else if (response.data[1].device_type === 2)
-              window.open("/attachment/memo?page=1&viewType=gallery", "_self");
-            // 수정
-            else {
-              // 회원이 이메일로 회의실입장하려고 하는 경우
-              /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
-								 2. isMember -> 이메일을 클릭하여 들어왔는지판단(회원판단) (true == 이메일로 접근) */
-
-              // 두가지 조건이 만족하면 회원입장 페이지로 이동
-              if (self.isMember && self.reservUserId === userId) {
-                self.params =
-                  response.data[2] +
-                  "&login_type=1&lang=" +
-                  lang +
-                  "&reservId=" +
-                  self.reservId;
-                // 이메일을 타고 들어온 회원이지만 (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
-              } else if (self.isMember && self.reservUserId !== userId) {
-                alert(
-                  self.$t("not invited meeting") +
-                    "\n" +
-                    self.$t("go to the contact screen")
-                );
-                self.params = response.data[2] + "&login_type=1&lang=" + lang;
-                // 이메일을 타고들어온 회원이 아님  && (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
-              } else {
-                self.params = response.data[2] + "&login_type=1&lang=" + lang;
-              }
-              console.log(self.params);
-
-              /* 와트톡 로그인 체크 페이지로 이동 */
-              // eslint-disable-next-line no-lonely-if
-              if (domain.domain.powertalk.state[0] === "loginCheck") {
-                // 로컬
-                if (window.location.hostname === "localhost") {
-                  window.open(
-                    domain.domain.powertalk.state[1] + self.params,
-                    "_self"
-                  );
-
-                  // 와트톡
+            self.$axios
+              .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+                en_seq: response.data[1].en_seq,
+                hq_seq: response.data[1].hq_seq,
+                br_seq: response.data[1].br_seq
+              })
+              .then((res) => {
+                const jsonFactorList = res.data[0].app_detail_json
+                const factorList = JSON.parse(jsonFactorList)
+                self.check2Factor = factorList["2factor"]
+              })
+              .catch((err) => {
+                if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+                  self.check2Factor = "False"
                 } else {
-                  if (window.location.hostname == "kepco.watttalk.kr") {
-                    window.open(
-                      "https://" +
-                        window.location.hostname +
-                        ":8224/login/login-check?jwt_token=" +
-                        self.params,
-                      "_self"
-                    );
+                  console.log("2Factor Error :", err)
+                }
+              })
+              .then(() => {
+                // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
+                let checkAdmin = false
+                if (userId == "administrator" || response.data[1].device_type === 2) {
+                  // id가 admin이거나 watt면 관리자로 판단하고 본인 인증 pass
+                  // devie type이 2이면, glass사용자. 본인 인증 pass
+                  checkAdmin = true
+                }
+                let checkByPass
+                if (self.check2Factor == "True") {
+                  if (checkAdmin == true) {
+                    // 2factor의 값이 true이나 관리자 및 glass 계정이면 bypass 활성화
+                    checkByPass = true
+                  }
+                  else {
+                    // 2factor의 값이 true이고 checkAdmin이 false 이면 bypass 비활성화
+                    checkByPass = false
+                  }
+                } else if (self.check2Factor == "False") {
+                  // 2factor의 값이 false면 bypass 활성화
+                  checkByPass = true
+                }
+                if (self.useEnterprise != "dlenc") {
+                  checkByPass = true
+                }
+                if (window.location.hostname == "dlenc.watttalk.kr" && checkByPass == false) {
+                  let modalType
+                  if (response.data[1].auth === 4) {
+                    modalType = 1
+                  } else if (response.data[1].device_type === 2) {
+                    modalType = 2
                   } else {
-                    window.open(
-                      domain.domain.powertalk.state[2] + self.params,
-                      "_self"
+                    modalType = 3
+                  }
+                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq);
+                  return
+                } else if (checkByPass == false) {
+                  let modalType
+                  if (response.data[1].auth === 4) {
+                    modalType = 1
+                  } else if (response.data[1].device_type === 2) {
+                    modalType = 2
+                  } else {
+                    modalType = 3
+                  }
+                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq);
+                  return
+                } else if (self.useEnterprise == "dlenc" && checkByPass == false) {
+                  let modalType
+                  if (response.data[1].auth === 4) {
+                    modalType = 1
+                  } else if (response.data[1].device_type === 2) {
+                    modalType = 2
+                  } else {
+                    modalType = 3
+                  }
+                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq);
+                  return
+                }
+                if (response.data[1].auth === 4)
+                  window.open("/attachment/video?page=1&viewType=gallery", "_self");
+                else if (response.data[1].device_type === 2)
+                  window.open("/attachment/memo?page=1&viewType=gallery", "_self");
+                // 수정
+                else {
+                  // 회원이 이메일로 회의실입장하려고 하는 경우
+                  /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
+                    2. isMember -> 이메일을 클릭하여 들어왔는지판단(회원판단) (true == 이메일로 접근) */
+
+                  // 두가지 조건이 만족하면 회원입장 페이지로 이동
+                  if (self.isMember && self.reservUserId === userId) {
+                    self.params =
+                      response.data[2] +
+                      "&login_type=1&lang=" +
+                      lang +
+                      "&reservId=" +
+                      self.reservId;
+                    // 이메일을 타고 들어온 회원이지만 (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
+                  } else if (self.isMember && self.reservUserId !== userId) {
+                    alert(
+                      self.$t("not invited meeting") +
+                        "\n" +
+                        self.$t("go to the contact screen")
                     );
+                    self.params = response.data[2] + "&login_type=1&lang=" + lang;
+                    // 이메일을 타고들어온 회원이 아님  && (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
+                  } else {
+                    self.params = response.data[2] + "&login_type=1&lang=" + lang;
+                  }
+                  console.log(self.params);
+
+                  /* 와트톡 로그인 체크 페이지로 이동 */
+                  // eslint-disable-next-line no-lonely-if
+                  if (domain.domain.powertalk.state[0] === "loginCheck") {
+                    // 로컬
+                    if (window.location.hostname === "localhost") {
+                      window.open(
+                        domain.domain.powertalk.state[1] + self.params,
+                        "_self"
+                      );
+
+                      // 와트톡
+                    } else {
+                      if (window.location.hostname == "kepco.watttalk.kr") {
+                        window.open(
+                          "https://" +
+                            window.location.hostname +
+                            ":8224/login/login-check?jwt_token=" +
+                            self.params,
+                          "_self"
+                        );
+                      } else {
+                        window.open(
+                          domain.domain.powertalk.state[2] + self.params,
+                          "_self"
+                        );
+                      }
+                    }
+                    /* powertalk1으로 이동 */
+                  } else {
+                    const randomNumber =
+                      Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+                    window.open("/powertalk/index.html?" + randomNumber, "_self");
                   }
                 }
-                /* powertalk1으로 이동 */
-              } else {
-                const randomNumber =
-                  Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
-                window.open("/powertalk/index.html?" + randomNumber, "_self");
-              }
-            }
+              })
           } else if (response.data[0] === 2) {
             if (self.useEnterprise === "samsung") {
               self.$modal.hide("personalInfoModal");
@@ -561,7 +602,7 @@ export default {
         pwdInput.type = "text";
       }
     },
-    openVerifyModal(params, userId, userPwd, lang, modalType) {
+    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq) {
       const modalsContainerStyle =
         document.getElementById("modalsContainer").style;
       modalsContainerStyle.display = "block";
@@ -573,7 +614,8 @@ export default {
         id: userId,
         pwd: userPwd,
         language: lang,
-        type: modalType
+        type: modalType,
+        user_seq: userSeq
       }
 
       this.$modal.show(
@@ -655,6 +697,7 @@ export default {
     if (window.location.hostname == "kepco.watttalk.kr") {
       this.useEnterprise = "kepco";
     } else if (window.location.hostname == "dlenc.watttalk.kr") {
+      // dlenc 분기처리!!
       this.useEnterprise = "dlenc";
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";

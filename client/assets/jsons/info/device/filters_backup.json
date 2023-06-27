@@ -4,9 +4,9 @@
 		"width": 100
 	},
 	{
-		"text": "PRODUCT NUM",
+		"text": "DEVICE NAME",
 		"align": {
-			"column": "product_num",
+			"column": "device_name",
 			"status": "desc"
 		},
 		"edit": true
@@ -34,11 +34,12 @@
 			"status": "desc"
 		},
 		"edit": "select",
-		"selectCompData": {}
+		"selectCompData": {},
+		"width": 100
 	},
 	{
 		"text": "본부 코드",
-		"width": 122,
+		"width": 100,
 		"align": {
 			"column": "hq_seq",
 			"status": "desc"
@@ -48,7 +49,7 @@
 	},
 	{
 		"text": "지사 코드",
-		"width": 120,
+		"width": 100,
 		"align": {
 			"column": "br_seq",
 			"status": "desc"
@@ -65,6 +66,14 @@
 		},
 		"edit": "select",
 		"selectCompData": {}
+	},
+	{
+		"text": "정렬 순서",
+		"align": {
+			"column": "order_by_num",
+			"status": "desc"
+		},
+		"width": 100
 	},
 	{
 		"text": "편집",

@@ -7,7 +7,7 @@
 		"This ID already exists",
 		"Enter ID",
 		"Please fill out all the contents",
-		"Please check ID",
+		"Please click ID check to double check",
 		"Password is not matched",
 		"Completion of User Registration",
 		"Failure of User Registration",
@@ -25,20 +25,22 @@
 		"This Name is available to join",
 		"This Name already exists",
 		"Enter Name",
-		"Please check Name",
+		"Click Check Name to double check",
 		"This EMail is available to join",
 		"This EMail already exists",
 		"Enter EMail",
-		"Please check EMail",
+		"Please click Check Email to double check",
 		"ID CHECK",
 		"NAME CHECK",
 		"EMAIL CHECK",
 		"Phone Number  ('-' not allowed)  ",
 		"VERIFY",
-		"Birthday   (e.g 000000)",
+		"Birthday   (e.g 00000000)",
 		"Enter Birthday",
 		"Enter Phone Number",
-		"Please check Verify first"
+		"Please click Vefify to verify yourself",
+		"Only 8 Numbers Are Allowed in Birthday Input",
+		"Only 11 Numbers Are Allowed in Phone Number Input"
 	],
 	"infoFilters": [
 		"NO.",
@@ -89,7 +91,8 @@
 		"Modification completed",
 		"Modification failed",
 		"year",
-		"month"
+		"month",
+		"Duplicate mobile phone number."
 	],
 	"branch": [
 		"List of Team",
@@ -103,8 +106,8 @@
 		"Modification of Device information",
 		"Device information",
 		"Are you sure you want to delete the device?",
-		"This is a duplicate name",
-		"This is a duplicate English name."
+		"This is a duplicate name(Ko)",
+		"This is a duplicate name(En)"
 	],
 	"enterprise": [
 		"List of Company",
@@ -273,7 +276,8 @@
 		"English Name",
 		"E-mail",
 		"Cell Phone",
-		"My Photo"
+		"My Photo",
+		"Birthday"
 	],
 	"profilePassword": [
 		"Current Password",
@@ -473,6 +477,12 @@
 	],
 	"policy": [
 		"Privacy Policy"
+	],
+	"phonCheck": [
+		"Select Company, Department, Team",
+		"Enter Name",
+		"Enter Birthday",
+		"Enter Phone Number",
+		"This Phone Number already exists."
 	]
-
 }

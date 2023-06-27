@@ -25,6 +25,7 @@
 
 <script>
 import domain from "@/assets/jsons/domain/domain";
+import axiosJson from "@/assets/jsons/axios";
 import { danalVerify } from "@/assets/scripts/danalVerify"
 
 export default {
@@ -39,15 +40,42 @@ export default {
             this.$modal.hide("verifyModal")
         },
         verify() {
-            const params ={
-                loginDat: this.propsData.loginData,
-                isMember: this.propsData.isMember,
-                userId: this.propsData.id,
-                reservId: this.propsData.reservId,
-                lang: this.propsData.language,
-                type: this.propsData.type
-            }
-            danalVerify(params, 0)
+            const self = this
+            this.$axios
+            .post(domain.domain.backend1 + axiosJson.user.user_info_one, {
+                user_seq: this.propsData.user_seq,
+                jwt: localStorage.getItem("jwt")
+            })
+            .then(function (response) {
+                let params
+                if (self.propsData.id == "administrator") {
+                    console.log("관리자권한접근")
+                    params ={
+                        loginData: self.propsData.loginData,
+                        isMember: self.propsData.isMember,
+                        userId: self.propsData.id,
+                        reservId: self.propsData.reservId,
+                        lang: self.propsData.language,
+                        type: self.propsData.type
+                    }
+                } else {
+                    params ={
+                        loginData: self.propsData.loginData,
+                        isMember: self.propsData.isMember,
+                        userId: self.propsData.id,
+                        reservId: self.propsData.reservId,
+                        lang: self.propsData.language,
+                        type: self.propsData.type,
+                        name: response.data.name,
+                        phone: response.data.phone_number,
+                        birthday: response.data.birthday
+                    }
+                }
+                danalVerify(params, 0)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
         }
     }
 }

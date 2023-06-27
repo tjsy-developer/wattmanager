@@ -15,13 +15,13 @@ export default {
   data() {
     return {
       // eslint-disable-next-line prettier/prettier
-      inputVal: ''
+      inputVal: '',
+	  mutationState: ""
     }
   },
   methods: {
     searchBtnClick() {
       const infoSearchInputValue = document.getElementById("searchInput").value
-
       if (infoSearchInputValue)
         window.open(
           "./" +
@@ -31,7 +31,7 @@ export default {
             "&page=1",
           "_self"
         )
-      else alert(this.$t("searchBarComp")[5])
+      else this.deleteBtn()
     },
     deleteBtn() {
       window.open("./" + this.$route.name + "?page=1", "_self")
@@ -39,6 +39,24 @@ export default {
   },
   mounted() {
     this.inputVal = this.$route.query.keyword
+	if (sessionStorage.getItem("mutationState")) {
+      this.mutationState = sessionStorage.getItem("mutationState")
+    } else {
+      this.mutationState = false
+    }
+  },
+  computed: {
+    getMutationState() {
+      return this.mutationState
+    }
+  },
+  watch: {
+    getMutationState(res) {
+      if (res == "true") {
+        sessionStorage.removeItem("mutationState")
+        location.reload()
+      }
+    }
   }
 }
 </script>

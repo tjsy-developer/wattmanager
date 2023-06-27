@@ -1,11 +1,15 @@
 import Vue from "vue"
+import Vuex from "vuex"
+
+Vue.use(Vuex)
 
 export const state = () => ({
-    userPhoneNum: undefined
+    mutationState: false
 })
 
-export const mutations = {
-    getPhoneNum(state, payload) {
-        state.userPhoneNum = payload
+
+export const  mutations = {
+    setMutationState(state, payload) {
+        state.mutationState = payload
     }
 }
