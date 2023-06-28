@@ -69,12 +69,37 @@
 		"width": 100
 	},
 	{
+		"text": "이메일",
+		"edit": true
+	},
+	{
+		"text": "앱 설정",
+		"edit": "checkbox",
+		"checkboxCompData": {
+			"list": [],
+			"selected": []
+		}
+	},
+	{
 		"text": "정렬 순서",
 		"align": {
 			"column": "order_by_num",
 			"status": "desc"
 		},
+		"edit": true,
 		"width": 100
+	},
+	{
+		"text": "휴대폰번호",
+		"edit": true
+	},
+	{
+		"text": "생년월일",
+		"edit": true
+	},
+	{
+		"text": "내 사진",
+		"edit": "file"
 	},
 	{
 		"text": "편집",

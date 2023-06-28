@@ -37,9 +37,16 @@
           <input
             v-else
             class="col"
-            :value="compData.type == 'edit' ? compData.selected[contentKey-1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
+            :value="compData.type == 'edit' ? compData.selected[contentKey - 1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
             :disabled="content.edit=='disabled'"
            />
+           <button
+            v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6]"
+            class="changePhone-btn"
+            @click="changePhoneBtnClick"
+          >
+            {{ $t("changePhoneNumber") }}
+          </button>
         </div>
       </div>
       <div class="col-12 divisionLine"></div>
@@ -61,6 +68,7 @@
 import domain from "@/assets/jsons/domain/domain"
 import axiosJson from "@/assets/jsons/axios"
 import getInfo from "@/assets/scripts/info/getInfo"
+import changePhoneModal from "@/components/info/changePhoneModal"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 
@@ -71,6 +79,9 @@ export default {
       profileImage: "",
       rows: 5,
       cnt: 0,
+      cellPhoneNum: undefined,
+      // useEnterprise: undefined,
+      useEnterprise: "dlenc",
       // 앱 복사 기업 리스트
       enList: getInfo.enterprise().then(res => {
         getInfo.enList.options = res
@@ -78,21 +89,31 @@ export default {
       }),
       // 앱 복사 본부, 지사 리스트 불러오기
       hqList: getInfo.hqList,
-      brList: getInfo.brList
+      brList: getInfo.brList,
+      checkAdmin: false
     }
   },
   methods: {
     createBtnClick() {
       if (this.compData.createBtnClick) this.compData.createBtnClick()
+      console.log("생성이벤트 만드는 곳")
+      sessionStorage.setItem("mutationState", true)
     },
     editBtnClick() {
       if (this.compData.editBtnClick) this.compData.editBtnClick()
+      sessionStorage.removeItem("deviceType")
+      console.log("수정이벤트 만드는 곳")
+      sessionStorage.setItem("mutationState", true)
     },
     cancleBtnClick() {
       window.history.back()
+      sessionStorage.removeItem("deviceType")
     },
     deleteBtnClick() {
       if (this.compData.deleteBtnClick) this.compData.deleteBtnClick()
+      sessionStorage.removeItem("deviceType")
+      console.log("삭제이벤트 만드는 곳")
+      sessionStorage.setItem("mutationState", true)
     },
     fileTypeInputChange(input, index) {
       if (input.target.files[0]) {
@@ -173,6 +194,34 @@ export default {
         // return Math.round(textContent.length / 161) + this.rows - 1
       }
     },
+    changePhoneBtnClick() {
+      const modalsContainerStyle =
+        document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block"
+      const modalParameter = {
+        phone: this.compData.selected[7],
+        data: this.compData.selected,
+        id: this.compData.selected[0]
+      }
+      this.$modal.show(
+        changePhoneModal,
+        {
+          propsData: modalParameter
+        },
+        {
+          name: "changePhoneModal",
+          width: 600,
+          height: 200,
+          clickToClose: false,
+          adaptive: true,
+        },
+        {
+          "before-close": () => {
+            modalsContainerStyle.display = "none";
+          },
+        }
+      )
+    },
     // - 앱정보 복사
     appInfoCopy() {
       // 복사할 기업,본부,지사,앱코드 선택체크
@@ -235,6 +284,11 @@ export default {
             console.log("app edit page error : ", error)
           })
       }
+    },
+    sessionStorageChange() {
+      this.compData.selected[7] = sessionStorage.getItem("phoneNum")
+      sessionStorage.removeItem("phoneNum")
+      this.$forceUpdate()
     }
   },
   updated() {
@@ -247,10 +301,21 @@ export default {
     //   }
     // }
   },
+  mounted() {
+    // dlenc 분기처리!!
+    if (window.location.hostname == "dlenc.watttalk.kr") {
+      this.useEnterprise = "dlenc"
+    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+      this.useEnterprise = "dlenc"
+    }
+    window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
+    sessionStorage.removeItem("mutationState")
+  },
   beforeDestroy() {
     if (this.profileImage !== "") {
       URL.revokeObjectURL(this.profileImage)
     }
+    window.removeEventListener("sessionStorageUpdated", this.sessionStorageChange)
   }
 }
 </script>
@@ -392,4 +457,12 @@ export default {
 	background-color: white
 	margin-bottom: 20px
 	margin-left: 10px
+.changePhone-btn
+  width: 130px
+  height: 38px
+  font-size: 14px
+  text-align: center
+  background: #008BCF
+  margin-left: 10px
+  color: white
 </style>

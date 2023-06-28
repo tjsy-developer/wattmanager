@@ -7,7 +7,7 @@
     <input class="col-12 password" :placeholder="$t('profilePassword')[0]" type="password" v-model="password" />
     <input class="col-12 newPassword" :placeholder="$t('profilePassword')[1]" type="password" v-model="newPassword" />
     <input class="col-12 newPasswordCheck" :placeholder="$t('profilePassword')[2]" type="password" v-model="newPasswordCheck" />
-    <button class="col-12 button" @click="confirm"></button>
+    <button class="col-12 button" @click="confirm">{{ $t("confirm") }}</button>
   </div>
 </template>
 

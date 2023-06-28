@@ -7,7 +7,7 @@
 		"This ID already exists",
 		"Enter ID",
 		"Please fill out all the contents",
-		"Please check ID",
+		"Please click ID check to double check",
 		"Password is not matched",
 		"Completion of User Registration",
 		"Failure of User Registration",
@@ -25,14 +25,22 @@
 		"This Name is available to join",
 		"This Name already exists",
 		"Enter Name",
-		"Please check Name",
+		"Click Check Name to double check",
 		"This EMail is available to join",
 		"This EMail already exists",
 		"Enter EMail",
-		"Please check EMail",
+		"Please click Check Email to double check",
 		"ID CHECK",
 		"NAME CHECK",
-		"EMAIL CHECK"
+		"EMAIL CHECK",
+		"Phone Number  ('-' not allowed)  ",
+		"VERIFY",
+		"Birthday   (e.g 00000000)",
+		"Enter Birthday",
+		"Enter Phone Number",
+		"Please click Vefify to verify yourself",
+		"Only 8 Numbers Are Allowed in Birthday Input",
+		"Only 11 Numbers Are Allowed in Phone Number Input"
 	],
 	"infoFilters": [
 		"NO.",
@@ -83,7 +91,8 @@
 		"Modification completed",
 		"Modification failed",
 		"year",
-		"month"
+		"month",
+		"Duplicate mobile phone number."
 	],
 	"branch": [
 		"List of Team",
@@ -97,8 +106,8 @@
 		"Modification of Device information",
 		"Device information",
 		"Are you sure you want to delete the device?",
-		"This is a duplicate name",
-		"This is a duplicate English name."
+		"This is a duplicate name(Ko)",
+		"This is a duplicate name(En)"
 	],
 	"enterprise": [
 		"List of Company",
@@ -215,7 +224,9 @@
 		"Terms and Conditions",
 		"Privacy Policy",
 		"Limits of Liability and Legal Notice",
-		"The copyright of this content belongs to the copyright holder and if you use it without permission, you may be liable according to copyright laws."
+		"The copyright of this content belongs to the copyright holder and if you use it without permission, you may be liable according to copyright laws.",
+		"Trade name: DL E&C   Business number: 676-87-01904   Business address: Dongil-ro 134 D Tower, Jongno-gu, Seoul   Representative number: 02)2011-7114   Representative name: Ma Chang-min",
+		"Trade name: Watts Co., Ltd (Supplier) Business number: 570-87-01945 Business address: Pangyo Innovation Lab Knowledge Intervention Center No. 605, Geumto-ro 80beon-gil, Sujeong-gu, Seonam-si, Gyeonggi-do, Representative number: 070-7124-2588 Representative name: Kim Jin-myung"
 	],
 	"header": [
 		"Log out",
@@ -256,6 +267,7 @@
 	"forgot": "Forgot password?",
 	"create account": "Create an account",
 	"login": "SIGN IN",
+	"changePhoneNumber": "Change cell phone" ,
 	"profile text": [
 		"Company",
 		"Department",
@@ -263,7 +275,9 @@
 		"Name",
 		"English Name",
 		"E-mail",
-		"My Photo"
+		"Cell Phone",
+		"My Photo",
+		"Birthday"
 	],
 	"profilePassword": [
 		"Current Password",
@@ -454,6 +468,21 @@
 	],
 	"callHistory": "Call History",
 	"enter searchTerm": "Please enter a search term.",
-	"open": "Open"
-
+	"open": "Open",
+	"verify": [
+		"Verify with Cell phone",
+		"Please use your cell phone",
+		"to verify your identity",
+		"Verify"
+	],
+	"policy": [
+		"Privacy Policy"
+	],
+	"phonCheck": [
+		"Select Company, Department, Team",
+		"Enter Name",
+		"Enter Birthday",
+		"Enter Phone Number",
+		"This Phone Number already exists."
+	]
 }

@@ -16,6 +16,29 @@
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
         <input class="emailInput" id="accountEMail" :placeholder="$t('account')[17]" v-model="EMail" @keyup.enter="emailCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="emailCheckBtnClick">{{ $t("account")[18] }}</button>
+        <input
+          v-if="deviceTypeCompData.selectedValue == 3"
+          class="input"
+          id="birthday"
+          :placeholder="$t('account')[35]"
+          v-model="birthday"
+          type="birthday"
+        />
+        <input
+          v-if="deviceTypeCompData.selectedValue == 3"
+          id="phoneNumber"
+          :placeholder="$t('account')[33]"
+          v-model="phoneNum"
+          :class="[check2Factor != 'True' ? 'input' : 'phoneInput']"
+        />
+        <button
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == 'True'"
+          class="phoneChkBtn col-auto"
+          id="verifyBtn"
+          @click="phoneCheckBtnClick"
+        >
+          {{ $t("account")[34] }}
+        </button>
         <selectComp :compData="deviceTypeCompData"></selectComp>
         <selectComp :compData="enterpriseCompData"></selectComp>
         <selectComp :compData="hqCompData"></selectComp>
@@ -47,6 +70,7 @@ import QRCode from "qrcode"
 import getInfo from "@/assets/scripts/info/getInfo"
 import axiosJson from "@/assets/jsons/axios"
 import domain from "@/assets/jsons/domain/domain"
+import { danalVerify } from "@/assets/scripts/danalVerify"
 
 export default {
   components: {},
@@ -61,6 +85,13 @@ export default {
       EMail: undefined,
       EMailCheck: undefined,
       enSeqCheck: undefined,
+      phoneNum: "",
+      phoneCheck: undefined,
+      certificationUniqueKey: "",
+      birthday: "",
+      birthdayCheck: undefined,
+      useEnterprise: domain.useEnterprise,
+      check2Factor: "False",
       deviceTypeCompData: {
         placeholder: this.$i18n.t("account")[21],
         options: getInfo.deviceTypeObj(),
@@ -75,7 +106,8 @@ export default {
       branchCompData: getInfo.branchCompData,
       isCreateQR: false,
       qrCodeImg: undefined,
-      ret: undefined
+      ret: undefined,
+      checkPhone: undefined
     }
   },
   methods: {
@@ -158,11 +190,11 @@ export default {
     },
     // 이메일 체크하는 함수
     emailCheckBtnClick() {
+      self = this
       this.enSeqCheck = this.enterpriseCompData.selectedValue
       if (this.enterpriseCompData.selectedValue) {
         if (this.EMail) {
           // eslint-disable-next-line no-global-assign
-          self = this
           this.$axios
             // .post(axiosJson.account.user_id_check, {
             .post(domain.domain.backend1 + axiosJson.account.user_email_check, {
@@ -189,7 +221,47 @@ export default {
         alert(this.$t("please select enterprise"))
       }
     },
+    async phoneCheckBtnClick() {
+      if (this.enterpriseCompData.selectedValue == undefined) {
+        alert(this.$t("phonCheck")[0])
+      } else if (!this.name) {
+        alert(this.$t("phonCheck")[1])
+      } else if (!this.birthday) {
+        alert(this.$t("phonCheck")[2])
+      } else if (!this.phoneNum) {
+        alert(this.$t("phonCheck")[3])
+      } else {
+        // 휴대폰번호 중복 첵크
+        this.$axios
+        .post(domain.domain.backend1 + axiosJson.account.user_phone_number_check, {
+          phone_number: this.phoneNum,
+          en_seq: this.enterpriseCompData.selectedValue
+        })
+        .then((res) => {
+          if (res.data == true) {
+            const params = {
+              name: this.name,
+              birthday: this.birthday,
+              phone: this.phoneNum,
+              lang: sessionStorage.getItem("languageCode")
+            }
+            danalVerify(params, 1)
+          } else if (res.data == false) {
+            alert(this.$t("phonCheck")[4])
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    },
     signUpBtnClick() {
+      let checkVerify = sessionStorage.getItem("verify")
+      console.log(checkVerify, 1)
+      if (this.check2Factor != "True") {
+        checkVerify = true
+        this.phoneCheck = this.phoneNum
+      }
       if (this.deviceTypeCompData.selectedValue === 3) {
         // eslint-disable-next-line no-global-assign
         self = this
@@ -201,18 +273,32 @@ export default {
           !this.EMail ||
           !this.enterpriseCompData.selectedValue ||
           !this.hqCompData.selectedValue ||
-          !this.branchCompData.selectedValue
-        )
+          !this.branchCompData.selectedValue ||
+          !this.phoneNum ||
+          !this.birthday
+        ) {
+          document.getElementById("accountID").focus()
           return alert(this.$t("account")[6])
-
+        }
+        const checkPhoneStyle = this.filterKeyPress(this.phoneNum, 1)
+        const checkBirthStyle = this.filterKeyPress(this.birthday, 2)
+        if (checkBirthStyle == false) {
+          document.getElementById("birthday").focus()
+          return alert(this.$t("account")[39])
+        }
+        if (checkPhoneStyle == false) {
+          document.getElementById("phoneNumber").focus()
+          return alert(this.$t("account")[40])
+        }
         if (this.id !== this.idCheck) {
           document.getElementById("accountID").focus()
           return alert(this.$t("account")[7])
         }
 
-        if (this.password !== this.passwordCheck)
+        if (this.password !== this.passwordCheck) {
+          document.getElementById("accountPWD").focus()
           return alert(this.$t("account")[8])
-
+        }
         if (this.name !== this.nameCheck) {
           document.getElementById("accountName").focus()
           return alert(this.$t("account")[25])
@@ -232,27 +318,52 @@ export default {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
-
+        if (checkVerify != true) {
+          document.getElementById("verifyBtn").focus()
+          return alert(this.$t("account")[38])
+        }
+        if (this.phoneNum != this.phoneCheck) {
+          document.getElementById("verifyBtn").focus()
+          return alert(this.$t("account")[38])
+        }
         this.$axios
-          // .post(axiosJson.account.user_insert, {
-          .post(domain.domain.backend1 + axiosJson.account.user_insert, {
-            id: this.id,
-            password: this.password,
-            name: this.name,
-            email: this.EMail,
-            en_seq: this.enterpriseCompData.selectedValue,
-            hq_seq: this.hqCompData.selectedValue,
-            br_seq: this.branchCompData.selectedValue,
-            device_type: this.deviceTypeCompData.selectedValue
+          .post(domain.domain.backend1 + axiosJson.account.user_phone_number_check, {
+            phone_number: this.phoneNum,
+            en_seq: this.enterpriseCompData.selectedValue
           })
-          .then(function(response) {
-            if (response.data) {
-              alert(self.$t("account")[9])
-              window.open("/", "_self")
-            } else alert(self.$t("account")[10])
+          .then((res) => {
+            if (res.data == true) {
+              this.$axios
+                // .post(axiosJson.account.user_insert, {
+                .post(domain.domain.backend1 + axiosJson.account.user_insert, {
+                  id: this.id,
+                  password: this.password,
+                  name: this.name,
+                  email: this.EMail,
+                  en_seq: this.enterpriseCompData.selectedValue,
+                  hq_seq: this.hqCompData.selectedValue,
+                  br_seq: this.branchCompData.selectedValue,
+                  device_type: this.deviceTypeCompData.selectedValue,
+                  phone_number: this.phoneNum,
+                  birthday: this.birthday,
+                  certification_uniquekey: this.certificationUniqueKey
+                })
+                .then(function(response) {
+                  console.log(response)
+                  if (response.data) {
+                    alert(self.$t("account")[9])
+                    window.open("/", "_self")
+                  } else alert(self.$t("account")[10])
+                })
+                .catch(function(error) {
+                  console.log(error)
+                })
+            } else if (res.data == false) {
+              return alert(this.$t("phonCheck")[4])
+            }
           })
-          .catch(function(error) {
-            console.log(error)
+          .catch((err) => {
+            console.log(err)
           })
       } else if (this.deviceTypeCompData.selectedValue === 2) {
         // 디바이스타입이 글라스라면
@@ -266,17 +377,19 @@ export default {
           !this.enterpriseCompData.selectedValue ||
           !this.hqCompData.selectedValue ||
           !this.branchCompData.selectedValue
-        )
+        ) {
+          document.getElementById("accountID").focus()
           return alert(this.$t("account")[6])
-
+        }
         if (this.id !== this.idCheck) {
           document.getElementById("accountID").focus()
           return alert(this.$t("account")[7])
         }
 
-        if (this.password !== this.passwordCheck)
+        if (this.password !== this.passwordCheck) {
+          document.getElementById("accountPWD").focus()
           return alert(this.$t("account")[8])
-
+        }
         if (this.name !== this.nameCheck) {
           document.getElementById("accountName").focus()
           return alert(this.$t("account")[25])
@@ -345,10 +458,89 @@ export default {
           this.qrCodeImg = value
         })
       } else alert(this.$t("account")[2])
-    }
+    },
+    // 본인 인증 후 정보를 갖고 오는 로직.
+    // 갖고 오면 바로 지워줘야함
+    sessionStorageChange() {
+      this.phoneCheck = sessionStorage.getItem("phoneNum")
+      this.certificationUniqueKey = sessionStorage.getItem("uniqueKey")
+      sessionStorage.removeItem("phoneNum")
+      sessionStorage.removeItem("uniqueKey")
+      sessionStorage.removeItem("birthday")
+    },
+    // 생년월일과 휴대폰번호 입력란 확인 함수
+    filterKeyPress(params, type) {
+      const patern = /^\d+$/
+      if (type == 1) {
+        if (params.length != 11) {
+          return false
+        } else {
+          if (patern.test(params)) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
+      else if (type == 2) {
+        if (params.length != 8) {
+          return false
+        } else {
+          if (patern.test(params)) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
+      
+    },
   },
   mounted() {
     getInfo.setLang(this.$t("getInfo"))
+    // dlenc 분기처리!!
+    if (window.location.hostname == 'dlenc.watttalk.kr') {
+      this.useEnterprise = "dlenc"
+    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+      this.useEnterprise = "dlenc"
+    }
+    // 본인인증 후 data를 받아오기 위한 event
+    window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
+  },
+  beforeDestroy() {
+    window.removeEventListener("sessionStorageUpdated", this.sessionStorageChange)
+    sessionStorage.removeItem("verify")
+  },
+  computed: {
+    get2Factor() {
+      return this.branchCompData.selectedValue
+    }
+  },
+  watch: {
+    // 기업>본부>지사 선택시 2Factor값 확인하는 부분
+    get2Factor() {
+      if (this.enterpriseCompData.selectedValue && this.hqCompData.selectedValue && this.branchCompData.selectedValue) {
+        const self = this
+        this.$axios
+          .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+            en_seq: this.enterpriseCompData.selectedValue,
+            hq_seq: this.hqCompData.selectedValue,
+            br_seq: this.branchCompData.selectedValue,
+          })
+          .then((res) => {
+            const jsonFactorList = res.data[0].app_detail_json
+            const factorList = JSON.parse(jsonFactorList)
+            self.check2Factor = factorList["2factor"]
+          })
+          .catch((err) => {
+            if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+              self.check2Factor = "False"
+            } else {
+              console.log("2Factor Error :", err)
+            }
+          })
+      }
+    }
   }
 }
 </script>
@@ -457,6 +649,8 @@ select
 			margin-right: 8px
 			padding: 10px 8px
 			font-size: 13px
+  
+  
 
 	>.signUpBtn
 		width: 100%
@@ -477,24 +671,59 @@ select
 			// width: inherit
 			font-size: 13px
 			padding: 10px 0px
-			// margin-right: 10px
-
+			// margin-right: 10px'
+    
+  
 ::placeholder
 	color: #696969
 
+
+.phoneInput
+  width: 77.5%
+  color: white
+  padding: 15px 10px
+  background-color: #3E3E3E
+  opacity: 1
+  border: 1px solid #4B4B4B
+  font-size: 15px
+  font-weight: bold
+  margin-top: 10px
+  margin-right: 10px
+  outline: none
+  @media screen and (max-width: 768px)
+    // width: inherit
+    margin-right: 8px
+    padding: 10px 8px
+    font-size: 13px
+.phoneChkBtn
+  width: 19.5%
+  padding: 15px
+  margin-top: 11px
+  background: #2386D2
+  color: white
+  float: right
+  @media screen and (max-width: 768px)
+    font-size: 13px
+    padding: 10px 0px
+
+
+.birthdayInput
 .qrcode
-	>.emptyQrCode
-    display: flex
-    justify-content: center
-	>.loadQrCode
-		width: 100%
+  > .emptyQrCode
     display: flex
     justify-content: center
 
-		>span
-			margin-top: 20px
-			color: white
+  > .loadQrCode
+    width: 100%
+    height: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
 
+    > span
+      margin-top: 20px
+      color: white
 .emptyQrCodeBox
 	width: 320px
 	height: 320px
@@ -507,7 +736,7 @@ select
 	opacity: 0
 
 input:focus
-	border: 2px solid #2386D2 !important
+	// border: 1px solid #2386D2 !important
 
 select:focus
 	border: 2px solid #2386D2 !important

@@ -13,6 +13,15 @@ Vue.mixin({
           return "Mobile"
         }
       }
+    },
+    // type: 0 <= korean; 1 <= english
+    policyBtnClick() {
+      const curLang = sessionStorage.getItem("languageCode")
+      if (curLang == "ko") {
+        window.open("/policy/korean")
+      } else {
+        window.open("/policy/english")
+      }
     }
   }
 })

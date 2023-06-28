@@ -4,6 +4,10 @@ export default {
    ** Headers of the page
    */
   head: {
+    script: [
+      // danal 인증을 위한 srcipt
+      { src : 'https://cdn.iamport.kr/v1/iamport.js' },
+    ],
     meta: [
       {
         content: "text/html",
@@ -120,9 +124,9 @@ export default {
    ** Web Server configuration
    */
   server: {
-    port: 3000
+    // port: 3000
     // For Local
     // host: "0.0.0.0",
-    // port: 8205
+    port: 8205
   }
 }

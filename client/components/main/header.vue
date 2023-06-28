@@ -10,6 +10,7 @@
       <img v-if="useEnterprise == 'kdhc'" class="col-auto" src="@/assets/images/logo_kdhc_cloud.png" />
       <img v-if="useEnterprise == 'korail'" class="col-auto" src="@/assets/images/logo_korail_cloud.png" />
       <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
+      <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <div class="col-auto row menus">
         <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">QR</a>
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
@@ -86,7 +87,23 @@ export default {
                 lang,
               "_self"
              )
-          } else {
+          }  else if (window.location.hostname == 'dlenc.watttalk.kr') {
+            window.open(
+              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
+              jwtToken +
+              "&login_type=3&lang=" +
+              lang,
+              "_self"
+            )
+          }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+            window.open(
+              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
+              jwtToken +
+              "&login_type=3&lang=" +
+              lang,
+              "_self"
+            )
+          }else {
             window.open(
               domain.domain.powertalk.state[2] +
                 jwtToken +
@@ -169,6 +186,12 @@ export default {
      // 한국 전력공사 로고이미지 변경
     if(window.location.hostname == 'kepco.watttalk.kr') {
       this.useEnterprise = "kepco"
+    }
+    if (window.location.hostname == 'dlenc.watttalk.kr') {
+      // dlenc 분기처리!!
+      this.useEnterprise = "dlenc"
+    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+      this.useEnterprise = "dlenc"
     }
   }
 }

@@ -34,11 +34,12 @@
 			"status": "desc"
 		},
 		"edit": "select",
-		"selectCompData": {}
+		"selectCompData": {},
+		"width": 100
 	},
 	{
 		"text": "본부 코드",
-		"width": 122,
+		"width": 100,
 		"align": {
 			"column": "hq_seq",
 			"status": "desc"
@@ -48,7 +49,7 @@
 	},
 	{
 		"text": "지사 코드",
-		"width": 120,
+		"width": 100,
 		"align": {
 			"column": "br_seq",
 			"status": "desc"
@@ -58,7 +59,7 @@
 	},
 	{
 		"text": "승인여부",
-		"width": 110,
+		"width": 100,
 		"align": {
 			"column": "approval_status",
 			"status": "desc"
@@ -71,7 +72,8 @@
 		"align": {
 			"column": "order_by_num",
 			"status": "desc"
-		}
+		},
+		"width": 100
 	},
 	{
 		"text": "편집",

@@ -59,6 +59,7 @@ export default {
               )
             }
           }
+          
         },
         deleteBtnClick() {
           const token = localStorage.getItem("jwt")

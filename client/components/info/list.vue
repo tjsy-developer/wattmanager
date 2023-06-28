@@ -41,7 +41,7 @@
           </span>
         </div>
         <div
-          class="justify-center"
+          class="row justify-center align-center"
           :class="[ compData.listFilters[compData.listFilters.length-1].width?'col-auto':'col' ]"
           :style="{ width: compData.listFilters[compData.listFilters.length-1].width+'px' }"
         >
@@ -88,7 +88,8 @@ export default {
       ],
       filePath: domain.att_filePath,
       fileuploadApi: "",
-      uploadOrfileBox: ""
+      uploadOrfileBox: "",
+      mutationState: ""
     }
   },
   methods: {
@@ -199,11 +200,30 @@ export default {
           window.URL.revokeObjectURL(url)
         }, 0)
       })
+    },
+    createdOrDeleted() {
     }
   },
   mounted() {
-    console.log(this.compData.listData)
     this.uploadOrfileBox = this.$route.query.viewType
+    if (sessionStorage.getItem("mutationState")) {
+      this.mutationState = sessionStorage.getItem("mutationState")
+    } else {
+      this.mutationState = false
+    }
+  },
+  computed: {
+    getMutationState() {
+      return this.mutationState
+    }
+  },
+  watch: {
+    getMutationState(res) {
+      if (res == "true") {
+        sessionStorage.removeItem("mutationState")
+        location.reload()
+      }
+    }
   }
 }
 </script>

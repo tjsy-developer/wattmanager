@@ -560,9 +560,11 @@ export default {
       display: flex
       justify-content: center
 	>.loadQrCode
-      width: 100%
-      display: flex
-      justify-content: center
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
 
 		>span
 			margin-top: 20px

@@ -63,7 +63,6 @@ export default {
       }, 500)
     },
     showInspectionAlert() {
-      // console.log("###################################################")
       let inspectionList = []
       this.$axios
         .post(domain.domain.backend1 + axiosJson.overhaul.overhaul_list, {})
@@ -105,11 +104,9 @@ export default {
         })
     },
 		closeCheck(closeClick) {
-      console.log(closeClick, "!!!!!!!!!!!!!")
       if (closeClick == "true") {
         this.test = false
       }
-      console.log(this.test, "@@@@@@@@@@@@@@@@@@")
       return this.test
     }
   },

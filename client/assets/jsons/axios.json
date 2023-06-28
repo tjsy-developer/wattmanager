@@ -9,7 +9,10 @@
 		"user_name_check": "accountRest/user_name_check",
 		"user_email_check": "accountRest/user_email_check",
 		"en_list_where_enName": "accountRest/en_list_where_enName",
-		"select_id_where_reservation_uid": "accountRest/select_id_where_reservation_uid"
+		"select_id_where_reservation_uid": "accountRest/select_id_where_reservation_uid",
+		"verify_iamport_list": "verifyIamportRest/verifyIamport_list",
+		"verify_iamport_result": "verifyIamportRest/verifyIamport_result",
+		"user_phone_number_check": "accountRest/user_phone_number_check"
 	},
 	"user": {
 		"user_logout": "accountRest/user_logout",
@@ -60,7 +63,8 @@
 		"app_delete": "appRest/app_delete",
 		"app_code_list": "appRest/app_code_list",
 		"app_list_count": "appRest/app_list_count",
-		"app_info_copy": "appRest/app_info_copy"
+		"app_info_copy": "appRest/app_info_copy",
+		"app_powertalkweb_info": "appRest/app_powertalkweb_info"
 	},
 	"appCode": {
 		"app_code_list": "appCodeRest/app_code_list",

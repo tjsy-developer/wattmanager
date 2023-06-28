@@ -111,12 +111,26 @@ const btnsClick = {
             params.order_by_num = 999
           }
           break
-          // 디바이스 정보 수정 클릭 시- 정렬번호 빈값체크 하지않음
-        } else if (confirmPath === "dev_update" && i === 5) {
-          if (!getInput[i].value) {
-            params.order_by_num = 999
+          // 디바이스 정보 수정 클릭 시- ProductNum, Serial 및 정렬번호 빈값체크 하지않음
+        } else if (confirmPath === "dev_update") {
+          if (i === 5) {
+            if (!getInput[i].value) {
+              params.order_by_num = 999
+            }
+            break
           }
-          break
+          if (i === 0) {
+            if (!getInput[i].value) {
+              params.product_num = ""
+            }
+            break
+          } 
+          if (i === 2) {
+            if (!getInput[i].value) {
+              params.serial_num = ""
+            }
+            break
+          }
         }
         // eslint-disable-next-line no-throw-literal
         if (!getInput[i].value) throw "input undefined"
@@ -132,6 +146,7 @@ const btnsClick = {
             else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
             else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
             else if (res.data === "Duplicate Email") alert(btnsClick.lang[11])
+            else if (res.data === "Duplicate Phone_number") alert(btnsClick.lang[12])
             else alert(btnsClick.lang[4])
           } else alert(btnsClick.lang[4])
         })

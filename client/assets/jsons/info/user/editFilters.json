@@ -18,7 +18,8 @@
 			"status": "desc"
 		},
 		"edit": "select",
-		"selectCompData": {}
+		"selectCompData": {},
+		"width": 100
 	},
 	{
 		"text": "본부 코드",
@@ -27,7 +28,8 @@
 			"status": "desc"
 		},
 		"edit": "select",
-		"selectCompData": {}
+		"selectCompData": {},
+		"width": 100
 	},
 	{
 		"text": "지사 코드",
@@ -36,7 +38,8 @@
 			"status": "desc"
 		},
 		"edit": "select",
-		"selectCompData": {}
+		"selectCompData": {},
+		"width": 100
 	},
 	{
 		"text": "이름",
@@ -62,7 +65,8 @@
 			"status": "desc"
 		},
 		"edit": "select",
-		"selectCompData": {}
+		"selectCompData": {},
+		"width": 100
 	},
 	{
 		"text": "이메일",
@@ -82,7 +86,8 @@
 			"column": "order_by_num",
 			"status": "desc"
 		},
-		"edit": true
+		"edit": true,
+		"width": 100
 	},
 	{
 		"text": "내 사진",
