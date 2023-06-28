@@ -1,7 +1,7 @@
 {
 	"domain":{
 		"backend_local": "http://localhost:8090/",
-		"backend1": "https://dlenc.watttalk.kr:8221/",
+		"backend1": "https://dlenc.watttalk.kr:8101/",
 		"powertalk" : { 
 			"state" : [
 				"loginCheck",
