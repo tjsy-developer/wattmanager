@@ -452,9 +452,10 @@ export default {
                   // devie type이 2이면, glass사용자. 본인 인증 pass
                   checkAdmin = true
                 }
-                // if (userId.includes("wattsupport")) {
-                //   checkAdmin = true
-                // }
+                // wattsupport 계정들 본인인증 pass 로직
+                if (userId.includes("wattsupport")) {
+                  checkAdmin = true
+                }
                 let checkByPass
                 if (self.check2Factor == "True") {
                   if (checkAdmin == true) {
