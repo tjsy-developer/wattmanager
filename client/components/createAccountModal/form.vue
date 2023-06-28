@@ -29,10 +29,10 @@
           id="phoneNumber"
           :placeholder="$t('account')[33]"
           v-model="phoneNum"
-          :class="[useEnterprise != 'dlenc' ? 'input' : 'phoneInput']"
+          :class="[check2Factor != 'True' ? 'input' : 'phoneInput']"
         />
         <button
-          v-if="deviceTypeCompData.selectedValue == 3 && useEnterprise == 'dlenc'"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == 'True'"
           class="phoneChkBtn col-auto"
           id="verifyBtn"
           @click="phoneCheckBtnClick"
@@ -189,11 +189,11 @@ export default {
     },
     // 이메일 체크하는 함수
     emailCheckBtnClick() {
+      self = this
       this.enSeqCheck = this.enterpriseCompData.selectedValue
       if (this.enterpriseCompData.selectedValue) {
         if (this.EMail) {
           // eslint-disable-next-line no-global-assign
-          self = this
           this.$axios
             // .post(axiosJson.account.user_id_check, {
             .post(domain.domain.backend1 + axiosJson.account.user_email_check, {
@@ -237,7 +237,7 @@ export default {
           en_seq: this.enterpriseCompData.selectedValue
         })
         .then((res) => {
-          if (res.data == true && self.useEnterprise == "dlenc") {
+          if (res.data == true) {
             const params = {
               name: this.name,
               birthday: this.birthday,

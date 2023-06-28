@@ -5,12 +5,22 @@ import axios from "axios"
 // type: 0 => 로그인; 1 => 회원가입; 2 => 내정보 휴대폰번호 변경;
 export const danalVerify = (logInData, type) => {
     const { IMP } = window
-    IMP.init('imp67320503')
+    // impId가 없는 경우 본인 인증 사용 불가
+    if (!domain.impId) {
+        let alertMsg
+        if (sessionStorage.getItem("languageCode") == "ko") {
+            alertMsg = "본인 인증 설정이 되어있지 않습니다. 확인 바랍니다."
+        } else {
+            alertMsg = "No settings in identify certification service. Please check."
+        }
+        return alert(alertMsg)
+    }
+    IMP.init(domain.impId)
 
     IMP.certification(
         {
             // pg사 코드 고정값 ( DL / SMART ) 각자 다름
-            pg: 'danal.B010008141',
+            pg: domain.pg,
             // 승인 리다이렉션 url
             m_redirect_url: '/',
             // mobile popup
@@ -25,8 +35,13 @@ export const danalVerify = (logInData, type) => {
                 // 인증 정보를 가져오는 부분
                 // 추후 type이 0인 경우 return 받은 휴대폰 번호 까지 비교! (로그인 시 본인 인증)
                 // 나머지는 휴대폰 번호 비교 필요 없음.(계정 생성 및 휴대폰번호 변경 시)
-                const userInfo = await getUserInfo(rsp.imp_uid)
-                if (logInData.birthday == userInfo.birthday) {
+                let verified
+                if (type == 1) {
+                    verified = await getUserInfo(rsp.imp_uid, logInData.birthday)
+                } else {
+                    verified = await comparedUserInfo(rsp.imp_uid, logInData.id)
+                }
+                if (verified == true) {
                     alertTxt = alertText("match", logInData.lang)
                     alert(alertTxt)
                     afterVerify(type, logInData, userInfo.birthday)
@@ -134,23 +149,42 @@ function login(logInData) {
     }
 }
 // iamport 에서 받은 imp_uid를 토대로 백엔드에서 토큰 생성 및 토큰으로 이름, 생년월일과 같은 개인정보를 가져오는 부분
-async function getUserInfo(params) {
+async function getUserInfo(params, logInBirthday) {
     let userInfo
         await axios
-        .post(domain.domain.backend1 + axiosJson.account.verify_iamport, {
-            jwt: localStorage.getItem("jwt"),
+        .post(domain.domain.backend1 + axiosJson.account.verify_iamport_list, {
             imp_uid: params
         })
         .then((response) => {
             const res = response.data[0]
             if (res) {
+                console.log(res)
                 // birthday return 형식이 yyyy-mm-dd
                 const birth = res.birthday.replace(/-/g, '')
-                userInfo = {
-                    name: res.name,
-                    birthday: birth
+                if (birth == logInBirthday) {
+                    sessionStorage.setItem("uniqueKey", "uniqueKey")
+                    userInfo
+                    return true
+                } else {
+                    return false
                 }
             }
+        })
+        .catch((err) => {
+            console.log("getUserInfo Error : ", err)
+        })
+}
+
+async function comparedUserInfo(params, userId) {
+    let userInfo
+        await axios
+        .post(domain.domain.backend1 + axiosJson.account.verify_result, {
+            jwt: localStorage.getItem("jwt"),
+            imp_uid: params,
+            id: userId
+        })
+        .then((response) => {
+            console.log(response)
         })
         .catch((err) => {
             console.log("getUserInfo Error : ", err)

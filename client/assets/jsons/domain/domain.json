@@ -25,5 +25,7 @@
 	"elecFilePath": "/home/watt/hdd_ext/Storage/watttalk/dlenc/QR/file",
 	"elecFolderPath": "/home/watt/hdd_ext/Storage/watttalk/dlenc/QR/folder",
 	"fileBoxBackend": "https://dlenc.watttalk.kr:8101/",
-	"separateBackendUploadPath": false
+	"separateBackendUploadPath": false,
+	"impId": "imp67320503",
+	"pg": "danal.B010008141"
 }

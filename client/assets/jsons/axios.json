@@ -10,7 +10,8 @@
 		"user_email_check": "accountRest/user_email_check",
 		"en_list_where_enName": "accountRest/en_list_where_enName",
 		"select_id_where_reservation_uid": "accountRest/select_id_where_reservation_uid",
-		"verify_iamport": "verifyIamportRest/verifyIamport_list",
+		"verify_iamport_list": "verifyIamportRest/verifyIamport_list",
+		"verify_iamport_result": "verifyIamportRest/verify_iamport_result",
 		"user_phone_number_check": "accountRest/user_phone_number_check"
 	},
 	"user": {

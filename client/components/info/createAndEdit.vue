@@ -201,6 +201,7 @@ export default {
       const modalParameter = {
         phone: this.compData.selected[7],
         data: this.compData.selected,
+        id: this.compData.selected[0]
       }
       this.$modal.show(
         changePhoneModal,
