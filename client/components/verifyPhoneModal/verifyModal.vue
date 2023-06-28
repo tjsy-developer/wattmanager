@@ -47,19 +47,7 @@ export default {
                 jwt: localStorage.getItem("jwt")
             })
             .then(function (response) {
-                let params
-                if (self.propsData.id == "administrator") {
-                    console.log("관리자권한접근")
-                    params ={
-                        loginData: self.propsData.loginData,
-                        isMember: self.propsData.isMember,
-                        userId: self.propsData.id,
-                        reservId: self.propsData.reservId,
-                        lang: self.propsData.language,
-                        type: self.propsData.type
-                    }
-                } else {
-                    params ={
+                const params ={
                         loginData: self.propsData.loginData,
                         isMember: self.propsData.isMember,
                         userId: self.propsData.id,
@@ -68,9 +56,10 @@ export default {
                         type: self.propsData.type,
                         name: response.data.name,
                         phone: response.data.phone_number,
-                        birthday: response.data.birthday
+                        birthday: response.data.birthday,
+                        id: response.data.id
                     }
-                }
+                
                 danalVerify(params, 0)
             })
             .catch(function (error) {

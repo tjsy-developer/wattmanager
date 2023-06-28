@@ -452,6 +452,9 @@ export default {
                   // devie type이 2이면, glass사용자. 본인 인증 pass
                   checkAdmin = true
                 }
+                // if (userId.includes("wattsupport")) {
+                //   checkAdmin = true
+                // }
                 let checkByPass
                 if (self.check2Factor == "True") {
                   if (checkAdmin == true) {
@@ -466,32 +469,7 @@ export default {
                   // 2factor의 값이 false면 bypass 활성화
                   checkByPass = true
                 }
-                if (self.useEnterprise != "dlenc") {
-                  checkByPass = true
-                }
-                if (window.location.hostname == "dlenc.watttalk.kr" && checkByPass == false) {
-                  let modalType
-                  if (response.data[1].auth === 4) {
-                    modalType = 1
-                  } else if (response.data[1].device_type === 2) {
-                    modalType = 2
-                  } else {
-                    modalType = 3
-                  }
-                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq);
-                  return
-                } else if (checkByPass == false) {
-                  let modalType
-                  if (response.data[1].auth === 4) {
-                    modalType = 1
-                  } else if (response.data[1].device_type === 2) {
-                    modalType = 2
-                  } else {
-                    modalType = 3
-                  }
-                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq);
-                  return
-                } else if (self.useEnterprise == "dlenc" && checkByPass == false) {
+                if (checkByPass == false) {
                   let modalType
                   if (response.data[1].auth === 4) {
                     modalType = 1

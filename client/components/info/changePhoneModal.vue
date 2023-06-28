@@ -42,6 +42,7 @@ export default {
                     birthday: this.propsData.data[8],
                     compData: this.propsData.data,
                     lang: sessionStorage.getItem("languageCode"),
+                    id: this.propsData.id,
                     closeFunc: this.close
                 }
                 danalVerify(params, 2)
