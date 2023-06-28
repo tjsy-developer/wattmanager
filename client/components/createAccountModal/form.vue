@@ -85,9 +85,10 @@ export default {
       EMail: undefined,
       EMailCheck: undefined,
       enSeqCheck: undefined,
-      phoneNum: undefined,
+      phoneNum: "",
       phoneCheck: undefined,
-      birthday: undefined,
+      certificationUniqueKey: "",
+      birthday: "",
       birthdayCheck: undefined,
       useEnterprise: domain.useEnterprise,
       check2Factor: "False",
@@ -317,12 +318,9 @@ export default {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
-        if (!checkVerify) {
+        if (checkVerify != true) {
           document.getElementById("verifyBtn").focus()
           return alert(this.$t("account")[38])
-        } else if (checkVerify == false) {
-          document.getElementById("verifyBtn").focus()
-          return alert(this.$t("account")[29])
         }
         if (this.phoneNum != this.phoneCheck) {
           document.getElementById("verifyBtn").focus()
@@ -347,7 +345,8 @@ export default {
                   br_seq: this.branchCompData.selectedValue,
                   device_type: this.deviceTypeCompData.selectedValue,
                   phone_number: this.phoneNum,
-                  birthday: this.birthday
+                  birthday: this.birthday,
+                  certification_uniquekey: this.certificationUniqueKey
                 })
                 .then(function(response) {
                   console.log(response)
@@ -460,12 +459,16 @@ export default {
         })
       } else alert(this.$t("account")[2])
     },
+    // 본인 인증 후 정보를 갖고 오는 로직.
+    // 갖고 오면 바로 지워줘야함
     sessionStorageChange() {
       this.phoneCheck = sessionStorage.getItem("phoneNum")
-      this.birthdayCheck = sessionStorage.getItem("birthday")
+      this.certificationUniqueKey = sessionStorage.getItem("uniqueKey")
       sessionStorage.removeItem("phoneNum")
+      sessionStorage.removeItem("uniqueKey")
       sessionStorage.removeItem("birthday")
     },
+    // 생년월일과 휴대폰번호 입력란 확인 함수
     filterKeyPress(params, type) {
       const patern = /^\d+$/
       if (type == 1) {
@@ -501,6 +504,7 @@ export default {
     } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
+    // 본인인증 후 data를 받아오기 위한 event
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
   },
   beforeDestroy() {
@@ -513,6 +517,7 @@ export default {
     }
   },
   watch: {
+    // 기업>본부>지사 선택시 2Factor값 확인하는 부분
     get2Factor() {
       if (this.enterpriseCompData.selectedValue && this.hqCompData.selectedValue && this.branchCompData.selectedValue) {
         const self = this

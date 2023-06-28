@@ -32,15 +32,17 @@ export const danalVerify = (logInData, type) => {
             const { success, error_msg } = rsp
             let alertTxt
             if (success) {
-                // 인증 정보를 가져오는 부분
-                // 추후 type이 0인 경우 return 받은 휴대폰 번호 까지 비교! (로그인 시 본인 인증)
-                // 나머지는 휴대폰 번호 비교 필요 없음.(계정 생성 및 휴대폰번호 변경 시)
-                let verified
+                let params
+                // type이 1 인경우 회원가입. axios 통신시 birthday만 넘겨주면 됨
                 if (type == 1) {
-                    verified = await getUserInfo(rsp.imp_uid, logInData.birthday)
+                    params = logInData.birthday
                 } else {
-                    verified = await comparedUserInfo(rsp.imp_uid, logInData.id)
+                    // type이 0 || 2 인 경우. 순서대로 로그인 || 휴대폰번호 변경. id를 보내줘야한다
+                    params = logInData.id
                 }
+                // 인증 정보를 가져오는 부분
+                const verified = await getUserInfo(rsp.imp_uid, params, type)
+                // 인증 정보를 갖고온 후 타는 로직
                 if (verified == true) {
                     alertTxt = alertText("match", logInData.lang)
                     alert(alertTxt)
@@ -62,10 +64,13 @@ export const danalVerify = (logInData, type) => {
 // 인증 성공 후 type별 실행 function
 function afterVerify(type, logInInfo, birthday) {
     if (type == 0) {
+        // 로그인
         login(logInInfo)
     } else if (type == 1) {
+        // 회원가입
         singUpCheck(logInInfo.phone, birthday)
     } else if (type == 2) {
+        // 휴대폰번호변경
         changePhone(logInInfo)
     }
 }
@@ -149,55 +154,62 @@ function login(logInData) {
     }
 }
 // iamport 에서 받은 imp_uid를 토대로 백엔드에서 토큰 생성 및 토큰으로 이름, 생년월일과 같은 개인정보를 가져오는 부분
-async function getUserInfo(params, logInBirthday) {
-    let userInfo
+async function getUserInfo(uid, params, type) {
+    let result
+    // 회원가입인 경우
+    if (type == 1) {
+        // impuid만 전달하면 된다.
         await axios
-        .post(domain.domain.backend1 + axiosJson.account.verify_iamport_list, {
-            imp_uid: params
-        })
-        .then((response) => {
-            const res = response.data[0]
-            if (res) {
-                console.log(res)
-                // birthday return 형식이 yyyy-mm-dd
-                const birth = res.birthday.replace(/-/g, '')
-                if (birth == logInBirthday) {
-                    sessionStorage.setItem("uniqueKey", "uniqueKey")
-                    userInfo
-                    return true
-                } else {
-                    return false
+            .post(domain.domain.backend1 + axiosJson.account.verify_iamport_list, {
+                imp_uid: uid
+            })
+            .then((response) => {
+                const res = response.data[0]
+                if (res) {
+                    console.log(res)
+                    // birthday return 형식이 yyyy-mm-dd
+                    const birth = res.birthday.replace(/-/g, '')
+                    // return받은 생년월일과, 사용자가 입력한 생년월일을 비교해 동일인물인지 확인
+                    // 추후 휴대폰 번호도 return 받으면 비교 같이 해야한다.
+                    if (birth == params) {
+                        sessionStorage.setItem("uniqueKey", res.certification_uniquekey)
+                        result = true
+                    } else {
+                        result = false
+                    }
                 }
-            }
-        })
-        .catch((err) => {
-            console.log("getUserInfo Error : ", err)
-        })
-}
-
-async function comparedUserInfo(params, userId) {
-    let userInfo
+            })
+            .catch((err) => {
+                console.log("getUserInfo Error : ", err)
+            })
+            
+    } else {
+        // 로그인 또는 휴대폰 번호 변경인 경우. id와 jwt토큰을 같이 보내줘야한다.
         await axios
-        .post(domain.domain.backend1 + axiosJson.account.verify_result, {
-            jwt: localStorage.getItem("jwt"),
-            imp_uid: params,
-            id: userId
+        .post(domain.domain.backend1 + axiosJson.account.verify_iamport_result, {
+            id: params,
+            imp_uid: uid,
+            jwt: localStorage.getItem("jwt")
         })
         .then((response) => {
             console.log(response)
+            // backend에서 db 정보와 iamport 정보를 비교해서 일치하는지 아닌지 보내준다.
+            result = response
         })
         .catch((err) => {
-            console.log("getUserInfo Error : ", err)
+            console.log("comparedUserInfo Error : ", err)
         })
-    return userInfo
+    }
+    return result
 }
 function singUpCheck(phoneNum, birthday) {
+    // 회원 가입시 로직
     sessionStorage.setItem("verify", true)
     sessionStorage.setItem("phoneNum", phoneNum)
-    sessionStorage.setItem("birthday", birthday)
     window.dispatchEvent(new Event("sessionStorageUpdated"))
 }
 function changePhone(logInInfo) {
+    // 휴대폰 번호 변경 시 로직
     sessionStorage.setItem("verify", true)
     sessionStorage.setItem("phoneNum", logInInfo.phone)
     window.dispatchEvent(new Event("sessionStorageUpdated"))
