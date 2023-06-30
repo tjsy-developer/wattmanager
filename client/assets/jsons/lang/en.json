@@ -40,7 +40,8 @@
 		"Enter Phone Number",
 		"Please click Vefify to verify yourself",
 		"Only 8 Numbers Are Allowed in Birthday Input",
-		"Only 11 Numbers Are Allowed in Phone Number Input"
+		"Only 11 Numbers Are Allowed in Phone Number Input",
+		"Phone Number do not match "
 	],
 	"infoFilters": [
 		"NO.",

@@ -29,6 +29,8 @@ export default {
         selected: [],
         check2Factor: "",
         nameSpaceCheck: this.$t("no spaces text"),
+        phoneNumber: "",
+        birthday: "",
         editBtnClick() {
           const getCheckboxCompData = this.listFilters[9].checkboxCompData
           const token = localStorage.getItem("jwt")
@@ -60,10 +62,11 @@ export default {
           if (getInfo.getInputValue(1).match(pattern)) {
           } else {
             this.check2Factor = sessionStorage.getItem("check2Factor")
-          if (getInfo.getInputValue(0).includes("wattsupport")) {
-            this.check2Factor == "False"
-          }
-            if (this.check2Factor == "True" && this.selected[14] != 2) {
+            if (getInfo.getInputValue(0).includes("wattsupport")) {
+              this.check2Factor == "False"
+            }
+            // 글라스가 아닌경우
+            if (this.selected[14] != 2) {
               btnsClick.edit2(
                 this.listFilters,
                 domain.domain.backend1 + "userRest/user_update",
@@ -89,7 +92,7 @@ export default {
                 1
               )
             } else {
-              console.log(this.selected)
+              // 글라스인 경우
               btnsClick.edit2(
                 this.listFilters,
                 domain.domain.backend1 + "userRest/user_update",
@@ -174,7 +177,6 @@ export default {
         jwt: this.token
       })
       .then(function(res) {
-        console.log(res)
         self.$axios
           .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
             en_seq: res.data.en_seq,
@@ -185,7 +187,7 @@ export default {
             const jsonFactorList = response.data[0].app_detail_json
             const factorList = JSON.parse(jsonFactorList)
             self.check2Factor = factorList["2factor"]
-            if (self.useEnterprise != "dlenc") {
+            if (!factorList["2factor"]) {
               self.check2Factor = "False"
             }
           })
@@ -193,13 +195,22 @@ export default {
             if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
               self.check2Factor = "False"
             } else {
+              self.check2Factor = "False"
               console.log("2Factor Error :", err)
             }
           })
           .then(() => {
             sessionStorage.setItem("deviceType", res.data.device_type)
             sessionStorage.setItem("check2Factor", self.check2Factor)
-            if (self.check2Factor == "True" && res.data.device_type != 2) {
+            if (res.data.phone_number) {
+              self.phoneNumber = res.data.phone_number
+            }
+            if (res.data.birthday) {
+              self.birthday = res.data.birthday
+            }
+            // 글라스가 아닌 경우
+            console.log(res.data.phone_number)
+            if (res.data.device_type != 2) {
               self.compData.selected = [
                 res.data.id,
                 res.data.en_seq,
@@ -218,6 +229,7 @@ export default {
                 res.data.device_type,
               ]
             } else {
+              // 글라스인 경우
               self.compData.selected = [
                 res.data.id,
                 res.data.en_seq,
@@ -249,7 +261,7 @@ export default {
                   }, 1000)
                 })
             } else {
-              if (self.check2Factor == "True" && sessionStorage.getItem("deviceType") == 3) {
+              if (sessionStorage.getItem("deviceType") != 2) {
                 self.compData.selected[12] = undefined
               } else {
                 // 이미지 없을때 초기값 설정
@@ -274,7 +286,7 @@ export default {
                         getInfo.branchCompData.options = branchRes
                       })
                       .then(() => {
-                        if (self.check2Factor == "True" && sessionStorage.getItem("deviceType") != 2) {
+                        if (sessionStorage.getItem("deviceType") != 2) {
                           self.compData.listFilters = setComboBox(
                             getFilters(
                               [
@@ -305,37 +317,7 @@ export default {
                               getInfo.permission
                             ]
                           )
-                        } else {
-                          self.compData.listFilters = setComboBox(
-                            getFilters(
-                              [
-                                self.$t("infoFilters")[0],
-                                "ID",
-                                self.$t("infoFilters")[1],
-                                self.$t("infoFilters")[2],
-                                self.$t("infoFilters")[3],
-                                self.$t("infoFilters")[9],
-                                self.$t("infoFilters")[10],
-                                self.$t("infoFilters")[8],
-                                self.$t("infoFilters")[14],
-                                self.$t("user")[3],
-                                self.$t("infoFilters")[11],
-                                self.$t("profile text")[7],
-                                self.$t("infoFilters")[7]
-                              ],
-                              filtersJson
-                            ),
-                            self.compData.selected,
-                            [
-                              getInfo.enterpriseCompData,
-                              getInfo.hqCompData,
-                              getInfo.branchCompData,
-                              getInfo.authority,
-                              getInfo.permission
-                            ]
-                          )
-                        }
-                        if (self.compData.selected[12] === 2) {
+                        } else if (sessionStorage.getItem("deviceType") == 2) {
                           self.$axios
                             .post(
                               domain.domain.backend1 +

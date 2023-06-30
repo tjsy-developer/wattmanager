@@ -114,15 +114,15 @@ export default {
                       : getInfo.getInputValue(5),
                   // image: this.selected[7],
                   image:
-                    getSelf.check2Factor == "True" && deviceType != 2
+                    deviceType != 2
                       ? this.selected[9]
                       : this.selected[7],
                   phone_number:
-                    getSelf.check2Factor == "True" && deviceType != 2
+                    deviceType != 2
                       ? getInfo.getInputValue(7)
                       : "",
                   birthday:
-                    getSelf.check2Factor == "True" && deviceType != 2
+                    deviceType != 2
                     ? getInfo.getInputValue(8)
                     : "",
                   jwt: localStorage.getItem("jwt")
@@ -246,49 +246,37 @@ export default {
                   // const blobURL = URL.createObjectURL(resultBlob)
                   self.defaultProfileBlob = URL.createObjectURL(resultBlob)
                   console.log("profile blobURL: ", self.defaultProfileBlob)
-                  if (self.check2Factor == "True") {
-                    let checkAdmin = false
-                    if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
-                      checkAdmin = true
-                    }
-                    if (checkAdmin == true || sessionStorage.getItem("deviceType") == 2){
-                      self.compData.listFilters.splice(8, 2)
-                      self.compData.selected = [
-                        res.data.id,
-                        res.data.en_alias,
-                        res.data.hq_alias,
-                        res.data.br_alias,
-                        res.data.name,
-                        res.data.name_en,
-                        res.data.email,
-                        res.data.image ? self.hexToAscii(res.data.image) : undefined
-                      ]
-                    } else {
-                      self.compData.selected = [
-                        res.data.id,
-                        res.data.en_alias,
-                        res.data.hq_alias,
-                        res.data.br_alias,
-                        res.data.name,
-                        res.data.name_en,
-                        res.data.email,
-                        res.data.phone_number,
-                        res.data.birthday,
-                        res.data.image ? self.hexToAscii(res.data.image) : undefined
-                      ]
-                    }
-                  } else {
+                  let checkAdmin = false
+                  if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
+                    checkAdmin = true
+                  }
+                  // 글라스 혹은 admin 계정
+                  if (checkAdmin == true || sessionStorage.getItem("deviceType") == 2){
                     self.compData.listFilters.splice(8, 2)
                     self.compData.selected = [
-                        res.data.id,
-                        res.data.en_alias,
-                        res.data.hq_alias,
-                        res.data.br_alias,
-                        res.data.name,
-                        res.data.name_en,
-                        res.data.email,
-                        res.data.image ? self.hexToAscii(res.data.image) : undefined
-                      ]
+                      res.data.id,
+                      res.data.en_alias,
+                      res.data.hq_alias,
+                      res.data.br_alias,
+                      res.data.name,
+                      res.data.name_en,
+                      res.data.email,
+                      res.data.image ? self.hexToAscii(res.data.image) : undefined
+                    ]
+                  } else {
+                    // pc 일반
+                    self.compData.selected = [
+                      res.data.id,
+                      res.data.en_alias,
+                      res.data.hq_alias,
+                      res.data.br_alias,
+                      res.data.name,
+                      res.data.name_en,
+                      res.data.email,
+                      res.data.phone_number,
+                      res.data.birthday,
+                      res.data.image ? self.hexToAscii(res.data.image) : undefined
+                    ]
                   }
                 })
 
@@ -298,34 +286,13 @@ export default {
                 profileImage.src = self.defaultProfileBlob
               }, 1000)
             } else {
-              if (self.check2Factor == "True") {
-                if (res.data.id == "administrator" || sessionStorage.getItem("deviceType") == 2) {
-                  self.compData.listFilters.splice(8, 2)
-                  self.compData.selected = [
-                    res.data.id,
-                    res.data.en_alias,
-                    res.data.hq_alias,
-                    res.data.br_alias,
-                    res.data.name,
-                    res.data.name_en,
-                    res.data.email,
-                    undefined
-                  ]
-                } else {
-                  self.compData.selected = [
-                    res.data.id,
-                    res.data.en_alias,
-                    res.data.hq_alias,
-                    res.data.br_alias,
-                    res.data.name,
-                    res.data.name_en,
-                    res.data.email,
-                    res.data.phone_number,
-                    res.data.birthday,
-                    undefined
-                  ]
-                }
-              } else {
+              // 사진이 없는 경우
+              let checkAdmin = false
+              if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
+                checkAdmin = true
+              }
+              console.log(checkAdmin)
+              if (checkAdmin == "true" || sessionStorage.getItem("deviceType") == 2) {
                 self.compData.listFilters.splice(8, 2)
                 self.compData.selected = [
                   res.data.id,
@@ -335,6 +302,19 @@ export default {
                   res.data.name,
                   res.data.name_en,
                   res.data.email,
+                  undefined
+                ]
+              } else {
+                self.compData.selected = [
+                  res.data.id,
+                  res.data.en_alias,
+                  res.data.hq_alias,
+                  res.data.br_alias,
+                  res.data.name,
+                  res.data.name_en,
+                  res.data.email,
+                  res.data.phone_number,
+                  res.data.birthday,
                   undefined
                 ]
               }

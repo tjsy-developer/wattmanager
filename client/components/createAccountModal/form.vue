@@ -259,8 +259,9 @@ export default {
       let checkVerify = sessionStorage.getItem("verify")
       console.log(checkVerify, 1)
       if (this.check2Factor != "True") {
-        checkVerify = true
+        checkVerify = "true"
         this.phoneCheck = this.phoneNum
+        this.birthdayCheck = this.birthday
       }
       if (this.deviceTypeCompData.selectedValue === 3) {
         // eslint-disable-next-line no-global-assign
@@ -318,13 +319,13 @@ export default {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
-        if (checkVerify != true) {
+        if (checkVerify != "true") {
           document.getElementById("verifyBtn").focus()
           return alert(this.$t("account")[38])
         }
         if (this.phoneNum != this.phoneCheck) {
           document.getElementById("verifyBtn").focus()
-          return alert(this.$t("account")[38])
+          return alert(this.$t("account")[41])
         }
         this.$axios
           .post(domain.domain.backend1 + axiosJson.account.user_phone_number_check, {

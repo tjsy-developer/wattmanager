@@ -1,7 +1,6 @@
 import domain from "@/assets/jsons/domain/domain"
 import axiosJson from "@/assets/jsons/axios"
 import axios from "axios"
-
 // type: 0 => 로그인; 1 => 회원가입; 2 => 내정보 휴대폰번호 변경;
 export const danalVerify = (logInData, type) => {
     const { IMP } = window
@@ -46,7 +45,7 @@ export const danalVerify = (logInData, type) => {
                 if (verified == true) {
                     alertTxt = alertText("match", logInData.lang)
                     alert(alertTxt)
-                    afterVerify(type, logInData, userInfo.birthday)
+                    afterVerify(type, logInData, logInData.birthday)
                 } else {
                     alertTxt = alertText("unmatch", logInData.lang)
                     alert(alertTxt)
@@ -176,7 +175,7 @@ async function getUserInfo(uid, params, type) {
         .then((response) => {
             console.log(response)
             // backend에서 db 정보와 iamport 정보를 비교해서 일치하는지 아닌지 보내준다.
-            result = response
+            result = response.data
         })
         .catch((err) => {
             console.log("comparedUserInfo Error : ", err)

@@ -80,8 +80,8 @@ export default {
       rows: 5,
       cnt: 0,
       cellPhoneNum: undefined,
-      // useEnterprise: undefined,
-      useEnterprise: "dlenc",
+      useEnterprise: undefined,
+      // useEnterprise: "dlenc",
       // 앱 복사 기업 리스트
       enList: getInfo.enterprise().then(res => {
         getInfo.enList.options = res
@@ -90,7 +90,8 @@ export default {
       // 앱 복사 본부, 지사 리스트 불러오기
       hqList: getInfo.hqList,
       brList: getInfo.brList,
-      checkAdmin: false
+      checkAdmin: false,
+      check2Factor: false
     }
   },
   methods: {
@@ -289,6 +290,32 @@ export default {
       this.compData.selected[7] = sessionStorage.getItem("phoneNum")
       sessionStorage.removeItem("phoneNum")
       this.$forceUpdate()
+    },
+    changedCompData() {
+      const enSeq = Number(document.getElementsByClassName("selectCompClass")[0].value)
+      const hqSeq = Number(document.getElementsByClassName("selectCompClass")[1].value)
+      const brSeq = Number(document.getElementsByClassName("selectCompClass")[2].value)
+      console.log(enSeq, hqSeq, brSeq)
+      const self = this
+      this.$axios
+        .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+          en_seq: enSeq,
+          hq_seq: hqSeq,
+          br_seq: brSeq
+        })
+        .then((res) => {
+          const jsonFactorList = res.data[0].app_detail_json
+          const factorList = JSON.parse(jsonFactorList)
+          self.check2Factor = factorList["2factor"]
+          console.log(self.check2Factor)
+        })
+        .catch((err) => {
+          if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+            self.check2Factor = "False"
+          } else {
+            console.log("2Factor Error :", err)
+          }
+        })
     }
   },
   updated() {
@@ -302,6 +329,7 @@ export default {
     // }
   },
   mounted() {
+    this.check2Factor = sessionStorage.getItem("check2Factor")
     // dlenc 분기처리!!
     if (window.location.hostname == "dlenc.watttalk.kr") {
       this.useEnterprise = "dlenc"
@@ -309,6 +337,7 @@ export default {
       this.useEnterprise = "dlenc"
     }
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
+    window.addEventListener("changedCompData", this.changedCompData)
     sessionStorage.removeItem("mutationState")
   },
   beforeDestroy() {
@@ -316,6 +345,7 @@ export default {
       URL.revokeObjectURL(this.profileImage)
     }
     window.removeEventListener("sessionStorageUpdated", this.sessionStorageChange)
+    window.removeEventListener("changedCompData", this.changedCompData)
   }
 }
 </script>
