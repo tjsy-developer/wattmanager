@@ -122,24 +122,6 @@ function login(logInData) {
                 domain.domain.powertalk.state[1] + params,
                 "_self"
                 );
-
-                // 와트톡
-            } else if (window.location.hostname == "dlenc.watttalk.kr") {
-                window.open(
-                    "https://" +
-                        window.location.hostname +
-                        ":8102/login/login-check?jwt_token=" +
-                        params,
-                    "_self"
-                );
-            } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
-                window.open(
-                    "https://" +
-                        window.location.hostname +
-                        ":8102/login/login-check?jwt_token=" +
-                        params,
-                    "_self"
-                );
             } else {
                 window.open(
                     domain.domain.powertalk.state[2] + params,

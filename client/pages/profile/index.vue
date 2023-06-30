@@ -247,7 +247,11 @@ export default {
                   self.defaultProfileBlob = URL.createObjectURL(resultBlob)
                   console.log("profile blobURL: ", self.defaultProfileBlob)
                   if (self.check2Factor == "True") {
-                    if (res.data.id == "administrator" || sessionStorage.getItem("deviceType") == 2){
+                    let checkAdmin = false
+                    if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
+                      checkAdmin = true
+                    }
+                    if (checkAdmin == false || sessionStorage.getItem("deviceType") == 2){
                       self.compData.listFilters.splice(8, 2)
                       self.compData.selected = [
                         res.data.id,

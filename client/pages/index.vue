@@ -70,8 +70,6 @@ export default {
           if(res.data.length == 0) {
             return
           }
-          // console.log(res)
-          // console.log(res, "!!!!!!!!!!!!!!!!!!")
           inspectionList[0] = res.data[0]
           if (inspectionList[0].overhaul_flag == 1) {
             this.modalParameter = {

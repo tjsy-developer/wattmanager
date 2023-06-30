@@ -60,6 +60,9 @@ export default {
           if (getInfo.getInputValue(1).match(pattern)) {
           } else {
             this.check2Factor = sessionStorage.getItem("check2Factor")
+          if (getInfo.getInputValue(0).includes("wattsupport")) {
+            this.check2Factor == "False"
+          }
             if (this.check2Factor == "True" && this.selected[14] != 2) {
               btnsClick.edit2(
                 this.listFilters,
@@ -214,7 +217,6 @@ export default {
                 res.data.pc_app_range,
                 res.data.device_type,
               ]
-              console.log(self.compData.selected, "!!!!!!!!!!!")
             } else {
               self.compData.selected = [
                 res.data.id,
