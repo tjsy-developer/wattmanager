@@ -66,7 +66,7 @@ export default {
               this.check2Factor == "False"
             }
             // 글라스가 아닌경우
-            if (this.selected[14] != 2) {
+            if (sessionStorage.getItem("deviceType") != 2) {
               btnsClick.edit2(
                 this.listFilters,
                 domain.domain.backend1 + "userRest/user_update",
@@ -77,13 +77,13 @@ export default {
                   en_seq: getInfo.getSelectValue(this.listFilters, 2),
                   hq_seq: getInfo.getSelectValue(this.listFilters, 3),
                   br_seq: getInfo.getSelectValue(this.listFilters, 4),
-                  auth: getInfo.getSelectValue(this.listFilters, 6),
+                  auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
                   glass_app_range: setGlassAppRange,
                   image: this.selected[12],
                   pc_app_range: this.selected[13],
                   order_by_num: Number(getInfo.getInputValue(inputLength - 4)),
-                  device_type: this.selected[14],
+                  device_type: Number(sessionStorage.getItem("deviceType")),
                   phone_number: getInfo.getInputValue(4),
                   birthday: getInfo.getInputValue(5),
                   email: getInfo.getInputValue(2),
@@ -92,7 +92,9 @@ export default {
                 1
               )
             } else {
+              console.log("탔다?")
               // 글라스인 경우
+              console.log(this.selected)
               btnsClick.edit2(
                 this.listFilters,
                 domain.domain.backend1 + "userRest/user_update",
@@ -103,13 +105,13 @@ export default {
                   en_seq: getInfo.getSelectValue(this.listFilters, 2),
                   hq_seq: getInfo.getSelectValue(this.listFilters, 3),
                   br_seq: getInfo.getSelectValue(this.listFilters, 4),
-                  auth: getInfo.getSelectValue(this.listFilters, 6),
+                  auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
                   glass_app_range: setGlassAppRange,
                   image: this.selected[10],
                   pc_app_range: this.selected[11],
                   order_by_num: Number(getInfo.getInputValue(inputLength - 2)),
-                  device_type: this.selected[12],
+                  device_type: Number(sessionStorage.getItem("deviceType")),
                   phone_number: "",
                   birthday: "",
                   email: getInfo.getInputValue(2),
@@ -317,7 +319,35 @@ export default {
                               getInfo.permission
                             ]
                           )
-                        } else if (sessionStorage.getItem("deviceType") == 2) {
+                        } else if (self.compData.selected[12] === 2) {
+                          self.compData.listFilters = setComboBox(
+                            getFilters(
+                              [
+                                self.$t("infoFilters")[0],
+                                "ID",
+                                self.$t("infoFilters")[1],
+                                self.$t("infoFilters")[2],
+                                self.$t("infoFilters")[3],
+                                self.$t("infoFilters")[9],
+                                self.$t("infoFilters")[10],
+                                self.$t("infoFilters")[8],
+                                self.$t("infoFilters")[14],
+                                self.$t("user")[3],
+                                self.$t("infoFilters")[11],
+                                self.$t("profile text")[7],
+                                self.$t("infoFilters")[7]
+                              ],
+                              filtersJson
+                            ),
+                            self.compData.selected,
+                            [
+                              getInfo.enterpriseCompData,
+                              getInfo.hqCompData,
+                              getInfo.branchCompData,
+                              getInfo.authority,
+                              getInfo.permission
+                            ]
+                          )
                           self.$axios
                             .post(
                               domain.domain.backend1 +

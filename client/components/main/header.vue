@@ -68,6 +68,9 @@ export default {
       const lang = sessionStorage.getItem("languageCode")
       const jwtToken = localStorage.getItem("jwt")
       localStorage.clear()
+      const languageCode = sessionStorage.getItem("languageCode")
+      sessionStorage.clear()
+      sessionStorage.setItem("languageCode", languageCode)
       if (domain.domain.powertalk.state[0] === "loginCheck") {
         if (window.location.hostname === "localhost") {
           window.open(
@@ -120,6 +123,7 @@ export default {
     clearLocalStorage() {
       localStorage.removeItem("selectedFilters")
       localStorage.removeItem("selectedFiltersOptions")
+      localStorage.clearr
     },
     // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리로 접근 시 "종료" 버튼 클릭 시 창 닫기
     logoutBtnClose() {

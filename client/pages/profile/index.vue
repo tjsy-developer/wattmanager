@@ -251,7 +251,7 @@ export default {
                     checkAdmin = true
                   }
                   // 글라스 혹은 admin 계정
-                  if (checkAdmin == true || sessionStorage.getItem("deviceType") == 2){
+                  if (checkAdmin == true || sessionStorage.getItem("deviceType") == "2"){
                     self.compData.listFilters.splice(8, 2)
                     self.compData.selected = [
                       res.data.id,
@@ -292,7 +292,7 @@ export default {
                 checkAdmin = true
               }
               console.log(checkAdmin)
-              if (checkAdmin == "true" || sessionStorage.getItem("deviceType") == 2) {
+              if (checkAdmin == "true" || sessionStorage.getItem("deviceType") == "2") {
                 self.compData.listFilters.splice(8, 2)
                 self.compData.selected = [
                   res.data.id,
