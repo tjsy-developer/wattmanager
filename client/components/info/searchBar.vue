@@ -35,28 +35,10 @@ export default {
     },
     deleteBtn() {
       window.open("./" + this.$route.name + "?page=1", "_self")
-    }
+    },
   },
   mounted() {
     this.inputVal = this.$route.query.keyword
-	if (sessionStorage.getItem("mutationState")) {
-      this.mutationState = sessionStorage.getItem("mutationState")
-    } else {
-      this.mutationState = false
-    }
-  },
-  computed: {
-    getMutationState() {
-      return this.mutationState
-    }
-  },
-  watch: {
-    getMutationState(res) {
-      if (res == "true") {
-        sessionStorage.removeItem("mutationState")
-        location.reload()
-      }
-    }
   }
 }
 </script>

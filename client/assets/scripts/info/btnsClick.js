@@ -28,7 +28,6 @@ const btnsClick = {
         // eslint-disable-next-line no-throw-literal
         if (!getInput[i].value) throw "input undefined"
       }
-      console.log(params)
       axios
         .post(path, params)
         .then(function(res) {
@@ -102,6 +101,7 @@ const btnsClick = {
             throw "listFilters undefined"
         }
       }
+      const check2Factor = sessionStorage.getItem("check2Factor")
       for (let i = 0; i < getInput.length - num; i++) {
         const slicePath = path.split("/")
         const confirmPath = slicePath[slicePath.length - 1]
@@ -133,7 +133,15 @@ const btnsClick = {
           }
         }
         // eslint-disable-next-line no-throw-literal
-        if (!getInput[i].value) throw "input undefined"
+        if (!getInput[i].value){
+          if (check2Factor === "False" && i == 4) {
+            getInput[i].value = ""
+          } else if (check2Factor === "False" && i == 5) {
+            getInput[i].value = ""
+          } else {
+            throw "input undefined" 
+          }
+        }
       }
       axios
         .post(path, params)
@@ -141,6 +149,7 @@ const btnsClick = {
           if (res) {
             if (res.data === "Success") {
               alert(btnsClick.lang[3])
+              sessionStorage.removeItem("deviceType")
               window.history.back()
             } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
             else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])

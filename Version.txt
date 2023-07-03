@@ -1,9 +1,13 @@
-v.2.5.56
+v2.5.57
+-list 부분 안정화
+-logout page 생성
+
+v2.5.56
 -dlenc 2factor 작업으로 인한 sideEffect 수정
 -회원정보, 디바이스정보, 기업, 본부, 지사 > 생성/수정/삭제 시 리스트 갱신 활성화
 
 
-v.2.5.55
+v2.5.55
 -디엘이앤씨 2factor 활성화
 -휴대폰 본인 인증 작업으로 인한 side effect fix
 -디바이스 정보 수정 시 ProductNum 과 SerialNum 입력 하지 않아도 진행 되게 설정

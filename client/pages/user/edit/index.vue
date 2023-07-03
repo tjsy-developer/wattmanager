@@ -92,9 +92,7 @@ export default {
                 1
               )
             } else {
-              console.log("탔다?")
               // 글라스인 경우
-              console.log(this.selected)
               btnsClick.edit2(
                 this.listFilters,
                 domain.domain.backend1 + "userRest/user_update",
@@ -211,7 +209,6 @@ export default {
               self.birthday = res.data.birthday
             }
             // 글라스가 아닌 경우
-            console.log(res.data.phone_number)
             if (res.data.device_type != 2) {
               self.compData.selected = [
                 res.data.id,
@@ -440,7 +437,6 @@ export default {
         URL.revokeObjectURL(this.defaultUserProfileBlob)
       }
     }
-    sessionStorage.removeItem("check2Factor")
   }
 }
 </script>

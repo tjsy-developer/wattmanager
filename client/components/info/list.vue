@@ -201,30 +201,15 @@ export default {
         }, 0)
       })
     },
-    createdOrDeleted() {
-    }
   },
   mounted() {
     this.uploadOrfileBox = this.$route.query.viewType
-    if (sessionStorage.getItem("mutationState")) {
-      this.mutationState = sessionStorage.getItem("mutationState")
-    } else {
-      this.mutationState = false
+    console.log("mounted탔다")
+    if (sessionStorage.getItem("mutationState") == "true") {
+      sessionStorage.removeItem("mutationState")
+      location.reload()
     }
   },
-  computed: {
-    getMutationState() {
-      return this.mutationState
-    }
-  },
-  watch: {
-    getMutationState(res) {
-      if (res == "true") {
-        sessionStorage.removeItem("mutationState")
-        location.reload()
-      }
-    }
-  }
 }
 </script>
 

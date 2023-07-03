@@ -96,25 +96,26 @@ export default {
   },
   methods: {
     createBtnClick() {
-      if (this.compData.createBtnClick) this.compData.createBtnClick()
       console.log("생성이벤트 만드는 곳")
-      sessionStorage.setItem("mutationState", true)
+      sessionStorage.setItem("mutationState", "true")
+      if (this.compData.createBtnClick) this.compData.createBtnClick()
+      sessionStorage.removeItem("check2Factor")
     },
     editBtnClick() {
-      if (this.compData.editBtnClick) this.compData.editBtnClick()
-      sessionStorage.removeItem("deviceType")
       console.log("수정이벤트 만드는 곳")
-      sessionStorage.setItem("mutationState", true)
+      sessionStorage.setItem("mutationState", "true")
+      if (this.compData.editBtnClick) this.compData.editBtnClick()
+      sessionStorage.removeItem("check2Factor")
     },
     cancleBtnClick() {
       window.history.back()
-      sessionStorage.removeItem("deviceType")
+      sessionStorage.removeItem("check2Factor")
     },
     deleteBtnClick() {
-      if (this.compData.deleteBtnClick) this.compData.deleteBtnClick()
-      sessionStorage.removeItem("deviceType")
       console.log("삭제이벤트 만드는 곳")
-      sessionStorage.setItem("mutationState", true)
+      sessionStorage.setItem("mutationState", "true")
+      if (this.compData.deleteBtnClick) this.compData.deleteBtnClick()
+      sessionStorage.removeItem("check2Factor")
     },
     fileTypeInputChange(input, index) {
       if (input.target.files[0]) {
