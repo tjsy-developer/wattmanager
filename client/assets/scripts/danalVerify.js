@@ -4,7 +4,7 @@ import axios from "axios"
 // type: 0 => 로그인; 1 => 회원가입; 2 => 내정보 휴대폰번호 변경;
 export const danalVerify = (logInData, type) => {
     const { IMP } = window
-    // impId가 없는 경우 본인 인증 사용 불가
+    // impId가 없는 경우 본인 인증 사용 불가 domain.json에 값 지정.
     if (!domain.impId) {
         let alertMsg
         if (sessionStorage.getItem("languageCode") == "ko") {
@@ -19,6 +19,7 @@ export const danalVerify = (logInData, type) => {
     IMP.certification(
         {
             // pg사 코드 고정값 ( DL / SMART ) 각자 다름
+            // domain.json에 값 지정
             pg: domain.pg,
             // 승인 리다이렉션 url
             m_redirect_url: '/',
@@ -140,11 +141,13 @@ async function getUserInfo(uid, params, type) {
     // 회원가입인 경우
     if (type == 1) {
         // impuid만 전달하면 된다.
+        // verifyIamportRest/verifyIamport_list
         await axios
             .post(domain.domain.backend1 + axiosJson.account.verify_iamport_list, {
                 imp_uid: uid
             })
             .then((response) => {
+                // return이 생년월일 이름으로 옴.
                 const res = response.data[0]
                 if (res) {
                     console.log(res)
@@ -166,6 +169,7 @@ async function getUserInfo(uid, params, type) {
             
     } else {
         // 로그인 또는 휴대폰 번호 변경인 경우. id와 jwt토큰을 같이 보내줘야한다.
+        // verifyIamportRest/verifyIamport_result
         await axios
         .post(domain.domain.backend1 + axiosJson.account.verify_iamport_result, {
             id: params,

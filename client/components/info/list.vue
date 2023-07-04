@@ -88,8 +88,7 @@ export default {
       ],
       filePath: domain.att_filePath,
       fileuploadApi: "",
-      uploadOrfileBox: "",
-      mutationState: ""
+      uploadOrfileBox: ""
     }
   },
   methods: {
@@ -204,11 +203,6 @@ export default {
   },
   mounted() {
     this.uploadOrfileBox = this.$route.query.viewType
-    console.log("mounted탔다")
-    if (sessionStorage.getItem("mutationState") == "true") {
-      sessionStorage.removeItem("mutationState")
-      location.reload()
-    }
   },
 }
 </script>

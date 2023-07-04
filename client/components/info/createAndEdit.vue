@@ -96,26 +96,17 @@ export default {
   },
   methods: {
     createBtnClick() {
-      console.log("생성이벤트 만드는 곳")
-      sessionStorage.setItem("mutationState", "true")
       if (this.compData.createBtnClick) this.compData.createBtnClick()
-      sessionStorage.removeItem("check2Factor")
     },
     editBtnClick() {
-      console.log("수정이벤트 만드는 곳")
-      sessionStorage.setItem("mutationState", "true")
       if (this.compData.editBtnClick) this.compData.editBtnClick()
-      sessionStorage.removeItem("check2Factor")
     },
     cancleBtnClick() {
       window.history.back()
       sessionStorage.removeItem("check2Factor")
     },
     deleteBtnClick() {
-      console.log("삭제이벤트 만드는 곳")
-      sessionStorage.setItem("mutationState", "true")
       if (this.compData.deleteBtnClick) this.compData.deleteBtnClick()
-      sessionStorage.removeItem("check2Factor")
     },
     fileTypeInputChange(input, index) {
       if (input.target.files[0]) {

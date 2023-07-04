@@ -33,7 +33,9 @@ const btnsClick = {
         .then(function(res) {
           if (res.data) {
             alert(btnsClick.lang[0])
-            window.history.back()
+            sessionStorage.removeItem("deviceType")
+            sessionStorage.removeItem("check2Factor")
+            window.location.href = document.referrer
           } else alert(btnsClick.lang[1])
         })
         .catch(function(error) {
@@ -72,7 +74,9 @@ const btnsClick = {
         .then(function(res) {
           if (res.data) {
             alert(btnsClick.lang[3])
-            window.history.back()
+            sessionStorage.removeItem("deviceType")
+            sessionStorage.removeItem("check2Factor")
+            window.location.href = document.referrer
           } else alert(btnsClick.lang[4])
         })
         .catch(function(error) {
@@ -150,7 +154,9 @@ const btnsClick = {
             if (res.data === "Success") {
               alert(btnsClick.lang[3])
               sessionStorage.removeItem("deviceType")
-              window.history.back()
+              sessionStorage.removeItem("check2Factor")
+              console.log(document.referrer)
+              window.location.href = document.referrer
             } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
             else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
             else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
@@ -181,7 +187,9 @@ const btnsClick = {
       .then(function(res) {
         if (res.data) {
           alert(btnsClick.lang[5])
-          window.history.back()
+          sessionStorage.removeItem("deviceType")
+          sessionStorage.removeItem("check2Factor")
+          window.location.href = document.referrer
         } else {
           console.log(btnsClick.lang[6])
           alert(btnsClick.lang[6])

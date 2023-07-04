@@ -29,10 +29,10 @@
           id="phoneNumber"
           :placeholder="$t('account')[33]"
           v-model="phoneNum"
-          :class="[check2Factor != 'True' ? 'input' : 'phoneInput']"
+          :class="[check2Factor != 'True' ? 'input' : checkAdminId == true ? 'input' : 'phoneInput']"
         />
         <button
-          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == 'True'"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == 'True' && checkAdminId == false"
           class="phoneChkBtn col-auto"
           id="verifyBtn"
           @click="phoneCheckBtnClick"
@@ -92,6 +92,7 @@ export default {
       birthdayCheck: undefined,
       useEnterprise: domain.useEnterprise,
       check2Factor: "False",
+      checkAdminId: false,
       deviceTypeCompData: {
         placeholder: this.$i18n.t("account")[21],
         options: getInfo.deviceTypeObj(),
@@ -259,6 +260,11 @@ export default {
       let checkVerify = sessionStorage.getItem("verify")
       console.log(checkVerify, 1)
       if (this.check2Factor != "True") {
+        checkVerify = "true"
+        this.phoneCheck = this.phoneNum
+        this.birthdayCheck = this.birthday
+      }
+      if (this.checkAdminId == true) {
         checkVerify = "true"
         this.phoneCheck = this.phoneNum
         this.birthdayCheck = this.birthday
@@ -515,6 +521,9 @@ export default {
   computed: {
     get2Factor() {
       return this.branchCompData.selectedValue
+    },
+    checkAdmin() {
+      return this.id
     }
   },
   watch: {
@@ -541,7 +550,14 @@ export default {
             }
           })
       }
-    }
+    },
+    checkAdmin(res) {
+      if (res.includes("wattsupport")) {
+        this.checkAdminId = true
+      } else {
+        this.checkAdminId = false
+      }
+    },
   }
 }
 </script>
