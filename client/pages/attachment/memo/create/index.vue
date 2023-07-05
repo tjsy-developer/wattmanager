@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import domain from "@/assets/jsons/domain/domain"
+
 import codecCheckModal from "@/components/loadingModal/memo/codec-check"
 export default {
 
@@ -84,7 +84,7 @@ export default {
 			// param: 업로드할 파일, 폴더경로
 			const formData = new FormData()
 			formData.append("upload_file", file)
-			formData.append("save_folder", domain.powermemoSavefolder)
+			formData.append("save_folder", process.env.powermemoSavefolder)
 
 			const self = this
 			// 로딩 바 삽입
@@ -94,7 +94,7 @@ export default {
 			// const res = {RESULT : '1000', CODEC_NAME: 'hevc'}
 
 			this.$axios
-			.post(domain.domain.backend1 + "fileupload/get_codec_name", formData, {
+			.post(process.env.backendURL + "fileupload/get_codec_name", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": localStorage.getItem("jwt")
@@ -158,7 +158,7 @@ export default {
         // 파워매니저에서 업로드 했다라고 구분
         formData.append("memo_contents", this.memoContent)
         // 메모 저장 위치
-        formData.append("save_folder", domain.powermemoSavefolder)
+        formData.append("save_folder", process.env.powermemoSavefolder)
 
         // 선택한 파일을 차례대로 넣는다
         const fileEl = document.getElementsByClassName("file")
@@ -184,7 +184,7 @@ export default {
         const self = this
         // 메모 생성 api
         this.$axios
-        .post(domain.domain.backend1 + "fileupload/memo_insert", formData, {
+        .post(process.env.backendURL + "fileupload/memo_insert", formData, {
             headers: {
                 "Content-Type": "multipart/form-data; charset=UTF-8;",
                 "jwt": localStorage.getItem("jwt")

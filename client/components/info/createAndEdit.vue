@@ -40,8 +40,10 @@
             :value="compData.type == 'edit' ? compData.selected[contentKey - 1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
             :disabled="content.edit=='disabled'"
            />
+           <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
+           <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
            <button
-            v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6]"
+            v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && check2Factor == 'True'"
             class="changePhone-btn"
             @click="changePhoneBtnClick"
           >
@@ -65,7 +67,7 @@
 
 <script>
 // import createAndEditFiltersJson from "@/assets/jsons/info/app/createAndEditFilters"
-import domain from "@/assets/jsons/domain/domain"
+
 import axiosJson from "@/assets/jsons/axios"
 import getInfo from "@/assets/scripts/info/getInfo"
 import changePhoneModal from "@/components/info/changePhoneModal"
@@ -235,7 +237,7 @@ export default {
         alert(self.$t("appCopy noneSelectBox")[3])
       } else {
         this.$axios
-          .post(domain.domain.backend1 + axiosJson.app.app_info_copy, {
+          .post(process.env.backendURL + axiosJson.app.app_info_copy, {
             app_code_seq: appCodeSeq,
             en_seq: appCopyEnSeq,
             hq_seq: appCopyHqSeq,
@@ -290,7 +292,7 @@ export default {
       console.log(enSeq, hqSeq, brSeq)
       const self = this
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+        .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
           en_seq: enSeq,
           hq_seq: hqSeq,
           br_seq: brSeq

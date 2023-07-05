@@ -9,7 +9,7 @@ import axiosJson from "@/assets/jsons/axios"
 import loginForm from "@/components/mainIndex/form"
 import transModal from "@/components/info/transModal"
 import inspectionAlertModal from "@/components/mainIndex/inspectionAlertModal"
-import domain from "@/assets/jsons/domain/domain"
+
 import cookieSetting from "@/assets/scripts/data/cookie"
 export default {
   data() {
@@ -65,7 +65,7 @@ export default {
     showInspectionAlert() {
       let inspectionList = []
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.overhaul.overhaul_list, {})
+        .post(process.env.backendURL + axiosJson.overhaul.overhaul_list, {})
         .then((res) => {
           if(res.data.length == 0) {
             return

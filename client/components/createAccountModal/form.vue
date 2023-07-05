@@ -69,7 +69,7 @@
 import QRCode from "qrcode"
 import getInfo from "@/assets/scripts/info/getInfo"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 import { danalVerify } from "@/assets/scripts/danalVerify"
 
 export default {
@@ -90,7 +90,7 @@ export default {
       certificationUniqueKey: "",
       birthday: "",
       birthdayCheck: undefined,
-      useEnterprise: domain.useEnterprise,
+      useEnterprise: process.env.useEnterprise,
       check2Factor: "False",
       checkAdminId: false,
       deviceTypeCompData: {
@@ -128,7 +128,7 @@ export default {
         self = this
         this.$axios
           // .post(axiosJson.account.user_id_check, {
-          .post(domain.domain.backend1 + axiosJson.account.user_id_check, {
+          .post(process.env.backendURL + axiosJson.account.user_id_check, {
             id: this.id
           })
           .then(function(response) {
@@ -162,7 +162,7 @@ export default {
             this.$axios
               // .post(axiosJson.account.user_id_check, {
               .post(
-                domain.domain.backend1 + axiosJson.account.user_name_check,
+                process.env.backendURL + axiosJson.account.user_name_check,
                 {
                   en_seq: this.enterpriseCompData.selectedValue,
                   name: this.name
@@ -198,7 +198,7 @@ export default {
           // eslint-disable-next-line no-global-assign
           this.$axios
             // .post(axiosJson.account.user_id_check, {
-            .post(domain.domain.backend1 + axiosJson.account.user_email_check, {
+            .post(process.env.backendURL + axiosJson.account.user_email_check, {
               email: this.EMail,
               en_seq: this.enterpriseCompData.selectedValue
             })
@@ -234,7 +234,7 @@ export default {
       } else {
         // 휴대폰번호 중복 첵크
         this.$axios
-        .post(domain.domain.backend1 + axiosJson.account.user_phone_number_check, {
+        .post(process.env.backendURL + axiosJson.account.user_phone_number_check, {
           phone_number: this.phoneNum,
           en_seq: this.enterpriseCompData.selectedValue
         })
@@ -334,7 +334,7 @@ export default {
           return alert(this.$t("account")[41])
         }
         this.$axios
-          .post(domain.domain.backend1 + axiosJson.account.user_phone_number_check, {
+          .post(process.env.backendURL + axiosJson.account.user_phone_number_check, {
             phone_number: this.phoneNum,
             en_seq: this.enterpriseCompData.selectedValue
           })
@@ -342,7 +342,7 @@ export default {
             if (res.data == true) {
               this.$axios
                 // .post(axiosJson.account.user_insert, {
-                .post(domain.domain.backend1 + axiosJson.account.user_insert, {
+                .post(process.env.backendURL + axiosJson.account.user_insert, {
                   id: this.id,
                   password: this.password,
                   name: this.name,
@@ -532,7 +532,7 @@ export default {
       if (this.enterpriseCompData.selectedValue && this.hqCompData.selectedValue && this.branchCompData.selectedValue) {
         const self = this
         this.$axios
-          .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+          .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
             en_seq: this.enterpriseCompData.selectedValue,
             hq_seq: this.hqCompData.selectedValue,
             br_seq: this.branchCompData.selectedValue,

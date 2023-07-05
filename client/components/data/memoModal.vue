@@ -44,7 +44,7 @@
 <script>
 import autoSize from "autosize"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   props: ["compData", "files", "webServerFilePathJson"],
@@ -62,7 +62,7 @@ export default {
       const getValue = document.getElementById("memoModalTextarea").value
       const self = this
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.memo.memo_update, {
+        .post(process.env.backendURL + axiosJson.memo.memo_update, {
           memo_seq: this.compData.seq,
           memo_contents: getValue,
           jwt: localStorage.getItem("jwt")
@@ -82,14 +82,14 @@ export default {
       const result = confirm(self.$t("memoModalComp")[8])
       if (result) {
         this.$axios
-          .post(domain.domain.backend1 + axiosJson.memo.memo_join_file_delete, {
+          .post(process.env.backendURL + axiosJson.memo.memo_join_file_delete, {
             memo_seq: this.compData.seq,
             jwt: localStorage.getItem("jwt")
           })
           .then(function(res) {
             if (res) {
               self.$axios
-                .post(domain.domain.backend1 + axiosJson.memo.memo_delete, {
+                .post(process.env.backendURL + axiosJson.memo.memo_delete, {
                   memo_seq: self.compData.seq,
                   jwt: localStorage.getItem("jwt")
                 })
@@ -128,7 +128,7 @@ export default {
       const result = confirm(self.$t("memoModalComp")[9])
       if (result) {
         this.$axios
-          .post(domain.domain.backend1 + axiosJson.memo.file_delete, {
+          .post(process.env.backendURL + axiosJson.memo.file_delete, {
             file_seq: file.file_seq,
             jwt: localStorage.getItem("jwt")
           })

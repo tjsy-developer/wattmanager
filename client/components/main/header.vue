@@ -43,7 +43,7 @@
 <script>
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   data() {
     return {
@@ -52,11 +52,11 @@ export default {
       attViewAuth: false,
       pageIndex: 0,
       qrInfo: [],
-      qrStatus: domain.qr,
-      elecQR: domain.elecQR,
+      qrStatus: process.env.qr,
+      elecQR: process.env.elecQR,
       // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 관리
       logoutStatus: 1,
-      useEnterprise: domain.useEnterprise
+      useEnterprise: process.env.useEnterprise
     }
   },
   methods: {
@@ -71,10 +71,10 @@ export default {
       const languageCode = sessionStorage.getItem("languageCode")
       sessionStorage.clear()
       sessionStorage.setItem("languageCode", languageCode)
-      if (domain.domain.powertalk.state[0] === "loginCheck") {
+      if (process.env.powertlakState === "loginCheck") {
         if (window.location.hostname === "localhost") {
           window.open(
-            domain.domain.powertalk.state[1] +
+            process.env.powertlakLogin_local +
               jwtToken +
               "&login_type=3&lang=" +
               lang,
@@ -108,7 +108,7 @@ export default {
             )
           }else {
             window.open(
-              domain.domain.powertalk.state[2] +
+              process.env.powertalkLogin +
                 jwtToken +
                 "&login_type=3&lang=" +
                 lang,
@@ -178,7 +178,7 @@ export default {
     // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
     // att_access_user = true 일 경우 기존 권한 조건
     // eslint-disable-next-line eqeqeq
-    if (domain.att_access_user === false && this.authority == 0) {
+    if (process.env.att_access_user === false && this.authority == 0) {
       // 일반사용자만 tab 권한 없음
       this.attViewAuth = true
     } else {

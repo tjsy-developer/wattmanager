@@ -199,7 +199,7 @@ import personalInfoModal from "@/components/personalInfoModal/form";
 import createAccountModal from "@/components/createAccountModal/form";
 import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
-import domain from "@/assets/jsons/domain/domain";
+;
 import cookieSetting from "@/assets/scripts/data/cookie";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal"
 
@@ -221,7 +221,7 @@ export default {
       koflag: require("@/assets/images/img.png"),
       enflag: require("@/assets/images/american.png"),
       directCheck: true,
-      useEnterprise: domain.useEnterprise,
+      useEnterprise: process.env.useEnterprise,
       isMember: false,
       reservId: undefined,
       params: "",
@@ -401,7 +401,7 @@ export default {
       const userPwd = document.getElementById("pwdInput").value;
       const self = this;
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.account.user_id_pw_check, {
+        .post(process.env.backendURL + axiosJson.account.user_id_pw_check, {
           id: userId,
           password: userPwd,
         })
@@ -427,7 +427,7 @@ export default {
             localStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
             self.$axios
-              .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+              .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
                 en_seq: response.data[1].en_seq,
                 hq_seq: response.data[1].hq_seq,
                 br_seq: response.data[1].br_seq
@@ -516,11 +516,11 @@ export default {
 
                   /* 와트톡 로그인 체크 페이지로 이동 */
                   // eslint-disable-next-line no-lonely-if
-                  if (domain.domain.powertalk.state[0] === "loginCheck") {
+                  if (process.env.powertlakState === "loginCheck") {
                     // 로컬
                     if (window.location.hostname === "localhost") {
                       window.open(
-                        domain.domain.powertalk.state[1] + self.params,
+                        process.env.powertlakLogin_local + self.params,
                         "_self"
                       );
 
@@ -536,7 +536,7 @@ export default {
                         );
                       } else {
                         window.open(
-                          domain.domain.powertalk.state[2] + self.params,
+                          process.env.powertlakLogin + self.params,
                           "_self"
                         );
                       }
@@ -637,7 +637,7 @@ export default {
       /* 회원이 이메일로 회의실 입장시도할 경우 reservId로 UserId 를 조회한다 --> 초대된 사용자인지 검증을 위함 */
       this.$axios
         .post(
-          domain.domain.backend1 +
+          process.env.backendURL +
             axiosJson.account.select_id_where_reservation_uid,
           {
             reservation_uid: memberReservId,

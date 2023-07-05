@@ -8,7 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -24,7 +24,7 @@ export default {
           const token = localStorage.getItem("jwt")
           btnsClick.create(
             this.listFilters,
-            domain.domain.backend1 + "hqtsRest/hq_create",
+            process.env.backendURL + "hqtsRest/hq_create",
             {
               alias: getInfo.getInputValue(0),
               alias_en: getInfo.getInputValue(1),

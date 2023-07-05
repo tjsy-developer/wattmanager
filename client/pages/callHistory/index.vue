@@ -96,7 +96,7 @@
 import filtersJson from "@/assets/jsons/info/callHistory/filters"
 import getFilters from "@/assets/scripts/info/getFilters"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
     layout: "main",
@@ -173,7 +173,7 @@ export default {
 			this.$nuxt.$emit("selectLoadingBar", true)
 
 			this.$axios
-			.post(domain.domain.backend1 + axiosJson.call.callHistory_list, params)
+			.post(process.env.backendURL + axiosJson.call.callHistory_list, params)
 			.then((res)=> {
 				console.log(res)
 				// res.data[0] :: 통화이력 Array

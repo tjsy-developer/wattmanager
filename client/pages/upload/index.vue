@@ -42,7 +42,7 @@
 
 <script>
 // import autoSize from "autosize"
-import domain from "@/assets/jsons/domain/domain"
+
 import filtersJson from "@/assets/jsons/info/upload/filters"
 // import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import getFilters from "@/assets/scripts/info/getFilters"
@@ -184,7 +184,7 @@ export default {
         // eslint-disable-next-line eqeqeq
         this.uploadOrfileBox == "upload"
           ? this.detailPath.trim()
-          : domain.detailFilePath
+          : process.env.detailFilePath
       )
       // ������ ������ ���ʴ�� �ִ´�
       for (let i = 0; i < this.uploadFiles.length; i++) {
@@ -205,11 +205,11 @@ export default {
         �� ��쿡�� (������ �鿣�� ��θ� ȣ���Ѵ�.) */
       if (
         this.uploadOrfileBox === "filebox" &&
-        domain.separateBackendUploadPath
+        process.env.separateBackendUploadPath
       ) {
-        this.fileuploadApi = domain.fileBoxBackend
+        this.fileuploadApi = process.env.fileBoxBackend
       } else {
-        this.fileuploadApi = domain.domain.backend1
+        this.fileuploadApi = process.env.backendURL
       }
 
       // ���ε� api�� ȣ��

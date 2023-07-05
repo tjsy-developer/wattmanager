@@ -1,10 +1,10 @@
 /* eslint-disable no-lonely-if */
 import axios from "axios"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   add(seq) {
     axios
-      .post(domain.domain.backend1 + "attRest/fav_insert", {
+      .post(process.env.backendURL + "attRest/fav_insert", {
         att_seq: seq,
         jwt: localStorage.getItem("jwt")
       })
@@ -18,7 +18,7 @@ export default {
   },
   remove(seq, self) {
     axios
-      .post(domain.domain.backend1 + "attRest/fav_delete", {
+      .post(process.env.backendURL + "attRest/fav_delete", {
         att_seq: seq,
         jwt: localStorage.getItem("jwt")
       })

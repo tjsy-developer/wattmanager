@@ -7,7 +7,7 @@ import filtersJson from "@/assets/jsons/info/app/filters"
 import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import getFilters from "@/assets/scripts/info/getFilters"
 import axiosJson from "@/assets/jsons/axios"
-// import domain from "@/assets/jsons/domain/domain"
+// 
 
 export default {
   layout: "main",

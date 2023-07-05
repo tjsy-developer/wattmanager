@@ -8,7 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -36,7 +36,7 @@ export default {
           const token = localStorage.getItem("jwt")
           btnsClick.edit(
             this.listFilters,
-            domain.domain.backend1 + "hqtsRest/hq_update",
+            process.env.backendURL + "hqtsRest/hq_update",
             {
               hq_seq: this.hqSeq,
               alias: getInfo.getInputValue(1),
@@ -51,7 +51,7 @@ export default {
           const token = localStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[7])
           if (result) {
-            btnsClick.delete(domain.domain.backend1 + "hqtsRest/hq_delete", {
+            btnsClick.delete(process.env.backendURL + "hqtsRest/hq_delete", {
               hq_seq: this.hqSeq,
               jwt: token
             })
@@ -75,7 +75,7 @@ export default {
 
     const self = this
     this.$axios
-      .post(domain.domain.backend1 + axiosJson.hq.hq_info_one, {
+      .post(process.env.backendURL + axiosJson.hq.hq_info_one, {
         hq_seq: self.compData.hqSeq,
         jwt: localStorage.getItem("jwt")
       })

@@ -55,9 +55,9 @@ import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import memoModal from "@/components/data/memoModal"
 import axiosJson from "@/assets/jsons/axios"
 import changeViewType from "@/components/data/changeViewType"
-import domain from "@/assets/jsons/domain/domain"
 
-const baseUrl = domain.powermemo
+
+const baseUrl = process.env.powermemo
 
 // "https://powermanagercloud.powertalk.co.kr/sftp/powermanager/PowerMemo/" // watt
 // const baseUrl = "https://samsungengineeringcloud.powertalk.kr/sftp/smartg/PowerMemo/" //samsung
@@ -110,7 +110,7 @@ export default {
 
       const self = this
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.memo.memo_join_file, {
+        .post(process.env.backendURL + axiosJson.memo.memo_join_file, {
           memo_seq: memo.seq,
           jwt: localStorage.getItem("jwt")
         })

@@ -59,7 +59,7 @@ import forgotPasswordModal from "@/components/forgotPasswordModal/form"
 import createAccountModal from "@/components/createAccountModal/form"
 import guideAlertModal from "@/components/info/guideAlert"
 import notice from "@/components/notice"
-import domain from "@/assets/jsons/domain/domain"
+
 import cookieSetting from "@/assets/scripts/data/cookie"
 
 export default {
@@ -74,7 +74,7 @@ export default {
       curLang: this.$t("lang")[0],
       koflag: require("@/assets/images/img.png"),
       enflag: require("@/assets/images/american.png"),
-      useEnterprise: domain.useEnterprise,
+      useEnterprise: process.env.useEnterprise,
       isMember: false,
       reservId: undefined,
       params: "",
@@ -179,7 +179,7 @@ export default {
           // 	id: this.id,
           // 	password: this.password
           // })
-          .post(domain.domain.backend1 + axiosJson.account.user_id_pw_check, {
+          .post(process.env.backendURL + axiosJson.account.user_id_pw_check, {
             id: userId,
             password: userPwd
           })
@@ -233,17 +233,17 @@ export default {
                 }
 
                 /* 와트톡 로그인 체크 페이지로 이동 */
-                if (domain.domain.powertalk.state[0] === "loginCheck") {
+                if (process.env.powertlakState === "loginCheck") {
                   // 로컬
                   if (window.location.hostname === "localhost") {
                     window.open(
-                      domain.domain.powertalk.state[1] + self.params,
+                      process.env.powertlakLogin_local + self.params,
                       "_self"
                     )
                     // 와트톡
                   } else {
                     window.open(
-                      domain.domain.powertalk.state[2] + self.params,
+                      process.env.powertlakLogin + self.params,
                       "_self"
                     )
                   }
@@ -254,7 +254,7 @@ export default {
                   window.open("/powertalk/index.html?" + randomNumber, "_self")
                 }
                 // window.open(
-                //   domain.powertalk.loginCheck +
+                //   process.env.powertalk.loginCheck +
                 //     response.data[2] +
                 //     "&login_type=1&lang=" +
                 //     lang,
@@ -323,7 +323,7 @@ export default {
       /* 회원이 이메일로 회의실 입장시도할 경우 reservId로 UserId 를 조회한다 --> 초대된 사용자인지 검증을 위함 */
       this.$axios
         .post(
-          domain.domain.backend1 +
+          process.env.backendURL +
             axiosJson.account.select_id_where_reservation_uid,
           {
             reservation_uid: memberReservId

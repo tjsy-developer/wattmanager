@@ -8,7 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -32,7 +32,7 @@ export default {
           if (getInfo.getInputValue(0) === "")
             return alert(getSelf.$t("attachment")[0])
           this.axios
-            .post(domain.domain.backend1 + axiosJson.attachment.att_update, {
+            .post(process.env.backendURL + axiosJson.attachment.att_update, {
               att_seq: this.attSeq,
               title: getInfo.getInputValue(0),
               category: getInfo.getInputValue(1),
@@ -52,7 +52,7 @@ export default {
         deleteBtnClick() {
           const result = confirm(btnsClick.lang[7])
           if (result) {
-            btnsClick.delete(domain.domain.backend1 + "attRest/att_delete", {
+            btnsClick.delete(process.env.backendURL + "attRest/att_delete", {
               att_seq: this.attSeq,
               jwt: localStorage.getItem("jwt")
             })
@@ -89,7 +89,7 @@ export default {
     if (localStorage.auth) {
       const self = this
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.attachment.att_info_one, {
+        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
           att_seq: self.compData.attSeq,
           jwt: localStorage.getItem("jwt")
         })

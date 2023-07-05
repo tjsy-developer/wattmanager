@@ -8,7 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -29,7 +29,7 @@ export default {
             console.log(getInfo.getTextareaValue(0).length)
             btnsClick.create(
               this.listFilters,
-              domain.domain.backend1 + "appRest/app_create",
+              process.env.backendURL + "appRest/app_create",
               {
                 app_code_seq: getInfo.getSelectValue(this.listFilters, 1),
                 en_seq: getInfo.getSelectValue(this.listFilters, 2),

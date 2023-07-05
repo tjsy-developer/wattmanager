@@ -38,7 +38,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -69,7 +69,7 @@ export default {
       }
       btnsClick.create(
         this.listFilters,
-        domain.domain.backend1 + "noticeRest/noti_insert",
+        process.env.backendURL + "noticeRest/noti_insert",
         {
           en_seq: enSeq,
           content: getInfo.getTextareaValue(0),

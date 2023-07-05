@@ -10,7 +10,7 @@ import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -19,7 +19,7 @@ export default {
       token: "",
       defaultUserProfileBlob: "",
       compData: {
-        useEnterprise: domain.useEnterprise,
+        useEnterprise: process.env.useEnterprise,
         userSeq: Number(this.$route.query.seq),
         listTitle: this.$t("user")[0],
         createAndEditTitle: this.$t("user")[1],
@@ -69,7 +69,7 @@ export default {
             if (sessionStorage.getItem("deviceType") != 2) {
               btnsClick.edit2(
                 this.listFilters,
-                domain.domain.backend1 + "userRest/user_update",
+                process.env.backendURL + "userRest/user_update",
                 {
                   user_seq: this.userSeq,
                   id: getInfo.getInputValue(0),
@@ -95,7 +95,7 @@ export default {
               // 글라스인 경우
               btnsClick.edit2(
                 this.listFilters,
-                domain.domain.backend1 + "userRest/user_update",
+                process.env.backendURL + "userRest/user_update",
                 {
                   user_seq: this.userSeq,
                   id: getInfo.getInputValue(0),
@@ -124,7 +124,7 @@ export default {
           const token = localStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[10])
           if (result) {
-            btnsClick.delete(domain.domain.backend1 + "userRest/user_delete", {
+            btnsClick.delete(process.env.backendURL + "userRest/user_delete", {
               user_seq: this.userSeq,
               jwt: token
             }) 
@@ -172,13 +172,13 @@ export default {
     ])
     this.token = localStorage.getItem("jwt")
     this.$axios
-      .post(domain.domain.backend1 + axiosJson.user.user_info_one, {
+      .post(process.env.backendURL + axiosJson.user.user_info_one, {
         user_seq: self.compData.userSeq,
         jwt: this.token
       })
       .then(function(res) {
         self.$axios
-          .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+          .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
             en_seq: res.data.en_seq,
             hq_seq: res.data.hq_seq,
             br_seq: res.data.br_seq
@@ -347,7 +347,7 @@ export default {
                           )
                           self.$axios
                             .post(
-                              domain.domain.backend1 +
+                              process.env.backendURL +
                                 "userRest/user_info_one_app_list",
                               {
                                 br_seq: self.compData.selected[3],

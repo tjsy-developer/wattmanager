@@ -6,7 +6,7 @@
 import getInfo from "@/assets/scripts/info/getInfo"
 import axiosJson from "@/assets/jsons/axios"
 import profile from "@/components/forgotPasswordModal/profile"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -15,7 +15,7 @@ export default {
       defaultProfileBlob: "",
       deviceType: 0,
       auth: 0,
-      useEnterprise: domain.useEnterprise,
+      useEnterprise: process.env.useEnterprise,
       compData: {
         self: this,
         userSeq: undefined,
@@ -99,7 +99,7 @@ export default {
               // }
               getSelf.$axios
                 // .post("userRest/user_update_my", {
-                .post(domain.domain.backend1 + "userRest/user_update_my", {
+                .post(process.env.backendURL + "userRest/user_update_my", {
                   user_seq: this.userSeq,
                   name: getInfo.getInputValue(4),
                   name_en:
@@ -210,7 +210,7 @@ export default {
     const self = this
     this.$axios
       // .post(axiosJson.user.user_info_one, {
-      .post(domain.domain.backend1 + axiosJson.user.user_info_one, {
+      .post(process.env.backendURL + axiosJson.user.user_info_one, {
         user_seq: getUserSeq,
         jwt: localStorage.getItem("jwt")
       })
@@ -218,7 +218,7 @@ export default {
         console.log(res)
         sessionStorage.setItem("deviceType", res.data.device_type)
         self.$axios
-          .post(domain.domain.backend1 + axiosJson.app.app_powertalkweb_info, {
+          .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
             en_seq: res.data.en_seq,
             hq_seq: res.data.hq_seq,
             br_seq: res.data.br_seq
@@ -230,10 +230,12 @@ export default {
             if (self.useEnterprise != "dlenc") {
               self.check2Factor = "False"
             }
+            sessionStorage.setItem("check2Factor", self.check2Factor)
           })
           .catch((err) => {
             if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
               self.check2Factor = "False"
+              sessionStorage.setItem("check2Factor", self.check2Factor)
             } else {
               console.log("2Factor Error :", err)
             }

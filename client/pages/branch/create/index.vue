@@ -8,7 +8,7 @@ import createFiltersJson from "@/assets/jsons/info/branch/createFilters"
 import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -25,7 +25,7 @@ export default {
           console.log(this.listFilters)
           btnsClick.create(
             this.listFilters,
-            domain.domain.backend1 + "branchRest/br_create",
+            process.env.backendURL + "branchRest/br_create",
             {
               alias: getInfo.getInputValue(0),
               alias_en: getInfo.getInputValue(1),

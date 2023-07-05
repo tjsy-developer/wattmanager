@@ -9,7 +9,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -40,7 +40,7 @@ export default {
           const token = localStorage.getItem("jwt")
           btnsClick.edit(
             this.listFilters,
-            domain.domain.backend1 + "enterpriseRest/en_update",
+            process.env.backendURL + "enterpriseRest/en_update",
             {
               en_seq: this.enSeq,
               alias: getInfo.getInputValue(0),
@@ -59,7 +59,7 @@ export default {
           const result = confirm(btnsClick.lang[7])
           if (result) {
             btnsClick.delete(
-              domain.domain.backend1 + "enterpriseRest/en_delete",
+              process.env.backendURL + "enterpriseRest/en_delete",
               {
                 en_seq: this.enSeq,
                 jwt: token
@@ -84,7 +84,7 @@ export default {
     ])
     const self = this
     this.$axios
-      .post(domain.domain.backend1 + axiosJson.enterprise.en_info_one, {
+      .post(process.env.backendURL + axiosJson.enterprise.en_info_one, {
         en_seq: self.compData.enSeq,
         jwt: localStorage.getItem("jwt")
       })

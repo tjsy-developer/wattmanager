@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   props: ["userSeq"],
   data() {
@@ -43,7 +43,7 @@ export default {
         this.$axios
           // .post("userRest/user_password_check_change", {
           .post(
-            domain.domain.backend1 + "userRest/user_password_check_change",
+            process.env.backendURL + "userRest/user_password_check_change",
             {
               user_seq: this.userSeq,
               password: this.password,

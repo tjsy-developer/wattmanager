@@ -1,7 +1,7 @@
 import axios from "axios"
 // eslint-disable-next-line no-unused-vars
 import { get } from "jquery"
-import domain from "@/assets/jsons/domain/domain"
+
 
 const getInfo = {
   setLang(lang) {
@@ -40,7 +40,7 @@ const getInfo = {
     return (
       axios
         // .post("accountRest/en_list")
-        .post(domain.domain.backend1 + "accountRest/en_list")
+        .post(process.env.backendURL + "accountRest/en_list")
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -60,7 +60,7 @@ const getInfo = {
     return (
       axios
         // .post("accountRest/hq_list", { en_seq: enSeq })
-        .post(domain.domain.backend1 + "accountRest/hq_list", { en_seq: enSeq })
+        .post(process.env.backendURL + "accountRest/hq_list", { en_seq: enSeq })
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -80,7 +80,7 @@ const getInfo = {
     return (
       axios
         // .post("accountRest/br_list", { hq_seq: hqSeq })
-        .post(domain.domain.backend1 + "accountRest/br_list", { hq_seq: hqSeq })
+        .post(process.env.backendURL + "accountRest/br_list", { hq_seq: hqSeq })
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -100,7 +100,7 @@ const getInfo = {
     return (
       axios
         // .post("appRest/app_code_list")
-        .post(domain.domain.backend1 + "appRest/app_code_list", {
+        .post(process.env.backendURL + "appRest/app_code_list", {
           jwt: localStorage.getItem("jwt")
         })
         .then(function(res) {

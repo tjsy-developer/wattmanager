@@ -12,7 +12,7 @@
 
 <script>
 import InfiniteLoading from "vue-infinite-loading"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   components: {
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     url() {
-      return domain.domain.backend1 + this.compData.getRightListDataUrl
+      return process.env.backendURL + this.compData.getRightListDataUrl
     }
   },
   methods: {

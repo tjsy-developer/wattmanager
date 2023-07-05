@@ -18,11 +18,11 @@
 	</div>
 </template>
 <script>
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
 	data() {
 		return {
-			useEnterprise: domain.useEnterprise
+			useEnterprise: process.env.useEnterprise
 		}
 	},
 	mounted() {

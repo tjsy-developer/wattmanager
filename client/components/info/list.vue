@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import domain from "@/assets/jsons/domain/domain"
+
 import axiosJson from "@/assets/jsons/axios"
 export default {
   components: {},
@@ -86,7 +86,7 @@ export default {
         require("@/assets/images/icon_device_glass.png"),
         require("@/assets/images/icon_device_pc.png")
       ],
-      filePath: domain.att_filePath,
+      filePath: process.env.att_filePath,
       fileuploadApi: "",
       uploadOrfileBox: ""
     }
@@ -146,25 +146,25 @@ export default {
         일 경우에만 (파일함 백엔드 경로를 호출한다.) */
       if (
         this.uploadOrfileBox === "filebox" &&
-        domain.separateBackendUploadPath
+        process.env.separateBackendUploadPath
       ) {
-        this.fileuploadApi = domain.fileBoxBackend
+        this.fileuploadApi = process.env.fileBoxBackend
       } else {
-        this.fileuploadApi = domain.domain.backend1
+        this.fileuploadApi = process.env.backendURL
       }
 
       if (QAResult) {
         const dataParams = {
           jwt: localStorage.getItem("jwt"),
           upload_seq: seq,
-          file_path: domain.detailFilePath + "\\\\",
+          file_path: process.env.detailFilePath + "\\\\",
           file_name: fileName
         }
         // upload는 삭제할 일이 없다
         // file_path
         // dev (filebox, upload)-> "D:\\\\Storage\\\\powertalk\\\\dev\\\\filebox",
-        // meet (filebox) domain.fileBoxBackend + domain.detailFilePath "D:\\\\cloud\\\\powertalk\\\\meet\\\\filebox"
-        // meet (upload) domain.domain.backend1
+        // meet (filebox) process.env.fileBoxBackend + process.env.detailFilePath "D:\\\\cloud\\\\powertalk\\\\meet\\\\filebox"
+        // meet (upload) process.env.backendURL
         this.$axios
           .post(this.fileuploadApi + axiosJson.upload.upload_delete, dataParams)
           .then(function(res) {

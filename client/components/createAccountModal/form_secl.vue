@@ -47,7 +47,6 @@
 import QRCode from "qrcode"
 import getInfo from "@/assets/scripts/info/getInfo"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
 
 export default {
   components: {},
@@ -99,7 +98,7 @@ export default {
         self = this
         this.$axios
           // .post(axiosJson.account.user_id_check, {
-          .post(domain.domain.backend1 + axiosJson.account.user_id_check, {
+          .post(process.env.backendURL + axiosJson.account.user_id_check, {
             id: this.id
           })
           .then(function(response) {
@@ -133,7 +132,7 @@ export default {
             this.$axios
               // .post(axiosJson.account.user_id_check, {
               .post(
-                domain.domain.backend1 + axiosJson.account.user_name_check,
+                process.env.backendURL + axiosJson.account.user_name_check,
                 {
                   en_seq: this.enterpriseCompData.selectedValue,
                   name: this.name
@@ -173,7 +172,7 @@ export default {
           self = this
           this.$axios
             // .post(axiosJson.account.user_id_check, {
-            .post(domain.domain.backend1 + axiosJson.account.user_email_check, {
+            .post(process.env.backendURL + axiosJson.account.user_email_check, {
               email: this.EMail,
               en_seq: this.enterpriseCompData.selectedValue
             })
@@ -214,7 +213,7 @@ export default {
           this.$axios
             // .post(axiosJson.account.user_id_check, {
             .post(
-              domain.domain.backend1 + axiosJson.account.en_list_where_enName,
+              process.env.backendURL + axiosJson.account.en_list_where_enName,
               {
                 enName: this.enName,
                 language: sessionStorage.getItem("languageCode")
@@ -306,7 +305,7 @@ export default {
         }
         this.$axios
           // .post(axiosJson.account.user_insert, {
-          .post(domain.domain.backend1 + axiosJson.account.user_insert, {
+          .post(process.env.backendURL + axiosJson.account.user_insert, {
             id: this.id,
             password: this.password,
             name: this.name,

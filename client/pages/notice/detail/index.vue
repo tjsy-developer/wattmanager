@@ -36,7 +36,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   layout: "main",
   data() {
@@ -60,7 +60,7 @@ export default {
       // this.getWorldTime(getInfo.getInputValue(0))
       btnsClick.edit(
         this.listFilters,
-        domain.domain.backend1 + "noticeRest/noti_update",
+        process.env.backendURL + "noticeRest/noti_update",
         {
           noti_seq: this.seq,
           content: getInfo.getTextareaValue(0),
@@ -76,7 +76,7 @@ export default {
       const token = localStorage.getItem("jwt")
       const result = confirm(btnsClick.lang[7])
       if (result) {
-        btnsClick.delete(domain.domain.backend1 + "noticeRest/noti_delete", {
+        btnsClick.delete(process.env.backendURL + "noticeRest/noti_delete", {
           noti_seq: this.seq,
           jwt: token
         })
@@ -121,7 +121,7 @@ export default {
     const self = this
     const token = localStorage.getItem("jwt")
     this.$axios
-      .post(domain.domain.backend1 + "noticeRest/noti_info_one", {
+      .post(process.env.backendURL + "noticeRest/noti_info_one", {
         noti_seq: self.seq,
         jwt: token
       })

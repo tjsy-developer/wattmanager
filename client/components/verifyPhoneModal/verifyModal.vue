@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import domain from "@/assets/jsons/domain/domain";
+;
 import axiosJson from "@/assets/jsons/axios";
 import { danalVerify } from "@/assets/scripts/danalVerify"
 
@@ -42,7 +42,7 @@ export default {
         verify() {
             const self = this
             this.$axios
-            .post(domain.domain.backend1 + axiosJson.user.user_info_one, {
+            .post(process.env.backendURL + axiosJson.user.user_info_one, {
                 user_seq: this.propsData.user_seq,
                 jwt: localStorage.getItem("jwt")
             })

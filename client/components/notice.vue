@@ -24,7 +24,6 @@
 </template></template>
 
 <script>
-import domain from "@/assets/jsons/domain/domain"
 
 export default {
   data() {
@@ -46,7 +45,7 @@ export default {
   created() {
     const self = this
     this.$axios
-      .$post(domain.domain.backend1 + "noticeRest/notice_list", {
+      .$post(process.env.backendURL + "noticeRest/notice_list", {
         // 2021.02.04 ksy- watt 기업번호 적용
         en_seq: 1
       })

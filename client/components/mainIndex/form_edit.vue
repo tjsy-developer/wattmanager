@@ -52,7 +52,7 @@ import axiosJson from "@/assets/jsons/axios"
 import forgotPasswordModal from "@/components/forgotPasswordModal/form"
 import createAccountModal from "@/components/createAccountModal/form"
 import notice from "@/components/notice"
-import domain from "@/assets/jsons/domain/domain"
+
 import cookieSetting from "@/assets/scripts/data/cookie"
 export default {
   components: { notice },
@@ -66,7 +66,7 @@ export default {
       curLang: this.$t("lang")[0],
       koflag: require("@/assets/images/img.png"),
       enflag: require("@/assets/images/american.png"),
-      useEnterprise: domain.useEnterprise
+      useEnterprise: process.env.useEnterprise
     }
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
           // 	id: this.id,
           // 	password: this.password
           // })
-          .post(domain.domain.backend1 + axiosJson.account.user_id_pw_check, {
+          .post(process.env.backendURL + axiosJson.account.user_id_pw_check, {
             id: userId,
             password: userPwd
           })
@@ -112,10 +112,10 @@ export default {
               // 수정
               else {
                 // eslint-disable-next-line no-lonely-if
-                if (domain.domain.powertalk.state[0] === "loginCheck") {
+                if (process.env.powertlakState === "loginCheck") {
                   if (window.location.hostname === "localhost") {
                     window.open(
-                      domain.domain.powertalk.state[1] +
+                      process.env.powertlakLogin_local +
                         response.data[2] +
                         "&login_type=1&lang=" +
                         lang,
@@ -123,7 +123,7 @@ export default {
                     )
                   } else {
                     window.open(
-                      domain.domain.powertalk.state[2] +
+                      process.env.powertlakLogin +
                         response.data[2] +
                         "&login_type=1&lang=" +
                         lang,
@@ -136,7 +136,7 @@ export default {
                   window.open("/powertalk/index.html?" + randomNumber, "_self")
                 }
                 // window.open(
-                //   domain.powertalk.loginCheck +
+                //   process.env.powertalk.loginCheck +
                 //     response.data[2] +
                 //     "&login_type=1&lang=" +
                 //     lang,

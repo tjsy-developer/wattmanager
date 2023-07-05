@@ -40,7 +40,7 @@
 </template>
 <script>
 import QRCode from "qrcode"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   layout: "main",
   data() {
@@ -110,7 +110,7 @@ export default {
       let detailPath
 
       if (this.type === 1) {
-        detailPath = domain.elecFilePath
+        detailPath = process.env.elecFilePath
 
         // 업로드할 파일이 선택됬는지 체크한다.
         if (this.uploadFiles.length === 0) {
@@ -128,13 +128,13 @@ export default {
           alert(this.$t("elecFolder")[2])
           return
         } else {
-          detailPath = domain.elecFolderPath + "\\\\" + this.enterFolderPath
+          detailPath = process.env.elecFolderPath + "\\\\" + this.enterFolderPath
         }
       }
 
       formData.append("detailPath", detailPath)
 
-      this.fileuploadApi = domain.domain.backend1
+      this.fileuploadApi = process.env.backendURL
 
       // this.fileuploadApi = "http://192.168.20.79:8090/PowerManagerBackend/"
       // 업로드 api를 호출
@@ -164,8 +164,8 @@ export default {
               const fileName = res.data.split("\n")
 
               fileBoxFileNameBox.innerHTML = ""
-              const getDomain = domain.domain.backend1.split(":")
-              const getGlassQrPath = domain.elecFilePath.split(":\\\\")
+              const getDomain = process.env.backendURL.split(":")
+              const getGlassQrPath = process.env.elecFilePath.split(":\\\\")
               // 응답결과로 저장경로 + 파일명으로 파일 경로를 만든다.
               for (let i = 1; i < fileName.length; i++) {
                 const QRfilePath =

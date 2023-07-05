@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   props: ["compData"],
@@ -38,7 +38,7 @@ export default {
         const self = this
         this.$axios
           // .post("accountRest/change_password", {
-          .post(domain.domain.backend1 + "accountRest/change_password", {
+          .post(process.env.backendURL + "accountRest/change_password", {
             id: this.compData.id,
             password: this.password
           })

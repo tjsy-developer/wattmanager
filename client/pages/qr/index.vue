@@ -7,12 +7,12 @@
 // import QRCode from "qrcode"
 import powerQr from "@/components/qr/powerQr"
 import safetyQr from "@/components/qr/safetyQr"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   layout: "main",
   data() {
     return {
-      state: domain.qr
+      state: process.env.qr
     }
   },
   components: {

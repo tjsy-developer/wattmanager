@@ -14,7 +14,6 @@
 <script>
 import VueAdsPagination from "vue-ads-pagination"
 // import VueCookie from "vue-cookie"
-import domain from "@/assets/jsons/domain/domain"
 
 export default {
   components: {
@@ -60,7 +59,7 @@ export default {
 
       return this.$axios
         .post(
-          domain.domain.backend1 + this.compData.getListCountUrl,
+          process.env.backendURL + this.compData.getListCountUrl,
           this.compData.getListDataParams
         )
         .then(response => {
@@ -75,7 +74,7 @@ export default {
       this.compData.getListDataParams.jwt = localStorage.getItem("jwt")
       return this.$axios
         .post(
-          domain.domain.backend1 + this.compData.getListDataUrl,
+          process.env.backendURL + this.compData.getListDataUrl,
           this.compData.getListDataParams
         )
         .then(response => {

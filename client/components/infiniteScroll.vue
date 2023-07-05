@@ -13,7 +13,7 @@
 
 <script>
 import InfiniteLoading from "vue-infinite-loading"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   components: {
@@ -23,7 +23,7 @@ export default {
   computed: {
     url() {
       // ksy변경부분
-      return domain.domain.backend1 + this.compData.getListDataUrl
+      return process.env.backendURL + this.compData.getListDataUrl
     }
   },
   methods: {

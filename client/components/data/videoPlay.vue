@@ -114,14 +114,14 @@ import favorite from "@/assets/scripts/data/favorite"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
 import axiosJson from "@/assets/jsons/axios"
 import fileDownload from "@/assets/scripts/data/download"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   components: { rightListInfiniteScroll },
   props: ["compData"],
   data() {
     return {
-      useBento4: domain.use_bento4,
+      useBento4: process.env.use_bento4,
       videoThumnailBlob: [],
       videoBlob: [],
       selected: undefined,
@@ -297,7 +297,7 @@ export default {
       const self = this
       console.log("getSelected !!")
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.attachment.att_info_one, {
+        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
           att_seq: getSeq,
           jwt: token
         })
@@ -412,7 +412,7 @@ export default {
       console.log(result)
       if (result) {
         self.$axios
-          .post(domain.domain.backend1 + axiosJson.attachment.att_delete, {
+          .post(process.env.backendURL + axiosJson.attachment.att_delete, {
             att_seq: parseInt(this.$route.query.seq),
             jwt: token
           })
@@ -432,7 +432,7 @@ export default {
     getPageNumber(seq) {
       return this.$axios
         .post(
-          domain.domain.backend1 + axiosJson.attachment.att_return_page_number,
+          process.env.backendURL + axiosJson.attachment.att_return_page_number,
           {
             att_seq: seq,
             jwt: localStorage.getItem("jwt")
@@ -601,17 +601,17 @@ export default {
 
                 console.log(
                   "att_videoPlay url: " +
-                    domain.att_videoPlayPath +
+                    process.env.att_videoPlayPath +
                     fileName +
                     "/stream.mpd"
                 )
 
                 // self.selected.video를 이용하여 videoPlay 추가
                 // streaming 영상 소스 삽입
-                if (domain.use_bento4) {
+                if (process.env.use_bento4) {
                   setTimeout(function() {
                     const url =
-                      domain.att_videoPlayPath + fileName + "/stream.mpd"
+                      process.env.att_videoPlayPath + fileName + "/stream.mpd"
                     const player = MediaPlayer().create()
                     console.log(url)
                     player.initialize(
@@ -670,16 +670,16 @@ export default {
 
               console.log(
                 "att_videoPlay url: " +
-                  domain.att_videoPlayPath +
+                  process.env.att_videoPlayPath +
                   fileName +
                   "/stream.mpd"
               )
 
               // streaming 영상 소스 삽입
-              if (domain.use_bento4) {
+              if (process.env.use_bento4) {
                 setTimeout(function() {
                   const url =
-                    domain.att_videoPlayPath + fileName + "/stream.mpd"
+                    process.env.att_videoPlayPath + fileName + "/stream.mpd"
                   const player = MediaPlayer().create()
                   console.log(url)
                   player.initialize(

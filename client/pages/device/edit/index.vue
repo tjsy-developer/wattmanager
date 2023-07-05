@@ -9,7 +9,7 @@ import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   layout: "main",
   data() {
@@ -39,7 +39,7 @@ export default {
             } else {
               btnsClick.edit2(
                 this.listFilters,
-                domain.domain.backend1 + "deviceRest/dev_update",
+                process.env.backendURL + "deviceRest/dev_update",
                 {
                   dev_seq: this.devSeq,
                   en_seq: getInfo.getSelectValue(this.listFilters, 4),
@@ -65,7 +65,7 @@ export default {
           const token = localStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[10])
           if (result) {
-            btnsClick.delete(domain.domain.backend1 + "deviceRest/dev_delete", {
+            btnsClick.delete(process.env.backendURL + "deviceRest/dev_delete", {
               dev_seq: this.devSeq,
               jwt: token
             })
@@ -96,7 +96,7 @@ export default {
     const self = this
     this.token = localStorage.getItem("jwt")
     this.$axios
-      .post(domain.domain.backend1 + axiosJson.device.dev_info_one, {
+      .post(process.env.backendURL + axiosJson.device.dev_info_one, {
         dev_seq: self.compData.devSeq,
         jwt: this.token
       })

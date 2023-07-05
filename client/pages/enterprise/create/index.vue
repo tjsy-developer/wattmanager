@@ -7,7 +7,7 @@ import createAndEditFilters from "@/assets/jsons/info/enterprise/createAndEditFi
 import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   layout: "main",
   data() {
@@ -35,7 +35,7 @@ export default {
 
           btnsClick.create(
             this.listFilters,
-            domain.domain.backend1 + "enterpriseRest/en_create",
+            process.env.backendURL + "enterpriseRest/en_create",
             {
               alias: getInfo.getInputValue(0),
               alias_en: getInfo.getInputValue(1),

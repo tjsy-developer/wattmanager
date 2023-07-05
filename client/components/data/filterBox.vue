@@ -87,7 +87,7 @@
 <script>
 import getDate from "@/assets/scripts/initialize/date"
 import initLocalStorage from "@/assets/scripts/initialize/localStorage"
-import domain from "@/assets/jsons/domain/domain"
+
 export default {
   props: [
     "compData",
@@ -286,7 +286,7 @@ export default {
         const self = this
         const token = localStorage.getItem("jwt")
         this.$axios
-          .post(domain.domain.backend1 + this.getFilterListUrl, {
+          .post(process.env.backendURL + this.getFilterListUrl, {
             jwt: token
           })
           .then(function(res) {

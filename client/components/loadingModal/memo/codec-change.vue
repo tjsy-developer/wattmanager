@@ -21,8 +21,8 @@
     </div>
 </template>
 <script>
-import domain from "@/assets/jsons/domain/domain"
-const baseUrl = domain.powermemo
+
+const baseUrl = process.env.powermemo
 export default {
     props: ["modalStep"],
     data() {
@@ -62,7 +62,7 @@ export default {
             // 파워매니저에서 업로드 했다라고 구분
             formData.append("upload_file", this.file)
             // 메모 저장 위치
-            formData.append("save_folder", domain.powermemoSavefolder)
+            formData.append("save_folder", process.env.powermemoSavefolder)
             // FormData의 값 확인
             // for (const pair of formData.entries()) {
             //     console.log(pair[0], ", ", pair[1])
@@ -70,7 +70,7 @@ export default {
             
             this.codecStep = 1
             this.$axios
-			.post(domain.domain.backend1 + "fileupload/video_encoding", formData, {
+			.post(process.env.backendURL + "fileupload/video_encoding", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": localStorage.getItem("jwt")

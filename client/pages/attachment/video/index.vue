@@ -11,7 +11,7 @@
 import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters"
 import axiosJson from "@/assets/jsons/axios"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   layout: "main",
@@ -167,7 +167,7 @@ export default {
     // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
     // att_access_user = true 일 경우 기존 권한 조건
     // eslint-disable-next-line eqeqeq
-    if (domain.att_access_user === false && this.authority == 0) {
+    if (process.env.att_access_user === false && this.authority == 0) {
       // 일반사용자만 tab 권한 없음
       this.attViewAuth = true
     } else {

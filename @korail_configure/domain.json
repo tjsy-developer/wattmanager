@@ -1,7 +1,7 @@
 {
 	"domain":{
 		"backend_local": "http://localhost:8090/",
-		"backend1": "https://sg.korail.com:8101/",
+		"backendURL": "https://sg.korail.com:8101/",
 		"powertalk" : { 
 			"state" : [
 				"loginCheck",

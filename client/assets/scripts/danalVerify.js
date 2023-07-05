@@ -1,11 +1,10 @@
-import domain from "@/assets/jsons/domain/domain"
 import axiosJson from "@/assets/jsons/axios"
 import axios from "axios"
 // type: 0 => 로그인; 1 => 회원가입; 2 => 내정보 휴대폰번호 변경;
 export const danalVerify = (logInData, type) => {
     const { IMP } = window
-    // impId가 없는 경우 본인 인증 사용 불가 domain.json에 값 지정.
-    if (!domain.impId) {
+    // impId가 없는 경우 본인 인증 사용 불가 process.env.json에 값 지정.
+    if (!process.env.impId) {
         let alertMsg
         if (sessionStorage.getItem("languageCode") == "ko") {
             alertMsg = "본인 인증 설정이 되어있지 않습니다. 확인 바랍니다."
@@ -14,13 +13,13 @@ export const danalVerify = (logInData, type) => {
         }
         return alert(alertMsg)
     }
-    IMP.init(domain.impId)
+    IMP.init(process.env.impId)
 
     IMP.certification(
         {
             // pg사 코드 고정값 ( DL / SMART ) 각자 다름
-            // domain.json에 값 지정
-            pg: domain.pg,
+            // .env 파일에 값 지정
+            pg: process.env.pg,
             // 승인 리다이렉션 url
             m_redirect_url: '/',
             // mobile popup
@@ -115,16 +114,16 @@ function login(logInData) {
 
         /* 와트톡 로그인 체크 페이지로 이동 */
         // eslint-disable-next-line no-lonely-if
-        if (domain.domain.powertalk.state[0] === "loginCheck") {
+        if (process.env.powertlakState === "loginCheck") {
             // 로컬
             if (window.location.hostname === "localhost") {
                 window.open(
-                domain.domain.powertalk.state[1] + params,
+                    process.env.powertlakLogin_local + params,
                 "_self"
                 );
             } else {
                 window.open(
-                    domain.domain.powertalk.state[2] + params,
+                    process.env.powertlakLogin + params,
                     "_self"
                 );
             }
@@ -143,7 +142,7 @@ async function getUserInfo(uid, params, type) {
         // impuid만 전달하면 된다.
         // verifyIamportRest/verifyIamport_list
         await axios
-            .post(domain.domain.backend1 + axiosJson.account.verify_iamport_list, {
+            .post(process.env.backendURL + axiosJson.account.verify_iamport_list, {
                 imp_uid: uid
             })
             .then((response) => {
@@ -171,7 +170,7 @@ async function getUserInfo(uid, params, type) {
         // 로그인 또는 휴대폰 번호 변경인 경우. id와 jwt토큰을 같이 보내줘야한다.
         // verifyIamportRest/verifyIamport_result
         await axios
-        .post(domain.domain.backend1 + axiosJson.account.verify_iamport_result, {
+        .post(process.env.backendURL + axiosJson.account.verify_iamport_result, {
             id: params,
             imp_uid: uid,
             jwt: localStorage.getItem("jwt")

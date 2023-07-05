@@ -95,7 +95,7 @@ import favorite from "@/assets/scripts/data/favorite"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
 import axiosJson from "@/assets/jsons/axios"
 import fileDownload from "@/assets/scripts/data/download"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   components: { rightListInfiniteScroll },
@@ -195,7 +195,7 @@ export default {
       const token = localStorage.getItem("jwt")
       const self = this
       this.$axios
-        .post(domain.domain.backend1 + axiosJson.attachment.att_info_one, {
+        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
           att_seq: getSeq,
           jwt: token
         })
@@ -277,7 +277,7 @@ export default {
       console.log(result)
       if (result) {
         self.$axios
-          .post(domain.domain.backend1 + axiosJson.attachment.att_delete, {
+          .post(process.env.backendURL + axiosJson.attachment.att_delete, {
             att_seq: parseInt(this.$route.query.seq),
             jwt: token
           })
@@ -297,7 +297,7 @@ export default {
     getPageNumber(seq) {
       return this.$axios
         .post(
-          domain.domain.backend1 + axiosJson.attachment.att_return_page_number,
+          process.env.backendURL + axiosJson.attachment.att_return_page_number,
           {
             att_seq: seq,
             jwt: localStorage.getItem("jwt")

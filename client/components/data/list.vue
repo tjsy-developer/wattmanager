@@ -266,7 +266,7 @@ import favorite from "@/assets/scripts/data/favorite"
 import axiosJson from "@/assets/jsons/axios"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
 import fileDownload from "@/assets/scripts/data/download"
-import domain from "@/assets/jsons/domain/domain"
+
 
 export default {
   components: {
@@ -513,7 +513,7 @@ export default {
       const result = confirm(self.$t("listComp")[18])
       if (result) {
         this.$axios
-          .post(domain.domain.backend1 + axiosJson.attachment.att_delete, {
+          .post(process.env.backendURL + axiosJson.attachment.att_delete, {
             att_seq: e.seq,
             jwt: token
           })
@@ -618,7 +618,7 @@ export default {
 
       if (getTitleBarFilter.getFilterListUrl)
         this.$axios
-          .post(domain.domain.backend1 + getTitleBarFilter.getFilterListUrl, {
+          .post(process.env.backendURL + getTitleBarFilter.getFilterListUrl, {
             jwt: token
           })
           .then(function(res) {
@@ -766,9 +766,9 @@ export default {
       this.$axios
         .post(
           e.fileType === "video"
-            ? domain.domain.backend1 +
+            ? process.env.backendURL +
                 axiosJson.attachment.att_return_page_number
-            : domain.domain.backend1 +
+            : process.env.backendURL +
                 axiosJson.attachment.att_return_page_number_picture,
           {
             att_seq: e.seq,
@@ -819,9 +819,9 @@ export default {
       let hostNameURL = ""
 
       if (window.location.hostname === "localhost") {
-        hostNameURL = domain.domain.powertalk.state[1].split("login")[0]
+        hostNameURL = process.env.powertlakLogin_local.split("login")[0]
       } else {
-        hostNameURL = domain.domain.powertalk.state[2].split("login")[0]
+        hostNameURL = process.env.powertlakLogin.split("login")[0]
       }
 
       const url =

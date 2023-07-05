@@ -44,7 +44,7 @@ export default {
 
     //   this.$axios
     //     // .post(accountRest/create_random_arr", {
-    //     .post(domain.domain.backend1 + "accountRest/create_random_arr", {
+    //     .post(process.env.backendURL + "accountRest/create_random_arr", {
     //       id: this.compData.inputId,
     //       email: this.inputEMail
     //     })
