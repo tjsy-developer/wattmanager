@@ -27,6 +27,7 @@ pg=danal.B010008141
 
 
 # qr 값에 따라서 tab 변동
+
 # QR tab (전자파일, 전자폴더) 만 보이는 설정
 # qr=default
 
