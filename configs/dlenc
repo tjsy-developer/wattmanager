@@ -1,0 +1,38 @@
+
+port=8205
+backendURL_local=http://192.168.20.131:9090/
+backendURL=https://dlenc.watttalk.kr:8101/
+powertlakState="loginCheck"
+powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
+powertalkLogin="https://dlenc.watttalk.kr:8102/login/login-check?jwt_token="
+powermemo=https://dlenc.watttalk.kr/sftp/dlenc
+powermemoSavefolder=/home/sftproot/dlenc/
+qr_filePath=https://dlenc.watttalk.kr/storage/watttalk/dlenc/QR/folder
+qr=safety
+att_access_user=true
+att_videoPlayPath=https://dlenc.watttalk.kr/Storage/powertalk/dev/Dashs/Src/
+att_filePath=https://dlenc.watttalk.kr/storage/watttalk/dlenc/filebox/
+detailFilePath=/home/watt/hdd_ext/Storage/watttalk/dlenc/filebox/
+fileUploadBackend=https://dlenc.watttalk.kr:8101/
+useEnterprise=dlenc
+use_bento4=false
+elecQR=true
+elecFilePath=/home/watt/hdd_ext/Storage/watttalk/dlenc/QR/file
+elecFolderPath=D:\\Storage\\powertalk\\dev\\QR\\folder
+fileBoxBackend=https://dlenc.watttalk.kr:8101/
+separateBackendUploadPath=false
+# impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
+impId=imp67320503
+pg=danal.B010008141
+
+
+# qr 값에 따라서 tab 변동
+
+# QR tab (전자파일, 전자폴더) 만 보이는 설정
+# qr=default
+
+# QR tab, 안전QR 보이는 설정
+# qr=safety
+
+# Qr tab, 파워QR 보이는 설정
+# qr=power

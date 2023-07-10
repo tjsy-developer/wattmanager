@@ -130,9 +130,10 @@ export default {
     // port: 3000
     // For Local
     // host: "0.0.0.0",
-    port: 8205
+    port: process.env.port
   },
   publicRuntimeConfig: {
+    port: process.env.port,
     backendURL_local: process.env.backendURL_local,
     backendURL: process.env.backendURL,
     powertalkLogin_local: process.env.powertalkLogin_local,
