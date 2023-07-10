@@ -74,7 +74,7 @@ export default {
       if (process.env.powertlakState === "loginCheck") {
         if (window.location.hostname === "localhost") {
           window.open(
-            process.env.powertlakLogin_local +
+            process.env.powertalkLogin_local +
               jwtToken +
               "&login_type=3&lang=" +
               lang,

@@ -135,7 +135,7 @@ export default {
   publicRuntimeConfig: {
     backendURL_local: process.env.backendURL_local,
     backendURL: process.env.backendURL,
-    powertlakLogin_local: process.env.powertlakLogin_local,
+    powertalkLogin_local: process.env.powertalkLogin_local,
     powertalkLogin: process.env.powertalkLogin,
     powermemo: process.env.powermemo,
     powermemoSavefolder: process.env.powermemoSavefolder,

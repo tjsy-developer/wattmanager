@@ -118,12 +118,12 @@ function login(logInData) {
             // 로컬
             if (window.location.hostname === "localhost") {
                 window.open(
-                    process.env.powertlakLogin_local + params,
+                    process.env.powertalkLogin_local + params,
                 "_self"
                 );
             } else {
                 window.open(
-                    process.env.powertlakLogin + params,
+                    process.env.powertalkLogin + params,
                     "_self"
                 );
             }

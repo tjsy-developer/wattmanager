@@ -237,13 +237,13 @@ export default {
                   // 로컬
                   if (window.location.hostname === "localhost") {
                     window.open(
-                      process.env.powertlakLogin_local + self.params,
+                      process.env.powertalkLogin_local + self.params,
                       "_self"
                     )
                     // 와트톡
                   } else {
                     window.open(
-                      process.env.powertlakLogin + self.params,
+                      process.env.powertalkLogin + self.params,
                       "_self"
                     )
                   }

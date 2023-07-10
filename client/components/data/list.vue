@@ -819,9 +819,9 @@ export default {
       let hostNameURL = ""
 
       if (window.location.hostname === "localhost") {
-        hostNameURL = process.env.powertlakLogin_local.split("login")[0]
+        hostNameURL = process.env.powertalkLogin_local.split("login")[0]
       } else {
-        hostNameURL = process.env.powertlakLogin.split("login")[0]
+        hostNameURL = process.env.powertalkLogin.split("login")[0]
       }
 
       const url =
