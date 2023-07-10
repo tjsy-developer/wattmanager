@@ -130,7 +130,7 @@ export default {
     // port: 3000
     // For Local
     // host: "0.0.0.0",
-    port: process.env.port
+    port: 8223
   },
   publicRuntimeConfig: {
     port: process.env.port,

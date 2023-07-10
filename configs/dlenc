@@ -1,4 +1,4 @@
-
+# port는 따로 nuxt.config.js에 설정해줘야한다. 자동화하면 배포 오류
 port=8205
 backendURL_local=http://192.168.20.131:9090/
 backendURL=https://dlenc.watttalk.kr:8101/
