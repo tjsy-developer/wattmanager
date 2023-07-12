@@ -1,3 +1,6 @@
+v2.5.60
+- 자료관리 > 영상관리 > 영상플레이 (videoPlay)에서 영상 삭제시 영상관리 list 갱신 안되는 현상 수정
+
 v2.5.59
 - domain.json -> .env로 변경. 이에 따른 환경 설정 및 domain.domain.?? -> process.env.?? 로 변경
 
