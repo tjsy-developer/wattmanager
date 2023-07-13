@@ -419,7 +419,7 @@ export default {
           .then(function(res) {
             if (res) {
               alert(self.$t("listComp")[14])
-              window.location.reload()
+              window.location.href = document.referrer
             } else alert(self.$t("listComp")[15])
           })
           .catch(function(error) {
