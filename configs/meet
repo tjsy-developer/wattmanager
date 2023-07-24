@@ -21,6 +21,8 @@ elecFilePath=D:\\\\cloud\\\\powertalk\\\\meet\\\\QR\\\\file
 elecFolderPath=D:\\\\cloud\\\\powertalk\\\\meet\\\\QR\\\\folder
 fileBoxBackend=https://meetcloud.watttalk.kr:8326/
 separateBackendUploadPath=false
+logsheetURL=http://192.168.20.66:4000/wattmanager2/logsheet
+logsheet=true
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=""
 pg=""
