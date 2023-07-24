@@ -154,6 +154,8 @@ export default {
     elecFolderPath: process.env.elecFolderPath,
     fileBoxBackend: process.env.fileBoxBackend,
     separateBackendUploadPath: process.env.separateBackendUploadPath,
+    logsheetURL: process.env.logsheetURL,
+    logsheet: process.env.logsheet,
     impId: process.env.impId,
     pg: process.env.pg
   }

@@ -43,6 +43,13 @@
         <selectComp :compData="enterpriseCompData"></selectComp>
         <selectComp :compData="hqCompData"></selectComp>
         <selectComp :compData="branchCompData"></selectComp>
+        <div class="policyNotice col-auto">
+          <div class="policyWrap" id="policyCheck">
+            <input type="checkbox" class="policyCheck" v-model="policyCheck" />
+            <span>{{ $t("personalTermAgree")[0] }}</span>
+          </div>
+          <button class="policyBtn" @click="openPolicy()">{{ $t("personalTermAgree")[1] }}</button>
+        </div>
         <button class="signUpBtn" @click="signUpBtnClick">{{ !deviceTypeCompData.selectedValue || deviceTypeCompData.selectedValue == 3 ? $t("account")[19] : $t("account")[20] }}</button>
       </div>
       <div v-else class="maxWidth qrcode">
@@ -93,6 +100,7 @@ export default {
       useEnterprise: process.env.useEnterprise,
       check2Factor: "False",
       checkAdminId: false,
+      policyCheck: false,
       deviceTypeCompData: {
         placeholder: this.$i18n.t("account")[21],
         options: getInfo.deviceTypeObj(),
@@ -333,6 +341,10 @@ export default {
           document.getElementById("verifyBtn").focus()
           return alert(this.$t("account")[41])
         }
+        if (this.policyCheck == false) {
+          document.getElementById("policyCheck").focus()
+          return alert(this.$t("personalTermAgree")[2])
+        }
         this.$axios
           .post(process.env.backendURL + axiosJson.account.user_phone_number_check, {
             phone_number: this.phoneNum,
@@ -465,6 +477,14 @@ export default {
           this.qrCodeImg = value
         })
       } else alert(this.$t("account")[2])
+    },
+    openPolicy() {
+      const curLang = sessionStorage.getItem("languageCode")
+      if (curLang == "ko") {
+        window.open("/policy/korean")
+      } else {
+        window.open("/policy/english")
+      }
     },
     // 본인 인증 후 정보를 갖고 오는 로직.
     // 갖고 오면 바로 지워줘야함
@@ -778,4 +798,22 @@ select:focus
 
 	.accountRight>a
 		margin-bottom: unset
+.policyNotice
+  margin-top: 7px
+  font-family: auto
+  color: white
+  width: 100%
+  height: 30px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  .policyWrap
+    height: 30px
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    input
+      margin-right: 5px
+  button
+    color: white
 </style>

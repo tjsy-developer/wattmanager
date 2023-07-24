@@ -16,6 +16,7 @@
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
+        <!-- <a v-if="logSheet == 'true'" class="col-ayto" href="/logSheet">{{ $t("logSheet") }}</a> -->
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
@@ -56,7 +57,8 @@ export default {
       elecQR: process.env.elecQR,
       // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 관리
       logoutStatus: 1,
-      useEnterprise: process.env.useEnterprise
+      useEnterprise: process.env.useEnterprise,
+      logSheet: process.env.logsheet
     }
   },
   methods: {
@@ -221,7 +223,7 @@ export default {
 
 .menus>a,
 .menus>button
-	font-size: 14px
+	font-size: 13px
 	font-weight: 800
 	margin-left: 15px
 	padding: 5px

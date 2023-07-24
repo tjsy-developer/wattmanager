@@ -485,5 +485,11 @@
 		"Enter Birthday",
 		"Enter Phone Number",
 		"This Phone Number already exists."
+	],
+	"logSheet": "LogSheet",
+	"personalTermAgree": [
+		"(Required) Consent to collect and use personal information",
+		"View",
+		"You can register as a member only if you agree to collect and use personal information."
 	]
 }
