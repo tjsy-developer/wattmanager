@@ -101,6 +101,7 @@ export default {
       check2Factor: "False",
       checkAdminId: false,
       policyCheck: false,
+      bypassId: [],
       deviceTypeCompData: {
         placeholder: this.$i18n.t("account")[21],
         options: getInfo.deviceTypeObj(),
@@ -561,6 +562,7 @@ export default {
             const jsonFactorList = res.data[0].app_detail_json
             const factorList = JSON.parse(jsonFactorList)
             self.check2Factor = factorList["2factor"]
+            this.bypassId = factorList["2factorBypassId"].split(",")
           })
           .catch((err) => {
             if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
@@ -577,6 +579,14 @@ export default {
       } else {
         this.checkAdminId = false
       }
+      if (this.bypassId.length != 0)
+      this.bypassId.forEach(ele => {
+          if (ele == res) {
+            this.checkAdminId = true
+          } else {
+            false
+          }
+      });
     },
   }
 }

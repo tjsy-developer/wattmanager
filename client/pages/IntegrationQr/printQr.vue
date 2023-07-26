@@ -11,35 +11,159 @@
             <div class="divisionLine"></div>
             <div class="content__btnWrap">
                 <div class="printBtns">
-                    <button class="printSelect">선택 QR 인쇄</button>
-                    <button class="printAll">전체 QR 인쇄</button>
+                    <button class="createSelect" @click="createQR()">선택 QR 생성</button>
+                    <button class="createAll">전체 QR 생성</button>
+                    <button v-if="isCreated" class="printQr" @click="printQR()">QR 출력</button>
                 </div>
                 <div class="adjustQR">
                     <span>QR 크기</span>
                     <div class="widthWrap">
                         <span>W:</span>
-                        <input />
+                        <input v-model="qrWidth" name="W" @keyup="QRresizeBtnClick($event)" />
                     </div>
                     <div class="heightWrap">
                         <span> X H:</span>
-                        <input />
+                        <input v-model="qrHeight" name="H" @keyup="QRresizeBtnClick($event)" />
                         <span>(cm)</span>
                     </div>
-                    <button class="adjustBtn">적용</button>
                 </div>
             </div>
             <div class="divisionLine"></div>
-            <div class="QRWrap"></div>
+            <div class="col-12 justify-center QRWraps">
+                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="QRWrap">
+                    <img clas="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" />
+                    <span>{{ content.name }}</span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import QRCode from "qrcode"
 export default {
     layout: "main",
+    data() {
+        return {
+            qrCodeImg: [],
+            qrWidth: 4,
+            qrHeight: 4,
+            Width: 151,
+            Height: 151,
+            isCreated: false
+        }
+    },
     methods: {
         goBackBtnClick() {
             window.location.href = document.referrer
+        },
+        // createQR(enterQRInfo, enterQRName) {
+        //     /* QR option */
+        //     const opts = {
+        //         errorCorrectionLevel: "H",
+        //         type: "image/png",
+        //         quality: 0.3,
+        //         margin: 1,
+        //         color: {
+        //         dark: "#000000",
+        //         light: "#ffffff"
+        //         }
+        //     }
+
+        //     QRCode.create(enterQRInfo, opts)
+        //     const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
+
+        //     /* prototype promise */
+        //     imgUrl.then(value => {
+        //         const arr = {}
+        //         arr.name = enterQRName
+        //         arr.imgUrl = value
+        //         this.qrCodeImg.push(arr)
+        //     })
+        // this.isCreated = true
+        // },
+        createQR() {
+            const enterQRInfo = '{"name":"test", "value":"tes1"}'
+            /* QR option */
+            const opts = {
+                errorCorrectionLevel: "H",
+                type: "image/png",
+                quality: 0.3,
+                margin: 1,
+                color: {
+                dark: "#000000",
+                light: "#ffffff"
+                }
+            }
+
+            QRCode.create(enterQRInfo, opts)
+            const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
+
+            /* prototype promise */
+            imgUrl.then(value => {
+                const arr = {}
+                arr.name = "testtest"
+                arr.imgUrl = value
+                this.qrCodeImg.push(arr)
+            })
+            console.log(this.qrCodeImg, "====")
+            this.isCreated = true
+        },
+        printQR() {
+            const qrPrint = document.getElementsByClassName("QRWraps")[0]
+                .innerHTML
+            console.log(qrPrint)
+            const win = window.open()
+            win.document.open()
+            win.document.write(
+                "<html><head><title></title><style>" +
+                "div:nth-child(0){" +
+                "width: 100%;" +
+                "}" +
+                ".QRWrap {" +
+                "display: inline-block;" +
+                "padding: 10px 10px 10px;" +
+                "}" +
+                ".QRWrap>img {" +
+                "display: block;" +
+                "}" +
+                ".QRWrap>span {" +
+                "display: block;" +
+                "text-align: center;" +
+                "}" +
+                "</style></haed><div>"
+            )
+            win.document.write(qrPrint)
+            // win.document.write('body, td {font-falmily: Verdana; font-size: 10pt;}');
+            win.document.write("</div><body>")
+            win.document.write("</body></html>")
+            win.document.close()
+            win.print()
+        },
+        QRresizeBtnClick(event) {
+            const changeProperty = event.target.name
+            console.log(changeProperty, "1111")
+
+            // a4사이즈 기준으로 최댓값 지정
+            if (event.target.value > 21) {
+                alert(this.$t("QRMaxValue"))
+                event.target.value = 21
+            }
+
+            if (changeProperty === "W") {
+                this.qrWidth = event.target.value
+                this.Width = this.conversion(event.target.value)
+                this.Height = this.conversion(this.qrHeight)
+            } else {
+                this.qrHeight = event.target.value
+                this.Width = this.conversion(this.qrWidth)
+                this.Height = this.conversion(event.target.value)
+            }
+        },
+        /* cm --> px 변환 */
+        conversion(value) {
+            const conversionVal = value * 37.795275590551
+            return conversionVal
         }
     }
 }
@@ -100,10 +224,14 @@ export default {
         margin-bottom: 7px;
     }
     .QRWrap {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
+        display: grid;
+        flex-direction: row;
+        padding: 24px 24px 0px 24px;
+        >img{
+            margin-bottom: 2px;}
+        >span{
+            text-align: center;
+            font-size: 18px;}
     }
 }
 .goBackBtn {

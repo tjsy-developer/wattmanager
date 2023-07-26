@@ -149,7 +149,6 @@ async function getUserInfo(uid, params, type) {
                 // return이 생년월일 이름으로 옴.
                 const res = response.data[0]
                 if (res) {
-                    console.log(res)
                     // birthday return 형식이 yyyy-mm-dd
                     const birth = res.birthday.replace(/-/g, '')
                     // return받은 생년월일과, 사용자가 입력한 생년월일을 비교해 동일인물인지 확인
@@ -176,7 +175,6 @@ async function getUserInfo(uid, params, type) {
             jwt: localStorage.getItem("jwt")
         })
         .then((response) => {
-            console.log(response)
             // backend에서 db 정보와 iamport 정보를 비교해서 일치하는지 아닌지 보내준다.
             result = response.data
         })

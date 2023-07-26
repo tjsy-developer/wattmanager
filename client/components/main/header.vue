@@ -16,7 +16,7 @@
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <!-- <a v-if="logSheet == 'true'" class="col-ayto" href="/logSheet">{{ $t("logSheet") }}</a> -->
+        <!-- <a v-if="logSheet == 'true'" class="col-auto" href="/logSheet">{{ $t("logSheet") }}</a> -->
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
@@ -135,6 +135,14 @@ export default {
     serviceInPreparation(e) {
       e.preventDefault()
       alert(this.$t("servicePreParation"))
+    },
+    openLogSheet() {
+      const enSeq = localStorage.getItem("enSeq")
+      const hqSeq = localStorage.getItem("hqSeq")
+      const brSeq = localStorage.getItem("brSeq")
+      const userId = localStorage.getItem("id")
+      const userParams = "?hqSeq=" + hqSeq + "&enSeq=" + enSeq + "&brSeq=" + brSeq + "&id=" + userId
+      window.open(process.env.logsheetURL + userParams)
     }
   },
   mounted() {
@@ -232,5 +240,5 @@ export default {
 	position: absolute
 	right: 4px
 	top: 8px
-	font-size: 12px
+	font-size: 14px
 </style>
