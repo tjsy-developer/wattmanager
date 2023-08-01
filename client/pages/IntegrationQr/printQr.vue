@@ -1,22 +1,22 @@
 <template>
     <div class="mainWrap">
         <div class="mainWrap__header">
-            <span>안전 QR</span>
+            <span>{{ $t("printQR")[0] }}</span>
         </div>
         <div class="content">
             <div class="content__header">
-                <span>QR 출력</span>
-                <button class="goBackBtn" @click="goBackBtnClick()">뒤로가기</button>
+                <span>{{ $t("printQR")[1] }}</span>
+                <button class="goBackBtn" @click="goBackBtnClick()">{{ $t("printQR")[2] }}</button>
             </div>
             <div class="divisionLine"></div>
             <div class="content__btnWrap">
                 <div class="printBtns">
-                    <button class="createSelect" @click="createQR()">선택 QR 생성</button>
-                    <button class="createAll">전체 QR 생성</button>
-                    <button v-if="isCreated" class="printQr" @click="printQR()">QR 출력</button>
+                    <button class="createSelect" @click="createQR(1)">{{ $t("printQR")[3] }}</button>
+                    <button class="createAll" @click="createQR(0)">{{ $t("printQR")[4] }}</button>
+                    <button v-if="isCreated" class="printQr" @click="printQR()">{{ $t("printQR")[5] }}</button>
                 </div>
                 <div class="adjustQR">
-                    <span>QR 크기</span>
+                    <span>{{ $t("printQR")[6] }}</span>
                     <div class="widthWrap">
                         <span>W:</span>
                         <input v-model="qrWidth" name="W" @keyup="QRresizeBtnClick($event)" />
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import axiosJson from "@/assets/jsons/axios"
 import QRCode from "qrcode"
 export default {
     layout: "main",
@@ -50,64 +51,153 @@ export default {
             qrHeight: 4,
             Width: 151,
             Height: 151,
-            isCreated: false
+            isCreated: false,
+            qrTitleSeq: "",
+            qrList: [],
+            checkNull: false
         }
     },
+    mounted() {
+        this.chapter_seq = localStorage.getItem("chapter_seq")
+        this.backendURL = process.env.backendURL
+        this.jwt = localStorage.getItem("jwt"),
+        this.getKeyData()
+    },
     methods: {
+        getKeyData() {
+            this.$axios
+                .post(this.backendURL + axiosJson.qrManagement.chapterInfo, {
+                    jwt: this.jwt,
+                    chapter_seq: this.chapter_seq
+                })
+                .then((res) => {
+                    const data = res.data.data
+                    const qrTitle = data.chapter_list.qr_title
+                    data.chapter_list.key_list.forEach((ele) => {
+                        if (ele.key_description == qrTitle)
+                        {
+                            this.qrTitleSeq = ele.key_seq
+                        }
+                    })
+                    this.getQrData()
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+        getQrData() {
+            this.$axios
+                .post(this.backendURL + axiosJson.qrManagement.qrList, {
+                    jwt: this.jwt,
+                    chapter_seq: this.chapter_seq
+                })
+                .then((res) => {
+                    console.log(res)
+                    const data = res.data.data.qr_list
+                    if (data.data_list == undefined){
+                        this.checkNull = true
+                        return alert(this.$t("printQR")[7])
+                    }
+                    const keyList = []
+                    data.key_list.forEach((ele) => {
+                        const keyInfo = {
+                            key_seq: ele.key_seq,
+                            key_value: ele.key_value
+                        }
+                        keyList.push(keyInfo)
+                    })
+                    // console.log(data.data_list)
+                    data.data_list.forEach((ele) => {
+                        const qrData = JSON.parse(ele.qr_data)
+                        const qrDetailList = []
+                        keyList.forEach((element) => {
+                            const qrDetail = JSON.stringify(element.key_value) + ":" + JSON.stringify(qrData[element.key_seq])
+                            qrDetailList.push(qrDetail)
+                        })
+                        const qrInfo = {
+                            checked_yn: ele.checked_yn,
+                            qr_title: qrData[this.qrTitleSeq],
+                            qr_value: `{${qrDetailList.join(',')}}`
+                        }
+                        this.qrList.push(qrInfo)
+                    })
+                    console.log(this.qrList)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
         goBackBtnClick() {
             window.location.href = document.referrer
         },
-        // createQR(enterQRInfo, enterQRName) {
-        //     /* QR option */
-        //     const opts = {
-        //         errorCorrectionLevel: "H",
-        //         type: "image/png",
-        //         quality: 0.3,
-        //         margin: 1,
-        //         color: {
-        //         dark: "#000000",
-        //         light: "#ffffff"
-        //         }
-        //     }
+        createQR(type) {
+            console.log(this.checkNull)
+            let enterQRInfo
+            if (this.checkNull) return alert(this.$t("printQR")[7])
+            if (type == 0) {
+                // 전체
+                this.qrList.forEach((ele) => {
+                    enterQRInfo = ele.qr_value
 
-        //     QRCode.create(enterQRInfo, opts)
-        //     const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
+                    /* QR option */
+                    const opts = {
+                        errorCorrectionLevel: "H",
+                        type: "image/png",
+                        quality: 0.3,
+                        margin: 1,
+                        color: {
+                        dark: "#000000",
+                        light: "#ffffff"
+                        }
+                    }
 
-        //     /* prototype promise */
-        //     imgUrl.then(value => {
-        //         const arr = {}
-        //         arr.name = enterQRName
-        //         arr.imgUrl = value
-        //         this.qrCodeImg.push(arr)
-        //     })
-        // this.isCreated = true
-        // },
-        createQR() {
-            const enterQRInfo = '{"name":"test", "value":"tes1"}'
-            /* QR option */
-            const opts = {
-                errorCorrectionLevel: "H",
-                type: "image/png",
-                quality: 0.3,
-                margin: 1,
-                color: {
-                dark: "#000000",
-                light: "#ffffff"
-                }
+                    QRCode.create(enterQRInfo, opts)
+                    const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
+
+                    /* prototype promise */
+                    imgUrl.then(value => {
+                        const arr = {}
+                        arr.name = ele.qr_title
+                        arr.imgUrl = value
+                        this.qrCodeImg.push(arr)
+                    })
+                })
+            } if (type == 1) {
+                this.qrList.forEach((ele) => {
+                    if (ele.checked_yn == 1) {
+                        enterQRInfo = ele.qr_value
+
+                        /* QR option */
+                        const opts = {
+                            errorCorrectionLevel: "H",
+                            type: "image/png",
+                            quality: 0.3,
+                            margin: 1,
+                            color: {
+                            dark: "#000000",
+                            light: "#ffffff"
+                            }
+                        }
+
+                        QRCode.create(enterQRInfo, opts)
+                        const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
+
+                        /* prototype promise */
+                        imgUrl.then(value => {
+                            const arr = {}
+                            arr.name = ele.qr_title
+                            arr.imgUrl = value
+                            this.qrCodeImg.push(arr)
+                        })
+                    }
+                })
             }
-
-            QRCode.create(enterQRInfo, opts)
-            const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
-
-            /* prototype promise */
-            imgUrl.then(value => {
-                const arr = {}
-                arr.name = "testtest"
-                arr.imgUrl = value
-                this.qrCodeImg.push(arr)
-            })
-            console.log(this.qrCodeImg, "====")
-            this.isCreated = true
+            console.log(enterQRInfo)
+            if (enterQRInfo == undefined) {
+                alert(this.$t("printQR")[8])
+            } else {
+                this.isCreated = true
+            }
         },
         printQR() {
             const qrPrint = document.getElementsByClassName("QRWraps")[0]

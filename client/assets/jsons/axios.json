@@ -114,5 +114,14 @@
 	},
 	"overhaul": {
 		"overhaul_list": "overhaulRest/overhaul"
+	},
+	"qrManagement": {
+		"searchQR": "qrManagement/searchChapter",
+		"chapterInfo": "qrManagement/chapterInfo",
+		"chapterSave": "qrManagement/chapterSave",
+		"qrList": "qrManagement/qrList",
+		"qrSave": "qrManagement/qrSave",
+		"qrDataDelete": "qrManagement/qrDataDelete",
+		"qrAllDataDelete": "qrManagement/qrAllDataDelete"
 	}
 }

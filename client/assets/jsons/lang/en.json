@@ -491,5 +491,62 @@
 		"(Required) Consent to collect and use personal information",
 		"View",
 		"You can register as a member only if you agree to collect and use personal information."
+	],
+	"integrationQr": [
+		"QR Managemnet",
+		"Usage Name",
+		"QR List",
+		"Registered QR Count",
+		"Modify Key",
+		"QR Registration",
+		"Print Qr",
+		"QR Registration / Modify",
+		"Add new Ussage"
+	],
+	"createAneEditUsage": [
+		"Integration QR",
+		"Register New Usage / Modify Key",
+		"Ussage:",
+		"Please enter Usage",
+		"Register QR Key",
+		"Key Value",
+		"Data Type",
+		"Please Select.",
+		"Key Description",
+		"Select QR Title Key",
+		"Save",
+		"Cancle",
+		"Delete",
+		"Add"
+	],
+	"createAndEditQr": [
+		"Integration QR",
+		"QR Registration / Modify",
+		"Usssage:",
+		"Register Value",
+		"Save",
+		"Cancle",
+		"Add"
+	],
+	"qrMessage": [
+		"Sucess to Save.",
+		"Fail to Save.",
+		"Are you sure you want to delete?",
+		"Sucessfully deleted.",
+		"Fail to delete.",
+		"Please register the key value first.",
+		"Please enter according to the type.",
+		"Please enter all inputs."
+	],
+	"printQR": [
+		"Integration QR",
+		"QR Create / Print",
+		"Go Back",
+		"Create Selecte QR",
+		"Create All QR",
+		"Pring QR",
+		"QR size",
+		"There's no registered QR",
+		"There's no selected QR"
 	]
 }

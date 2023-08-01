@@ -1,60 +1,45 @@
 <template>
     <div class="qrMain">
         <div class="qrMain__header">
-            <span>QR 관리</span>
+            <span>{{ $t("integrationQr")[0] }}</span>
         </div>
         <div class="qrMain__search">
-            <div class="searchText">사용처</div>
-            <input class="searchInput" />
-            <img v-if="inputVal!=undefined" class="searchDeleteBtn" src="@/assets/images/bt_input_delete.png" @click="deleteBtn" :alt="$t('searchBarComp')[7]" />
-            <button class="searchBtn" @click="searchBtnClick">{{ $t("searchBarComp")[4] }}</button>
+            <div class="searchText">{{ $t("integrationQr")[1] }}</div>
+            <input class="searchInput" v-model="chapterName" @keyup.enter="getChapterList()" />
+            <button class="searchBtn" @click="getChapterList()">{{ $t("searchBarComp")[4] }}</button>
         </div>
         <div class="qrMain__subHeader">
             <div class="create">
-                <span class="createTitle">QR 목록</span>
+                <span class="createTitle">{{ $t("integrationQr")[2] }}</span>
             </div>
         </div>
         <div class="qrMain__body">
             <div class="qrTable">
                 <div class="qrTable__header">
-                    <span class="tableHeaderText">사용처</span>
-                    <span class="tableHeaderText">QR 등록 갯수</span>
-                    <span class="tableHeaderText">키 수정</span>
-                    <span class="tableHeaderText">QR 등록</span>
-                    <span class="tableHeaderText">QR 출력</span>
+                    <span class="tableHeaderText">{{ $t("integrationQr")[1] }}</span>
+                    <span class="tableHeaderText">{{ $t("integrationQr")[3] }}</span>
+                    <span class="tableHeaderText">{{ $t("integrationQr")[4] }}</span>
+                    <span class="tableHeaderText">{{ $t("integrationQr")[5] }}</span>
+                    <span class="tableHeaderText">{{ $t("integrationQr")[6] }}</span>
                 </div>
-                <!-- v-for 돌려야함 -->
-                <div class="qrTable__body" style="margin-top: 10px">
-                    <span class="tableBodyText">LG전자 테네시</span>
-                    <span class="tableBodyText">48</span>
+                <div class="qrTable__body" v-for="(content, index) in chapterList" :key="index" style="margin-top: 10px">
+                    <span class="tableBodyText">{{ content.chapter_name }}</span>
+                    <span class="tableBodyText">{{ content.qr_count }}</span>
                     <div class="tableBodyDiv">
-                        <button class="tableBtn" @click="createAndEditUsage()">키 수정</button>
+                        <button class="tableBtn" @click="createAndEditUsage(content.chapter_seq)">{{ $t("integrationQr")[4] }}</button>
                     </div>
                     <div class="tableBodyDiv">
-                        <button class="tableBtn" @click="createAndEditQr()">QR 등록/수정</button>
+                        <button class="tableBtn" @click="createAndEditQr(content.chapter_seq)">{{ $t("integrationQr")[7] }}</button>
                     </div>
                     <div class="tableBodyDiv">
-                        <button class="tableBtn" @click="printQr()">QR 출력</button>
-                    </div>
-                </div>
-                <div class="qrTable__body">
-                    <span class="tableBodyText">LG전자 테네시1</span>
-                    <span class="tableBodyText">48</span>
-                    <div class="tableBodyDiv">
-                        <button class="tableBtn">키 수정</button>
-                    </div>
-                    <div class="tableBodyDiv">
-                        <button class="tableBtn">QR 등록/수정</button>
-                    </div>
-                    <div class="tableBodyDiv">
-                        <button class="tableBtn">QR 출력</button>
+                        <button class="tableBtn" @click="printQr(content.chapter_seq)">{{ $t("integrationQr")[6] }}</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="qrMain__footer">
             <div class="btnWrap">
-                <button class="createBtn" @click="createAndEditUsage()">+ 사용처 신규 등록</button>
+                <button class="createBtn" @click="createAndEditUsage()">+ {{ $t("integrationQr")[8] }}</button>
             </div>
         </div>
         <!-- <pagination class="col-12" :compData="test"></pagination> -->
@@ -62,21 +47,53 @@
 </template>
 
 <script>
+import axiosJson from "@/assets/jsons/axios"
 export default {
     layout: "main",
     data() {
         return {
+            chapterList:[],
+            chapterName: ""
         }
     },
+    mounted() {
+        this.getChapterList()
+    },
     methods: {
-        createAndEditUsage() {
+        getChapterList() {
+            this.chapterList = []
+            this.$axios
+                .post(process.env.backendURL + axiosJson.qrManagement.searchQR, {
+                    jwt: localStorage.getItem("jwt"),
+                    chapter_name: this.chapterName
+                })
+                .then((res) => {
+                    const data = res.data.data.chapter_list
+                    data.forEach((ele, index) => {
+                        const fileInfo = {
+                            chapter_seq: ele.chapter_seq,
+                            chapter_name: ele.chapter_name,
+                            qr_count: ele.qr_count
+                        }
+                        this.chapterList.push(fileInfo)
+                    })
+                    console.log(this.chapterList)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+        createAndEditUsage(seq) {
             window.location.href = "/integrationQr/createAndEditUsage"
+            localStorage.setItem("chapter_seq", seq)
         },
-        createAndEditQr() {
+        createAndEditQr(seq) {
             window.location.href = "/integrationQr/createAndEditQr"
+            localStorage.setItem("chapter_seq", seq)
         },
-        printQr() {
+        printQr(seq) {
             window.location.href = "/integrationQr/printQr"
+            localStorage.setItem("chapter_seq", seq)
         }
     }
 }
@@ -236,15 +253,6 @@ export default {
 	outline: none;
 	font-size: 15px;
 	font-weight: 600;
-}
-.searchDeleteBtn {
-    position: absolute;
-	right: 125px;
-	cursor: pointer;
-    &:hover{
-        border-radius: 5px;
-		border: 1px solid grey;
-    }
 }
 .searchBtn {
     width: 98px !important;

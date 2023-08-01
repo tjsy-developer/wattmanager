@@ -127,8 +127,6 @@ export default {
    ** Web Server configuration
    */
   server: {
-    // port: 3000
-    // For Local
     // host: "0.0.0.0",
     port: 8223
   },

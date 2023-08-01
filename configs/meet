@@ -6,7 +6,7 @@ powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
 powertalkLogin="https://meet.watttalk.kr:8324/login/login-check?jwt_token="
 powermemo=https://meetcloud.watttalk.kr/sftp/meet
-powermemoSavefolder=powermemoSavefolder=/home/sftproot/dlenc/
+powermemoSavefolder=D:\\\\cloud\\\\sftp\\\\meet
 qr_filePath=https://dlenc.watttalk.kr/storage/watttalk/dlenc/QR/folder
 qr=safety
 att_access_user=true
