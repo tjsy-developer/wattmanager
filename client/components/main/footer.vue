@@ -7,11 +7,13 @@
 			<span v-if="useEnterprise == 'dlenc'" class="col-12 text">
 				{{ $t("footer")[4] }}<br>
 				{{ $t("footer")[5] }}<br><br>
-				{{ $t("footer")[0] }} I {{ $t("footer")[1] }} I {{ $t("footer")[2] }}<br>{{ $t("footer")[3] }}<br><br>
+				{{ $t("footer")[0] }} I {{ $t("footer")[2] }}<br>
+				{{ $t("footer")[3] }}<br><br>
 				Copyright © 2020 WATT CO.LTD. All Rights Reserved.
 			</span>
 			<span v-else class="col-12 text">
-				{{ $t("footer")[0] }} I {{ $t("footer")[1] }} I {{ $t("footer")[2] }}<br>{{ $t("footer")[3] }}<br><br>
+				{{ $t("footer")[0] }} I {{ $t("footer")[2] }}<br>
+				{{ $t("footer")[3] }}<br><br>
 				Copyright © 2020 WATT CO.LTD. All Rights Reserved.
 			</span>
 		</div>

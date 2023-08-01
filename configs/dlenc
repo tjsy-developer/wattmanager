@@ -21,6 +21,8 @@ elecFilePath=/home/watt/hdd_ext/Storage/watttalk/dlenc/QR/file
 elecFolderPath=D:\\Storage\\powertalk\\dev\\QR\\folder
 fileBoxBackend=https://dlenc.watttalk.kr:8101/
 separateBackendUploadPath=false
+logsheetURL=http://192.168.20.66:4000/wattmanager2/logsheet
+logsheet=true
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=imp67320503
 pg=danal.B010008141

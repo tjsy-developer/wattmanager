@@ -226,7 +226,8 @@ export default {
       reservId: undefined,
       params: "",
       reservUserId: "",
-      check2Factor: ""
+      check2Factor: "",
+      bypassID: []
     };
   },
   methods: {
@@ -436,6 +437,7 @@ export default {
                 const jsonFactorList = res.data[0].app_detail_json
                 const factorList = JSON.parse(jsonFactorList)
                 self.check2Factor = factorList["2factor"]
+                self.bypassID =  factorList["2factorBypassId"].split(",")
               })
               .catch((err) => {
                 if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
@@ -470,6 +472,12 @@ export default {
                   // 2factor의 값이 false면 bypass 활성화
                   checkByPass = true
                 }
+                self.bypassID.forEach((ele) => {
+                  console.log(ele, userId, "!!!!")
+                  if (ele == userId) {
+                    checkByPass = true
+                  }
+                })
                 if (checkByPass == false) {
                   let modalType
                   if (response.data[1].auth === 4) {

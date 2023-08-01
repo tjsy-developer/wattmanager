@@ -134,7 +134,7 @@ export default {
 
       formData.append("detailPath", detailPath)
 
-      this.fileuploadApi = process.env.backendURL
+      this.fileuploadApi = process.env.fileBoxBackend
 
       // this.fileuploadApi = "http://192.168.20.79:8090/PowerManagerBackend/"
       // 업로드 api를 호출

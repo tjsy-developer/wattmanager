@@ -127,8 +127,6 @@ export default {
    ** Web Server configuration
    */
   server: {
-    // port: 3000
-    // For Local
     // host: "0.0.0.0",
     port: 8223
   },
@@ -154,6 +152,8 @@ export default {
     elecFolderPath: process.env.elecFolderPath,
     fileBoxBackend: process.env.fileBoxBackend,
     separateBackendUploadPath: process.env.separateBackendUploadPath,
+    logsheetURL: process.env.logsheetURL,
+    logsheet: process.env.logsheet,
     impId: process.env.impId,
     pg: process.env.pg
   }

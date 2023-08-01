@@ -184,7 +184,7 @@ export default {
         const self = this
         // 메모 생성 api
         this.$axios
-        .post(process.env.backendURL + "fileupload/memo_insert", formData, {
+        .post(process.env.fileUploadBackend + "fileupload/memo_insert", formData, {
             headers: {
                 "Content-Type": "multipart/form-data; charset=UTF-8;",
                 "jwt": localStorage.getItem("jwt")

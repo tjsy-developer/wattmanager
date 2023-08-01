@@ -12,33 +12,27 @@
                 </div>
                 <div class="main__gray">
                     <div class="gray-row">
-                        <span class="gray-row__text" @click="scrollIntoView(1)">Article 1 General Provisions</span>
-                        <span class="gray-row__text" @click="scrollIntoView(5)">Article 5 Entrustment of Handling of Personal Information</span>
-                        <span class="gray-row__text1" @click="scrollIntoView(9)">Article 9 Rights and Obligations of Customers</span>
-                        <span class="gray-row__blank" @click="scrollIntoView(13)">Article 13 Obligation to notify</span>
+                        <span class="gray-row__text" @click="scrollIntoView(1)">Article1 General Provisions</span>
+                        <span class="gray-row__text" @click="scrollIntoView(2)">Article2 Purpose of processing personal information</span>
+                        <span class="gray-row__text" @click="scrollIntoView(3)">Article3 Processing and retention period of personal information</span>
+                        <span class="gray-row__text" @click="scrollIntoView(4)">Article4 Items of personal information to be processed</span>
                     </div>
                     <div class="gray-row">
-                        <span class="gray-row__text" @click="scrollIntoView(2)">Article 2 Items and methods of collection of personal information collected</span>
-                        <span class="gray-row__text" @click="scrollIntoView(6)">Article 6 Period of Retention and Use of Personal Information</span>
-                        <span class="gray-row__text1" @click="scrollIntoView(10)">Article 10 Matters concerning the installation/operation and rejection of automatic personal information collection devices</span>
-                        <span class="gray-row__blank"></span>
+                        <span class="gray-row__text" @click="scrollIntoView(5)">Article5 Procedure and Method of Destruction of Personal Information</span>
+                        <span class="gray-row__text" @click="scrollIntoView(6)">Article6 Entrustment of Personal Information</span>
+                        <span class="gray-row__text" @click="scrollIntoView(7)">Article7 Matters concerning measures to ensure the safety of personal information</span>
+                        <span class="gray-row__text" @click="scrollIntoView(8)">Article8 Matters concerning the protection of personal information</span>
                     </div>
                     <div class="gray-row">
-                        <span class="gray-row__text" @click="scrollIntoView(3)">Article 3 Purpose of Collection and Use of Personal Information</span>
-                        <span class="gray-row__text" @click="scrollIntoView(7)">Article 7 Dormant policies for long-term unused customers</span>
-                        <span class="gray-row__text1" @click="scrollIntoView(11)">Article 11 Technical and administrative protection measures for personal information</span>
-                        <span class="gray-row__blank"></span>
-                    </div>
-                    <div class="gray-row">
-                        <span class="gray-row__text" @click="scrollIntoView(4)">Article 4 Sharing and Provision of Personal Information</span>
-                        <span class="gray-row__text" @click="scrollIntoView(8)">Article 8 Procedures and methods for destroying personal information</span>
-                        <span class="gray-row__text1" @click="scrollIntoView(12)">Article 12 Contact information of the person in charge of personal information management and the person in charge</span>
-                        <span class="gray-row__blank"></span>
+                        <span class="gray-row__text1" @click="scrollIntoView(9)">Article9 Technical and administrative protection measures for personal information</span>
+                        <span class="gray-row__text1" @click="scrollIntoView(10)">Article10 Matters concerning the rights and obligations of the information subject and legal representative and the method of exercising them</span>
+                    </div><div class="gray-row">
+                        <span class="gray-row__text2" @click="scrollIntoView(11)">Article11 Matters concerning the installation and operation of devices that automatically collect personal information and the refusal thereof</span>
                     </div>
                 </div>
                 <div class="content">
                     <div class="content__header" id="1">
-                        <span>Article 1 General Provisions</span>
+                        <span>Article1 General Provisions</span>
                     </div>
                     <div class="content__normal">
                         <span>① Personal information refers to information on surviving individuals, such as signs, letters, voices, sounds, and images that can identify the individual according to the name, resident registration number, etc. contained in the information (including those that can easily be combined with other information.</span>
@@ -49,77 +43,67 @@
                 </div>
                 <div class="content">
                     <div class="content__header" id="2">
-                        <span>Article 2 Items and methods of collection of personal information collected</span>
+                        <span>Article2 Purpose of processing personal information</span>
                     </div>
                     <div class="content__normal">
-                        <span>① The company has free access to most content without a separate membership process.However, if you want to use the membership service provided by the company, you must enter the following information.</span>
+                        <span>Watt Corporation ('https://dlenc.watttalk.kr/' which 'dlenc watttalk') process personal information for the following purposes. The personal information being processed will not be used for any purpose other than the following, and if the purpose of use is changed, necessary measures will be implemented, such as obtaining separate consent under Article 18 of the Personal Information Protection Act.</span>
                         <div class="content__indent">
-                            <span>1. Required items</span>
+                            <span>1. Registering and managing membership on the website</span>
                             <div class="content__indent">
-                                <span>- Individual members: e-mail address, password, nickname, phone number (mobile phone), date of birth, ci (linked information), di (redundant subscription information)</span>
-                                <span>- Individual/corporate business operator: company/organization name, business registration number, contact name, e-mail address, password phone number (mobile phone), ci (linked information), di (redundant subscription information)</span>
+                                <span>- Personal information is processed for self-identification and authentication purposes according to the provision of membership services.</span>
                             </div>
                         </div>
                         <div class="content__indent">
-                            <span>2. Selections</span>
+                            <span>2. Provision of goods or services</span>
                             <div class="content__indent">
-                                <span>- Information necessary for payment, such as credit card information, bank account information, mobile phone information, etc.</span>
-                                <span>- Additional information can be selected and provided only if the member wants to sign up, and additional information is required for smooth order, payment, and delivery by grasping the exact order details of some goods or service products.</span>
+                                <span>- Personal information is processed for personal authentication purposes.</span>
                             </div>
-                        </div>
-                        <div class="content__indent">
-                            <span>3. Service use process and business</span>
-                            <span>Scope of personal information that can be collected during processing</span>
-                            <div class="content__indent">
-                                <span>- Last access date, access IP information, cookies, purchase log, event log</span>
-                            </div>
-                        </div>
-                        <div class="content__indent">
-                            <span>4. a non-member customer</span>
-                            <div class="content__indent">
-                                <span>- The company requests only the personal information necessary for delivery, payment, order details inquiry and purchase confirmation, and real name confirmation, and in this case, the information is not used for any purpose other than payment and delivery of the product.</span>
-                                <span>- The company also protects the personal information of non-members at the same level as the members.</span>
-                            </div>
-                        </div>
-                        <span>② The company collects personal information in the following ways</span>
-                        <div class="content__indent">
-                            <span>- Home page, written form, fax, telephone, consultation board, e-mail, event application, delivery request</span>
-                            <span>- Provision from partner companies</span>
-                            <span>- Collection of generated information through log analysis program</span>
-                        </div>
-                        <span>③ Consent to collect personal information</span>
-                        <div class="content__indent">
-                            <span>- The company shall establish a procedure in which users can click the "I agree" button or the "I disagree" button on the contents of the company's personal information handling policy and terms of use, and if they click the "I agree" button, they shall agree to the collection of personal information.</span>
                         </div>
                     </div>
                 </div>
                 <div class="content">
                     <div class="content__header" id="3">
-                        <span>Article 3 Purpose of Collection and Use of Personal Information</span>
+                        <span>Article3 Processing and retention period of personal information</span>
                     </div>
-                    <span>① The company collects the minimum amount of personal information necessary for the following purposes.</span>
+                    <span>① The company processes and retains personal information within the period of personal information retention and use under the Act or within the period of personal information retention and use agreed upon when collecting personal information from the data subject.</span>
+                    <span>② The processing and retention period of each personal information is as follows.</span>
                     <div class="content__indent">
-                        <span>1. ID, password, name Date of birth: Used in the identification procedure according to the use of the membership service.</span>
-                        <span>2. E-mail address (whether or not newsletters are received): Ensuring smooth communication channels such as delivery of notices, confirmation of opinions, handling complaints, and information on the latest information such as new services, new products, or event information.</span>
-                        <span>3. Address, phone number: Ensuring accurate delivery of shopping items</span>
-                        <span>4. Other options: Data for providing personalized services</span>
-                        <span>5. Statistics on the use of services by members: Preparation of statistical data related to work and development of services</span>
-                        <span>6. marketing and advertising applications</span>
+                        <span>● Collect personal information related to membership registration and management of the website.Retained for the above purpose of use from the date of consent for use to "semi-permanent".It's used.</span>
+                        <span>● If you withdraw from the membership, all personal information registered will be deleted without delay.</span>
                     </div>
                 </div>
                 <div class="content">
                     <div class="content__header" id="4">
-                        <span>Article 4 Sharing and Provision of Personal Information</span>
+                        <span>Article4 Items of personal information to be processed</span>
                     </div>
-                    <span>① Except with the prior consent of the customer or as prescribed by law, the company shall not provide the customer's personal information to a third party or use it for any purpose other than the purpose notified in the collection and use of the personal information under Article 3.</span>
-                    <span>② To provide customer convenience or enhance service, customer personal information may be provided to third parties or shared with third parties in the following cases:</span>
-                    <span>1. If the customer has agreed in advance</span>
-                    <span>2. Where a request is made by an investigative agency pursuant to the provisions of the Act or in accordance with the procedures and methods prescribed by the Act for the purpose of investigation</span>
-                    <span>3. If you provide personal information, you will not be notified in writing, e-mail, phone, etc. of the third party receiving personal information, the purpose of providing personal information, how the personal information is protected and managed until.</span>
+                    <span>① The company is processing the following personal information items.</span>
+                    <div class="content__indent">
+                        <span>● Registering and managing membership on the website</span>
+                        <div class="content__indent">
+                            <span>Required items: name, date of birth, login ID, password, mobile phone number, email, company name, cookie, access log</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="content">
                     <div class="content__header" id="5">
-                        <span>Article 5 Entrustment of Handling of Personal Information</span>
+                        <span>Article5 Procedure and Method of Destruction of Personal Information</span>
+                    </div>
+                    <span>① When personal information becomes unnecessary, such as the expiration of the period of retention of recognition information and the achievement of the purpose of processing, the company destroys the personal information without delay.</span>
+                    <span>② The procedure and method of destroying personal information are as follows.</span>
+                    <div class="content__indent">
+                        <span>1. Revocation procedure</span>
+                        <div class="content__indent">
+                            <span>The company immediately destroys all of your personal information as soon as you withdraw from the membership.</span>
+                        </div>
+                        <span>2. How to destroy it</span>
+                        <div class="content__indent">
+                            <span>Uses a technical method that prevents recording of information in electronic file form</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content__header" id="6">
+                        <span>Article6 Entrustment of Personal Information</span>
                     </div>
                     <div class="content__table">
                         <div class="content__grayTr">
@@ -138,113 +122,20 @@
                             <span class="content__td3">When a member withdraws or a consignment contract is terminated</span>
                         </div>
                     </div>
-                    <span>① According to Article 17 of the Personal Information Act, the company provides only the minimum amount of personal information necessary for smooth communication, delivery, and consultation between the parties to the transaction to the seller, delivery company, and payment agency.</span>
-                    <span>② According to Article 25 of the Personal Information Protection Act, the company stipulates the prohibition of personal information processing, technical and management protection measures, restrictions on re-entrustment, management and supervision of the trustee, and supervises the safe handling of personal information.</span>
-                    <span>③ If the contents of the entrusted work or the trustee changes, we will disclose it through this personal information processing policy without delay.</span>
-                </div>
-                <div class="content">
-                    <div class="content__header" id="6">
-                        <span>Article 6 Period of Retention and Use of Personal Information</span>
-                    </div>
-                    <span>① The user's personal information will be destroyed when the purpose of collecting or receiving personal information is achieved as follows.</span>
-                    <div class="content__indent">
-                        <span>1. Membership registration information: When a member withdraws from a membership or is expelled from a member</span>
-                        <span>2. Payment information: When the payment is completed on the date of payment or the expiration of the statute of limitations for claims.</span>
-                        <span>3. Delivery information: When goods or services, such as goods or services, are delivered or provided.</span>
-                        <span>4. Where it is collected for temporary purposes, such as surveys, events, etc.: When the relevant survey, event, etc. is completed</span>
-                    </div>
-                    <span>② However, despite the principle of immediate destruction when achieving the purpose of collecting personal information, if it is necessary to hold it for a certain period of time due to the confirmation of transaction-related rights and obligations, it shall be held for a certain period of time.</span>
-                    <div class="content__indent">
-                        <span>1. Records of contract or withdrawal of subscription: 5years</span>
-                        <span>2. Records on payment and supply of goods,: 5years</span>
-                        <span>3. Records of consumer complaints or dispute settlement: 3years</span>
-                        <span>4. Website visit record: 3 months</span>
-                    </div>
-                    <span>③ If the user requests the user to view the transaction information, etc. held with the consent of the user, the company will take measures to view and confirm without delay.</span>
                 </div>
                 <div class="content">
                     <div class="content__header" id="7">
-                        <span>Article 7 Dormant policies for long-term unused customers</span>
+                        <span>Article7 Matters concerning measures to ensure the safety of personal information</span>
                     </div>
-                    <span>1. The personal information of customers (long-term unused members) who do not have a record of using the Watt for one year will be separately and safely managed, and the target will be notified through the email address at least 30 days before the separate storage processing date.The personal information stored separately is destroyed without delay after storing it for 5 years.However, if it is necessary to preserve it in accordance with the provisions of related laws such as the Communication Secret Protection Act and the Consumer Protection Act in e-commerce, etc., the customer's personal information shall be kept for a prescribed period.</span>
-                    <span>2. If you don't want to switch to a dormant account, you can log in to the service before switching to a dormant account.In addition, even if you have switched to a dormant account, if you log in, you can restore the dormant account according to the user's consent and use the normal service.</span>
+                    <span>The company is taking the following measures to ensure the safety of personal information.</span>
+                    <span>encryption of personal information</span>
+                    <div class="content__indent">
+                        <span>The user's personal information is encrypted, stored, and managed, so only you can know it, and important data uses separate security functions such as encrypting files and transmission data or using file lock functions.</span>
+                    </div>
                 </div>
                 <div class="content">
                     <div class="content__header" id="8">
-                        <span>Article 8 Procedures and methods for destroying personal information</span>
-                    </div>
-                    <span>① In principle, the company destroys the information without delay after the purpose of collecting and using personal information is achieved.The procedure and method of destroying personal information of the company are as follows.</span>
-                    <div class="content__indent">
-                        <span>1. Revocation procedure</span>
-                        <div class="content__indent">
-                            <span>- Information entered by users for membership registration is destroyed after being stored for a certain period of time according to internal policies and other reasons for information protection under related laws (see Article 6).This personal information shall not be used for any purpose other than to be retained unless it is under the law.</span>
-                        </div>
-                        <span>2. Ways to destroy it</span>
-                        <div class="content__indent">
-                            <span>- Personal information printed on paper: Crushed with a grinder or destroyed by incineration</span>
-                            <span>- Personal information stored in electronic file format: Delete records using a technical method that cannot be reproduced</span>
-                        </div>
-                    </div>
-                    <span>② The user's personal information shall be destroyed within five days of the end of the retention period, and if the personal information becomes unnecessary, such as the purpose of processing the personal information, abolition of the service, and business termination.</span>
-                </div>
-                <div class="content">
-                    <div class="content__header" id="9">
-                        <span>Article 9 Rights and Obligations of Customers</span>
-                    </div>
-                    <span>① the rights of the customer</span>
-                    <div class="content__indent">
-                        <span>1. Users can view or correct their registered personal information at any time.If you want to view or correct personal information, click My Page on the website to view or correct it directly, or contact the person in charge of personal information management by writing/e-mail/mimic transmission or phone, and we will take action without delay.</span>
-                        <span>2. If there is a request under the preceding paragraph from the user, the company will not use the personal information until it responds to the request within the legal deadline and completes the correction.However, in this case, if there is a legitimate reason for not being able to respond within the relevant period, the reason may be notified to the user and postponed, and if the reason expires, the response shall be made without delay.</span>
-                        <span>3. Users can withdraw the collection, use, and provision of personal information they have agreed to at any time.If you delete the consent by clicking the My Page on the website or contact the person in charge of personal information management by writing, e-mail, impersonation, or phone, we will take necessary measures such as deleting personal information without delay.However, all online sites will be deleted except for the purchase history required to prepare statistical data when withdrawing.</span>
-                    </div>
-                    <span>② Customer Obligations<br><br></span>
-                    <span>Customers are obliged to protect their personal information, and they are not responsible for any problems caused by leakage of personal information due to the company's carelessness, such as transfer, rental, loss of ID (e-mail address), password, access media, or login.Customers must keep their personal information up-to-date, and the customer is responsible for any problems caused by their inaccurate information entry.When making a payment by stealing a member registration or ID that stole another person's personal information, it may be punished in accordance with related laws and regulations along with the loss of customer qualifications.Customers are responsible for maintaining security for their IDs, passwords, etc., and cannot transfer or lend them to third parties.Customers are obligated to cooperate with periodic activities for security in accordance with the company's privacy policy.</span>
-                </div>
-                <div class="content">
-                    <div class="content__header" id="10">
-                        <span>Article 10 Matters concerning the installation/operation and rejection of automatic personal information collection devices</span>
-                    </div>
-                    <span>① Cookies</span>
-                    <div class="content__indent">
-                        <span>1. The company uses a 'cookie' that can store and search information about users.Cookies are a small amount of information that a website sends to your computer browser.When a user accesses the website, the company's computer can read the contents of cookies in the user's browser, find additional information from the user's computer, and provide the service without entering additional names according to the connection.Cookies identify your computer, but they do not identify you personally.</span>
-                        <span>2. In order to provide customized services to users, the company provides users' information and uses users' personal information collected through cookies that are frequently recalled.You can analyze the service information you visit, your shopping cart history, service access time and frequency, and information generated or provided (entered) in the course of using the service to provide services (including advertisements) that are specific to your tastes and interests.</span>
-                        <span>3. Users have the option to install cookies.Therefore, the user can accept all cookies in the web browser option, go through a confirmation each time the cookie is saved, or refuse to save all cookies.</span>
-                        <div class="content__indent">
-                            <span>1. For Internet Explorer</span>
-                            <div class="content__indent">
-                                <span>- Select Internet Options from the Tools menu → Click Personal Information → Click Advanced → Select whether cookies are allowed or not</span>
-                            </div>
-                            <span>2. For Safari</span>
-                            <div class="content__indent">
-                                <span>- Select Preferences from Safari in the top left menu bar of MacOS → Go to Security in the Preferences window to select whether cookies are allowed or not customized advertising</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="content__header" id="11">
-                        <span>Article 11 Technical and administrative protection measures for personal information</span>
-                    </div>
-                    <span>Watt does its best to safely manage users' personal information and protects personal information above the level required by the Personal Information Protection Act.It also complies with other technical and management measures under the Personal Information Protection Act and the Information and Communication Network Use Promotion and Information Protection Act.<br><br></span>
-                    <span>① technical countermeasures<br><br></span>
-                    <span>In handling users' personal information, the company is taking the following technical measures to ensure stability so that personal information is not lost, stolen, leaked, tampered with, or damaged.</span>
-                    <div class="content__indent">
-                        <span>1. Among the users' personal information, important data such as passwords are encrypted and stored, and personal information is safely stored in the safe area of the double firewall.In addition, personal information is transmitted and received safely on the network through encryption communication.</span>
-                        <span>2. In order to prevent the leakage of user's personal information, a device that blocks intrusion from the outside is used, and an intrusion detection system is installed on each server to monitor intrusion 24 hours a day.</span>
-                        <span>3. The personal information handler keeps and manages records of access to the personal information processing system, checks access records regularly to prevent misuse, abuse, loss, forgery, and alteration of personal information, and keeps the access records safely.</span>
-                        <span>4. Data is backed up frequently in preparation for personal information damage, and the latest vaccine program is used to prevent users' personal information or data from being leaked or damaged.</span>
-                    </div>
-                    <span>② administrative measures</span>
-                    <div class="content__indent">
-                        <span>1. The company limits the personal information handling staff to the person in charge, and renews them regularly by giving a separate password for this, and emphasizes compliance with the personal information handling policy through occasional training for the person in charge.</span>
-                        <span>2. The handover of personal information-related handlers is carried out thoroughly with security maintained, and the responsibility for personal information accidents after joining and leaving the company is clarified.</span>
-                        <span>3. Users should not let others know their ID and password, and please log out after logging in to the website and using it.The company is not responsible for any problems caused by the leakage of personal information due to the user's carelessness or Internet problems.</span>
-                        <span>4. In the event of loss, leakage, alteration, or damage of personal information due to an internal manager's mistake or technical management accident, the company will immediately inform the user of the facts and take appropriate measures and compensation.</span>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="content__header" id="12">
-                        <span>Article 12 Contact information of the person in charge of personal information management and the person in charge</span>
+                        <span>Article 8 Matters concerning the protection of personal information</span>
                     </div>
                     <span>① The company designates a person in charge of personal information management as follows to protect users' personal information and handle complaints and inquiries related to personal information.</span>
                     <span>[Personal Information Management Manager]</span>
@@ -269,10 +160,48 @@
                     </div>
                 </div>
                 <div class="content">
-                    <div class="content__header" id="13">
-                        <span>Article 13 Obligation to notify</span>
+                    <div class="content__header" id="9">
+                        <span>Article9 Technical and administrative protection measures for personal information</span>
                     </div>
-                    <span>The current personal information handling (processing) policy was revised on May 23, 2023, and if the contents are added, deleted, or modified according to changes in government policies or security technologies, it will be notified on the website at least seven days before the revision.</span>
+                    <span>The company does its best to safely manage users' personal information and protects personal information above the level required by the Personal Information Protection Act. It also complies with other technical and management measures under the Personal Information Protection Act and the Information and Communication Network Use Promotion and Information Protection Act.<br><br></span>
+                    <span>① technical countermeasures<br><br></span>
+                    <span>In handling users' personal information, the company is taking the following technical measures to ensure stability so that personal information is not lost, stolen, leaked, tampered with, or damaged.</span>
+                    <div class="content__indent">
+                        <span>1. Among the users' personal information, important data such as passwords are encrypted and stored, and personal information is safely stored in the safe area of the double firewall. In addition, personal information is transmitted and received safely on the network through encryption communication.</span>
+                        <span>2. In order to prevent the leakage of user's personal information, a device that blocks intrusion from the outside is used, and an intrusion detection system is installed on each server to monitor intrusion 24 hours a day.</span>
+                        <span>3. The personal information handler keeps and manages records of access to the personal information processing system, checks access records regularly to prevent misuse, abuse, loss, forgery, and alteration of personal information, and keeps the access records safely.</span>
+                        <span>4. Data is backed up frequently in preparation for personal information damage, and the latest vaccine program is used to prevent users' personal information or data from being leaked or damaged.</span>
+                    </div>
+                    <span>② administrative measures</span>
+                    <div class="content__indent">
+                        <span>1. The company limits the personal information handling staff to the person in charge, and renews them regularly by giving a separate password for this, and emphasizes compliance with the personal information handling policy through occasional training for the person in charge.</span>
+                        <span>2. The handover of personal information-related handlers is carried out thoroughly with security maintained, and the responsibility for personal information accidents after joining and leaving the company is clarified.</span>
+                        <span>3. Users should not let others know their ID and password, and please log out after logging in to the website and using it. The company is not responsible for any problems caused by the leakage of personal information due to the user's carelessness or Internet problems.</span>
+                        <span>4. In the event of loss, leakage, alteration, or damage of personal information due to an internal manager's mistake or technical management accident, the company will immediately inform the user of the facts and take appropriate measures and compensation.</span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content__header" id="10">
+                        <span>Article10 Matters concerning the rights and obligations of the information subject and legal representative and the method of exercising them</span>
+                    </div>
+                    <span>① The information subject may exercise the right of the company to view, correct, delete, and stop processing personal information at any time.</span>
+                    <span>② The exercise of rights under paragraph (1) may be conducted in writing, e-mail, fax, etc. according to Article 41 (1) of the Enforcement Decree of the Personal Information Protection Act, and the company will take action without delay.</span>
+                    <span>③ The exercise of rights under paragraph (1) may be conducted through a legal representative of the information subject or an agent, such as a person delegated.In this case, "Notification of the method of processing personal information (No. 2020-7)" You have to submit a power of attorney according to attached Form 11.</span>
+                    <span>④ The rights of the data subject may be restricted pursuant to Articles 35 (4) and 37 (2) of the Personal Information Protection Act.</span>
+                    <span>⑤ Requests for correction and deletion of personal information cannot be requested if other laws specify that the personal information is subject to collection.</span>
+                    <span>⑥ The company checks whether it is the person who made the request, such as a request for access according to the right of the information subject, a request for correction or deletion, or a request for suspension of processing.</span>
+                </div>
+                <div class="content">
+                    <div class="content__header" id="11">
+                        <span>Article 11 Matters concerning the installation and operation of devices that automatically collect personal information and the refusal thereof</span>
+                    </div>
+                    <span>① For the convenience of users, the company uses a "cookie" that stores usage information and calls it from time to time.</span>
+                    <span>② Cookies are a small amount of information sent by the server (http) used to run the website to the user's computer browser and are also stored on the user's hard disk within the user's PC computer.</span>
+                    <div class="content__indent">
+                        <span>A. Purpose of use of cookies: When a user clicks "Don't see for a day" in the notification light alarm window, it is used to identify and not show it.</span>
+                        <span>B. Installation ● Operation and Denial of Cookies: You can refuse to save cookies through Tools at the top of your web browser &gt; Internet Options &gt; Set options on the Privacy menu.</span>
+                        <span>C. If you refuse to save cookies, even if you select the Don't see them for a day option in the announcement light, the feature will not be activated.</span>
+                    </div>
                 </div>
                 <div class="content">
                     <div class="content__header">
@@ -357,18 +286,31 @@ export default {
     width: 100%
     height: 60px
     display: flex
-    justify-content: center
+    justify-content: flex-start
     align-items: center
     &__text
+        display: flex
+        justify-content: flex-start
+        align-items: center
         width: 25%
+        height: 60px
         font-weight: bold
         margin-left: 30px
     &__text1
-        width: 35%
-        font-weight: bold
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        width: 50%
+        height: 60px
         margin-left: 30px
-    &__blank
-        width: 15%
+        font-weight: bold
+    &__text2
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        width: 100%
+        height: 60px
+        margin-left: 30px
         font-weight: bold
     span
         &:hover
@@ -395,7 +337,7 @@ export default {
         justify-content: center
         align-items: flex-start
     &__table
-        width: 1000px
+        width: 640px
         display: flex
         flex-direction: column
         justify-content: center
@@ -403,7 +345,7 @@ export default {
         outline: 1px solid black
         margin-bottom: 20px
     &__grayTr
-        width: 1000px
+        width: 640px
         height: 40px
         display: flex
         justify-content: center
@@ -416,10 +358,10 @@ export default {
         width: 300px
         text-align: center
     &__grayTd3
-        width: 550px
+        width: 190px
         text-align: center
     &__tr
-        width: 1000px
+        width: 640px
         height: 40px
         display: flex
         justify-content: center
@@ -433,6 +375,6 @@ export default {
         text-align: left
         margin-left: 10px
     &__td3
-        width: 550px
+        width: 190px
         text-align: left
 </style>
