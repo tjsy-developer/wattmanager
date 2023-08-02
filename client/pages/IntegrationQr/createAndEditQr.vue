@@ -20,12 +20,9 @@
                 <div class="qrTable">
                     <div class="qrTable__header">
                         <div class="deleteRowBtnWrapBlue"> </div>
-                        <div class="checkboxWrapBlue">
-                            <input type="checkbox" v-model="checkAll" />
-                        </div>
                         <div class="keyTxtWrap">
                             <div class="col keyTxt"  v-for="(content, key) in keyList">
-                                <span>{{ content.key_txt }}</span>
+                                <span>{{ content.key_value }}<br>{{ content.key_description }}</span>
                             </div>
                         </div>
                     </div>
@@ -36,13 +33,9 @@
                                     <img src="@/assets/images/ic_trash_red.svg" />
                                 </button>
                             </div>
-                            <div class="checkboxWrap">
-                                <input type="checkbox" v-model="content.checked_yn" />
-                            </div>
                             <div class="qrInput">
                                 <div class="col inputWrap" v-for="(qrContent, index) in content.qr_data" :key="index">
-                                    <input v-if="keyList[index].key_type == 'Boolean'" type="checkbox" v-model="dataList[key].qr_data[index]" style="outline: none; width: 30px; height: 30px;" />
-                                    <input v-else :value="qrContent" @change="changeInput(key, index, $event)" />
+                                    <input :value="qrContent" @change="changeInput(key, index, $event)" :placeholder="keyList[index].key_type" />
                                 </div>
                             </div>
                         </div>
@@ -54,9 +47,9 @@
                 <div class="btnWrap">
                     <button class="saveBtn" @click="saveQrData()">{{ $t("createAndEditQr")[4] }}</button>
                     <button class="cancleBtn" @click="cancleBtnClick()">{{ $t("createAndEditQr")[5] }}</button>
-                    <button class="deleteAllBtn" @click="deleteQR()">삭제</button>
+                    <!-- <button class="deleteAllBtn" @click="deleteQR()">삭제</button> -->
                 </div>
-                <button class="addBtn" @click="addRow(5)">{{ $t("createAndEditQr")[6] }}</button>
+                <button class="addBtn" @click="addRow(10)">{{ $t("createAndEditQr")[6] }}</button>
             </div>
         </div>
     </div>
@@ -74,24 +67,6 @@ export default {
             chapter_seq: "",
             backendURL: "",
             chapterName: "",
-        }
-    },
-    computed: {
-        watchCheckAll() {
-            return this.checkAll
-        }
-    },
-    watch: {
-        watchCheckAll() {
-            if (this.checkAll == true) {
-                this.dataList.forEach((ele) => {
-                    ele.checked_yn = true
-                })
-            } else {
-                this.dataList.forEach((ele) => {
-                    ele.checked_yn = false
-                })
-            }
         }
     },
     mounted() {
@@ -115,24 +90,16 @@ export default {
                     const qrData = data.data_list
                     if (keyData != null) {
                         keyData.forEach((ele) => {
-                            let keyTxt = ele.key_value + "-" + ele.key_description + " (" + ele.key_type + ")"
                             const keyInfo = {
                                 key_seq: ele.key_seq,
                                 key_value: ele.key_value,
                                 key_type: ele.key_type,
                                 key_description: ele.key_description,
-                                key_txt: keyTxt,
                             }
                             this.keyList.push(keyInfo)
                         })
                         if (qrData != null) {
                             qrData.forEach((ele, index) => {
-                                let checkYN
-                                if (ele.checked_yn == 0) {
-                                    checkYN = false
-                                } else {
-                                    checkYN = true
-                                }
                                 const qrData = JSON.parse(ele.qr_data)
                                 const qrValue = []
                                 this.keyList.forEach((element, i) => {
@@ -141,7 +108,7 @@ export default {
                                 const qrInfo = {
                                     crud: "update",
                                     data_seq: ele.data_seq,
-                                    checked_yn: checkYN,
+                                    checked_yn: 1,
                                     qr_data: qrValue
                                 }
                                 this.dataList.push(qrInfo)
@@ -153,7 +120,7 @@ export default {
                             })
                             const dataInit = {
                                 crud: "create",
-                                checked_yn: false,
+                                checked_yn: 1,
                                 qr_data: qrValue
                             }
                             this.dataList.push(dataInit)
@@ -183,6 +150,14 @@ export default {
                 } else {
                     this.dataList[titleIndex].qr_data[qrIndex] = event.target.value
                 }
+                if (this.keyList[qrIndex].key_type == "Boolean") {
+                    if (event.target.value == "true" || event.target.value == "false") {
+                        this.dataList[titleIndex].qr_data[qrIndex] = event.target.value
+                    } else {
+                        alert("true, false만 입력 가능합니다.")
+                        event.target.value = ""
+                    }
+                }
             } else {
                 this.dataList[titleIndex].qr_data[qrIndex] = ""
             }
@@ -192,6 +167,10 @@ export default {
             let checkNull = false
             this.dataList.forEach((ele, tIndex) => {
                 const qrInput = []
+                const test = JSON.stringify(ele.qr_data)
+                // 모두 공백인지 확인
+                const checkAllNull = test.split('""').join("").split(",").join("").split("[]").join("")
+                if (checkAllNull == "") return
                 ele.qr_data.forEach((element, index) => {
                     const keySeq = String(this.keyList[index].key_seq)
                     let inputForm
@@ -207,15 +186,10 @@ export default {
                     inputForm = JSON.stringify(keySeq) + ":" + JSON.stringify(element)
                     qrInput.push(inputForm)
                 })
-                if (ele.checked_yn == true) {
-                    ele.checked_yn = 1
-                } else {
-                    ele.checked_yn = 0
-                }
                 const qrInfo = {
                     crud: ele.crud,
                     data_seq: ele.data_seq,
-                    checked_yn: ele.checked_yn,
+                    checked_yn: 1,
                     chapter_seq: this.chapter_seq,
                     qr_data: `{${qrInput.join(',')}}`
 
@@ -232,7 +206,7 @@ export default {
                 })
                 .then((res) => {
                     alert(this.$t("qrMessage")[0])
-                    console.log(res)
+                    this.cancleBtnClick()
                 })
                 .catch((err) => {
                     console.log("qrSave error => ", err)
@@ -247,7 +221,7 @@ export default {
                 const dataParams = {
                     crud: "create",
                     data_seq: "",
-                    checked_yn: false,
+                    checked_yn: 1,
                     chapter_seq: this.chapter_seq,
                     qr_data: qrSetting
                 }
@@ -255,8 +229,6 @@ export default {
             }
         },
         deletRow(seq, crud, index) {
-            const result = confirm(this.$t("qrMessage")[2])
-            if (result != true) return
             if (crud == "create") {
                 this.dataList.splice(index, 1)
             } else {
@@ -277,23 +249,24 @@ export default {
                 this.addRow()
             }
         },
-        deleteQR() {
-            const result = confirm(this.$t("qrMessage")[2])
-            if (result != true) return
-            console.log(this.chapter_seq)
-            this.$axios
-                .post(this.backendURL + axiosJson.qrManagement.qrAllDataDelete, {
-                    jwt: this.jwt,
-                    chapter_seq: this.chapter_seq
-                })
-                .then((res) => {
-                    console.log(res)
-                    this.cancleBtnClick()
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-        }
+        // 요청에의해 전체 qr 제거기능 제거
+        // deleteQR() {
+        //     const result = confirm(this.$t("qrMessage")[2])
+        //     if (result != true) return
+        //     console.log(this.chapter_seq)
+        //     this.$axios
+        //         .post(this.backendURL + axiosJson.qrManagement.qrAllDataDelete, {
+        //             jwt: this.jwt,
+        //             chapter_seq: this.chapter_seq
+        //         })
+        //         .then((res) => {
+        //             console.log(res)
+        //             this.cancleBtnClick()
+        //         })
+        //         .catch((err) => {
+        //             console.log(err)
+        //         })
+        // }
     }
 }
 </script>
@@ -433,7 +406,7 @@ export default {
     background: #4173AC 0% 0% no-repeat padding-box;
 }
 .keyTxtWrap {
-    width: calc(100% - 170px);
+    width: calc(100% - 50px);
     height: 100%;
     display: flex;
     justify-content: flex-start;
@@ -465,7 +438,7 @@ export default {
         background: #ffffff 0% 0% no-repeat padding-box;
     }
     .qrInput {
-        width: calc(100% - 170px);
+        width: calc(100% - 50px);
         height: 100%;
         display: flex;
         justify-content: flex-start;

@@ -11,9 +11,8 @@
             <div class="divisionLine"></div>
             <div class="content__btnWrap">
                 <div class="printBtns">
-                    <button class="createSelect" @click="createQR(1)">{{ $t("printQR")[3] }}</button>
-                    <button class="createAll" @click="createQR(0)">{{ $t("printQR")[4] }}</button>
-                    <button v-if="isCreated" class="printQr" @click="printQR()">{{ $t("printQR")[5] }}</button>
+                    <button v-if="selectedList.length == 0" class="printQr" @click="printQR(0)">{{ $t("printQR")[4] }}</button>
+                    <button v-else class="printQr" @click="printQR(1)">{{ $t("printQR")[5] }}</button>
                 </div>
                 <div class="adjustQR">
                     <span>{{ $t("printQR")[6] }}</span>
@@ -29,10 +28,25 @@
                 </div>
             </div>
             <div class="divisionLine"></div>
-            <div class="col-12 justify-center QRWraps">
-                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="QRWrap">
-                    <img clas="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" />
-                    <span>{{ content.name }}</span>
+            <div class="QRWraps">
+                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="QRWrap" style="display: grid; justify-items: center;">
+                    <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
+                    <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
+                    <input type="checkbox" v-model="content.checkYN" @change="changeState()" />
+                </div>
+            </div>
+            <!-- 전체 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
+            <div class="QRWraps" id="printAll" style="z-index: -9999; position: absolute;">
+                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="QRWrap" style="display: grid; justify-items: center;">
+                    <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
+                    <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
+                </div>
+            </div>
+            <!-- 선택 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
+            <div class="QRWraps" id="printSelected" style="z-index: -9999; position: absolute;">
+                <div v-if="isCreated" v-for="(content, key) in selectedList" :key="key" class="QRWrap" style="display: grid; justify-items: center;">
+                    <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
+                    <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
                 </div>
             </div>
         </div>
@@ -41,6 +55,7 @@
 
 <script>
 import axiosJson from "@/assets/jsons/axios"
+import printJS from "print-js"
 import QRCode from "qrcode"
 export default {
     layout: "main",
@@ -54,7 +69,11 @@ export default {
             isCreated: false,
             qrTitleSeq: "",
             qrList: [],
-            checkNull: false
+            checkNull: false,
+            fontSize: "18px",
+            test: false,
+            checkSelected: false,
+            selectedList: []
         }
     },
     mounted() {
@@ -122,6 +141,7 @@ export default {
                         this.qrList.push(qrInfo)
                     })
                     console.log(this.qrList)
+                    this.createQR()
                 })
                 .catch((err) => {
                     console.log(err)
@@ -130,109 +150,75 @@ export default {
         goBackBtnClick() {
             window.location.href = document.referrer
         },
-        createQR(type) {
-            console.log(this.checkNull)
+        createQR() {
             let enterQRInfo
             if (this.checkNull) return alert(this.$t("printQR")[7])
-            if (type == 0) {
-                // 전체
-                this.qrList.forEach((ele) => {
-                    enterQRInfo = ele.qr_value
+            this.qrList.forEach((ele) => {
+                enterQRInfo = ele.qr_value
 
-                    /* QR option */
-                    const opts = {
-                        errorCorrectionLevel: "H",
-                        type: "image/png",
-                        quality: 0.3,
-                        margin: 1,
-                        color: {
-                        dark: "#000000",
-                        light: "#ffffff"
-                        }
+                /* QR option */
+                const opts = {
+                    errorCorrectionLevel: "H",
+                    type: "image/png",
+                    quality: 0.3,
+                    margin: 1,
+                    color: {
+                    dark: "#000000",
+                    light: "#ffffff"
                     }
+                }
 
-                    QRCode.create(enterQRInfo, opts)
-                    const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
+                QRCode.create(enterQRInfo, opts)
+                const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
 
-                    /* prototype promise */
-                    imgUrl.then(value => {
-                        const arr = {}
-                        arr.name = ele.qr_title
-                        arr.imgUrl = value
-                        this.qrCodeImg.push(arr)
-                    })
+                /* prototype promise */
+                imgUrl.then(value => {
+                    const arr = {}
+                    arr.name = ele.qr_title
+                    arr.imgUrl = value
+                    arr.checkYN = false
+                    this.qrCodeImg.push(arr)
                 })
-            } if (type == 1) {
-                this.qrList.forEach((ele) => {
-                    if (ele.checked_yn == 1) {
-                        enterQRInfo = ele.qr_value
-
-                        /* QR option */
-                        const opts = {
-                            errorCorrectionLevel: "H",
-                            type: "image/png",
-                            quality: 0.3,
-                            margin: 1,
-                            color: {
-                            dark: "#000000",
-                            light: "#ffffff"
-                            }
-                        }
-
-                        QRCode.create(enterQRInfo, opts)
-                        const imgUrl = QRCode.toDataURL(enterQRInfo, opts)
-
-                        /* prototype promise */
-                        imgUrl.then(value => {
-                            const arr = {}
-                            arr.name = ele.qr_title
-                            arr.imgUrl = value
-                            this.qrCodeImg.push(arr)
-                        })
-                    }
-                })
-            }
-            console.log(enterQRInfo)
+            })
             if (enterQRInfo == undefined) {
                 alert(this.$t("printQR")[8])
             } else {
                 this.isCreated = true
             }
         },
-        printQR() {
-            const qrPrint = document.getElementsByClassName("QRWraps")[0]
-                .innerHTML
-            console.log(qrPrint)
-            const win = window.open()
-            win.document.open()
-            win.document.write(
-                "<html><head><title></title><style>" +
-                "div:nth-child(0){" +
-                "width: 100%;" +
-                "}" +
-                ".QRWrap {" +
-                "display: inline-block;" +
-                "padding: 10px 10px 10px;" +
-                "}" +
-                ".QRWrap>img {" +
-                "display: block;" +
-                "}" +
-                ".QRWrap>span {" +
-                "display: block;" +
-                "text-align: center;" +
-                "}" +
-                "</style></haed><div>"
-            )
-            win.document.write(qrPrint)
-            // win.document.write('body, td {font-falmily: Verdana; font-size: 10pt;}');
-            win.document.write("</div><body>")
-            win.document.write("</body></html>")
-            win.document.close()
-            win.print()
+        changeState() {
+            this.selectedList = []
+            this.qrCodeImg.forEach((ele) => {
+                if (ele.checkYN == true) {
+                    let params = {
+                        name: ele.name,
+                        imgUrl: ele.imgUrl
+                    }
+                    this.selectedList.push(params)
+                }
+            })
+        },
+        printQR(type) {
+            let params
+            if (type == 0) {
+                params = {
+                    printable: "printAll",
+                    type: "html",
+                    css: "",
+                    scanStyles: false,
+                }
+            } else {
+                params = {
+                    printable: "printSelected",
+                    type: "html",
+                    css: "",
+                    scanStyles: false,
+                }
+            }
+            printJS(params)
         },
         QRresizeBtnClick(event) {
             const changeProperty = event.target.name
-            console.log(changeProperty, "1111")
 
             // a4사이즈 기준으로 최댓값 지정
             if (event.target.value > 21) {
@@ -244,6 +230,7 @@ export default {
                 this.qrWidth = event.target.value
                 this.Width = this.conversion(event.target.value)
                 this.Height = this.conversion(this.qrHeight)
+                this.fontSize = event.target.value * 4 + "px"
             } else {
                 this.qrHeight = event.target.value
                 this.Width = this.conversion(this.qrWidth)
@@ -316,9 +303,11 @@ export default {
     .QRWrap {
         display: grid;
         flex-direction: row;
+        justify-items: center;
         padding: 24px 24px 0px 24px;
         >img{
-            margin-bottom: 2px;}
+            margin-bottom: 2px;
+        }
         >span{
             text-align: center;
             font-size: 18px;}

@@ -151,6 +151,7 @@ export default {
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
                         alert(this.$t("qrMessage")[0])
+                        this.cancleBtnClick()
                     }
                 })
                 .catch((err) => {
