@@ -136,14 +136,6 @@ export default {
     serviceInPreparation(e) {
       e.preventDefault()
       alert(this.$t("servicePreParation"))
-    },
-    openLogSheet() {
-      const enSeq = localStorage.getItem("enSeq")
-      const hqSeq = localStorage.getItem("hqSeq")
-      const brSeq = localStorage.getItem("brSeq")
-      const userId = localStorage.getItem("id")
-      const userParams = "?hqSeq=" + hqSeq + "&enSeq=" + enSeq + "&brSeq=" + brSeq + "&id=" + userId
-      window.open(process.env.logsheetURL + userParams)
     }
   },
   mounted() {
