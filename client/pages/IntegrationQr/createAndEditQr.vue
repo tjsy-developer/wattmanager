@@ -22,7 +22,7 @@
                         <div class="deleteRowBtnWrapBlue"> </div>
                         <div class="keyTxtWrap">
                             <div class="col keyTxt"  v-for="(content, key) in keyList">
-                                <span>{{ content.key_value }}<br>{{ content.key_description }}</span>
+                                <span>{{ content.key_value }}<br>({{ content.key_description }})</span>
                             </div>
                         </div>
                     </div>
@@ -418,6 +418,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        text-align: center;
     }
 }
 

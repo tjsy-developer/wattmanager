@@ -121,6 +121,7 @@
 		"chapterSave": "qrManagement/chapterSave",
 		"qrList": "qrManagement/qrList",
 		"qrSave": "qrManagement/qrSave",
+		"qrKeyDelete": "qrManagement/qrKeyDelete",
 		"qrDataDelete": "qrManagement/qrDataDelete",
 		"qrAllDataDelete": "qrManagement/qrAllDataDelete"
 	}
