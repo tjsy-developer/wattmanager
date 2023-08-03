@@ -133,11 +133,10 @@ export default {
                     key_type: ele.key_type,
                     key_description: ele.key_description
                 }
-                console.log(ele.crud)
                 keyParams.push(paramsInfo)
             })
             if (checkNull) {
-                return alert(this.$t("qrMessage")[7])
+                return this.operateDialog(this.$t("qrMessage")[7], "error")
             }
             this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.chapterSave, {
@@ -150,13 +149,15 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
-                        alert(this.$t("qrMessage")[0])
-                        this.cancleBtnClick()
+                        this.operateDialog(this.$t("qrMessage")[0], "confirm")
+                        // setTimeout(() => {
+                        //     this.cancleBtnClick()
+                        // }, 3000)
                     }
                 })
                 .catch((err) => {
                     console.log("chapterSave fail =>", err)
-                    alert(this.$t("qrMessage")[1])
+                    this.operateDialog(this.$t("qrMessage")[1], "error")
                 })
         },
         addRow() {
@@ -182,7 +183,7 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
-                        alert(this.$t("qrMessage")[3])
+                        this.operateDialog(this.$t("qrMessage")[3], "confirm")
                         this.qrKeyData.splice(index, 1)
                         this.changeSelectOption()
                         if (this.qrKeyData.length == 0) {
@@ -191,7 +192,7 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    alert(this.$t("qrMessage")[4])
+                    this.operateDialog(this.$t("qrMessage")[4], "error")
                     console.log("qrKeyDelete Fail => ", err)
                 })
             } else {
@@ -200,7 +201,7 @@ export default {
                 if (this.qrKeyData.length == 0) {
                     this.addRow()
                 }
-                alert(this.$t("qrMessage")[3])
+                this.operateDialog(this.$t("qrMessage")[3], "confirm")
             }
         },
         deleteUsage() {
@@ -214,12 +215,14 @@ export default {
                 })
                 .then((res) => {
                     console.log(res)
-                    alert(this.$t("qrMessage")[3])
-                    window.location.href = document.referrer
+                    this.operateDialog(this.$t("qrMessage")[3], "confirm")
+                    setTimeout(() => {
+                        window.location.href = document.referrer
+                    }, 3000)
                 })
                 .catch((err) => {
                     console.log("delete Usage Fail => ", err)
-                    alert(this.$t("qrMessage")[4])
+                    this.operateDialog(this.$t("qrMessage")[4], "error")
                 })
         },
         changeSelectOption() {

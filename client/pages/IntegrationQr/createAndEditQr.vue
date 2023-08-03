@@ -126,7 +126,7 @@ export default {
                             this.dataList.push(dataInit)
                         }   
                     } else {
-                        alert(this.$t("qrMessage")[5])
+                        this.operateDialog(this.$t("qrMessage")[5], "error")
                         this.cancleBtnClick()
                     }
                 })
@@ -141,7 +141,7 @@ export default {
             if (event.target.value) {
                 if (this.keyList[qrIndex].key_type == "Int") {
                     if (!Number(event.target.value)) {
-                        alert(this.$t("qrMessage")[6])
+                        this.operateDialog(this.$t("qrMessage"), "error")
                         event.target.value = ""
                     }
                     else {
@@ -154,7 +154,7 @@ export default {
                     if (event.target.value == "true" || event.target.value == "false") {
                         this.dataList[titleIndex].qr_data[qrIndex] = event.target.value
                     } else {
-                        alert("true, false만 입력 가능합니다.")
+                        this.operateDialog(this.$t(qrMessage)[8], "error")
                         event.target.value = ""
                     }
                 }
@@ -197,7 +197,7 @@ export default {
                 qrParams.push(qrInfo)
             })
             if (checkNull) {
-                return alert(this.$t("qrMessage")[7])
+                return this.operateDialog(this.$t("qrMessage")[7], "error")
             }
             this.$axios
                 .post(this.backendURL + axiosJson.qrManagement.qrSave, {
@@ -205,8 +205,10 @@ export default {
                     data_list: qrParams
                 })
                 .then((res) => {
-                    alert(this.$t("qrMessage")[0])
-                    this.cancleBtnClick()
+                    this.operateDialog(this.$t("qrMessage")[0], "confirm")
+                    setTimeout(() => {
+                        this.cancleBtnClick()
+                    }, 3000)
                 })
                 .catch((err) => {
                     console.log("qrSave error => ", err)

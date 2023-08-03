@@ -115,7 +115,7 @@ export default {
                     const data = res.data.data.qr_list
                     if (data.data_list == undefined){
                         this.checkNull = true
-                        return alert(this.$t("printQR")[7])
+                        return this.operateDialog(this.$t("printQR")[7], "error")
                     }
                     const keyList = []
                     data.key_list.forEach((ele) => {
@@ -152,7 +152,7 @@ export default {
         },
         createQR() {
             let enterQRInfo
-            if (this.checkNull) return alert(this.$t("printQR")[7])
+            if (this.checkNull) this.operateDialog(this.$t("printQR")[7], "error")
             this.qrList.forEach((ele) => {
                 enterQRInfo = ele.qr_value
 
@@ -181,7 +181,7 @@ export default {
                 })
             })
             if (enterQRInfo == undefined) {
-                alert(this.$t("printQR")[8])
+                this.operateDialog(this.$t("printQR")[8], "error")
             } else {
                 this.isCreated = true
             }
@@ -222,7 +222,7 @@ export default {
 
             // a4사이즈 기준으로 최댓값 지정
             if (event.target.value > 21) {
-                alert(this.$t("QRMaxValue"))
+                this.operateDialog(this.$t("QRMaxValue"), "error")
                 event.target.value = 21
             }
 

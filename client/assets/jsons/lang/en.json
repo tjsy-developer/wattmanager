@@ -536,7 +536,8 @@
 		"Fail to delete.",
 		"Please register the key value first.",
 		"Please enter according to the type.",
-		"Please enter all inputs."
+		"Please enter all inputs.",
+		"Only true / false is allowed"
 	],
 	"printQR": [
 		"Integration QR",
