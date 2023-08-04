@@ -537,7 +537,8 @@
 		"Please register the key value first.",
 		"Please enter according to the type.",
 		"Please enter all inputs.",
-		"Only true / false is allowed"
+		"Only true / false is allowed",
+		"Please Check inputForm (type)"
 	],
 	"printQR": [
 		"Integration QR",
@@ -549,5 +550,12 @@
 		"QR size",
 		"There's no registered QR",
 		"There's no selected QR"
-	]
+	],
+	"excelPaste": [
+		"Paste from excel",
+		"Please check excel data type matches registered types",
+		"if type matches ",
+		"If the type matches, the values are pasted along the rows and columns in Excel."
+	],
+	"qrTab": "Electronic QR"
 }

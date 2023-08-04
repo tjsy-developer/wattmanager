@@ -81,7 +81,6 @@ export default {
     },
     mounted() {
         this.chapter_seq = Number(localStorage.getItem("chapter_seq"))
-        localStorage.removeItem("chapter_seq")
         this.getusageInfo()
     },
     methods: {
@@ -123,6 +122,7 @@ export default {
             const keyParams =  new Array()
             let checkNull = false
             this.qrKeyData.forEach((ele) => {
+                if (!ele.key_value && !ele.key_type && !ele.key_description) return
                 if (!ele.key_value || !ele.key_type || !ele.key_description) {
                     checkNull = true
                 }
@@ -150,9 +150,9 @@ export default {
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
                         this.operateDialog(this.$t("qrMessage")[0], "confirm")
-                        // setTimeout(() => {
-                        //     this.cancleBtnClick()
-                        // }, 3000)
+                        setTimeout(() => {
+                            this.cancleBtnClick()
+                        }, 1500)
                     }
                 })
                 .catch((err) => {
@@ -218,7 +218,7 @@ export default {
                     this.operateDialog(this.$t("qrMessage")[3], "confirm")
                     setTimeout(() => {
                         window.location.href = document.referrer
-                    }, 3000)
+                    }, 1500)
                 })
                 .catch((err) => {
                     console.log("delete Usage Fail => ", err)

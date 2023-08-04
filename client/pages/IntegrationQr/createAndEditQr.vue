@@ -49,7 +49,15 @@
                     <button class="cancleBtn" @click="cancleBtnClick()">{{ $t("createAndEditQr")[5] }}</button>
                     <!-- <button class="deleteAllBtn" @click="deleteQR()">삭제</button> -->
                 </div>
-                <button class="addBtn" @click="addRow(10)">{{ $t("createAndEditQr")[6] }}</button>
+                <div class="addBtnWrap">
+                    <div class="excelBtnWrap" @mouseenter="excelExplane = !excelExplane" @mouseleave="excelExplane = !excelExplane">
+                        <button class="excelBtn" @click="excelPaste()">{{ $t("excelPaste")[0] }}</button>
+                        <div v-if="excelExplane" class="excelTxt">
+                            <span>{{ $t("excelPaste")[1] }}<br>{{ $t("excelPaste")[2] }}</span>
+                        </div>
+                    </div>
+                    <button class="addBtn" @click="addRow(10)">{{ $t("createAndEditQr")[6] }}</button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +75,8 @@ export default {
             chapter_seq: "",
             backendURL: "",
             chapterName: "",
+            typeList: [],
+            excelExplane: false
         }
     },
     mounted() {
@@ -96,6 +106,7 @@ export default {
                                 key_type: ele.key_type,
                                 key_description: ele.key_description,
                             }
+                            this.typeList.push(ele.key_type)
                             this.keyList.push(keyInfo)
                         })
                         if (qrData != null) {
@@ -154,7 +165,7 @@ export default {
                     if (event.target.value == "true" || event.target.value == "false") {
                         this.dataList[titleIndex].qr_data[qrIndex] = event.target.value
                     } else {
-                        this.operateDialog(this.$t(qrMessage)[8], "error")
+                        this.operateDialog(this.$t("qrMessage")[8], "error")
                         event.target.value = ""
                     }
                 }
@@ -208,7 +219,7 @@ export default {
                     this.operateDialog(this.$t("qrMessage")[0], "confirm")
                     setTimeout(() => {
                         this.cancleBtnClick()
-                    }, 3000)
+                    }, 1500)
                 })
                 .catch((err) => {
                     console.log("qrSave error => ", err)
@@ -251,6 +262,80 @@ export default {
                 this.addRow()
             }
         },
+        excelPaste() {
+            navigator.clipboard.readText()
+                .then((data) => {
+                    const splitData = data.split("\n")
+                    const lineData = []
+                    const pasteData = []
+                    let formCheck = true
+                    splitData.forEach((ele) => {
+                        lineData.push(ele.split("\t").join(",").split("\r")[0])
+                    })
+                    lineData.forEach((ele, eIndex) => {
+                        if (eIndex < lineData.length -1) {
+                            const qrDataList = []
+                            const splitEle = ele.split(",")
+                            if (splitEle.length != this.keyList.length) return formCheck = false
+                            ele.split(",").forEach((element, index) => {
+                                if (this.checkType(index, element)) {
+                                    if (index < ele.length - 1) {
+                                        qrDataList.push(element)
+                                    }
+                                } else {
+                                    formCheck = false
+                                }
+                            })
+                            if (qrDataList.length > 0) {
+                                pasteData.push(qrDataList)
+                            }
+                            if (qrDataList.length > 0) {
+                                const dataParams = {
+                                    crud: "create",
+                                    data_seq: "",
+                                    checked_yn: 1,
+                                    chapter_seq: this.chapter_seq,
+                                    qr_data: qrDataList
+                                }
+                                this.dataList.push(dataParams)
+                            }
+                        }
+                    })
+                    if (formCheck == false) {
+                        return this.operateDialog(this.$t("qrMessage")[9], "error")
+                    }
+                    pasteData.forEach((ele) => {
+                        const dataParams = {
+                            crud: "create",
+                            data_seq: "",
+                            checked_yn: 1,
+                            chapter_seq: this.chapter_seq,
+                            qr_data: ele
+                        }
+                        this.dataList.push(dataParams)
+                    })
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+        checkType(index, pasteInput) {
+            if (this.typeList[index] == "Int") {
+                if (!Number(pasteInput)) {
+                    return false
+                } else {
+                    return true
+                }
+            } else if (this.typeList[index] == "Boolean") {
+                if (pasteInput != "true" || pasteInput !="TRUE" || pasteInput != "false" || pasteInput != "FALSE") {
+                    return false
+                } else {
+                    return true
+                }
+            } else {
+                return true
+            }
+        }
         // 요청에의해 전체 qr 제거기능 제거
         // deleteQR() {
         //     const result = confirm(this.$t("qrMessage")[2])
@@ -495,11 +580,44 @@ export default {
     color: white;
     margin-left: 4px;
 }
+.addBtnWrap {
+    width: auto;
+    height: 100%;
+}
 .addBtn {
     width: 46px;
     height: 100%;
-    background: #1DBFA4 0% 0% no-repeat padding-box;
+    background: #008BCF 0% 0% no-repeat padding-box;
     border-radius: 2px;
     color: white;
+}
+.excelBtnWrap {
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 4px;
+    .excelBtn {
+        width: 100%;
+        height: 100%;
+        background: #206e44 0% 0% no-repeat padding-box;
+        border-radius: 2px;
+        color: white;
+        padding: 0px 4px 0px 4px;
+        // text-align: center;
+    }
+    .excelTxt {
+        width: 250px;
+        position: absolute;
+        z-index: 1;
+        top: 44px;
+        background-color: white;
+        border-radius: 9px;
+        span {
+            margin-left: 4px;
+        }
+        // width: auto;
+        // height: auto;
+    }
 }
 </style>

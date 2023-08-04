@@ -12,7 +12,7 @@
       <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <div class="col-auto row menus">
-        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">QR</a>
+        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>

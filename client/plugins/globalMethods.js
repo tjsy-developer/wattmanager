@@ -44,14 +44,14 @@ Vue.mixin({
 
 					this.timer = setTimeout(() => {
 						window.dispatchEvent(closeDialogEvent)
-					}, 3000)
+					}, 1500)
 				}, 0)
 			} else {
 				clearTimeout(this.timer)
 				window.dispatchEvent(openDialogEvent)
 				this.timer = setTimeout(() => {
 					window.dispatchEvent(closeDialogEvent)
-				}, 3000)
+				}, 1500)
 			}
     }
   }
