@@ -273,11 +273,12 @@ export default {
                         lineData.push(ele.split("\t").join(",").split("\r")[0])
                     })
                     lineData.forEach((ele, eIndex) => {
+                        if (lineData.length == 1) return formCheck = false
                         if (eIndex < lineData.length -1) {
                             const qrDataList = []
                             const splitEle = ele.split(",")
                             if (splitEle.length != this.keyList.length) return formCheck = false
-                            ele.split(",").forEach((element, index) => {
+                            splitEle.forEach((element, index) => {
                                 if (this.checkType(index, element)) {
                                     if (index < ele.length - 1) {
                                         qrDataList.push(element)
@@ -304,16 +305,6 @@ export default {
                     if (formCheck == false) {
                         return this.operateDialog(this.$t("qrMessage")[9], "error")
                     }
-                    pasteData.forEach((ele) => {
-                        const dataParams = {
-                            crud: "create",
-                            data_seq: "",
-                            checked_yn: 1,
-                            chapter_seq: this.chapter_seq,
-                            qr_data: ele
-                        }
-                        this.dataList.push(dataParams)
-                    })
                 })
                 .catch((err) => {
                     console.log(err)
