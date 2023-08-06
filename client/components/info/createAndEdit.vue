@@ -323,7 +323,28 @@ export default {
     // }
   },
   mounted() {
-    this.check2Factor = sessionStorage.getItem("check2Factor")
+    // this.check2Factor = sessionStorage.getItem("check2Factor")
+    this.$axios
+      .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+        en_seq: Number(localStorage.getItem("enSeq")),
+        hq_seq: Number(localStorage.getItem("hqSeq")),
+        br_seq: Number(localStorage.getItem("brSeq"))
+      })
+      .then((response) => {
+        const jsonFactorList = response.data[0].app_detail_json
+        const factorList = JSON.parse(jsonFactorList)
+        this.check2Factor = factorList["2factor"]
+        sessionStorage.setItem("check2Factor", this.check2Factor)
+      })
+      .catch((err) => {
+        if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+          this.check2Factor = "False"
+          sessionStorage.setItem("check2Factor", this.check2Factor)
+        } else {
+          console.log("2Factor Error :", err)
+        }
+      })
+    console.log(this.check2Factor, "?????")
     // dlenc 분기처리!!
     if (window.location.hostname == "dlenc.watttalk.kr") {
       this.useEnterprise = "dlenc"

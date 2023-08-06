@@ -56,7 +56,7 @@
                             <span>{{ $t("excelPaste")[1] }}<br>{{ $t("excelPaste")[2] }}</span>
                         </div>
                     </div>
-                    <button class="addBtn" @click="addRow(10)">{{ $t("createAndEditQr")[6] }}</button>
+                    <button class="addBtn" @click="addRow(5)">{{ $t("createAndEditQr")[6] }}</button>
                 </div>
             </div>
         </div>
@@ -268,19 +268,28 @@ export default {
                     const splitData = data.split("\n")
                     const lineData = []
                     const pasteData = []
+                    const nullIndex = []
                     let formCheck = true
+                    this.dataList.forEach((data, dataIndex) => {
+                        const JsonData = JSON.stringify(data.qr_data)
+                        const checkAllNull = JsonData.split('""').join("").split(",").join("").split("[]").join("")
+                        if (checkAllNull == "" && data.crud == "create") return nullIndex.push(dataIndex)
+                    })
+                    // 빈칸 제거
+                    this.dataList.splice(nullIndex[0], nullIndex.length)
                     splitData.forEach((ele) => {
-                        lineData.push(ele.split("\t").join(",").split("\r")[0])
+                        lineData.push(ele.split("\t").join("\.,").split("\r")[0])
                     })
                     lineData.forEach((ele, eIndex) => {
                         if (lineData.length == 1) return formCheck = false
                         if (eIndex < lineData.length -1) {
                             const qrDataList = []
-                            const splitEle = ele.split(",")
+                            const splitEle = ele.split("\.,")
                             if (splitEle.length != this.keyList.length) return formCheck = false
                             splitEle.forEach((element, index) => {
                                 if (this.checkType(index, element)) {
                                     if (index < ele.length - 1) {
+                                        if (element == "") return formCheck = false
                                         qrDataList.push(element)
                                     }
                                 } else {
@@ -290,20 +299,23 @@ export default {
                             if (qrDataList.length > 0) {
                                 pasteData.push(qrDataList)
                             }
-                            if (qrDataList.length > 0) {
-                                const dataParams = {
-                                    crud: "create",
-                                    data_seq: "",
-                                    checked_yn: 1,
-                                    chapter_seq: this.chapter_seq,
-                                    qr_data: qrDataList
-                                }
-                                this.dataList.push(dataParams)
-                            }
                         }
                     })
+                    console.log(pasteData)
                     if (formCheck == false) {
                         return this.operateDialog(this.$t("qrMessage")[9], "error")
+                    } else {
+                        pasteData.forEach((ele) => {
+                            const dataParams = {
+                                crud: "create",
+                                data_seq: "",
+                                checked_yn: 1,
+                                chapter_seq: this.chapter_seq,
+                                qr_data: ele
+                            }
+                            this.dataList.push(dataParams)
+                        })
+                        this.addRow(nullIndex.length)
                     }
                 })
                 .catch((err) => {
@@ -599,6 +611,7 @@ export default {
     }
     .excelTxt {
         width: 250px;
+        padding: 5px;
         position: absolute;
         z-index: 1;
         top: 44px;
@@ -607,8 +620,6 @@ export default {
         span {
             margin-left: 4px;
         }
-        // width: auto;
-        // height: auto;
     }
 }
 </style>
