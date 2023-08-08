@@ -28,23 +28,23 @@
                 </div>
             </div>
             <div class="divisionLine"></div>
-            <div class="QRWraps">
-                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="QRWrap" style="display: grid; justify-items: center;">
+            <div class="col-12 justify-center QRWraps">
+                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
                     <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
                     <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
                     <input type="checkbox" v-model="content.checkYN" @change="changeState()" />
                 </div>
             </div>
-            <!-- 전체 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
-            <div class="QRWraps" id="printAll" style="z-index: -9999; position: absolute;">
-                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="QRWrap" style="display: grid; justify-items: center;">
+            <!-- 전체 qr 출력을 위한 코드. -->
+            <div class="col-12 justify-center QRWraps" id="printAll" style="z-index: -9999; position: absolute;">
+                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
                     <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
                     <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
                 </div>
             </div>
             <!-- 선택 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
-            <div class="QRWraps" id="printSelected" style="z-index: -9999; position: absolute;">
-                <div v-if="isCreated" v-for="(content, key) in selectedList" :key="key" class="QRWrap" style="display: grid; justify-items: center;">
+            <div class="col-12 justify-center QRWraps" id="printSelected" style="z-index: -9999; position: absolute;">
+                <div v-if="isCreated" v-for="(content, key) in selectedList" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
                     <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
                     <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
                 </div>
@@ -95,6 +95,7 @@ export default {
                     data.chapter_list.key_list.forEach((ele) => {
                         if (ele.key_description == qrTitle)
                         {
+                            // qr 제목 지정
                             this.qrTitleSeq = ele.key_seq
                         }
                     })
@@ -113,6 +114,7 @@ export default {
                 .then((res) => {
                     console.log(res)
                     const data = res.data.data.qr_list
+                    // qr data가 존재하지 않는 경우
                     if (data.data_list == undefined){
                         this.checkNull = true
                         return this.operateDialog(this.$t("printQR")[7], "error")
@@ -123,6 +125,7 @@ export default {
                             key_seq: ele.key_seq,
                             key_value: ele.key_value
                         }
+                        // 키 리스 지정
                         keyList.push(keyInfo)
                     })
                     // console.log(data.data_list)
@@ -130,6 +133,7 @@ export default {
                         const qrData = JSON.parse(ele.qr_data)
                         const qrDetailList = []
                         keyList.forEach((element) => {
+                            // qr data = "키값":"qrdata"
                             const qrDetail = JSON.stringify(element.key_value) + ":" + JSON.stringify(qrData[element.key_seq])
                             qrDetailList.push(qrDetail)
                         })
@@ -150,6 +154,7 @@ export default {
         goBackBtnClick() {
             window.location.href = document.referrer
         },
+        // 전체 qr 만드는 곳
         createQR() {
             let enterQRInfo
             if (this.checkNull) this.operateDialog(this.$t("printQR")[7], "error")
@@ -187,6 +192,7 @@ export default {
             }
         },
         changeState() {
+            // 선택 qr 지정 부분
             this.selectedList = []
             this.qrCodeImg.forEach((ele) => {
                 if (ele.checkYN == true) {
@@ -200,6 +206,7 @@ export default {
         },
         printQR(type) {
             let params
+            // 전체 qr 출력
             if (type == 0) {
                 params = {
                     printable: "printAll",
@@ -208,6 +215,7 @@ export default {
                     scanStyles: false,
                 }
             } else {
+                // 선택 qr 출력
                 params = {
                     printable: "printSelected",
                     type: "html",
@@ -281,6 +289,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
     &__header {
         width: 100%;
         height: 80px;

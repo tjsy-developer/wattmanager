@@ -70,7 +70,7 @@
 
 import axiosJson from "@/assets/jsons/axios"
 import getInfo from "@/assets/scripts/info/getInfo"
-import changePhoneModal from "@/components/info/changePhoneModal"
+import { danalVerify } from "@/assets/scripts/danalVerify"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 
@@ -190,32 +190,13 @@ export default {
       }
     },
     changePhoneBtnClick() {
-      const modalsContainerStyle =
-        document.getElementById("modalsContainer").style;
-      modalsContainerStyle.display = "block"
-      const modalParameter = {
-        phone: this.compData.selected[7],
-        data: this.compData.selected,
-        id: this.compData.selected[0]
+      const params = {
+          birthday: this.compData.selected[7],
+          compData: this.compData.selected,
+          lang: sessionStorage.getItem("languageCode"),
+          id: this.compData.selected[0]
       }
-      this.$modal.show(
-        changePhoneModal,
-        {
-          propsData: modalParameter
-        },
-        {
-          name: "changePhoneModal",
-          width: 600,
-          height: 200,
-          clickToClose: false,
-          adaptive: true,
-        },
-        {
-          "before-close": () => {
-            modalsContainerStyle.display = "none";
-          },
-        }
-      )
+      danalVerify(params, 2)
     },
     // - 앱정보 복사
     appInfoCopy() {

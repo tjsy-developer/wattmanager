@@ -206,12 +206,11 @@ function singUpCheck(phoneNum, birthday) {
     sessionStorage.setItem("phoneNum", phoneNum)
     window.dispatchEvent(new Event("sessionStorageUpdated"))
 }
-function changePhone(logInInfo) {
+function changePhone(logInInfo, phoneNum) {
     // 휴대폰 번호 변경 시 로직
     sessionStorage.setItem("verify", true)
-    sessionStorage.setItem("phoneNum", logInInfo.phone)
+    sessionStorage.setItem("phoneNum", phoneNum)
     window.dispatchEvent(new Event("sessionStorageUpdated"))
-    logInInfo.closeFunc()
 }
 // langCode와 type에 따라서 alert문구 지정
 function alertText(type, langCode) {

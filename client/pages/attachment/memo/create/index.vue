@@ -121,8 +121,8 @@ export default {
 				}
 			})
 			.catch((err) => {
-				
 				console.log(err)
+				self.showModal("impossibleCodec")
 			})
 		},
 		checkExtension(e) {

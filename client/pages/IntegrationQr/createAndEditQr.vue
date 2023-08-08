@@ -99,6 +99,7 @@ export default {
                     const keyData = data.key_list
                     const qrData = data.data_list
                     if (keyData != null) {
+                        // 키 셋팅
                         keyData.forEach((ele) => {
                             const keyInfo = {
                                 key_seq: ele.key_seq,
@@ -110,10 +111,12 @@ export default {
                             this.keyList.push(keyInfo)
                         })
                         if (qrData != null) {
+                            // QR 값 등록 가져오는 부분
                             qrData.forEach((ele, index) => {
                                 const qrData = JSON.parse(ele.qr_data)
                                 const qrValue = []
                                 this.keyList.forEach((element, i) => {
+                                    // key_seq에 맞춰 data를 넣는다. (행을 일치시키기 위함)
                                     qrValue.push(qrData[element.key_seq])
                                 })
                                 const qrInfo = {
@@ -125,6 +128,7 @@ export default {
                                 this.dataList.push(qrInfo)
                             })
                         } else {
+                            // qrData가 없는 경우 빈칸 1개 자동 생성
                             const qrValue = []
                             this.keyList.forEach((ele) => {
                                 qrValue.push("")
@@ -149,6 +153,7 @@ export default {
             window.location.href = document.referrer
         },
         changeInput(titleIndex, qrIndex, event) {
+            // input type 확인 및 일치 여부 확인
             if (event.target.value) {
                 if (this.keyList[qrIndex].key_type == "Int") {
                     if (!Number(event.target.value)) {
@@ -181,10 +186,12 @@ export default {
                 const test = JSON.stringify(ele.qr_data)
                 // 모두 공백인지 확인
                 const checkAllNull = test.split('""').join("").split(",").join("").split("[]").join("")
+                // 모두 공백인 경우 pass
                 if (checkAllNull == "") return
                 ele.qr_data.forEach((element, index) => {
                     const keySeq = String(this.keyList[index].key_seq)
                     let inputForm
+                    // 타입 확인
                     if (this.keyList[index].key_type == "Boolean") {
                         if (element == undefined || element == "") {
                             element = false
@@ -194,6 +201,7 @@ export default {
                             return checkNull = true
                         }
                     }
+                    // Json 문자열로 만들어서 넣어준다
                     inputForm = JSON.stringify(keySeq) + ":" + JSON.stringify(element)
                     qrInput.push(inputForm)
                 })
@@ -226,8 +234,10 @@ export default {
                 })
         },
         addRow(count) {
+            // 행 추가
             for (let iLoop = 0; iLoop < count; ++iLoop) {
                 const qrSetting = []
+                // keyList 갯수 만큼 data 빈값 추가
                 this.keyList.forEach((ele) => {
                     qrSetting.push("")
                 })
@@ -263,13 +273,16 @@ export default {
             }
         },
         excelPaste() {
+            // clipboard의 text를 읽어온다.
             navigator.clipboard.readText()
                 .then((data) => {
+                    // 엑셀 복사 시 열 분리가 \n 으로 되어있다.
                     const splitData = data.split("\n")
                     const lineData = []
                     const pasteData = []
                     const nullIndex = []
                     let formCheck = true
+                    // 빈칸 확인 및 빈칸이 있으면 저장
                     this.dataList.forEach((data, dataIndex) => {
                         const JsonData = JSON.stringify(data.qr_data)
                         const checkAllNull = JsonData.split('""').join("").split(",").join("").split("[]").join("")
@@ -277,31 +290,39 @@ export default {
                     })
                     // 빈칸 제거
                     this.dataList.splice(nullIndex[0], nullIndex.length)
+                    // 엑셀에서 행 구분이 \t 와 \r로 이루어져있어 분리 해준다
+                    // 엑셀에서 "," 가 사용 가능하기에 분리된 것을 join할 때는 \., 이라는 특수문자로 해준다
                     splitData.forEach((ele) => {
                         lineData.push(ele.split("\t").join("\.,").split("\r")[0])
                     })
                     lineData.forEach((ele, eIndex) => {
+                        // 1인 경우는 아무것도 없는 경우이다.
+                        // 분리를 하면 자동으로 빈 배열 하나가 생성된다.
                         if (lineData.length == 1) return formCheck = false
+                        // 빈 배열 전까지 반복
                         if (eIndex < lineData.length -1) {
                             const qrDataList = []
                             const splitEle = ele.split("\.,")
+                            // 두개의 길이가 일치 하지 않으면, 형식이 잘못 된 것이다.
                             if (splitEle.length != this.keyList.length) return formCheck = false
                             splitEle.forEach((element, index) => {
                                 if (this.checkType(index, element)) {
+                                    // 분리하면 공백 값이 하나 생긴다.
                                     if (index < ele.length - 1) {
                                         if (element == "") return formCheck = false
+                                        // qrDataList에 한개의 열에대한 행 값 하나하나를 넣어준다.
                                         qrDataList.push(element)
                                     }
                                 } else {
                                     formCheck = false
                                 }
                             })
+                            // pasteData에 열들을 넣어준다
                             if (qrDataList.length > 0) {
                                 pasteData.push(qrDataList)
                             }
                         }
                     })
-                    console.log(pasteData)
                     if (formCheck == false) {
                         return this.operateDialog(this.$t("qrMessage")[9], "error")
                     } else {
@@ -315,6 +336,7 @@ export default {
                             }
                             this.dataList.push(dataParams)
                         })
+                        // 빈 칸들을 제거한 만큼 더해준다
                         this.addRow(nullIndex.length)
                     }
                 })

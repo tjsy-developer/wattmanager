@@ -122,7 +122,9 @@ export default {
             const keyParams =  new Array()
             let checkNull = false
             this.qrKeyData.forEach((ele) => {
+                // 모두 공백인 경우 패스
                 if (!ele.key_value && !ele.key_type && !ele.key_description) return
+                // 일부 값만 공백인 경우 alert
                 if (!ele.key_value || !ele.key_type || !ele.key_description) {
                     checkNull = true
                 }
@@ -136,6 +138,7 @@ export default {
                 keyParams.push(paramsInfo)
             })
             if (checkNull) {
+                // 토스트 모듈 실행
                 return this.operateDialog(this.$t("qrMessage")[7], "error")
             }
             this.$axios
@@ -150,6 +153,7 @@ export default {
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
                         this.operateDialog(this.$t("qrMessage")[0], "confirm")
+                        // 토스트 모듈 실행 후 뒤로 가기
                         setTimeout(() => {
                             this.cancleBtnClick()
                         }, 1500)
@@ -226,6 +230,7 @@ export default {
                 })
         },
         changeSelectOption() {
+            // 키 설명에 따라 QR 제목키 지정이 바뀌게 셋팅
             this.qrTitle= []
             this.qrKeyData.forEach((ele, index) => {
                 if (ele.key_description != "") {
