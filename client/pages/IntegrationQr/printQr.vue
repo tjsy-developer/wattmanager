@@ -36,17 +36,19 @@
                 </div>
             </div>
             <!-- 전체 qr 출력을 위한 코드. -->
-            <div class="col-12 justify-center QRWraps" id="printAll" style="z-index: -9999; position: absolute;">
-                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
-                    <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
-                    <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
+            <div class="printWrap">
+                <div class="col-12 justify-center QRWraps" id="printAll">
+                    <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
+                        <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
+                        <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
+                    </div>
                 </div>
-            </div>
-            <!-- 선택 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
-            <div class="col-12 justify-center QRWraps" id="printSelected" style="z-index: -9999; position: absolute;">
-                <div v-if="isCreated" v-for="(content, key) in selectedList" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
-                    <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
-                    <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
+                <!-- 선택 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
+                <div class="col-12 justify-center QRWraps" id="printSelected">
+                    <div v-if="isCreated" v-for="(content, key) in selectedList" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
+                        <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
+                        <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -311,8 +313,6 @@ export default {
     }
     .QRWrap {
         display: grid;
-        flex-direction: row;
-        justify-items: center;
         padding: 24px 24px 0px 24px;
         >img{
             margin-bottom: 2px;
@@ -334,6 +334,25 @@ export default {
         padding: 7px;
         background: #008BCF 0% 0% no-repeat padding-box;
         color: white;
+    }
+}
+.printWrap {
+    width: 100%;
+    z-index: -9999;
+    position: absolute;
+    div:nth-child(0) {
+        width: 100%;
+    }
+    .QRWrap {
+        display: inline-block;
+        padding: 10px 10px 10px;
+    }
+    .QRWrap>img {
+        display: block;
+    }
+    .QRWrap>span {
+        display: block;
+        text-align: center;
     }
 }
 .adjustQR {

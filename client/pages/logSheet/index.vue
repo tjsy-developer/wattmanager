@@ -7,7 +7,7 @@
         layout: "main",
         data () {
             return {
-                logsheetURL: process.env.logsheetURL,
+                logsheetURL: "",
                 checkLoad: false,
                 checked: false
             }
