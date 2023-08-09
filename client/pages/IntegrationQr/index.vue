@@ -1,6 +1,6 @@
 <template>
     <div class="qrMain">
-        <div class="qrMain__header">
+        <!-- <div class="qrMain__header">
             <span>{{ $t("integrationQr")[0] }}</span>
         </div>
         <div class="qrMain__search">
@@ -41,7 +41,7 @@
             <div class="btnWrap">
                 <button class="createBtn" @click="createAndEditUsage()">+ {{ $t("integrationQr")[8] }}</button>
             </div>
-        </div>
+        </div> -->
         <!-- <pagination class="col-12" :compData="test"></pagination> -->
     </div>
 </template>
