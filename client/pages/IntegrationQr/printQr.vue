@@ -215,7 +215,7 @@ export default {
                 params = {
                     printable: "printAll",
                     type: "html",
-                    css: ".QRWrap {display: inline-block; padding: 10px 10px 10px;}, .QRWrap>img {display: block;} .QRWarp>span{diplay: block; text-align: center;}",
+                    css: "",
                     scanStyles: false,
                 }
             } else {
