@@ -366,7 +366,8 @@ export default {
                   device_type: this.deviceTypeCompData.selectedValue,
                   phone_number: this.phoneNum,
                   birthday: this.birthday,
-                  certification_uniquekey: this.certificationUniqueKey
+                  certification_uniquekey: this.certificationUniqueKey,
+                  personal_information_checked: 1
                 })
                 .then(function(response) {
                   console.log(response)

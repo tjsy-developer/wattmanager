@@ -6,11 +6,16 @@
     <loadingBar v-if="fileUploadStatus" @setLoadingBar="set"></loadingBar>
     <selectLoadingBar v-if="inqueryStatus" @selectLoadingBar="setInqueryStatus"></selectLoadingBar>
     <mainFooter></mainFooter>
+    <toastModule />
   </div>
 </template>
 
 <script>
+import toastModule from "@/components/module/toast.vue"
 export default {
+  components: {
+        toastModule
+  },
   head() {
     return {
       title: this.$t("login logo text")

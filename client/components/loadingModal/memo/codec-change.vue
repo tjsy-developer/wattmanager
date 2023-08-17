@@ -70,7 +70,7 @@ export default {
             
             this.codecStep = 1
             this.$axios
-			.post(process.env.backendURL + "fileupload/video_encoding", formData, {
+			.post(process.env.fileUploadBackend + "fileupload/video_encoding", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": localStorage.getItem("jwt")

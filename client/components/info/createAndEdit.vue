@@ -70,7 +70,7 @@
 
 import axiosJson from "@/assets/jsons/axios"
 import getInfo from "@/assets/scripts/info/getInfo"
-import changePhoneModal from "@/components/info/changePhoneModal"
+import { danalVerify } from "@/assets/scripts/danalVerify"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 
@@ -190,32 +190,13 @@ export default {
       }
     },
     changePhoneBtnClick() {
-      const modalsContainerStyle =
-        document.getElementById("modalsContainer").style;
-      modalsContainerStyle.display = "block"
-      const modalParameter = {
-        phone: this.compData.selected[7],
-        data: this.compData.selected,
-        id: this.compData.selected[0]
+      const params = {
+          birthday: this.compData.selected[7],
+          compData: this.compData.selected,
+          lang: sessionStorage.getItem("languageCode"),
+          id: this.compData.selected[0]
       }
-      this.$modal.show(
-        changePhoneModal,
-        {
-          propsData: modalParameter
-        },
-        {
-          name: "changePhoneModal",
-          width: 600,
-          height: 200,
-          clickToClose: false,
-          adaptive: true,
-        },
-        {
-          "before-close": () => {
-            modalsContainerStyle.display = "none";
-          },
-        }
-      )
+      danalVerify(params, 2)
     },
     // - 앱정보 복사
     appInfoCopy() {
@@ -323,7 +304,28 @@ export default {
     // }
   },
   mounted() {
-    this.check2Factor = sessionStorage.getItem("check2Factor")
+    // this.check2Factor = sessionStorage.getItem("check2Factor")
+    this.$axios
+      .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+        en_seq: Number(localStorage.getItem("enSeq")),
+        hq_seq: Number(localStorage.getItem("hqSeq")),
+        br_seq: Number(localStorage.getItem("brSeq"))
+      })
+      .then((response) => {
+        const jsonFactorList = response.data[0].app_detail_json
+        const factorList = JSON.parse(jsonFactorList)
+        this.check2Factor = factorList["2factor"]
+        sessionStorage.setItem("check2Factor", this.check2Factor)
+      })
+      .catch((err) => {
+        if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+          this.check2Factor = "False"
+          sessionStorage.setItem("check2Factor", this.check2Factor)
+        } else {
+          console.log("2Factor Error :", err)
+        }
+      })
+    console.log(this.check2Factor, "?????")
     // dlenc 분기처리!!
     if (window.location.hostname == "dlenc.watttalk.kr") {
       this.useEnterprise = "dlenc"

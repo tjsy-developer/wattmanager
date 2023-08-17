@@ -34,7 +34,10 @@ export const danalVerify = (logInData, type) => {
                 let params
                 // type이 1 인경우 회원가입. axios 통신시 birthday만 넘겨주면 됨
                 if (type == 1) {
-                    params = logInData.birthday
+                    params = {
+                        birthday:logInData.birthday,
+                        phoneNum: logInData.phone
+                    }
                 } else {
                     // type이 0 || 2 인 경우. 순서대로 로그인 || 휴대폰번호 변경. id를 보내줘야한다
                     params = logInData.id
@@ -42,10 +45,10 @@ export const danalVerify = (logInData, type) => {
                 // 인증 정보를 가져오는 부분
                 const verified = await getUserInfo(rsp.imp_uid, params, type)
                 // 인증 정보를 갖고온 후 타는 로직
-                if (verified == true) {
+                if (verified.result == true) {
                     alertTxt = alertText("match", logInData.lang)
                     alert(alertTxt)
-                    afterVerify(type, logInData, logInData.birthday)
+                    afterVerify(type, logInData, logInData.birthday, verified.phone_number)
                 } else {
                     alertTxt = alertText("unmatch", logInData.lang)
                     alert(alertTxt)
@@ -61,7 +64,7 @@ export const danalVerify = (logInData, type) => {
     )
 }
 // 인증 성공 후 type별 실행 function
-function afterVerify(type, logInInfo, birthday) {
+function afterVerify(type, logInInfo, birthday, phoneNum) {
     if (type == 0) {
         // 로그인
         login(logInInfo)
@@ -70,7 +73,7 @@ function afterVerify(type, logInInfo, birthday) {
         singUpCheck(logInInfo.phone, birthday)
     } else if (type == 2) {
         // 휴대폰번호변경
-        changePhone(logInInfo)
+        changePhone(logInInfo, phoneNum)
     }
 }
 // 본인 인증 후 로그인
@@ -151,13 +154,22 @@ async function getUserInfo(uid, params, type) {
                 if (res) {
                     // birthday return 형식이 yyyy-mm-dd
                     const birth = res.birthday.replace(/-/g, '')
+                    const phoneNumber = res.phone_number
                     // return받은 생년월일과, 사용자가 입력한 생년월일을 비교해 동일인물인지 확인
                     // 추후 휴대폰 번호도 return 받으면 비교 같이 해야한다.
-                    if (birth == params) {
+                    if (birth == params.birthday && phoneNumber == params.phoneNum) {
                         sessionStorage.setItem("uniqueKey", res.certification_uniquekey)
-                        result = true
+                        const returnData = {
+                            result: true,
+                            phone_number: phoneNumber
+                        }
+                        result = returnData
                     } else {
-                        result = false
+                        const returnData = {
+                            result: false,
+                            phone_number: phoneNumber
+                        }
+                        result = returnData
                     }
                 }
             })
@@ -176,7 +188,11 @@ async function getUserInfo(uid, params, type) {
         })
         .then((response) => {
             // backend에서 db 정보와 iamport 정보를 비교해서 일치하는지 아닌지 보내준다.
-            result = response.data
+            const returnData = response.data
+            result = {
+                phone_number: returnData.phone_number,
+                result: returnData.result
+            }
         })
         .catch((err) => {
             console.log("comparedUserInfo Error : ", err)
@@ -190,12 +206,11 @@ function singUpCheck(phoneNum, birthday) {
     sessionStorage.setItem("phoneNum", phoneNum)
     window.dispatchEvent(new Event("sessionStorageUpdated"))
 }
-function changePhone(logInInfo) {
+function changePhone(logInInfo, phoneNum) {
     // 휴대폰 번호 변경 시 로직
     sessionStorage.setItem("verify", true)
-    sessionStorage.setItem("phoneNum", logInInfo.phone)
+    sessionStorage.setItem("phoneNum", phoneNum)
     window.dispatchEvent(new Event("sessionStorageUpdated"))
-    logInInfo.closeFunc()
 }
 // langCode와 type에 따라서 alert문구 지정
 function alertText(type, langCode) {

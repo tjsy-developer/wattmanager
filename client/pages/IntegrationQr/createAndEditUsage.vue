@@ -81,7 +81,6 @@ export default {
     },
     mounted() {
         this.chapter_seq = Number(localStorage.getItem("chapter_seq"))
-        localStorage.removeItem("chapter_seq")
         this.getusageInfo()
     },
     methods: {
@@ -123,6 +122,9 @@ export default {
             const keyParams =  new Array()
             let checkNull = false
             this.qrKeyData.forEach((ele) => {
+                // 모두 공백인 경우 패스
+                if (!ele.key_value && !ele.key_type && !ele.key_description) return
+                // 일부 값만 공백인 경우 alert
                 if (!ele.key_value || !ele.key_type || !ele.key_description) {
                     checkNull = true
                 }
@@ -133,11 +135,11 @@ export default {
                     key_type: ele.key_type,
                     key_description: ele.key_description
                 }
-                console.log(ele.crud)
                 keyParams.push(paramsInfo)
             })
             if (checkNull) {
-                return alert(this.$t("qrMessage")[7])
+                // 토스트 모듈 실행
+                return this.operateDialog(this.$t("qrMessage")[7], "error")
             }
             this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.chapterSave, {
@@ -150,12 +152,16 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
-                        alert(this.$t("qrMessage")[0])
+                        this.operateDialog(this.$t("qrMessage")[0], "confirm")
+                        // 토스트 모듈 실행 후 뒤로 가기
+                        setTimeout(() => {
+                            this.cancleBtnClick()
+                        }, 1500)
                     }
                 })
                 .catch((err) => {
                     console.log("chapterSave fail =>", err)
-                    alert(this.$t("qrMessage")[1])
+                    this.operateDialog(this.$t("qrMessage")[1], "error")
                 })
         },
         addRow() {
@@ -181,7 +187,7 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
-                        alert(this.$t("qrMessage")[3])
+                        this.operateDialog(this.$t("qrMessage")[3], "confirm")
                         this.qrKeyData.splice(index, 1)
                         this.changeSelectOption()
                         if (this.qrKeyData.length == 0) {
@@ -190,7 +196,7 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    alert(this.$t("qrMessage")[4])
+                    this.operateDialog(this.$t("qrMessage")[4], "error")
                     console.log("qrKeyDelete Fail => ", err)
                 })
             } else {
@@ -199,7 +205,7 @@ export default {
                 if (this.qrKeyData.length == 0) {
                     this.addRow()
                 }
-                alert(this.$t("qrMessage")[3])
+                this.operateDialog(this.$t("qrMessage")[3], "confirm")
             }
         },
         deleteUsage() {
@@ -213,15 +219,18 @@ export default {
                 })
                 .then((res) => {
                     console.log(res)
-                    alert(this.$t("qrMessage")[3])
-                    window.location.href = document.referrer
+                    this.operateDialog(this.$t("qrMessage")[3], "confirm")
+                    setTimeout(() => {
+                        window.location.href = document.referrer
+                    }, 1500)
                 })
                 .catch((err) => {
                     console.log("delete Usage Fail => ", err)
-                    alert(this.$t("qrMessage")[4])
+                    this.operateDialog(this.$t("qrMessage")[4], "error")
                 })
         },
         changeSelectOption() {
+            // 키 설명에 따라 QR 제목키 지정이 바뀌게 셋팅
             this.qrTitle= []
             this.qrKeyData.forEach((ele, index) => {
                 if (ele.key_description != "") {

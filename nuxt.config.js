@@ -127,7 +127,7 @@ export default {
    ** Web Server configuration
    */
   server: {
-    // host: "0.0.0.0",
+    host: "0.0.0.0",
     port: 8223
   },
   publicRuntimeConfig: {
