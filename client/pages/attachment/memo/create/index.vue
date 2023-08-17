@@ -94,7 +94,7 @@ export default {
 			// const res = {RESULT : '1000', CODEC_NAME: 'hevc'}
 
 			this.$axios
-			.post(process.env.backendURL + "fileupload/get_codec_name", formData, {
+			.post(process.env.fileUploadBackend + "fileupload/get_codec_name", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": localStorage.getItem("jwt")
