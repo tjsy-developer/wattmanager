@@ -167,7 +167,7 @@ export default {
                     this.dataList[titleIndex].qr_data[qrIndex] = event.target.value
                 }
                 if (this.keyList[qrIndex].key_type == "Boolean") {
-                    if (event.target.value == "true" || event.target.value == "false") {
+                    if (event.target.value == "true" || event.target.value == "false" || event.target.value == "TRUE" || event.target.value == "FALSE") {
                         this.dataList[titleIndex].qr_data[qrIndex] = event.target.value
                     } else {
                         this.operateDialog(this.$t("qrMessage")[8], "error")
@@ -352,10 +352,10 @@ export default {
                     return true
                 }
             } else if (this.typeList[index] == "Boolean") {
-                if (pasteInput != "true" || pasteInput !="TRUE" || pasteInput != "false" || pasteInput != "FALSE") {
-                    return false
-                } else {
+                if (pasteInput == "true" || pasteInput =="TRUE" || pasteInput == "false" || pasteInput == "FALSE") {
                     return true
+                } else {
+                    return false
                 }
             } else {
                 return true
