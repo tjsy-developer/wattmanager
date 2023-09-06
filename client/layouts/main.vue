@@ -45,6 +45,10 @@ export default {
       sessionStorage.setItem("languageCode", getBrowserLanguageCode)
       this.$i18n.locale = getBrowserLanguageCode
     } else this.$i18n.locale = getLanguageCode
+    if (!this.$i18n.locale || this.$i18n.locale == null) {
+      this.$i18n.locale = "ko"
+      sessionStorage.setItem("languageCode", "ko")
+    }
   },
   mounted() {
     this.isLoaded = true
