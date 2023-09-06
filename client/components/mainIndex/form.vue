@@ -531,10 +531,7 @@ export default {
                     } else {
                       if (window.location.hostname == "kepco.watttalk.kr") {
                         window.open(
-                          "https://" +
-                            window.location.hostname +
-                            ":8224/login/login-check?jwt_token=" +
-                            self.params,
+                          kepcoLogin + self.params,
                           "_self"
                         );
                       } else {

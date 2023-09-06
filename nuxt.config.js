@@ -155,6 +155,7 @@ export default {
     logsheetURL: process.env.logsheetURL,
     logsheet: process.env.logsheet,
     impId: process.env.impId,
-    pg: process.env.pg
+    pg: process.env.pg,
+    kepcoLogin: process.env.kepcoLogin
   }
 }

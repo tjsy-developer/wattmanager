@@ -26,7 +26,8 @@ logsheet=true
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=""
 pg=""
-
+# kepco 로그인 주소 관리
+kepcoLogin="https://kepco.watttalk.kr:8324/login/login-check?jwt_token="
 
 # qr 값에 따라서 tab 변동
 
