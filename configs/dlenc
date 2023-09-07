@@ -8,7 +8,7 @@ powertalkLogin="https://dlenc.watttalk.kr:8102/login/login-check?jwt_token="
 powermemo=https://dlenc.watttalk.kr/sftp/dlenc
 powermemoSavefolder=/home/sftproot/dlenc/
 qr_filePath=https://dlenc.watttalk.kr/storage/watttalk/dlenc/QR/folder
-qr=safety
+qr=default
 att_access_user=true
 att_videoPlayPath=https://dlenc.watttalk.kr/Storage/powertalk/dev/Dashs/Src/
 att_filePath=https://dlenc.watttalk.kr/storage/watttalk/dlenc/filebox/

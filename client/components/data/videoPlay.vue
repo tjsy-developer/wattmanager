@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { MediaPlayer } from "dashjs"
+// import { MediaPlayer } from "dashjs"
 import showShareModal from "@/assets/scripts/data/showShareModal"
 import rightListInfiniteScroll from "@/components/data/rightListInfiniteScroll"
 import favorite from "@/assets/scripts/data/favorite"
@@ -115,7 +115,10 @@ import favorite from "@/assets/scripts/data/favorite"
 import axiosJson from "@/assets/jsons/axios"
 import fileDownload from "@/assets/scripts/data/download"
 
-
+if (process.client) {
+  const { MediaPlayer } = require('dashjs');
+    // dashjs 또는 다른 클라이언트 사이드 라이브러리 사용
+}
 export default {
   components: { rightListInfiniteScroll },
   props: ["compData"],
