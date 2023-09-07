@@ -408,7 +408,11 @@ export default {
         })
         .then(function (response) {
           // eslint-disable-next-line no-unused-vars
-          const lang = sessionStorage.getItem("languageCode");
+          let lang = sessionStorage.getItem("languageCode");
+          if (!lang || lang == null || lang == "null"){
+            lang = "ko"
+            sessionStorage.setItem("languageCode", "ko")
+          }
 
           if (response.data[0] === 1) {
             /* sessionStorage ID 기억기능 추가 */
@@ -531,10 +535,7 @@ export default {
                     } else {
                       if (window.location.hostname == "kepco.watttalk.kr") {
                         window.open(
-                          "https://" +
-                            window.location.hostname +
-                            ":8224/login/login-check?jwt_token=" +
-                            self.params,
+                          process.env.kepcoLogin + self.params,
                           "_self"
                         );
                       } else {

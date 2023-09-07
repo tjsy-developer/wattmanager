@@ -87,7 +87,7 @@ export default {
             // 한국전력공사 로고이미지 변경
           if(window.location.hostname == 'kepco.watttalk.kr') {
              window.open(
-              'https://' + window.location.hostname + ':8224/login/login-check?jwt_token=' +
+              process.env.kepcoLogin +
                 jwtToken +
                 "&login_type=3&lang=" +
                 lang,
