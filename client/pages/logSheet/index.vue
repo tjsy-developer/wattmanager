@@ -1,8 +1,5 @@
 <template>
-    <div class="mainWrap">
-        <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL"></iframe>
-        <button class="refreshBtn" @click="refresh()">새로고침</button>
-    </div>
+    <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL"></iframe>
 </template>
 
 <script>
@@ -15,9 +12,9 @@ import footer from "@/components/main/footer"
         data () {
             return {
                 logsheetURL: "",
-                bodyHeight: "",
-                wattmanger2Height: 0,
-                refreshURL: ""
+                // bodyHeight: "",
+                // wattmanger2Height: 0,
+                // refreshURL: ""
             }
         },
         mounted() {
@@ -29,26 +26,26 @@ import footer from "@/components/main/footer"
                 "&hq_seq=" + localStorage.getItem("hqSeq") +
                 "&br_seq="  + localStorage.getItem("brSeq") +
                 "&version=1"
-            this.refreshURL = this.logsheetURL
-            window.addEventListener("message", (e) => {
-                const checkURL = process.env.logsheetURL.split("/")
-                const originURL = checkURL[0] + "//" + checkURL[2]
-                if (e.origin == originURL) {
-                    this.childData(e.data)
-                }
-            })
+            // this.refreshURL = this.logsheetURL
+            // window.addEventListener("message", (e) => {
+            //     const checkURL = process.env.logsheetURL.split("/")
+            //     const originURL = checkURL[0] + "//" + checkURL[2]
+            //     if (e.origin == originURL) {
+            //         this.childData(e.data)
+            //     }
+            // })
         },
         methods: {
-            childData(params) {
-                const url = params.current_path
-                if (url != "/wattmanager2/safetycheck") {
-                    const originURL = process.env.logsheetURL.split("/")
-                    this.refreshURL  = originURL[0] + "//" + originURL[2] + url
-                }
-            },
-            refresh() {
-                this.logsheetURL = this.refreshURL
-            }
+            // childData(params) {
+            //     const url = params.current_path
+            //     if (url != "/wattmanager2/safetycheck") {
+            //         const originURL = process.env.logsheetURL.split("/")
+            //         this.refreshURL  = originURL[0] + "//" + originURL[2] + url
+            //     }
+            // },
+            // refresh() {
+            //     this.logsheetURL = this.refreshURL
+            // }
         },
         beforeDestroy() {
             // sessionStorage.removeItem("logsheetURL")
