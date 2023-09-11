@@ -1,35 +1,36 @@
 <template>
     <div class="mainWrap">
-        <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL"></iframe>
-        <button class="refreshBtn" @click="refresh()">새로고침</button>
+        <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL" :style="{height: wattmanger2Height}" scrolling="no"></iframe>
     </div>
 </template>
 
 <script>
-import footer from "@/components/main/footer"
     export default {
         layout: "main",
-        components: {
-            footer
-        },
         data () {
             return {
                 logsheetURL: "",
                 bodyHeight: "",
                 wattmanger2Height: 0,
-                refreshURL: ""
+                refreshURL: "",
+                logsheetInterval: ""
             }
         },
         mounted() {
-            document.getElementById("__nuxt").style.overflow = "hidden"
+            if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+                console.log("page reload")
+                this.refreshURL = sessionStorage.getItem("refreshURL")
+                this.logsheetURL = this.refreshURL
+            } else {
                 // logsheet url에 en, hq, br seq와 wattmanager1임을 알려주는 version을 get 방식으로 보냄
-            this.logsheetURL =
-                process.env.logsheetURL +
-                "?en_seq=" + localStorage.getItem("enSeq") +
-                "&hq_seq=" + localStorage.getItem("hqSeq") +
-                "&br_seq="  + localStorage.getItem("brSeq") +
-                "&version=1"
-            this.refreshURL = this.logsheetURL
+                this.logsheetURL =
+                    process.env.logsheetURL +
+                    "?en_seq=" + localStorage.getItem("enSeq") +
+                    "&hq_seq=" + localStorage.getItem("hqSeq") +
+                    "&br_seq="  + localStorage.getItem("brSeq") +
+                    "&version=1"
+                this.refreshURL = this.logsheetURL
+            }
             window.addEventListener("message", (e) => {
                 const checkURL = process.env.logsheetURL.split("/")
                 const originURL = checkURL[0] + "//" + checkURL[2]
@@ -44,22 +45,41 @@ import footer from "@/components/main/footer"
                 if (url != "/wattmanager2/safetycheck") {
                     const originURL = process.env.logsheetURL.split("/")
                     this.refreshURL  = originURL[0] + "//" + originURL[2] + url
+                } else {
+                    this.refreshURL =
+                    process.env.logsheetURL +
+                    "?en_seq=" + localStorage.getItem("enSeq") +
+                    "&hq_seq=" + localStorage.getItem("hqSeq") +
+                    "&br_seq="  + localStorage.getItem("brSeq") +
+                    "&version=1"
                 }
-            },
-            refresh() {
-                this.logsheetURL = this.refreshURL
+                sessionStorage.setItem("refreshURL", this.refreshURL)
+                if (this.logsheetInterval) {
+                    clearInterval(this.logsheetInterval)
+                }
+                // iframe 높이 초기화 먼저 진행
+                document.getElementById("logSheet").style.height = "auto"
+                document.getElementsByClassName("mainFooter")[0].style.display = "none"
+                this.logsheetInterval = setInterval(() => {
+                    const test = document.getElementById("logSheet").contentWindow.document.getElementById("root")
+                    const removeDiv = document.getElementById("logSheet").contentWindow.document.getElementsByClassName("sc-dIfARi eptRVp")[0]
+                    removeDiv.style.height = "0%"
+                    this.wattmanger2Height = test.offsetHeight + "px"
+                    document.getElementById("logSheet").style.height = this.wattmanger2Height
+                    document.getElementsByClassName("mainFooter")[0].style.display = "flex"
+                    document.getElementsByClassName("mainFooter")[0].style.bottom = "0px"
+                }, 400)
+                setTimeout(() => {
+                    clearInterval(this.logsheetInterval)
+                }, 10000)
             }
         },
-        beforeDestroy() {
-            // sessionStorage.removeItem("logsheetURL")
-        }
     }
 </script>
 
 <style lang="scss" scoped>
 .mainWrap {
     width: 100%;
-    height: 100%;
 }
 iframe {
     width: 100%;
@@ -67,15 +87,5 @@ iframe {
     padding: 0px;
     min-height: calc(100vh - 84px);
     background-color: #f7f7f7; 
-}
-.refreshBtn {
-    position: absolute;
-    top: 40px;
-    right: 6%;
-    height: 30px;
-    background-color: white;
-    padding: 5px;
-    box-shadow: 0px 3px 10px #0000004A;
-    z-index: 999;
 }
 </style>
