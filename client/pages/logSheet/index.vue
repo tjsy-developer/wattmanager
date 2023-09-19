@@ -17,19 +17,26 @@
             }
         },
         mounted() {
-            if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-                console.log("page reload")
-                this.refreshURL = sessionStorage.getItem("refreshURL")
-                this.logsheetURL = this.refreshURL
-            } else {
-                // logsheet url에 en, hq, br seq와 wattmanager1임을 알려주는 version을 get 방식으로 보냄
+            const splitDomain = process.env.logsheetURL.split("/")
+            console.log(splitDomain)
+            const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
+            if (sessionStorage.getItem("init") == 'true') {
+                this.$nuxt.$emit("selectLoadingBar", true)
                 this.logsheetURL =
                     process.env.logsheetURL +
-                    "?en_seq=" + localStorage.getItem("enSeq") +
-                    "&hq_seq=" + localStorage.getItem("hqSeq") +
-                    "&br_seq="  + localStorage.getItem("brSeq") +
+                    "?en_seq=" + localStorage.getItem("enSeq")+
+                    "&hq_seq=" + localStorage.getItem("hqSeq")+
+                    "&br_seq=" + localStorage.getItem("brSeq") +
                     "&version=1"
-                this.refreshURL = this.logsheetURL
+
+            } // 로그시트 첫페이지 새로고침 시
+            else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
+                this.logsheetURL = logSheetDomain + sessionStorage.getItem("path_name") +
+                "?init=false"
+            } else {
+                // 로그시트 일일~ 상세보기 화면
+                this.logsheetURL = logSheetDomain + sessionStorage.getItem("path_name") +
+                "?init=false"
             }
             window.addEventListener("message", (e) => {
                 const checkURL = process.env.logsheetURL.split("/")
@@ -42,25 +49,25 @@
         methods: {
             childData(params) {
                 const url = params.current_path
+                const scrollTop = params.scrollTop
                 if (url) {
                     this.childPath(url)
                 }
+                if (scrollTop) {
+                    this.scrollInToTop()
+                }
             },
             childPath(url) {
-                if (url != "/wattmanager2/safetycheck") {
-                    const originURL = process.env.logsheetURL.split("/")
-                    this.refreshURL  = originURL[0] + "//" + originURL[2] + url
-                    sessionStorage.setItem("refreshURL", this.refreshURL)
+                if (sessionStorage.getItem("init") == 'true'|| sessionStorage.getItem("init") == null) {
+                    sessionStorage.setItem("init", false) 
+                    this.$nuxt.$emit("selectLoadingBar", false)
+                } else if (url == "/wattmanager2/safetycheck") {
+                    sessionStorage.setItem("path_name", url)
+                    sessionStorage.setItem("init", false)
                 } else {
-                    this.refreshURL =
-                        process.env.logsheetURL +
-                        "?en_seq=" + localStorage.getItem("enSeq") +
-                        "&hq_seq=" + localStorage.getItem("hqSeq") +
-                        "&br_seq="  + localStorage.getItem("brSeq") +
-                        "&version=1"
-                    sessionStorage.setItem("refreshURL", this.refreshURL)
+                    sessionStorage.setItem("path_name", url)
+                    sessionStorage.setItem("init", false)
                 }
-                this.logsheetURL = this.refreshURL
                 this.calcHeight()
             },
             calcHeight() {
@@ -88,8 +95,8 @@
                 }, 20000)
             },
             scrollInToTop() {
-                document.getElementById("logSheet").scrollIntoView({behavior: "smooth"})
-            }
+                document.getElementsByClassName("mainWrap")[0].scrollIntoView({behavior: "smooth"})
+            },
         },
         beforeDestroy() {
             if (this.logsheetInterval) {
