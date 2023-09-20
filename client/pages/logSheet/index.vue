@@ -21,14 +21,15 @@
             const splitDomain = process.env.logsheetURL.split("/")
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == 'true') {
-                // this.$nuxt.$emit("selectLoadingBar", true)
-                this.logsheetURL =
-                    process.env.logsheetURL +
-                    "?en_seq=" + localStorage.getItem("enSeq")+
-                    "&hq_seq=" + localStorage.getItem("hqSeq")+
-                    "&br_seq=" + localStorage.getItem("brSeq") +
-                    "&version=1"
-
+                setTimeout(() => {
+                    this.$nuxt.$emit("selectLoadingBar", true)
+                    this.logsheetURL =
+                        process.env.logsheetURL +
+                        "?en_seq=" + localStorage.getItem("enSeq")+
+                        "&hq_seq=" + localStorage.getItem("hqSeq")+
+                        "&br_seq=" + localStorage.getItem("brSeq") +
+                        "&version=1"
+                }, 500)
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
                 this.logsheetURL = process.env.logsheetURL +
