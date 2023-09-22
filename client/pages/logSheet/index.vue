@@ -14,22 +14,21 @@
                 wattmanger2Height: 0,
                 refreshURL: "",
                 logsheetInterval: "",
-                data: ""
+                data: false
             }
         },
         mounted() {
             const splitDomain = process.env.logsheetURL.split("/")
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == 'true') {
-                setTimeout(() => {
-                    this.$nuxt.$emit("selectLoadingBar", true)
-                    this.logsheetURL =
-                        process.env.logsheetURL +
-                        "?en_seq=" + localStorage.getItem("enSeq")+
-                        "&hq_seq=" + localStorage.getItem("hqSeq")+
-                        "&br_seq=" + localStorage.getItem("brSeq") +
-                        "&version=1"
-                }, 500)
+                this.$nuxt.$emit("selectLoadingBar", true)
+                this.logsheetURL =
+                    process.env.logsheetURL +
+                    "?en_seq=" + localStorage.getItem("enSeq")+
+                    "&hq_seq=" + localStorage.getItem("hqSeq")+
+                    "&br_seq=" + localStorage.getItem("brSeq") +
+                    "&auth=" + localStorage.getItem("auth") +
+                    "&version=1"
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
                 this.logsheetURL = process.env.logsheetURL +
@@ -43,21 +42,24 @@
                 const checkURL = process.env.logsheetURL.split("/")
                 const originURL = checkURL[0] + "//" + checkURL[2]
                 if (e.origin == originURL) {
-                    this.test()
                     this.childData(e.data)
                 }
+
             })
-            window.addEventListener("resize", this.test())
         },
         methods: {
             childData(params) {
                 const url = params.current_path
                 const scrollTop = params.scrollTop
+                const height = params.height
                 if (url) {
                     this.childPath(url)
                 }
+                if (height) {
+                    this.calcHeight(height)
+                }
                 if (scrollTop) {
-                    this.scrollInToTop()
+                    this.scrollInToTop(height)
                 }
             },
             childPath(url) {
@@ -72,44 +74,26 @@
                     sessionStorage.setItem("path_name", url)
                     sessionStorage.setItem("init", false)
                 }
-                this.calcHeight()
             },
-            calcHeight() {
-                console.log("높이 함수 탔다")
-                if (this.logsheetInterval) {
-                    clearInterval(this.logsheetInterval)
+            calcHeight(params) {
+                console.log("탄다!!!!")
+                const mainWrap = document.getElementById("__nuxt")
+                mainWrap.style.overflow = "auto"
+                if (params == "auto") {
+					document.getElementById("logSheet").style.height = params
+				} else {
+					document.getElementById("logSheet").style.height = params + "px"
+				}
+            },
+            scrollInToTop(params) {
+                if (params == "auto") {
+                    const mainWrap = document.getElementById("__nuxt")
+                    mainWrap.style.overflow = "hidden"
                 }
-                // iframe 높이 초기화 먼저 진행
-                document.getElementById("logSheet").style.height = "auto"
-                document.getElementsByClassName("mainFooter")[0].style.display = "none"
-                // wattmanager2의 data가 많은 경우 data를 전부 가져 오기 전에 높이를 구해 버린다. 이를 방지하기 위해 계속 체크해준다
-                this.logsheetInterval = setInterval(() => {
-                    const wattmanager2MainWrap = document.getElementById("logSheet").contentWindow.document.getElementById("root")
-                    const wattmanager2BottomDiv = document.getElementById("logSheet").contentWindow.document.getElementsByClassName("sc-dIfARi eptRVp")[0]
-                    // wattmanager2BottomDiv height 10vh를 덮어 씌움
-                    wattmanager2BottomDiv.style.height = "40px"
-                    // wattmanager2에서 min-height 10vh로 지정한거를 덮어 씌움
-                    wattmanager2BottomDiv.style.minHeight = "40px"
-                    this.wattmanger2Height = wattmanager2MainWrap.offsetHeight + "px"
-                    document.getElementById("logSheet").style.height = this.wattmanger2Height
-                    document.getElementsByClassName("mainFooter")[0].style.display = "flex"
-                    document.getElementsByClassName("mainFooter")[0].style.bottom = "0px"
-                }, 400)
-                setTimeout(() => {
-                    clearInterval(this.logsheetInterval)
-                }, 20000)
+                document.getElementById("main").scrollIntoView({behavior: "smooth"})
             },
-            scrollInToTop() {
-                document.getElementsByClassName("mainWrap")[0].scrollIntoView({behavior: "smooth"})
-            },
-            test() {
-                console.log("===================== resize event =====================")
-            }
         },
         beforeDestroy() {
-            if (this.logsheetInterval) {
-                clearInterval(this.logsheetInterval)
-            }
             // 등록된 eventListener의 경우 기본적인 window event여서 제거시 sideeffect가 생길 것 같아 제거하지 않음
         }
     }
