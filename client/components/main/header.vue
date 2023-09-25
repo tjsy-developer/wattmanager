@@ -17,7 +17,7 @@
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <a v-if="logSheet == 'true'" class="col-auto" href="/logsheet">{{ $t("logSheet") }}</a>
+        <a v-if="logSheet == 'true'" id="logsheetBtn" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
@@ -136,6 +136,11 @@ export default {
     serviceInPreparation(e) {
       e.preventDefault()
       alert(this.$t("servicePreParation"))
+    },
+    hrefLogsheet() {
+      sessionStorage.setItem("init", true)
+      sessionStorage.removeItem("path_trans")
+      open("/logsheet", "_self")
     }
   },
   mounted() {
@@ -234,4 +239,7 @@ export default {
 	right: 4px
 	top: 8px
 	font-size: 14px
+#logsheetBtn
+  &:hover
+    cursor: pointer
 </style>

@@ -84,6 +84,7 @@ export default {
       deviceTypeIcons: [
         require("@/assets/images/icon_device_phone.png"),
         require("@/assets/images/icon_device_glass.png"),
+        require("@/assets/images/icon_device_pc.png"),
         require("@/assets/images/icon_device_pc.png")
       ],
       filePath: process.env.att_filePath,
