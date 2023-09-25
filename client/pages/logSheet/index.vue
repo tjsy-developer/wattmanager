@@ -76,7 +76,6 @@
                 }
             },
             calcHeight(params) {
-                console.log("탄다!!!!")
                 const mainWrap = document.getElementById("__nuxt")
                 mainWrap.style.overflow = "auto"
                 if (params == "auto") {
