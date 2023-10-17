@@ -557,5 +557,6 @@
 		"if type matches ",
 		"If the type matches, the values are pasted along the rows and columns in Excel."
 	],
-	"qrTab": "Electronic QR"
+	"qrTab": "Electronic QR",
+	"zipDownload": "Save All"
 }
