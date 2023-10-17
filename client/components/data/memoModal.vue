@@ -1,6 +1,7 @@
 <template>
   <div class="column content-start memoModal">
-    <div class="col-auto row full-width justify-end colseButtonContainer">
+    <div class="col-auto row full-width colseButtonContainer">
+			<button class="zipSaveBtn" @click="zipSave()">{{ $t("zipDownload") }}</button>
       <button class="colseButton" @click="closeClick">X</button>
     </div>
     <div class="col row full-width contentsContainer">
@@ -44,7 +45,7 @@
 <script>
 import autoSize from "autosize"
 import axiosJson from "@/assets/jsons/axios"
-
+const JSZip = require("jszip")
 
 export default {
   props: ["compData", "files", "webServerFilePathJson"],
@@ -215,6 +216,43 @@ export default {
         return false
       }
       return true
+    },
+    async zipSave() {
+      const zip = new JSZip()
+			const date = new Date()
+			const dYear = date.getFullYear()
+			const dMonth = date.getMonth() + 1
+			const dDate = date.getDate()
+      let folderName = ""
+			if (sessionStorage.getItem("languageCode") == "ko") {
+				folderName = "와트_메모_" + dYear + dMonth + dDate
+			} else {
+				folderName = "Watt_Memo_" + dYear + dMonth + dDate
+			}
+			let fileName = ""
+			// src: this.webServerFilePathJson.original + ele.original_name,
+			for (let iLoop = 0; iLoop < this.files.length; ++iLoop) {
+				const ele = this.files[iLoop]
+
+				// 파일 명
+				fileName = ele.original_name
+
+				// 이미지 저장 생성 부분
+				const response = await fetch(this.webServerFilePathJson.original + ele.original_name)
+				const data = await response.blob()
+				zip.file(fileName, data)
+			}
+			zip.generateAsync({type: "blob"}).then((zip) => {
+				const zipLink = document.createElement("a")
+				// zip 폴더에 접근할 수 있는 url 생성
+				zipLink.href = URL.createObjectURL(zip)
+				// 폴더명 지정
+				zipLink.download = folderName
+				zipLink.click()
+				// zip 폴더 다운로드 후 생성한 url 제거
+				zipLink.remove()
+				URL.revokeObjectURL(zip)
+			})
     }
   },
   mounted() {
@@ -242,13 +280,17 @@ export default {
 	background: white
 
 .colseButtonContainer
+	display: flex
 	border-bottom: 1px solid #d9d9d9
+	justify-content: space-between
+	align-items: center
 
 .colseButton
 	padding: 10px 20px
 	font-size: 20px
 	font-weight: bold
 	color: gray
+	right: 30px
 
 .contentsContainer
 	overflow-y: auto
@@ -273,6 +315,12 @@ export default {
 	&:hover
 		background-color: #757575
 
+.zipSaveBtn
+	width: 100px
+	height: 40px
+	color: white
+	background-color: #008bcf
+	left: 30px
 .saveFile
 	position: absolute
 	width: 100px
@@ -378,4 +426,5 @@ export default {
 //   &:hover
 //     background: #757575
 //     color: #fff
+
 </style>
