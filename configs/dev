@@ -5,8 +5,8 @@ backendURL=https://dev.watttalk.kr:8221/
 powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
 powertalkLogin="https://dev.watttalk.kr:8224/login/login-check?jwt_token="
-powermemo=https://dev.watttalk.kr:8222/storage/sftp/dev
-powermemoSavefolder=D:\\Storage\\sftp\\dev
+powermemo=https://dev.watttalk.kr:8222/storage/powermemo/dev/PowerMemo
+powermemoSavefolder=D:\\Storage\\powermemo\\dev\\PowerMemo
 qr_filePath=https://dev.watttalk.kr:8222/storage/powertalk/dev/QR/folder
 qr=safety
 att_access_user=true
