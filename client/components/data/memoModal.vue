@@ -316,8 +316,9 @@ export default {
 		background-color: #757575
 
 .zipSaveBtn
-	width: 100px
+	// width: auto
 	height: 40px
+	padding: 0px 10px
 	color: white
 	background-color: #008bcf
 	left: 30px
