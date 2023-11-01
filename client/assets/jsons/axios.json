@@ -112,9 +112,6 @@
 	"call": {
 		"callHistory_list": "callHistoryRest/callHistory_list"
 	},
-	"overhaul": {
-		"overhaul_list": "overhaulRest/overhaul"
-	},
 	"qrManagement": {
 		"searchQR": "qrManagement/searchChapter",
 		"chapterInfo": "qrManagement/chapterInfo",
