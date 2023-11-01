@@ -1,7 +1,6 @@
 <template>
   <div class="root">
     <loginForm @child="moveChangedDomain()"></loginForm>
-    <inspectionAlertModal v-if="test" class="alert-modal" :propsData="modalParameter" name="inspectionAlertModal" :clickToClose="false" @closeCheck="closeCheck"></inspectionAlertModal>
   </div>
 </template>
 <script>
@@ -67,8 +66,7 @@ export default {
   },
   components: {
     loginForm,
-    transModal,
-		inspectionAlertModal
+    transModal
   }
 }
 </script>
