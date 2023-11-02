@@ -1,14 +1,12 @@
 <template>
   <div class="root">
     <loginForm @child="moveChangedDomain()"></loginForm>
-    <inspectionAlertModal v-if="test" class="alert-modal" :propsData="modalParameter" name="inspectionAlertModal" :clickToClose="false" @closeCheck="closeCheck"></inspectionAlertModal>
   </div>
 </template>
 <script>
 import axiosJson from "@/assets/jsons/axios"
 import loginForm from "@/components/mainIndex/form"
 import transModal from "@/components/info/transModal"
-import inspectionAlertModal from "@/components/mainIndex/inspectionAlertModal"
 
 import cookieSetting from "@/assets/scripts/data/cookie"
 export default {
@@ -62,62 +60,13 @@ export default {
         location.href = this.changedDomain
       }, 500)
     },
-    showInspectionAlert() {
-      let inspectionList = []
-      this.$axios
-        .post(process.env.backendURL + axiosJson.overhaul.overhaul_list, {})
-        .then((res) => {
-          if(res.data.length == 0) {
-            return
-          }
-          inspectionList[0] = res.data[0]
-          if (inspectionList[0].overhaul_flag == 1) {
-            this.modalParameter = {
-                inspectionDate: inspectionList[0].overhaul_date,
-                inspectionPhoneNum: inspectionList[0].overhaul_phone,
-                overhaulNumber: inspectionList[0].overhaul_number
-            }
-            const checkOverhaulNum = cookieSetting.getCookie("overhaulNum")
-            const checkCloseForDay = cookieSetting.getCookie("closeForDay")
-            // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 동일한 경우
-            if (checkOverhaulNum == inspectionList[0].overhaul_number) {
-              if (checkCloseForDay == "ture") {
-                // console.log("오늘하루열지않기")
-								this.test = false
-              } else {
-                // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 동일하지만
-                // 오늘하루 열지않기를 누르지 않은 경우
-								this.test = true
-              }
-            } else {
-              // cookie에 저장된 overhaul_number와 가져온 overhaul_number가 다른경우
-								this.test = true
-                cookieSetting.delCookie("overhaulNum")
-                cookieSetting.delCookie("closeForDay")
-            }
-          } else {
-            // overhaul_flag 값이 1이 아닌 경우
-						this.test = false
-          }   
-        })
-    },
-		closeCheck(closeClick) {
-      if (closeClick == "true") {
-        this.test = false
-      }
-      return this.test
-    }
   },
   mounted() {
     this.domainCheck()
-		this.$nextTick(
-    	this.showInspectionAlert()
-		) 
   },
   components: {
     loginForm,
-    transModal,
-		inspectionAlertModal
+    transModal
   }
 }
 </script>
