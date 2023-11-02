@@ -35,7 +35,8 @@
           {{ $t("headerComp")[6] }}
         </a>
         <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
-        <button v-if="logoutStatus != 0" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
+        <!-- admin계정인 경우만 로그아웃 버튼 활성화 -->
+        <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <button v-if="logoutStatus == 0" class="col-auto" @click="logoutBtnClose">{{ $t("header")[1] }}</button>
       </div>
     </div>
@@ -59,7 +60,8 @@ export default {
       // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 관리
       logoutStatus: 1,
       useEnterprise: process.env.useEnterprise,
-      logSheet: process.env.logsheet
+      logSheet: process.env.logsheet,
+      checkAdmin: false
     }
   },
   methods: {
@@ -144,6 +146,11 @@ export default {
     }
   },
   mounted() {
+    // 로그인한 계정이 admin인지 확인
+    if (localStorage.getItem("id") === "administrator") {
+      this.checkAdmin = true
+    }
+    
     // 파워톡 -> 파워매니저 영상관리로 접근 시 jwt_token을 파라미터로 보낸다.
 
     if (this.$route.query.jwt_token !== undefined) {

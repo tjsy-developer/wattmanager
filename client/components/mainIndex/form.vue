@@ -687,6 +687,30 @@ export default {
     }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.delCookie("logined")
+    
+    // 크롬에서 간혹가다가 세션스토리지 및 로컬스토리지가 초기화 되지 않는 현상 발견
+    // 로컬스토리지의 경우 다른 탭들도 영향을 받을 수 있어 wattmanager에서 쓰는 값들만 일일이 제거!
+    this.$nextTick(() => {
+        let langCode = ""
+        if (sessionStorage.getItem("languageCode")) {
+          langCode = sessionStorage.getItem("languageCode")
+        }
+        sessionStorage.clear()
+        if (langCode) {
+          sessionStorage.setItem("languageCode", langCode)
+        }
+        if (localStorage.getItem("jwt") && localStorage.getItem("userSeq")) {
+          localStorage.removeItem("jwt")
+          localStorage.removeItem("userSeq")
+          localStorage.removeItem("auth")
+          localStorage.removeItem("id")
+          localStorage.removeItem("hqSeq")
+          localStorage.removeItem("enSeq")
+          localStorage.removeItem("opendDialog")
+          localStorage.removeItem("brSeq")
+          localStorage.removeItem("deviceType")
+        }
+    })
   },
 };
 </script>
