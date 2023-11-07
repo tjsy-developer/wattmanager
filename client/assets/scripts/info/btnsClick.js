@@ -1,4 +1,6 @@
 import axios from "axios"
+import axiosJson from "@/assets/jsons/axios"
+import { param } from "jquery"
 
 const btnsClick = {
   lang: [
@@ -147,28 +149,68 @@ const btnsClick = {
           }
         }
       }
-      axios
-        .post(path, params)
-        .then(function(res) {
-          if (res) {
-            if (res.data === "Success") {
-              alert(btnsClick.lang[3])
-              sessionStorage.removeItem("deviceType")
-              sessionStorage.removeItem("check2Factor")
-              console.log(document.referrer)
-              window.location.href = document.referrer
-            } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
-            else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
-            else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
-            else if (res.data === "Duplicate Email") alert(btnsClick.lang[11])
-            else if (res.data === "Duplicate Phone_number") alert(btnsClick.lang[12])
-            else alert(btnsClick.lang[4])
-          } else alert(btnsClick.lang[4])
-        })
-        .catch(function(error) {
-          console.log("editBtnClick.js edit axios error : ", error)
-          alert(btnsClick.lang[4])
-        })
+      const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
+      const headers = params.formDataHeader
+      if (params.imgFormData) {
+        console.log("사용자 프로필 이미지 존재. 이미지 저장 실행")
+        axios
+          .post(backendAPI, params.imgFormData, { headers })
+          .then((res) => {
+            console.log("profileImg save success")
+            const fileName = process.env.profilePhotoUrl + "\\" + res.data.FILE_NAME
+            params.image = fileName
+            axios
+              .post(path, params)
+              .then(function(res) {
+                if (res) {
+                  if (res.data === "Success") {
+                    alert(btnsClick.lang[3])
+                    sessionStorage.removeItem("deviceType")
+                    sessionStorage.removeItem("check2Factor")
+                    console.log(document.referrer)
+                    window.location.href = document.referrer
+                  } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
+                  else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
+                  else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
+                  else if (res.data === "Duplicate Email") alert(btnsClick.lang[11])
+                  else if (res.data === "Duplicate Phone_number") alert(btnsClick.lang[12])
+                  else alert(btnsClick.lang[4])
+                } else alert(btnsClick.lang[4])
+              })
+              .catch(function(error) {
+                console.log("editBtnClick.js edit axios error : ", error)
+                alert(btnsClick.lang[4])
+              })
+          })
+          .catch((err) => {
+            console.log("fail to save profileImg")
+            alert(btnsClick.lang[4])
+          })
+          return
+      } else {
+        axios
+          .post(path, params)
+          .then(function(res) {
+            if (res) {
+              if (res.data === "Success") {
+                alert(btnsClick.lang[3])
+                sessionStorage.removeItem("deviceType")
+                sessionStorage.removeItem("check2Factor")
+                console.log(document.referrer)
+                window.location.href = document.referrer
+              } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
+              else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
+              else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
+              else if (res.data === "Duplicate Email") alert(btnsClick.lang[11])
+              else if (res.data === "Duplicate Phone_number") alert(btnsClick.lang[12])
+              else alert(btnsClick.lang[4])
+            } else alert(btnsClick.lang[4])
+          })
+          .catch(function(error) {
+            console.log("editBtnClick.js edit axios error : ", error)
+            alert(btnsClick.lang[4])
+          })
+      }
     } catch (editError) {
       if (
         editError === "listFilters undefined" ||

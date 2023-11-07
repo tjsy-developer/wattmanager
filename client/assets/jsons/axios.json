@@ -121,5 +121,8 @@
 		"qrKeyDelete": "qrManagement/qrKeyDelete",
 		"qrDataDelete": "qrManagement/qrDataDelete",
 		"qrAllDataDelete": "qrManagement/qrAllDataDelete"
+	},
+	"fileupload": {
+		"profile_photos": "fileupload/profile_photos"
 	}
 }

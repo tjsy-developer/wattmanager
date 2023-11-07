@@ -121,6 +121,8 @@ export default {
         }
 
         const reader = new FileReader()
+        const imageInputed = new CustomEvent("imageInputed", { detail: input.target.files[0] })
+        window.dispatchEvent(imageInputed)
         reader.readAsDataURL(input.target.files[0])
         const self = this
 

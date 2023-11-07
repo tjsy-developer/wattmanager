@@ -31,7 +31,25 @@ export default {
         nameSpaceCheck: this.$t("no spaces text"),
         phoneNumber: "",
         birthday: "",
+        imageFile: "",
         editBtnClick() {
+          let formData = new FormData()
+          const savePath = process.env.profilePhotoSavefolder
+          const profileImg = this.imageFile
+
+
+          console.log(profileImg)
+          
+          const headers = {
+            "Content-Type": "multipart/form-data",
+            "jwt": localStorage.getItem("jwt")
+          }
+          formData.append("save_folder", savePath)
+          if (profileImg) {
+            formData.append("upload_file", profileImg)
+          } else {
+            formData = null
+          }
           const getCheckboxCompData = this.listFilters[9].checkboxCompData
           const token = localStorage.getItem("jwt")
           const setCheckboxCompData = []
@@ -87,7 +105,9 @@ export default {
                   phone_number: getInfo.getInputValue(4),
                   birthday: getInfo.getInputValue(5),
                   email: getInfo.getInputValue(2),
-                  jwt: token
+                  jwt: token,
+                  imgFormData: formData,
+                  formDataHeader: headers
                 },
                 1
               )
@@ -113,7 +133,9 @@ export default {
                   phone_number: "",
                   birthday: "",
                   email: getInfo.getInputValue(2),
-                  jwt: token
+                  jwt: token,
+                  imgFormData: formData,
+                  formDataHeader: headers
                 },
                 1
               )
@@ -146,6 +168,10 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener("imageInputed", (e) => {
+      console.log(e)
+      this.compData.imageFile = e.detail
+    })
     if (window.location.hostname == 'dlenc.watttalk.kr') {
       // dlenc 분기처리!!
       this.useEnterprise = "dlenc"
@@ -223,7 +249,7 @@ export default {
                 res.data.order_by_num,
                 res.data.phone_number,
                 res.data.birthday,
-                res.data.image ? self.hexToAscii(res.data.image) : undefined,
+                res.data.image ? res.data.image : undefined,
                 res.data.pc_app_range,
                 res.data.device_type,
               ]
@@ -240,25 +266,13 @@ export default {
                 res.data.email,
                 res.data.glass_app_range,
                 res.data.order_by_num,
-                res.data.image ? self.hexToAscii(res.data.image) : undefined,
+                res.data.image ? res.data.image : undefined,
                 res.data.pc_app_range,
                 res.data.device_type,
               ]
             }
             if (res.data.image) {
-              fetch(self.hexToAscii(res.data.image))
-                .then(response => response.blob())
-                .then(function(resultBlob) {
-                  // const blobURL = URL.createObjectURL(resultBlob)
-                  self.defaultUserProfileBlob = URL.createObjectURL(resultBlob)
-                  console.log("userProfile blobURL: ", self.defaultUserProfileBlob)
-
-                  // 사용자에게 보여주는 blob 처리된 이미지 src 적용
-                  setTimeout(() => {
-                    const profileImage = document.getElementById("fileTypeInputImg")
-                    profileImage.src = self.defaultUserProfileBlob
-                  }, 1000)
-                })
+              const profileImage =  res.data.image
             } else {
               if (sessionStorage.getItem("deviceType") != 2) {
                 self.compData.selected[12] = undefined
