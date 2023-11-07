@@ -21,6 +21,7 @@ export default {
         userSeq: undefined,
         listTitle: this.$t("profile"),
         check2Factor: "",
+        imageFile: "",
         listFilters: [
           {},
           {
@@ -84,76 +85,128 @@ export default {
             if (getInfo.getInputValue(4).match(pattern)) {
               alert(this.nameSpaceCheck)
             } else {
-              // console.log("email---", getInfo.getInputValue(6))
-              // console.log("name_en---", getInfo.getInputValue(5))
-              // console.log("name---", getInfo.getInputValue(4))
-              // console.log(getInfo.getInputValue(3))
-              // console.log(getSelf.deviceType)
-              // console.log(getSelf.auth)
-              // if (getSelf.deviceType === 3 && getSelf.auth !== 4) {
-              //   console.log(getInfo.getInputValue(5))
-              //   console.log(getInfo.getInputValue(6))
-              // } else {
-              //   console.log("null")
-              //   console.log(getInfo.getInputValue(5))
-              // }
-              getSelf.$axios
-                // .post("userRest/user_update_my", {
-                .post(process.env.backendURL + "userRest/user_update_my", {
-                  user_seq: this.userSeq,
-                  name: getInfo.getInputValue(4),
-                  name_en:
-                    // eslint-disable-next-line eqeqeq
-                    getSelf.deviceType == 3 && getSelf.auth != 4
-                      ? getInfo.getInputValue(5)
-                      : null,
-                  email:
-                    // eslint-disable-next-line eqeqeq
-                    getSelf.deviceType == 3 && getSelf.auth != 4
-                      ? getInfo.getInputValue(6)
-                      : getInfo.getInputValue(5),
-                  // image: this.selected[7],
-                  image:
-                    deviceType != 2
+              let formData = new FormData()
+              const savePath = process.env.profilePhotoSavefolder
+              const profileImg = this.imageFile
+
+
+              console.log(profileImg)
+              
+              const headers = {
+                "Content-Type": "multipart/form-data",
+                "jwt": localStorage.getItem("jwt")
+              }
+              formData.append("save_folder", savePath)
+              if (profileImg) {
+                formData.append("upload_file", profileImg)
+              } else {
+                formData = null
+              }
+              if (formData) {
+                const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
+                getSelf.$axios
+                  .post(backendAPI, formData, { headers })
+                  .then((res) => {
+                    const fileName = process.env.profilePhotoUrl + "\\" + res.data.FILE_NAME
+                    getSelf.$axios
+                      // .post("userRest/user_update_my", {
+                      .post(process.env.backendURL + "userRest/user_update_my", {
+                        user_seq: this.userSeq,
+                        name: getInfo.getInputValue(4),
+                        name_en:
+                          // eslint-disable-next-line eqeqeq
+                          getSelf.deviceType == 3 && getSelf.auth != 4
+                            ? getInfo.getInputValue(5)
+                            : null,
+                        email:
+                          // eslint-disable-next-line eqeqeq
+                          getSelf.deviceType == 3 && getSelf.auth != 4
+                            ? getInfo.getInputValue(6)
+                            : getInfo.getInputValue(5),
+                        // image: this.selected[7],
+                        image: fileName,
+                        phone_number:
+                          deviceType != 2
+                            ? getInfo.getInputValue(7)
+                            : "",
+                        birthday:
+                          deviceType != 2
+                          ? getInfo.getInputValue(8)
+                          : "",
+                        jwt: localStorage.getItem("jwt")
+                      })
+                      .then(function(res) {
+                        console.log(res.data)
+                        if (res.data === "Success") {
+                          alert(getSelf.$t("attachment")[1])
+                        } else if (res.data === "Exceeded quota")
+                          alert(getSelf.$t("ExceededQuota"))
+                        else if (res.data === "Duplicate Name")
+                          alert(getSelf.$t("device")[4])
+                        else if (res.data === "Duplicate Name_en")
+                          alert(getSelf.$t("device")[5])
+                        else if (res.data === "Duplicate Email")
+                          alert(getSelf.$t("user")[5])
+                        else alert(getSelf.$t("attachment")[2])
+                      })
+                      .catch(function(error) {
+                        console.log("profile.vue error : ", error)
+                        alert(getSelf.$t("attachment")[2])
+                      })
+                  })
+                  .catch((err) => {
+                    console.log("profile image save fail", err)
+                    alert(getSelf.$t("attachment")[2])
+                  })
+              } else {
+                getSelf.$axios
+                  // .post("userRest/user_update_my", {
+                  .post(process.env.backendURL + "userRest/user_update_my", {
+                    user_seq: this.userSeq,
+                    name: getInfo.getInputValue(4),
+                    name_en:
+                      // eslint-disable-next-line eqeqeq
+                      getSelf.deviceType == 3 && getSelf.auth != 4
+                        ? getInfo.getInputValue(5)
+                        : null,
+                    email:
+                      // eslint-disable-next-line eqeqeq
+                      getSelf.deviceType == 3 && getSelf.auth != 4
+                        ? getInfo.getInputValue(6)
+                        : getInfo.getInputValue(5),
+                    // image: this.selected[7],
+                    image: deviceType != 2
                       ? this.selected[9]
                       : this.selected[7],
-                  phone_number:
-                    deviceType != 2
-                      ? getInfo.getInputValue(7)
+                    phone_number:
+                      deviceType != 2
+                        ? getInfo.getInputValue(7)
+                        : "",
+                    birthday:
+                      deviceType != 2
+                      ? getInfo.getInputValue(8)
                       : "",
-                  birthday:
-                    deviceType != 2
-                    ? getInfo.getInputValue(8)
-                    : "",
-                  jwt: localStorage.getItem("jwt")
-                })
-                .then(function(res) {
-                  console.log(res.data)
-                  if (res.data === "Success") {
-                    alert(getSelf.$t("attachment")[1])
-                  } else if (res.data === "Exceeded quota")
-                    alert(getSelf.$t("ExceededQuota"))
-                  else if (res.data === "Duplicate Name")
-                    alert(getSelf.$t("device")[4])
-                  else if (res.data === "Duplicate Name_en")
-                    alert(getSelf.$t("device")[5])
-                  else if (res.data === "Duplicate Email")
-                    alert(getSelf.$t("user")[5])
-                  else alert(getSelf.$t("attachment")[2])
-
-                  // if (res.data) alert(getSelf.$t("attachment")[1])
-                  // else alert(getSelf.$t("attachment")[2])
-                  // if (res.data === "Success") alert(getSelf.$t("attachment")[1])
-                  // else if (res.data === "Exceeded quota")
-                  //   alert(getSelf.$t("ExceededQuota"))
-                  // else if (res.data === "Duplicate Name")
-                  //   alert(getSelf.$t("device")[4])
-                  // else alert(getSelf.$t("attachment")[2])
-                })
-                .catch(function(error) {
-                  console.log("profile.vue error : ", error)
-                  alert(getSelf.$t("attachment")[2])
-                })
+                    jwt: localStorage.getItem("jwt")
+                  })
+                  .then(function(res) {
+                    console.log(res.data)
+                    if (res.data === "Success") {
+                      alert(getSelf.$t("attachment")[1])
+                    } else if (res.data === "Exceeded quota")
+                      alert(getSelf.$t("ExceededQuota"))
+                    else if (res.data === "Duplicate Name")
+                      alert(getSelf.$t("device")[4])
+                    else if (res.data === "Duplicate Name_en")
+                      alert(getSelf.$t("device")[5])
+                    else if (res.data === "Duplicate Email")
+                      alert(getSelf.$t("user")[5])
+                    else alert(getSelf.$t("attachment")[2])
+                  })
+                  .catch(function(error) {
+                    console.log("profile.vue error : ", error)
+                    alert(getSelf.$t("attachment")[2])
+                  })
+              }
             }
           } catch (editError) {
             if (editError === "input undefined") alert(getSelf.$t("account")[6])
@@ -199,6 +252,10 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener("imageInputed", (e) => {
+      console.log(e)
+      this.compData.imageFile = e.detail
+    })
     if (window.location.hostname == 'dlenc.watttalk.kr') {
       // dlenc 분기처리!!
       this.useEnterprise = "dlenc"
@@ -242,51 +299,38 @@ export default {
           })
           .then(() => {
             if (res.data.image) {
-              fetch(self.hexToAscii(res.data.image))
-                .then(response => response.blob())
-                .then(function(resultBlob) {
-                  // const blobURL = URL.createObjectURL(resultBlob)
-                  self.defaultProfileBlob = URL.createObjectURL(resultBlob)
-                  console.log("profile blobURL: ", self.defaultProfileBlob)
-                  let checkAdmin = false
-                  if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
-                    checkAdmin = true
-                  }
-                  // 글라스 혹은 admin 계정
-                  if (checkAdmin == true || sessionStorage.getItem("deviceType") == "2"){
-                    self.compData.listFilters.splice(8, 2)
-                    self.compData.selected = [
-                      res.data.id,
-                      res.data.en_alias,
-                      res.data.hq_alias,
-                      res.data.br_alias,
-                      res.data.name,
-                      res.data.name_en,
-                      res.data.email,
-                      res.data.image ? self.hexToAscii(res.data.image) : undefined
-                    ]
-                  } else {
-                    // pc 일반
-                    self.compData.selected = [
-                      res.data.id,
-                      res.data.en_alias,
-                      res.data.hq_alias,
-                      res.data.br_alias,
-                      res.data.name,
-                      res.data.name_en,
-                      res.data.email,
-                      res.data.phone_number,
-                      res.data.birthday,
-                      res.data.image ? self.hexToAscii(res.data.image) : undefined
-                    ]
-                  }
-                })
-
-              // 사용자에게 보여주는 blob 처리된 이미지 src 적용
-              setTimeout(() => {
-                const profileImage = document.getElementById("fileTypeInputImg")
-                profileImage.src = self.defaultProfileBlob
-              }, 1000)
+              let checkAdmin = false
+              if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
+                checkAdmin = true
+              }
+              // 글라스 혹은 admin 계정
+              if (checkAdmin == true || sessionStorage.getItem("deviceType") == "2"){
+                self.compData.listFilters.splice(8, 2)
+                self.compData.selected = [
+                  res.data.id,
+                  res.data.en_alias,
+                  res.data.hq_alias,
+                  res.data.br_alias,
+                  res.data.name,
+                  res.data.name_en,
+                  res.data.email,
+                  res.data.image ? res.data.image : undefined
+                ]
+              } else {
+                // pc 일반
+                self.compData.selected = [
+                  res.data.id,
+                  res.data.en_alias,
+                  res.data.hq_alias,
+                  res.data.br_alias,
+                  res.data.name,
+                  res.data.name_en,
+                  res.data.email,
+                  res.data.phone_number,
+                  res.data.birthday,
+                  res.data.image ? res.data.image : undefined
+                ]
+              }
             } else {
               // 사진이 없는 경우
               let checkAdmin = false

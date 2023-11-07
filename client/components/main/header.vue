@@ -35,6 +35,7 @@
           {{ $t("headerComp")[6] }}
         </a>
         <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
+        <!-- <button  @click="closeTab()">닫기</button> -->
         <!-- admin계정인 경우만 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <button v-if="logoutStatus == 0" class="col-auto" @click="logoutBtnClose">{{ $t("header")[1] }}</button>
@@ -143,6 +144,9 @@ export default {
       sessionStorage.setItem("init", true)
       sessionStorage.removeItem("path_trans")
       open("/logsheet", "_self")
+    },
+    closeTab() {
+      window.close()
     }
   },
   mounted() {
