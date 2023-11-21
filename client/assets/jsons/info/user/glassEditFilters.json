@@ -74,6 +74,7 @@
 	},
 	{
 		"text": "앱 설정",
+		"edit": "checkbox",
 		"checkboxCompData": {
 			"list": [],
 			"selected": []
@@ -87,14 +88,6 @@
 		},
 		"edit": true,
 		"width": 100
-	},
-	{
-		"text": "휴대폰번호",
-		"edit": true
-	},
-	{
-		"text": "생년월일",
-		"edit": true
 	},
 	{
 		"text": "내 사진",

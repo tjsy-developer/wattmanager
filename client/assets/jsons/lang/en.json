@@ -278,7 +278,8 @@
 		"E-mail",
 		"Cell Phone",
 		"My Photo",
-		"Birthday"
+		"Birthday",
+		"Guest"
 	],
 	"profilePassword": [
 		"Current Password",

@@ -6,6 +6,7 @@
 <script>
 export default {
     mounted() {
+        localStorage.setItem("managerLogOut", true)
         sessionStorage.setItem("languageCode", "ko")
         location.href = "/"
     }

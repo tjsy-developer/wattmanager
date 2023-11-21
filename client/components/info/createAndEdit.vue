@@ -34,6 +34,11 @@
             <img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
             <input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />
           </div>
+          <div v-else-if="content.edit == 'check'" class="checkGuest">
+            <input type="checkbox" class="col-auto" :value="isGuest" v-bind:disabled="!getPermission" v-model="isGuest" />
+            <span v-if="!getPermission">관리자권한으로 계스트 선택 불가능</span>
+            <span v-else>계스트 선택</span>
+          </div>
           <input
             v-else
             class="col"
@@ -93,7 +98,9 @@ export default {
       hqList: getInfo.hqList,
       brList: getInfo.brList,
       checkAdmin: false,
-      check2Factor: false
+      check2Factor: false,
+      getPermission: true,
+      isGuest: false
     }
   },
   methods: {
@@ -293,6 +300,17 @@ export default {
             console.log("2Factor Error :", err)
           }
         })
+    },
+    changedPermission() {
+      const permission = (document.getElementsByClassName("selectCompClass")[3].value)
+      if (permission != 0) {
+        this.getPermission = false
+        this.$nextTick(() => {
+          this.isGuest = false
+        })
+      } else {
+        this.getPermission = true
+      }
     }
   },
   updated() {
@@ -327,7 +345,6 @@ export default {
           console.log("2Factor Error :", err)
         }
       })
-    console.log(this.check2Factor, "?????")
     // dlenc 분기처리!!
     if (window.location.hostname == "dlenc.watttalk.kr") {
       this.useEnterprise = "dlenc"
@@ -336,6 +353,7 @@ export default {
     }
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
     window.addEventListener("changedCompData", this.changedCompData)
+    window.addEventListener("changedPermission", this.changedPermission)
     sessionStorage.removeItem("mutationState")
   },
   beforeDestroy() {
@@ -493,4 +511,9 @@ export default {
   background: #008BCF
   margin-left: 10px
   color: white
+.checkGuest
+  display: flex
+  align-items: center
+  input
+    margin-right: 10px
 </style>

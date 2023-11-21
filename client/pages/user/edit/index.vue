@@ -4,7 +4,7 @@
 
 <script>
 import filtersJson from "@/assets/jsons/info/user/editFilters"
-import dlencEditFilters from "@/assets/jsons/info/user/dlencEditFilters"
+import glassEditFilters from "@/assets/jsons/info/user/glassEditFilters"
 import getFilters from "@/assets/scripts/info/getFilters"
 import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
@@ -249,6 +249,7 @@ export default {
                 res.data.order_by_num,
                 res.data.phone_number,
                 res.data.birthday,
+                1,
                 res.data.image ? res.data.image : undefined,
                 res.data.pc_app_range,
                 res.data.device_type,
@@ -316,10 +317,11 @@ export default {
                                 self.$t("infoFilters")[11],
                                 self.$t("profile text")[6],
                                 self.$t("profile text")[8],
+                                self.$t("profile text")[9],
                                 self.$t("profile text")[7],
                                 self.$t("infoFilters")[7]
                               ],
-                              dlencEditFilters
+                              filtersJson
                             ),
                             self.compData.selected,
                             [
@@ -348,7 +350,7 @@ export default {
                                 self.$t("profile text")[7],
                                 self.$t("infoFilters")[7]
                               ],
-                              filtersJson
+                              glassEditFilters
                             ),
                             self.compData.selected,
                             [

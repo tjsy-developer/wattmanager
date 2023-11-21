@@ -36,8 +36,10 @@
         </a>
         <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
         <!-- <button  @click="closeTab()">닫기</button> -->
-        <!-- admin계정인 경우만 로그아웃 버튼 활성화 -->
+        <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
+        <!-- 글라스 계정인 경우 로그아웃 버튼 활성화 -->
+        <button v-if="logoutStatus != 0 && glassLogin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <button v-if="logoutStatus == 0" class="col-auto" @click="logoutBtnClose">{{ $t("header")[1] }}</button>
       </div>
     </div>
@@ -62,7 +64,8 @@ export default {
       logoutStatus: 1,
       useEnterprise: process.env.useEnterprise,
       logSheet: process.env.logsheet,
-      checkAdmin: false
+      checkAdmin: false,
+      glassLogin: false
     }
   },
   methods: {
@@ -153,6 +156,10 @@ export default {
     // 로그인한 계정이 admin인지 확인
     if (localStorage.getItem("id") === "administrator") {
       this.checkAdmin = true
+    }
+    // 로그인한 계정이 글라스인지 확인
+    if (localStorage.getItem("deviceType") == 2) {
+      this.glassLogin = true
     }
     
     // 파워톡 -> 파워매니저 영상관리로 접근 시 jwt_token을 파라미터로 보낸다.
