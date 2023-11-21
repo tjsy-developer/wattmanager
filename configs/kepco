@@ -1,0 +1,42 @@
+# port는 따로 nuxt.config.js에 설정해줘야한다. 자동화하면 배포 오류
+port=3000
+backendURL_local=""
+backendURL=https://kepcos.watttalk.kr/wattmanager-server
+powertlakState="loginCheck"
+powertalkLogin_local=""
+powertalkLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
+powermemo=https://kepcos.watttalk.kr/sftp/kepcos
+powermemoSavefolder=/home/sftproot/kepcos/
+qr_filePath=https://kepcos.watttalk.kr/storage/watttalk/kepcos/QR/folder
+qr=default
+att_access_user=true
+att_videoPlayPath=https://kepcos.watttalk.kr/Storage/powertalk/kepcos/Dashs/Src/
+att_filePath=https://kepcos.watttalk.kr/storage/watttalk/kepcos/filebox/
+detailFilePath=/home/watt/hdd_ext/Storage/watttalk/kepcos/filebox/
+fileUploadBackend=https://kepcos.watttalk.kr/wattmanager-server
+useEnterprise=kepco
+use_bento4=false
+elecQR=true
+elecFilePath=/home/watt/hdd_ext/Storage/watttalk/kepcos/QR/file
+elecFolderPath=D:\\Storage\\powertalk\\kepcos\\QR\\folder
+fileBoxBackend=https://kepcos.watttalk.kr/wattmanager-server
+separateBackendUploadPath=false
+logsheetURL=https://kepcos.watttalk.kr/wattmanager2/safetycheck
+logsheet=true
+# impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
+impId=""
+pg=""
+# kepco 로그인 주소 관리
+kepcoLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
+
+
+# qr 값에 따라서 tab 변동
+
+# QR tab (전자파일, 전자폴더) 만 보이는 설정
+# qr=default
+
+# QR tab, 안전QR 보이는 설정
+# qr=safety
+
+# Qr tab, 파워QR 보이는 설정
+# qr=power
