@@ -1,3 +1,7 @@
+v2.5.68
+- localStorage 초기화 시점 및 로직 수정
+- kepco config files 추가
+
 v2.5.67
 - 회원정보/내정보 프로필이미지 저장 로직 수정
 
