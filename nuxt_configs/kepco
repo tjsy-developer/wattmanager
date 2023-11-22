@@ -115,9 +115,6 @@ export default {
     sass: ["@assets/styles/style.sass"]
   },
 
-  router: {
-    base: "/wattmanager"
-  },
 
   generate: {
     dir: ""

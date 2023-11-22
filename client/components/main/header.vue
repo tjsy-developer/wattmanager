@@ -12,31 +12,34 @@
       <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <div class="col-auto row menus">
-        <a v-if="authority == '4' && elecQR" @click="chageTab('/qr/elecQr')" class="col-auto">{{ $t("qrTab") }}</a>
-        <a v-if="authority == '4' && qrStatus == 'safety'" @click="changeTab('/qr')" class="col-auto">{{ $t("safetyQR") }}</a>
-        <a v-if="authority == '4' && qrStatus == 'power'" @click="changeTab('/qr')" class="col-auto">{{ $t("powerQR") }}</a>
-        <a v-if="authority == '4'" @click="changeTab('/integrationQr')">{{ $t("printQR")[0] }}</a>
-        <a v-if="authority == '4'" @click="changeTab('/upload?page=1&viewType=upload')" class="col-auto">{{ $t("upload")}}</a>
+        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
+        <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
+        <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
         <a v-if="logSheet == 'true'" id="logsheetBtn" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
-        <a class="col-auto" @click="changeTab('/upload?page=1&viewType=filebox')" >{{ $t("fileBox") }}</a>
-        <a class="col-auto" @click="changeTab('/notice?page=1')">{{ $t("notice")[0] }}</a>
-        <a class="col-auto" @click="changeTab('/profile')">{{ $t("profile") }}</a>
-        <a v-if="authority != '0' && deviceType != '2'" @click="changeTab('/user?page=1')" class="col-auto">{{ $t("headerComp")[0] }}</a>
-        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" @click="changeTab('/device?page=1')" class="col-auto">{{ $t("headerComp")[1] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/app?page=1')" class="col-auto">{{ $t("headerComp")[2] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/enterprise?page=1')" class="col-auto">{{ $t("headerComp")[3] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/headquarters?page=1')" class="col-auto">{{ $t("headerComp")[4] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/branch?page=1')" class="col-auto">{{ $t("headerComp")[5] }}</a>
+        <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
+        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
+        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
+        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
+        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
         <a
           class="col-auto"
-          @click="clearLocalStorage(), attViewAuth == true || deviceType == '2' ? changeTab('/attachment/memo?page=1&viewType=gallery') : changeTab('/attachment/video?page=1&viewType=gallery')"
+          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
+          @click="clearLocalStorage"
         >
           {{ $t("headerComp")[6] }}
         </a>
         <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
         <!-- <button  @click="closeTab()">닫기</button> -->
-        <!-- admin계정인 경우만 로그아웃 버튼 활성화 -->
+        <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
+        <!-- 글라스 계정인 경우 로그아웃 버튼 활성화 -->
+        <button v-if="logoutStatus != 0 && glassLogin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <button v-if="logoutStatus == 0" class="col-auto" @click="logoutBtnClose">{{ $t("header")[1] }}</button>
       </div>
     </div>
@@ -61,20 +64,14 @@ export default {
       logoutStatus: 1,
       useEnterprise: process.env.useEnterprise,
       logSheet: process.env.logsheet,
-      checkAdmin: false
+      checkAdmin: false,
+      glassLogin: false
     }
   },
   methods: {
     switchLocale(locale) {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
-    },
-    changeTab(params) {
-      if (process.env.useEnterprise == "kepco") {
-        window.location.href = "/wattmanger" + params
-      } else {
-        window.location.href = params
-      }
     },
     logoutBtnClick() {
       const lang = sessionStorage.getItem("languageCode")
@@ -159,6 +156,10 @@ export default {
     // 로그인한 계정이 admin인지 확인
     if (localStorage.getItem("id") === "administrator") {
       this.checkAdmin = true
+    }
+    // 로그인한 계정이 글라스인지 확인
+    if (localStorage.getItem("deviceType") == 2) {
+      this.glassLogin = true
     }
     
     // 파워톡 -> 파워매니저 영상관리로 접근 시 jwt_token을 파라미터로 보낸다.
