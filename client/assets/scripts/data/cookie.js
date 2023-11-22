@@ -26,7 +26,7 @@ export default {
     }
   },
   /* 저장된 쿠키값 삭제하는 함수 (쿠키이름) */
-  delCookie(cookieName) {
+  deleteCookie(cookieName) {
     const date = new Date()
     date.setDate(date.getDate() - 100)
     const Cookie = cookieName + "=; expires= " + date.toUTCString()

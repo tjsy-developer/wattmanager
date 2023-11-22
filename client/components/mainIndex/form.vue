@@ -413,8 +413,8 @@ export default {
             lang = "ko"
             sessionStorage.setItem("languageCode", "ko")
           }
-
           if (response.data[0] === 1) {
+            cookieSetting.setCookie("managerLogined", true)
             /* sessionStorage ID 기억기능 추가 */
             // sessionStorage.setItem("logined", userId)
 
@@ -519,7 +519,6 @@ export default {
                   } else {
                     self.params = response.data[2] + "&login_type=1&lang=" + lang;
                   }
-                  console.log(self.params);
 
                   /* 와트톡 로그인 체크 페이지로 이동 */
                   // eslint-disable-next-line no-lonely-if
@@ -663,7 +662,7 @@ export default {
       document.getElementById("idInput").focus();
     } else {
       /* 기존에 로그인해서 쿠키에 저장되어있던 사용자의 ID를 가져온다 */
-      const loginedId = cookieSetting.getCookie("logined");
+      // const loginedId = cookieSetting.getCookie("logined");
 
       /* 쿠키에 저장되어있던 사용자의 ID가 있다면 아이디입력칸에 ID를 넣어주고
 		  비밀번호입력에 커서를 위치시킨다
@@ -685,8 +684,11 @@ export default {
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
     }
+    if (localStorage.getItem("managerLogOut")) {
+      cookieSetting.deleteCookie("managerLogined")
+    }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
-    // this.delCookie("logined")
+    // this.deleCookie("logined")
     
     // 크롬에서 간혹가다가 세션스토리지 및 로컬스토리지가 초기화 되지 않는 현상 발견
     // 로컬스토리지의 경우 다른 탭들도 영향을 받을 수 있어 wattmanager에서 쓰는 값들만 일일이 제거!
@@ -699,7 +701,13 @@ export default {
         if (langCode) {
           sessionStorage.setItem("languageCode", langCode)
         }
-        if (localStorage.getItem("jwt") && localStorage.getItem("userSeq")) {
+        const checkLogined = cookieSetting.getCookie("managerLogined")
+        if (checkLogined) {
+          if (localStorage.getItem("jwt")) {
+            window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + langCode
+          }
+        } else {
+          localStorage.removeItem("managerLogOut")
           localStorage.removeItem("jwt")
           localStorage.removeItem("userSeq")
           localStorage.removeItem("auth")
