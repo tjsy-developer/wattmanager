@@ -483,17 +483,9 @@ export default {
     openPolicy() {
       const curLang = sessionStorage.getItem("languageCode")
       if (curLang == "ko") {
-        if (process.env.useEnterprise == "kepco") {
-          window.open("/wattmanger/policy/korean")
-        } else {
-          window.open("/policy/korean")
-        }
+        window.open("/policy/korean")
       } else {
-        if (process.env.useEnterprise == "kepco") {
-          window.open("/wattmanger/policy/english")
-        } else {
-          window.open("/policy/english")
-        }
+        window.open("/policy/english")
       }
     },
     // 본인 인증 후 정보를 갖고 오는 로직.
