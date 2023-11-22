@@ -12,25 +12,24 @@
       <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <div class="col-auto row menus">
-        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
-        <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
-        <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
-        <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
-        <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
+        <a v-if="authority == '4' && elecQR" @click="chageTab('/qr/elecQr')" class="col-auto">{{ $t("qrTab") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'safety'" @click="changeTab('/qr')" class="col-auto">{{ $t("safetyQR") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'power'" @click="changeTab('/qr')" class="col-auto">{{ $t("powerQR") }}</a>
+        <a v-if="authority == '4'" @click="changeTab('/integrationQr')">{{ $t("printQR")[0] }}</a>
+        <a v-if="authority == '4'" @click="changeTab('/upload?page=1&viewType=upload')" class="col-auto">{{ $t("upload")}}</a>
         <a v-if="logSheet == 'true'" id="logsheetBtn" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
-        <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
-        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
-        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
-        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
-        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
+        <a class="col-auto" @click="changeTab('/upload?page=1&viewType=filebox')" >{{ $t("fileBox") }}</a>
+        <a class="col-auto" @click="changeTab('/notice?page=1')">{{ $t("notice")[0] }}</a>
+        <a class="col-auto" @click="changeTab('/profile')">{{ $t("profile") }}</a>
+        <a v-if="authority != '0' && deviceType != '2'" @click="changeTab('/user?page=1')" class="col-auto">{{ $t("headerComp")[0] }}</a>
+        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" @click="changeTab('/device?page=1')" class="col-auto">{{ $t("headerComp")[1] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/app?page=1')" class="col-auto">{{ $t("headerComp")[2] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/enterprise?page=1')" class="col-auto">{{ $t("headerComp")[3] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/headquarters?page=1')" class="col-auto">{{ $t("headerComp")[4] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" @click="changeTab('/branch?page=1')" class="col-auto">{{ $t("headerComp")[5] }}</a>
         <a
           class="col-auto"
-          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
-          @click="clearLocalStorage"
+          @click="clearLocalStorage(), attViewAuth == true || deviceType == '2' ? changeTab('/attachment/memo?page=1&viewType=gallery') : changeTab('/attachment/video?page=1&viewType=gallery')"
         >
           {{ $t("headerComp")[6] }}
         </a>
@@ -69,6 +68,13 @@ export default {
     switchLocale(locale) {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
+    },
+    chageTab(params) {
+      if (process.env.useEnterprise == "kepco") {
+        window.location.href = "/wattmanger" + params
+      } else {
+        window.location.href = parmas
+      }
     },
     logoutBtnClick() {
       const lang = sessionStorage.getItem("languageCode")
