@@ -69,11 +69,11 @@ export default {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
     },
-    chageTab(params) {
+    changeTab(params) {
       if (process.env.useEnterprise == "kepco") {
         window.location.href = "/wattmanger" + params
       } else {
-        window.location.href = parmas
+        window.location.href = params
       }
     },
     logoutBtnClick() {
