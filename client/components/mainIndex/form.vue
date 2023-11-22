@@ -662,7 +662,7 @@ export default {
       document.getElementById("idInput").focus();
     } else {
       /* 기존에 로그인해서 쿠키에 저장되어있던 사용자의 ID를 가져온다 */
-      // const loginedId = cookieSetting.getCookie("logined");
+      const loginedId = cookieSetting.getCookie("logined");
 
       /* 쿠키에 저장되어있던 사용자의 ID가 있다면 아이디입력칸에 ID를 넣어주고
 		  비밀번호입력에 커서를 위치시킨다
