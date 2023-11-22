@@ -1,7 +1,7 @@
 # port는 따로 nuxt.config.js에 설정해줘야한다. 자동화하면 배포 오류
 port=3000
 backendURL_local=""
-backendURL=https://kepcos.watttalk.kr/wattmanager-server
+backendURL=https://kepcos.watttalk.kr/wattmanager-server/
 powertlakState="loginCheck"
 powertalkLogin_local=""
 powertalkLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
