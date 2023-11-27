@@ -559,5 +559,21 @@
 		"If the type matches, the values are pasted along the rows and columns in Excel."
 	],
 	"qrTab": "Electronic QR",
-	"zipDownload": "Save All Attachments"
+	"zipDownload": "Save All Attachments",
+	"checkPswPatern": [
+		"* The password must be at least 10 characters, including upper/lower case and special characters.",
+		"The password must be at least 10 characters long.",
+		"The password must contain upper/lower case and special characters."
+	],
+	"alertChangePsw": [
+		"Guidance to Change Password",
+		"It's been 180 days since you changed your password.",
+		"For security purposes, we recommend changing your password.",
+		"Change next time",
+		"Change Password"
+	],
+	"guestNotice": [
+		"Guest Option is not possible due to administrator privileges.",
+		"Guest Option"
+	]
 }

@@ -154,6 +154,8 @@ export default {
     separateBackendUploadPath: process.env.separateBackendUploadPath,
     logsheetURL: process.env.logsheetURL,
     logsheet: process.env.logsheet,
+    checkPswPatern: process.env.checkPswPatern,
+    forceLogout24: process.env.forceLogout24,
     impId: process.env.impId,
     pg: process.env.pg,
     kepcoLogin: process.env.kepcoLogin

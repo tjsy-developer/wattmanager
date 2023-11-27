@@ -48,7 +48,7 @@ export const danalVerify = (logInData, type) => {
                 if (verified.result == true) {
                     alertTxt = alertText("match", logInData.lang)
                     alert(alertTxt)
-                    afterVerify(type, logInData, logInData.birthday, verified.phone_number)
+                    afterVerify(type, logInData, logInData.birthday, verified.phone_number, logInData.changePsw)
                 } else {
                     alertTxt = alertText("unmatch", logInData.lang)
                     alert(alertTxt)
@@ -64,7 +64,12 @@ export const danalVerify = (logInData, type) => {
     )
 }
 // 인증 성공 후 type별 실행 function
-function afterVerify(type, logInInfo, birthday, phoneNum) {
+function afterVerify(type, logInInfo, birthday, phoneNum, changePsw) {
+    if (changePsw) {
+        const finishVerifyOpenChangePsw = new CustomEvent("finishVerifyOpenChangePsw", { detail: logInInfo })
+        window.dispatchEvent(finishVerifyOpenChangePsw)
+        return
+    }
     if (type == 0) {
         // 로그인
         login(logInInfo)
@@ -140,6 +145,7 @@ function login(logInData) {
 // iamport 에서 받은 imp_uid를 토대로 백엔드에서 토큰 생성 및 토큰으로 이름, 생년월일과 같은 개인정보를 가져오는 부분
 async function getUserInfo(uid, params, type) {
     let result
+    console.log(type, "============================================")
     // 회원가입인 경우
     if (type == 1) {
         // impuid만 전달하면 된다.
@@ -187,6 +193,7 @@ async function getUserInfo(uid, params, type) {
             jwt: localStorage.getItem("jwt")
         })
         .then((response) => {
+            console.log(response)
             // backend에서 db 정보와 iamport 정보를 비교해서 일치하는지 아닌지 보내준다.
             const returnData = response.data
             result = {

@@ -23,6 +23,8 @@ fileBoxBackend=https://kepcos.watttalk.kr/wattmanager-server
 separateBackendUploadPath=false
 logsheetURL=https://kepcos.watttalk.kr/wattmanager2/safetycheck
 logsheet=true
+checkPswPatern=false
+forceLogout24=false
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=""
 pg=""
