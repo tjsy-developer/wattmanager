@@ -107,7 +107,7 @@ export default {
                   glass_app_range: setGlassAppRange,
                   image: this.selected[12],
                   pc_app_range: this.selected[13],
-                  order_by_num: Number(getInfo.getInputValue(inputLength - 4)),
+                  order_by_num: Number(getInfo.getInputValue(inputLength - 5)),
                   device_type: Number(sessionStorage.getItem("deviceType")),
                   phone_number: getInfo.getInputValue(4),
                   birthday: getInfo.getInputValue(5),
