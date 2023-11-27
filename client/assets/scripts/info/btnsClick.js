@@ -112,7 +112,7 @@ const btnsClick = {
         const slicePath = path.split("/")
         const confirmPath = slicePath[slicePath.length - 1]
         // 회원 정보 수정 클릭 시- 정렬번호 빈값체크 하지않음
-        if (confirmPath === "user_update" && getInput.length - 2 === i) {
+        if (confirmPath === "user_update" && getInput.length - 5 === i) {
           if (!getInput[i].value) {
             params.order_by_num = 999
           }
