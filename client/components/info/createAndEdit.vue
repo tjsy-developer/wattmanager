@@ -34,6 +34,11 @@
             <img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
             <input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />
           </div>
+          <div v-else-if="content.edit == 'check'" class="checkGuest">
+            <input type="checkbox" class="col-auto" v-bind:disabled="!getPermission" :value="compData.isGuest" @click="isGuest = !isGuest" v-model="compData.isGuest" />
+            <span v-if="!getPermission">{{ $t("guestNotice")[0] }}</span>
+            <span v-else>{{ $t("guestNotice")[1] }}</span>
+          </div>
           <input
             v-else
             class="col"
@@ -93,7 +98,9 @@ export default {
       hqList: getInfo.hqList,
       brList: getInfo.brList,
       checkAdmin: false,
-      check2Factor: false
+      check2Factor: false,
+      getPermission: true,
+      isGuest: ""
     }
   },
   methods: {
@@ -293,6 +300,21 @@ export default {
             console.log("2Factor Error :", err)
           }
         })
+    },
+    changedPermission() {
+      const permission = (document.getElementsByClassName("selectCompClass")[3].value)
+      if (permission != 0) {
+        this.getPermission = false
+        this.$nextTick(() => {
+          this.isGuest = false
+        })
+      } else {
+        this.getPermission = true
+      }
+    },
+    checkGuest(val) {
+      this.isGuest = !this.isGuest
+      console.log(this.isGuest)
     }
   },
   updated() {
@@ -327,7 +349,6 @@ export default {
           console.log("2Factor Error :", err)
         }
       })
-    console.log(this.check2Factor, "?????")
     // dlenc 분기처리!!
     if (window.location.hostname == "dlenc.watttalk.kr") {
       this.useEnterprise = "dlenc"
@@ -336,7 +357,14 @@ export default {
     }
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
     window.addEventListener("changedCompData", this.changedCompData)
+    window.addEventListener("changedPermission", this.changedPermission)
     sessionStorage.removeItem("mutationState")
+    // 비밀번호 변경하기 버튼을 통해 접근한 경우 비밀번호 변경 모달을 실행시킨다
+    const checkPswChange = this.$route.query.changePsw
+    if (checkPswChange) {
+      this.compData.deleteBtnClick()
+    }
+    this.isGuest = this.compData.isGUest
   },
   beforeDestroy() {
     if (this.profileImage !== "") {
@@ -493,4 +521,9 @@ export default {
   background: #008BCF
   margin-left: 10px
   color: white
+.checkGuest
+  display: flex
+  align-items: center
+  input
+    margin-right: 10px
 </style>

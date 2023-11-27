@@ -26,8 +26,10 @@ export default {
     selectChange(e) {
       this.compData.selectedValue = this.compData.selectedText
       if (this.compData.change) this.compData.change(e)
-      if (this.compData.placeholder == "지사 선택") {
+      if (this.compData.placeholder == "지사 선택" || this.compData.placeholder == "Selection of Team") {
         window.dispatchEvent(new Event("changedCompData"))
+      } else if (this.compData.placeholder == "권한 선택" || this.compData.placeholder == "Selection of Permission") {
+        window.dispatchEvent(new Event("changedPermission"))
       }
     }
   },

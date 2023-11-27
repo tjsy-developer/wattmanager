@@ -8,7 +8,7 @@ powertalkLogin="https://dev.watttalk.kr:8224/login/login-check?jwt_token="
 powermemo=https://dev.watttalk.kr:8222/storage/powermemo/dev
 powermemoSavefolder=D:\\Storage\\powermemo\\dev
 qr_filePath=https://dev.watttalk.kr:8222/storage/powertalk/dev/QR/folder
-qr=safety
+qr=default
 att_access_user=true
 att_videoPlayPath=https://dev.watttalk.kr:8222/storage/powertalk/dev/Dashs/Src/
 att_filePath=https://dev.watttalk.kr:8222/storage/powertalk/dev/filebox/
@@ -25,9 +25,12 @@ fileBoxBackend=https://dev.watttalk.kr:8221/
 separateBackendUploadPath=false
 logsheetURL=https://smartfactory.watttalk.kr/wattmanager2/safetycheck
 logsheet=true
+checkPswPatern=false
+forceLogout24=false
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=imp67320503
 pg=danal.B010008141
+kepcoLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
 
 
 # qr 값에 따라서 tab 변동

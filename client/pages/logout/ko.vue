@@ -5,11 +5,13 @@
 
 <script>
 export default {
-  mounted() {
-      localStorage.setItem("managerLogOut", true)
-      sessionStorage.setItem("languageCode", "ko")
-      location.href = "/"
-  }
+    mounted() {
+        // const checkForceLogout = this.$route.query.forcedLogout
+        // sessionStorage.setItem("forcedLogout", checkForceLogout)
+        localStorage.setItem("managerLogOut", true)
+        sessionStorage.setItem("languageCode", "ko")
+        location.href = "/"
+    }
 }
 </script>
 

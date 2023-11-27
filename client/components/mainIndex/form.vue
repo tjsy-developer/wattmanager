@@ -201,7 +201,8 @@ import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 ;
 import cookieSetting from "@/assets/scripts/data/cookie";
-import verifyModal from "@/components/verifyPhoneModal/verifyModal"
+import verifyModal from "@/components/verifyPhoneModal/verifyModal";
+import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
 
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
@@ -227,7 +228,8 @@ export default {
       params: "",
       reservUserId: "",
       check2Factor: "",
-      bypassID: []
+      bypassID: [],
+      changePsw: false
     };
   },
   methods: {
@@ -414,6 +416,17 @@ export default {
             sessionStorage.setItem("languageCode", "ko")
           }
           if (response.data[0] === 1) {
+            sessionStorage.removeItem("forcedLogout")
+            localStorage.removeItem("managerLogOut")
+            localStorage.removeItem("jwt")
+            localStorage.removeItem("userSeq")
+            localStorage.removeItem("auth")
+            localStorage.removeItem("id")
+            localStorage.removeItem("hqSeq")
+            localStorage.removeItem("enSeq")
+            localStorage.removeItem("opendDialog")
+            localStorage.removeItem("brSeq")
+            localStorage.removeItem("deviceType")
             cookieSetting.setCookie("managerLogined", true)
             /* sessionStorage ID 기억기능 추가 */
             // sessionStorage.setItem("logined", userId)
@@ -477,28 +490,40 @@ export default {
                     checkByPass = true
                   }
                 })
+                if (process.env.useEnterprise == "dlenc") {
+                  const loginTime = Math.floor(new Date().getTime() / 1000)
+                  cookieSetting.setCookie("managerLoginTime", loginTime)
+                }
                 if (checkByPass == false) {
                   let modalType
                   if (response.data[1].auth === 4) {
                     modalType = 1
+                    self.changePsw = false
                   } else if (response.data[1].device_type === 2) {
                     modalType = 2
+                    self.changePsw = false
                   } else {
                     modalType = 3
                   }
-                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq);
+                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw);
                   return
                 }
                 if (response.data[1].auth === 4)
                   window.open("/attachment/video?page=1&viewType=gallery", "_self");
-                else if (response.data[1].device_type === 2)
+                else if (response.data[1].device_type === 2) {
+                  if (self.changePsw) {
+                    self.openChangePswModal("/attachment/memo?page=1&viewType=gallery", 1)
+                    return
+                  }
                   window.open("/attachment/memo?page=1&viewType=gallery", "_self");
+                  
+                }
+                  
                 // 수정
                 else {
                   // 회원이 이메일로 회의실입장하려고 하는 경우
                   /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
                     2. isMember -> 이메일을 클릭하여 들어왔는지판단(회원판단) (true == 이메일로 접근) */
-
                   // 두가지 조건이 만족하면 회원입장 페이지로 이동
                   if (self.isMember && self.reservUserId === userId) {
                     self.params =
@@ -553,15 +578,29 @@ export default {
                 }
               })
           } else if (response.data[0] === 2) {
+            // 미승인
             if (self.useEnterprise === "samsung") {
               self.$modal.hide("personalInfoModal");
               self.consentvalue = false;
             }
             alert(self.$t("home")[0]);
+          } else if (response.data[0] === 5) {
+            // psw가 일치하지 않는 경우!
+            if (self.loginErrBlock) {
+              self.countLoginErr = ++self.countLoginErr
+            }
+            alert(self.$t("home")[1]);
           } else {
+            // id || psw err
             if (self.useEnterprise === "samsung") {
               self.$modal.hide("personalInfoModal");
               self.consentvalue = false;
+            }
+            if (process.env.useEnterprise == "dlenc") {
+              if (response.data[3] > 4) {
+                alert("비밀번호 5회 오류로 인해 미승인되었습니다. 관리자에게 문의 바랍니다")
+                return
+              }
             }
             alert(self.$t("home")[1]);
           }
@@ -584,7 +623,7 @@ export default {
         pwdInput.type = "text";
       }
     },
-    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq) {
+    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq, checkChangePsw) {
       const modalsContainerStyle =
         document.getElementById("modalsContainer").style;
       modalsContainerStyle.display = "block";
@@ -597,7 +636,8 @@ export default {
         pwd: userPwd,
         language: lang,
         type: modalType,
-        user_seq: userSeq
+        user_seq: userSeq,
+        changePsw: checkChangePsw
       }
 
       this.$modal.show(
@@ -618,6 +658,36 @@ export default {
             modalsContainerStyle.display = "none";
           },
         }
+      );
+    },
+    openChangePswModal(params, type) {
+      const modalsContainerStyle =
+          document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
+
+      const modalParameter = {
+        url: params,
+        modalType: type
+      }
+      
+      this.$modal.show(
+          // eslint-disable-next-line eqeqeq
+          pswChangeModal,
+          {
+            propsData: modalParameter
+          },
+          {
+            name: "pswChangeModal",
+            width: 400,
+            height: 300,
+            clickToClose: false,
+            adaptive: true,
+          },
+          {
+            "before-close": () => {
+                modalsContainerStyle.display = "none";
+            },
+          }
       );
     }
   },
@@ -686,6 +756,7 @@ export default {
     }
     if (localStorage.getItem("managerLogOut")) {
       cookieSetting.deleteCookie("managerLogined")
+      cookieSetting.deleteCookie("managerLoginTime")
     }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.deleCookie("logined")
@@ -694,32 +765,61 @@ export default {
     // 로컬스토리지의 경우 다른 탭들도 영향을 받을 수 있어 wattmanager에서 쓰는 값들만 일일이 제거!
     this.$nextTick(() => {
         let langCode = ""
+        
         if (sessionStorage.getItem("languageCode")) {
           langCode = sessionStorage.getItem("languageCode")
         }
-        sessionStorage.clear()
         if (langCode) {
           sessionStorage.setItem("languageCode", langCode)
         }
-        const checkLogined = cookieSetting.getCookie("managerLogined")
-        if (checkLogined) {
-          if (localStorage.getItem("jwt")) {
-            window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + langCode
-          }
-        } else {
-          localStorage.removeItem("managerLogOut")
-          localStorage.removeItem("jwt")
-          localStorage.removeItem("userSeq")
-          localStorage.removeItem("auth")
-          localStorage.removeItem("id")
-          localStorage.removeItem("hqSeq")
-          localStorage.removeItem("enSeq")
-          localStorage.removeItem("opendDialog")
-          localStorage.removeItem("brSeq")
-          localStorage.removeItem("deviceType")
-        }
+        // const checkLogined = cookieSetting.getCookie("managerLogined")
+        // if (checkLogined) {
+        //   if (localStorage.getItem("jwt")) {
+        //     if (localStorage.getItem("auth") == 4 || localStorage.getItem("deviceType") == 2) {
+        //       window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + langCode
+        //     } else {
+        //       const urlParameter = localStorage.getItem("jwt") + "&login_type=1&lang=" + langCode
+        //       if (window.location.hostname === "localhost") {
+        //         window.open(
+        //           process.env.powertalkLogin_local + urlParameter,
+        //           "_self"
+        //         );
+
+        //         // 와트톡
+        //       } else {
+        //         if (window.location.hostname == "kepco.watttalk.kr") {
+        //           window.open(
+        //             process.env.kepcoLogin + urlParameter,
+        //             "_self"
+        //           );
+        //         } else {
+        //           window.open(
+        //             process.env.powertalkLogin + urlParameter,
+        //             "_self"
+        //           );
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
+        // if (sessionStorage.getItem("forcedLogout")) {
+        //   return
+        // } else {
+        //   console.log("===================================================")
+        //   localStorage.removeItem("managerLogOut")
+        //   localStorage.removeItem("jwt")
+        //   localStorage.removeItem("userSeq")
+        //   localStorage.removeItem("auth")
+        //   localStorage.removeItem("id")
+        //   localStorage.removeItem("hqSeq")
+        //   localStorage.removeItem("enSeq")
+        //   localStorage.removeItem("opendDialog")
+        //   localStorage.removeItem("brSeq")
+        //   localStorage.removeItem("deviceType")
+        //   sessionStorage.clear()
+        // }
     })
-  },
+  }
 };
 </script>
 

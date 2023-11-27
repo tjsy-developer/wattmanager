@@ -4,7 +4,7 @@
 
 <script>
 import filtersJson from "@/assets/jsons/info/user/editFilters"
-import dlencEditFilters from "@/assets/jsons/info/user/dlencEditFilters"
+import glassEditFilters from "@/assets/jsons/info/user/glassEditFilters"
 import getFilters from "@/assets/scripts/info/getFilters"
 import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
@@ -32,7 +32,14 @@ export default {
         phoneNumber: "",
         birthday: "",
         imageFile: "",
+        isGuest: "",
         editBtnClick() {
+          let checkGuest = ""
+          if (getInfo.getInputValue(6) == "true") {
+            checkGuest = 1
+          } else {
+            checkGuest = 0
+          }
           let formData = new FormData()
           const savePath = process.env.profilePhotoSavefolder
           const profileImg = this.imageFile
@@ -105,6 +112,7 @@ export default {
                   phone_number: getInfo.getInputValue(4),
                   birthday: getInfo.getInputValue(5),
                   email: getInfo.getInputValue(2),
+                  guest: checkGuest,
                   jwt: token,
                   imgFormData: formData,
                   formDataHeader: headers
@@ -234,6 +242,9 @@ export default {
             if (res.data.birthday) {
               self.birthday = res.data.birthday
             }
+            if (res.data.guest) {
+              self.compData.isGuest = res.data.guest
+            }
             // 글라스가 아닌 경우
             if (res.data.device_type != 2) {
               self.compData.selected = [
@@ -249,6 +260,7 @@ export default {
                 res.data.order_by_num,
                 res.data.phone_number,
                 res.data.birthday,
+                res.data.guest,
                 res.data.image ? res.data.image : undefined,
                 res.data.pc_app_range,
                 res.data.device_type,
@@ -316,10 +328,11 @@ export default {
                                 self.$t("infoFilters")[11],
                                 self.$t("profile text")[6],
                                 self.$t("profile text")[8],
+                                self.$t("profile text")[9],
                                 self.$t("profile text")[7],
                                 self.$t("infoFilters")[7]
                               ],
-                              dlencEditFilters
+                              filtersJson
                             ),
                             self.compData.selected,
                             [
@@ -348,7 +361,7 @@ export default {
                                 self.$t("profile text")[7],
                                 self.$t("infoFilters")[7]
                               ],
-                              filtersJson
+                              glassEditFilters
                             ),
                             self.compData.selected,
                             [

@@ -49,6 +49,7 @@
 <script>
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode"
+import cookieSetting from "@/assets/scripts/data/cookie"
 
 export default {
   data() {
@@ -222,6 +223,12 @@ export default {
       this.useEnterprise = "dlenc"
     }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
+    }
+    // window.addEventListener("forceLogoutEvent", this.logoutBtnClick())
+    if (process.env.forceLogout24) {
+      setInterval(() => {
+        this.checkLoginTime()
+      }, 600000);
     }
   }
 }

@@ -27,6 +27,7 @@
 ;
 import axiosJson from "@/assets/jsons/axios";
 import { danalVerify } from "@/assets/scripts/danalVerify"
+import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
 
 export default {
     props: {
@@ -57,7 +58,8 @@ export default {
                         name: response.data.name,
                         phone: response.data.phone_number,
                         birthday: response.data.birthday,
-                        id: response.data.id
+                        id: response.data.id,
+                        changePsw: self.propsData.changePsw
                     }
                 
                 danalVerify(params, 0)
@@ -65,7 +67,42 @@ export default {
             .catch(function (error) {
                 console.log(error);
             })
+        },
+        openChangePswModal(params, type) {
+            this.$modal.hide("verifyModal")
+            const modalsContainerStyle =
+                document.getElementById("modalsContainer").style;
+            modalsContainerStyle.display = "block";
+
+            const modalParameter = {
+                loginData: params,
+                modalType: type
+            }
+            this.$modal.show(
+                // eslint-disable-next-line eqeqeq
+                pswChangeModal,
+                {
+                    propsData: modalParameter
+                },
+                {
+                    name: "pswChangeModal",
+                    width: 400,
+                    height: 300,
+                    clickToClose: false,
+                    adaptive: true,
+                },
+                    {
+                    "before-close": () => {
+                        modalsContainerStyle.display = "none";
+                    },
+                }
+            );
         }
+    },
+    mounted() {
+        window.addEventListener("finishVerifyOpenChangePsw", (e) => {
+            this.openChangePswModal(e.detail, 2)
+        })
     }
 }
 </script>
