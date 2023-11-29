@@ -6,10 +6,13 @@
 <script>
 export default {
     mounted() {
-        // const checkForceLogout = this.$route.query.forcedLogout
-        // sessionStorage.setItem("forcedLogout", checkForceLogout)
-        sessionStorage.setItem("managerLogOut", true)
+        const logOutId = sessionStorage.getItem("id") + "jwt"
+        sessionStorage.clear()
         sessionStorage.setItem("languageCode", "en")
+        sessionStorage.setItem("logoutId", logOutId)
+        if (process.env.useEnterprise == "dlenc") {
+          sessionStorage.setItem("managerLogOut", true)
+        }
         location.href = "/"
     }
 }
