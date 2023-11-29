@@ -1,7 +1,7 @@
-import initLocalStorage from "@/assets/scripts/initialize/localStorage"
+import sessionStorage from "@/assets/scripts/initialize/sessionStorage"
 
 export default getListDataParams => {
-  const getSelectedFilters = initLocalStorage.get("selectedFilters")
+  const getSelectedFilters = sessionStorage.get("selectedFilters")
   if (getSelectedFilters) {
     for (let i = 0; i < getSelectedFilters.length; i++) {
       if (getSelectedFilters[i].group === "joined_members")

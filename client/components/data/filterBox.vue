@@ -71,7 +71,7 @@
         </div>
         <button class="col-auto yearArrow" @click="yearArrowBtnClick(2)">▶</button>
       </div>
-      <div class="col-3 row monthBtns" v-for="month in 12">
+      <div class="col-3 row monthBtns" v-for="month in 12" :key="month">
         <button
           class="col"
           @click="monthBtnClick(year, month)"
@@ -86,7 +86,7 @@
 
 <script>
 import getDate from "@/assets/scripts/initialize/date"
-import initLocalStorage from "@/assets/scripts/initialize/localStorage"
+import initSessionStorage from "@/assets/scripts/initialize/sessionStorage"
 
 export default {
   props: [
@@ -277,7 +277,7 @@ export default {
         "filterBoxSearchInput" + this.titleBarFilterKey
       )
 
-      const getSelectedFiltersOptions = initLocalStorage.get(
+      const getSelectedFiltersOptions = initSessionStorage.get(
         "selectedFiltersOptions"
       )
       getSelectedFiltersOptions.searchKeyword = getFilterBoxSearchInput.value
@@ -343,7 +343,7 @@ export default {
                 //   self.filterBoxOpenInitial()
               }, 100)
             }
-            initLocalStorage.set(
+            initSessionStorage.set(
               "selectedFiltersOptions",
               getSelectedFiltersOptions
             )
@@ -553,11 +553,11 @@ export default {
       window.location.reload()
     },
     setYear(year) {
-      const getSelectedFiltersOptions = initLocalStorage.get(
+      const getSelectedFiltersOptions = initSessionStorage.get(
         "selectedFiltersOptions"
       )
       getSelectedFiltersOptions.year = year
-      initLocalStorage.set("selectedFiltersOptions", getSelectedFiltersOptions)
+      initSessionStorage.set("selectedFiltersOptions", getSelectedFiltersOptions)
     },
     yearArrowBtnClick(e) {
       if (e === 1) this.year--
@@ -595,10 +595,10 @@ export default {
       return Math.round(standard - 1)
     },
     filterBoxOpenInitial() {
-      const getSelectedFiltersOptions = initLocalStorage.get(
+      const getSelectedFiltersOptions = initSessionStorage.get(
         "selectedFiltersOptions"
       )
-      const getSelectedFilters = initLocalStorage.get("selectedFilters")
+      const getSelectedFilters = initSessionStorage.get("selectedFilters")
       if (getSelectedFiltersOptions && getSelectedFiltersOptions.column === 4) {
         if (getSelectedFilters && getSelectedFilters.length) {
           for (let i = 0; i < getSelectedFilters.length; i++) {
@@ -631,7 +631,7 @@ export default {
     }
   },
   mounted() {
-    const getSelectedFiltersOptions = initLocalStorage.get(
+    const getSelectedFiltersOptions = initSessionStorage.get(
       "selectedFiltersOptions"
     )
 

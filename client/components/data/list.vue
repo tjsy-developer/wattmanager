@@ -64,7 +64,7 @@
             </span>
             <img v-if="galleryContent.code" class="tagIcon" src="@/assets/images/ic_tag.png" />
             <span v-if="galleryContent.code" class="col-auto galleryViewCode">{{ galleryContent.code }}</span>
-            <div v-else class="col-auto galleryViewCode">&nbsp;</div>
+            <div v-else class="col-auto galleryViewCode">&nbsp</div>
           </div>
         </div>
       </div>
