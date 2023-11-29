@@ -64,7 +64,7 @@
             </span>
             <img v-if="galleryContent.code" class="tagIcon" src="@/assets/images/ic_tag.png" />
             <span v-if="galleryContent.code" class="col-auto galleryViewCode">{{ galleryContent.code }}</span>
-            <div v-else class="col-auto galleryViewCode">&nbsp</div>
+            <div v-else class="col-auto galleryViewCode">&nbsp;</div>
           </div>
         </div>
       </div>
@@ -76,9 +76,9 @@
           </div>
           <div class="col-auto row items-center">
             <button
+             v-for="selectedFilter in selectedFilters"
               v-if="selectedFilter.group !== 'hq_alias' && selectedFilter.group !== 'en_alias'"
               class="col-auto row items-center filterBox"
-              v-for="selectedFilter in selectedFilters"
 						  @click="filterBoxBtnClick(selectedFilter)"
             >
               <span v-if="selectedFilter.group === 'br_alias'">
@@ -509,7 +509,7 @@ export default {
     },
     removeBtnClick(e) {
       const self = this
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       const result = confirm(self.$t("listComp")[18])
       if (result) {
         this.$axios
@@ -527,7 +527,6 @@ export default {
             console.log("list.vue removeBtnClick error : ", error)
             alert(self.$t("listComp")[15])
           })
-      } else {
       }
     },
     favoriteBtnClick(e, index) {
@@ -614,7 +613,7 @@ export default {
     // 필터 클릭시 list setting
     setTitleBarFilterList(index) {
       const getTitleBarFilter = this.titleBarFilters[index]
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
 
       if (getTitleBarFilter.getFilterListUrl)
         this.$axios
@@ -627,7 +626,7 @@ export default {
               getTitleBarFilter.filterList = []
 
             for (let i = 0; i < res.data.length; i++) {
-              if (res.data[i] != null && res.data[i] !== "")
+              if (res.data[i] != null && res.data[i] !== "") {
                 if (getTitleBarFilter.align.column === "hq_alias") {
                   if (res.data[i].en_alias !== null) {
                     // filterList 배열에 현재 추가할 기업 존재여부확인
@@ -715,6 +714,7 @@ export default {
                     group: getTitleBarFilter.align.column
                   })
                 }
+              }
             }
             const getSelectedFiltersOptions = initLocalStorage.get(
               "selectedFiltersOptions"
@@ -762,7 +762,7 @@ export default {
       }
     },
     shareBtnClick(e) {
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       this.$axios
         .post(
           e.fileType === "video"
@@ -914,7 +914,7 @@ export default {
         this.$refs.childFilterBox[3].searchBtnClick()
       }
     }
-    this.loginUserAuth = localStorage.getItem("auth")
+    this.loginUserAuth = sessionStorage.getItem("auth")
   },
   watch: {
     "compData.listData"() {

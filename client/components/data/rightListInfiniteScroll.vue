@@ -34,7 +34,7 @@ export default {
     async fetchData() {
       this.page++
       this.compData.getRightListDataParams.page = this.page
-      this.compData.getRightListDataParams.jwt = localStorage.getItem("jwt")
+      this.compData.getRightListDataParams.jwt = sessionStorage.getItem("jwt")
       console.log("fetchData Params url: ", this.url)
       console.log(
         "fetchData Params getRightListDataParams: ",
@@ -57,7 +57,7 @@ export default {
         this.page = 0
       }
       console.log("page init", this.page)
-      this.compData.getRightListDataParams.jwt = localStorage.getItem("jwt")
+      this.compData.getRightListDataParams.jwt = sessionStorage.getItem("jwt")
       this.page++
       this.compData.getRightListDataParams.page = this.page
       console.log("request after" + this.compData.getRightListDataParams.page)
@@ -65,7 +65,7 @@ export default {
       console.log("page", this.compData.getRightListDataParams.page)
       setTimeout(() => {
         if (this.compData.getRightListDataParams.jwt === undefined) {
-          this.compData.getRightListDataParams.jwt = localStorage.getItem("jwt")
+          this.compData.getRightListDataParams.jwt = sessionStorage.getItem("jwt")
         }
         // console.log("this.url", this.url)
         // console.log("getRightList", this.compData.getRightListDataParams)

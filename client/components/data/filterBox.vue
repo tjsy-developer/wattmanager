@@ -284,7 +284,7 @@ export default {
 
       if (this.compData !== "calendar" && getFilterBoxSearchInput) {
         const self = this
-        const token = localStorage.getItem("jwt")
+        const token = sessionStorage.getItem("jwt")
         this.$axios
           .post(process.env.backendURL + this.getFilterListUrl, {
             jwt: token
@@ -418,7 +418,7 @@ export default {
     // 체크박스 버튼 클릭시 보임
     filterBtnClick(obj) {
       let setSelectedFilters = []
-      const getSelectedFilters = localStorage.getItem("selectedFilters")
+      const getSelectedFilters = sessionStorage.getItem("selectedFilters")
 
       if (getSelectedFilters)
         setSelectedFilters = JSON.parse(getSelectedFilters)
@@ -545,7 +545,7 @@ export default {
         }
       }
 
-      localStorage.setItem(
+      sessionStorage.setItem(
         "selectedFilters",
         JSON.stringify(setSelectedFilters)
       )
@@ -638,9 +638,9 @@ export default {
     if (getSelectedFiltersOptions && getSelectedFiltersOptions.year)
       this.year = getSelectedFiltersOptions.year
 
-    const auth = localStorage.getItem("auth")
+    const auth = sessionStorage.getItem("auth")
     // 해당 본부를 열기위함
-    this.loginUserHqseq = localStorage.getItem("hqSeq")
+    this.loginUserHqseq = sessionStorage.getItem("hqSeq")
     if (auth < 4) {
       this.filterViewAuth = false
       console.log(document.getElementsByClassName("hqFilterList")[0])

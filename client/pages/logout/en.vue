@@ -8,7 +8,7 @@ export default {
     mounted() {
         // const checkForceLogout = this.$route.query.forcedLogout
         // sessionStorage.setItem("forcedLogout", checkForceLogout)
-        localStorage.setItem("managerLogOut", true)
+        sessionStorage.setItem("managerLogOut", true)
         sessionStorage.setItem("languageCode", "en")
         location.href = "/"
     }

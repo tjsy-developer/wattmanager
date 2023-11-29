@@ -30,7 +30,7 @@
         <a
           class="col-auto"
           :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
-          @click="clearLocalStorage"
+          @click="clearsessionStorage"
         >
           {{ $t("headerComp")[6] }}
         </a>
@@ -76,8 +76,8 @@ export default {
     },
     logoutBtnClick() {
       const lang = sessionStorage.getItem("languageCode")
-      const jwtToken = localStorage.getItem("jwt")
-      localStorage.clear()
+      const jwtToken = sessionStorage.getItem("jwt")
+      sessionStorage.clear()
       const languageCode = sessionStorage.getItem("languageCode")
       sessionStorage.clear()
       sessionStorage.setItem("languageCode", languageCode)
@@ -130,14 +130,14 @@ export default {
         open("/", "_self")
       }
     },
-    clearLocalStorage() {
-      localStorage.removeItem("selectedFilters")
-      localStorage.removeItem("selectedFiltersOptions")
-      localStorage.clearr
+    clearsessionStorage() {
+      sessionStorage.removeItem("selectedFilters")
+      sessionStorage.removeItem("selectedFiltersOptions")
+      sessionStorage.clearr
     },
     // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리로 접근 시 "종료" 버튼 클릭 시 창 닫기
     logoutBtnClose() {
-      localStorage.clear()
+      sessionStorage.clear()
       window.close()
     },
     serviceInPreparation(e) {
@@ -155,11 +155,11 @@ export default {
   },
   mounted() {
     // 로그인한 계정이 admin인지 확인
-    if (localStorage.getItem("id") === "administrator") {
+    if (sessionStorage.getItem("id") === "administrator") {
       this.checkAdmin = true
     }
     // 로그인한 계정이 글라스인지 확인
-    if (localStorage.getItem("deviceType") == 2) {
+    if (sessionStorage.getItem("deviceType") == 2) {
       this.glassLogin = true
     }
     
@@ -170,24 +170,24 @@ export default {
       const decodeData = jwt_decode(this.$route.query.jwt_token)
       console.log(decodeData)
 
-      localStorage.setItem("auth", decodeData.auth)
-      localStorage.setItem("userSeq", decodeData.user_seq)
-      localStorage.setItem("id", decodeData.id)
-      localStorage.setItem("hqSeq", decodeData.hq_seq)
-      localStorage.setItem("enSeq", decodeData.en_seq)
-      localStorage.setItem("brSeq", decodeData.br_seq)
-      localStorage.setItem("deviceType", decodeData.device_type)
-      localStorage.setItem("jwt", this.$route.query.jwt_token)
+      sessionStorage.setItem("auth", decodeData.auth)
+      sessionStorage.setItem("userSeq", decodeData.user_seq)
+      sessionStorage.setItem("id", decodeData.id)
+      sessionStorage.setItem("hqSeq", decodeData.hq_seq)
+      sessionStorage.setItem("enSeq", decodeData.en_seq)
+      sessionStorage.setItem("brSeq", decodeData.br_seq)
+      sessionStorage.setItem("deviceType", decodeData.device_type)
+      sessionStorage.setItem("jwt", this.$route.query.jwt_token)
 
       // 2021.04.14 ksh :: 로그인 버튼 숨김 설정
-      localStorage.setItem("logoutStatus", 0)
+      sessionStorage.setItem("logoutStatus", 0)
     }
 
-    this.authority = localStorage.getItem("auth")
-    this.deviceType = localStorage.getItem("deviceType")
+    this.authority = sessionStorage.getItem("auth")
+    this.deviceType = sessionStorage.getItem("deviceType")
 
     // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 숨김
-    this.logoutStatus = localStorage.getItem("logoutStatus")
+    this.logoutStatus = sessionStorage.getItem("logoutStatus")
 
     if (!this.authority) open("/", "_self")
 

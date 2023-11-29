@@ -21,7 +21,7 @@ export default {
         createAndEditSpanSize: 120,
         type: "create",
         createBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           console.log(this.listFilters)
           btnsClick.create(
             this.listFilters,

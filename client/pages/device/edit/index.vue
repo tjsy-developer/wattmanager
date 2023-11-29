@@ -26,7 +26,7 @@ export default {
         nameSpaceCheck: this.$t("no spaces text"),
         nameSpecialCheck: this.$t("no special characters"),
         editBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           const pattern = /\s/g
           const reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g
           if (getInfo.getInputValue(3).match(reg) || getInfo.getInputValue(4).match(reg)) {
@@ -62,7 +62,7 @@ export default {
           
         },
         deleteBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[10])
           if (result) {
             btnsClick.delete(process.env.backendURL + "deviceRest/dev_delete", {
@@ -94,7 +94,7 @@ export default {
     getInfo.setAuthority()
     getInfo.setLang(this.$t("getInfo"))
     const self = this
-    this.token = localStorage.getItem("jwt")
+    this.token = sessionStorage.getItem("jwt")
     this.$axios
       .post(process.env.backendURL + axiosJson.device.dev_info_one, {
         dev_seq: self.compData.devSeq,

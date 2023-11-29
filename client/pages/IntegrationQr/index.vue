@@ -64,7 +64,7 @@ export default {
             this.chapterList = []
             this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.searchQR, {
-                    jwt: localStorage.getItem("jwt"),
+                    jwt: sessionStorage.getItem("jwt"),
                     chapter_name: this.chapterName
                 })
                 .then((res) => {
@@ -85,15 +85,15 @@ export default {
         },
         createAndEditUsage(seq) {
             window.location.href = "/integrationQr/createAndEditUsage"
-            localStorage.setItem("chapter_seq", seq)
+            sessionStorage.setItem("chapter_seq", seq)
         },
         createAndEditQr(seq) {
             window.location.href = "/integrationQr/createAndEditQr"
-            localStorage.setItem("chapter_seq", seq)
+            sessionStorage.setItem("chapter_seq", seq)
         },
         printQr(seq) {
             window.location.href = "/integrationQr/printQr"
-            localStorage.setItem("chapter_seq", seq)
+            sessionStorage.setItem("chapter_seq", seq)
         }
     }
 }

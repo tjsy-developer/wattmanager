@@ -79,9 +79,9 @@ export default {
         }
     },
     mounted() {
-        this.chapter_seq = localStorage.getItem("chapter_seq")
+        this.chapter_seq = sessionStorage.getItem("chapter_seq")
         this.backendURL = process.env.backendURL
-        this.jwt = localStorage.getItem("jwt"),
+        this.jwt = sessionStorage.getItem("jwt"),
         this.getKeyData()
     },
     methods: {

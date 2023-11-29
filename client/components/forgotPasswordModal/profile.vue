@@ -48,7 +48,7 @@ export default {
               user_seq: this.userSeq,
               password: this.password,
               password_new: this.newPassword,
-              jwt: localStorage.getItem("jwt")
+              jwt: sessionStorage.getItem("jwt")
             }
           )
           .then(function(res) {

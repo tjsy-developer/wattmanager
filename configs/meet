@@ -14,6 +14,8 @@ att_videoPlayPath=https://meetcloud.watttalk.kr/powertalk/meet/Dashs/Src/
 att_filePath=https://meetcloud.watttalk.kr/powertalk/meet/filebox/
 detailFilePath=D:\\\\cloud\\\\powertalk\\\\meet\\\\filebox
 fileUploadBackend=https://meetcloud.watttalk.kr:8326/
+profilePhotoSavefolder=D:\\Storage\\sftp\\dev
+profilePhotoUrl=https://dev.watttalk.kr:8222/storage/sftp/dev
 useEnterprise=watt
 use_bento4=false
 elecQR=true
@@ -28,7 +30,6 @@ forceLogout24=false
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=""
 pg=""
-# kepco 로그인 주소 관리
 kepcoLogin="https://kepco.watttalk.kr:8324/login/login-check?jwt_token="
 
 # qr 값에 따라서 tab 변동

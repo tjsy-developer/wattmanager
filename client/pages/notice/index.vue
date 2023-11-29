@@ -116,7 +116,7 @@ export default {
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
   },
   mounted() {
-    this.compData.auth = localStorage.getItem("auth")
+    this.compData.auth = sessionStorage.getItem("auth")
   }
 }
 </script>

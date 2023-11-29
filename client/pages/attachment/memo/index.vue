@@ -112,7 +112,7 @@ export default {
       this.$axios
         .post(process.env.backendURL + axiosJson.memo.memo_join_file, {
           memo_seq: memo.seq,
-          jwt: localStorage.getItem("jwt")
+          jwt: sessionStorage.getItem("jwt")
         })
         .then(function(res) {
           self.$modal.show(
@@ -175,7 +175,7 @@ export default {
     // this.webServerFilePathJson.thumbnail = this.baseUrl + "Thumbnail/"
     // console.log(this.webServerFilePathJson.original)
     // console.log(this.webServerFilePathJson.thumbnail)
-    this.compData.getListDataParams.en_seq = localStorage.getItem("enSeq")
+    this.compData.getListDataParams.en_seq = sessionStorage.getItem("enSeq")
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
   }
 }

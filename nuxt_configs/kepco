@@ -142,6 +142,8 @@ export default {
     att_filePath: process.env.att_filePath,
     detailFilePath: process.env.detailFilePath,
     fileUploadBackend: process.env.fileUploadBackend,
+    profilePhotoSavefolder: process.env.profilePhotoSavefolder,
+    profilePhotoUrl: process.env.profilePhotoUrl,
     useEnterprise: process.env.useEnterprise,
     use_bento4: process.env.use_bento4,
     elecQR: process.env.elecQR,

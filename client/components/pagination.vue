@@ -55,7 +55,7 @@ export default {
       window.open(path, "_self")
     },
     getListCount() {
-      this.compData.getListDataParams.jwt = localStorage.getItem("jwt")
+      this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
 
       return this.$axios
         .post(
@@ -71,7 +71,7 @@ export default {
         })
     },
     getListData() {
-      this.compData.getListDataParams.jwt = localStorage.getItem("jwt")
+      this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
       return this.$axios
         .post(
           process.env.backendURL + this.compData.getListDataUrl,

@@ -36,7 +36,7 @@ Vue.mixin({
       }
       const closeDialogEvent = new CustomEvent("closeDialog", { detail: closeParams })
       const openDialogEvent = new CustomEvent("openDialog", { detail: dialogInfo })
-      if (localStorage.getItem("opendDialog") == "true") {
+      if (sessionStorage.getItem("opendDialog") == "true") {
 				clearTimeout(this.timer)
 				window.dispatchEvent(closeDialogEvent)
 				this.timer = setTimeout(() => {

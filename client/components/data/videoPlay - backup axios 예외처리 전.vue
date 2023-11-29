@@ -257,7 +257,7 @@ export default {
       if (!getSeq) {
         return
       }
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       const self = this
       console.log("getSelected !!")
       this.$axios
@@ -371,7 +371,7 @@ export default {
     },
     removeBtnClick(e) {
       const self = this
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       const result = confirm(self.$t("listComp")[18])
       console.log(result)
       if (result) {
@@ -399,7 +399,7 @@ export default {
           process.env.backendURL + axiosJson.attachment.att_return_page_number,
           {
             att_seq: seq,
-            jwt: localStorage.getItem("jwt")
+            jwt: sessionStorage.getItem("jwt")
           }
         )
         .then(response => {

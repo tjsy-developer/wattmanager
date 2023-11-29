@@ -105,7 +105,7 @@ export default {
       formData.append("type", this.type)
 
       // 로그인한 사용자의 토큰 정보를 formData에 넣는다
-      formData.append("jwt", localStorage.getItem("jwt"))
+      formData.append("jwt", sessionStorage.getItem("jwt"))
 
       let detailPath
 

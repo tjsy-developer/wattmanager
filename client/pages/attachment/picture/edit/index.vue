@@ -36,7 +36,7 @@ export default {
               att_seq: this.attSeq,
               title: getInfo.getInputValue(0),
               category: getInfo.getInputValue(1),
-              jwt: localStorage.getItem("jwt")
+              jwt: sessionStorage.getItem("jwt")
             })
             .then(function(res) {
               if (res) {
@@ -54,7 +54,7 @@ export default {
           if (result) {
             btnsClick.delete(process.env.backendURL + "attRest/att_delete", {
               att_seq: this.attSeq,
-              jwt: localStorage.getItem("jwt")
+              jwt: sessionStorage.getItem("jwt")
             })
           } else {
           }
@@ -86,12 +86,12 @@ export default {
     )
   },
   mounted() {
-    if (localStorage.auth) {
+    if (sessionStorage.auth) {
       const self = this
       this.$axios
         .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
           att_seq: self.compData.attSeq,
-          jwt: localStorage.getItem("jwt")
+          jwt: sessionStorage.getItem("jwt")
         })
         .then(function(res) {
           self.compData.axios

@@ -33,7 +33,7 @@ export default {
         type: "edit",
         selected: [],
         editBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           btnsClick.edit(
             this.listFilters,
             process.env.backendURL + "hqtsRest/hq_update",
@@ -48,7 +48,7 @@ export default {
           )
         },
         deleteBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[7])
           if (result) {
             btnsClick.delete(process.env.backendURL + "hqtsRest/hq_delete", {
@@ -77,7 +77,7 @@ export default {
     this.$axios
       .post(process.env.backendURL + axiosJson.hq.hq_info_one, {
         hq_seq: self.compData.hqSeq,
-        jwt: localStorage.getItem("jwt")
+        jwt: sessionStorage.getItem("jwt")
       })
       .then(function(res) {
         console.log(res.data)
