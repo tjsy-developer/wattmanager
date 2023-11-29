@@ -261,7 +261,7 @@ import filterBox from "@/components/data/filterBox"
 import pictureZoomInModal from "@/components/data/pictureZoomInModal"
 import changeViewType from "@/components/data/changeViewType"
 import showShareModal from "@/assets/scripts/data/showShareModal"
-import initLocalStorage from "@/assets/scripts/initialize/localStorage"
+import initSessionStorage from "@/assets/scripts/initialize/sessionStorage"
 import favorite from "@/assets/scripts/data/favorite"
 import axiosJson from "@/assets/jsons/axios"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
@@ -546,7 +546,7 @@ export default {
 
     // 선택된 filter를 localStorate에 저장
     filterBoxBtnClick(e) {
-      const getSelectedFilters = initLocalStorage.get("selectedFilters")
+      const getSelectedFilters = initSessionStorage.get("selectedFilters")
 
       if (e.constructor === Object) {
         let selectedFilterIndex = 0
@@ -566,7 +566,7 @@ export default {
         getSelectedFilters.splice(selectedFilterIndex, 1)
       } else getSelectedFilters.splice(getSelectedFilters.indexOf(e), 1)
 
-      initLocalStorage.set("selectedFilters", getSelectedFilters)
+      initSessionStorage.set("selectedFilters", getSelectedFilters)
 
       window.location.reload()
     },
@@ -716,13 +716,13 @@ export default {
                 }
               }
             }
-            const getSelectedFiltersOptions = initLocalStorage.get(
+            const getSelectedFiltersOptions = initSessionStorage.get(
               "selectedFiltersOptions"
             )
             getSelectedFiltersOptions.searchKeyword = ""
             getSelectedFiltersOptions.searchList = getTitleBarFilter.filterList
 
-            initLocalStorage.set(
+            initSessionStorage.set(
               "selectedFiltersOptions",
               getSelectedFiltersOptions
             )
@@ -740,12 +740,12 @@ export default {
 
       if (e.isFilterClicked) {
         e.isFilterClicked = false
-        initLocalStorage.remove("selectedFiltersOptions")
+        initSessionStorage.remove("selectedFiltersOptions")
       } else {
         for (let i = 0; i < this.titleBarFilters.length; i++)
           this.titleBarFilters[i].isFilterClicked = false
         e.isFilterClicked = true
-        initLocalStorage.set("selectedFiltersOptions", { column: index + 1 })
+        initSessionStorage.set("selectedFiltersOptions", { column: index + 1 })
 
         // 소속 필터의 경우만 해당
         if (index === 3) {
@@ -758,7 +758,7 @@ export default {
         for (let i = 0; i < this.titleBarFilters.length; i++)
           this.titleBarFilters[i].isFilterClicked = false
 
-        initLocalStorage.remove("selectedFiltersOptions")
+          initSessionStorage.remove("selectedFiltersOptions")
       }
     },
     shareBtnClick(e) {
@@ -860,7 +860,7 @@ export default {
   mounted() {
     console.log("*****titleBarFilters mounted start")
     // 로컬스토리지에서 필터 옵션 목록을 가져온다
-    const getSelectedFiltersOptions = initLocalStorage.get(
+    const getSelectedFiltersOptions = initSessionStorage.get(
       "selectedFiltersOptions"
     )
 
@@ -877,7 +877,7 @@ export default {
         ).value = getSelectedFiltersOptions.searchKeyword
       } else this.setTitleBarFilterList(getSelectedFiltersOptions.column - 1)
     }
-    const getSelectedFilters = initLocalStorage.get("selectedFilters")
+    const getSelectedFilters = initSessionStorage.get("selectedFilters")
     if (getSelectedFilters && getSelectedFilters.length) {
       for (let i = 0; i < getSelectedFilters.length; i++) {
         this.selectedFilters.push(getSelectedFilters[i])
