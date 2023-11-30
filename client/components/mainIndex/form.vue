@@ -520,12 +520,7 @@ export default {
                 if (response.data[1].auth === 4)
                   window.open("/attachment/video?page=1&viewType=gallery", "_self");
                 else if (response.data[1].device_type === 2) {
-                  if (self.changePsw) {
-                    self.openChangePswModal("/attachment/memo?page=1&viewType=gallery", 1)
-                    return
-                  }
                   window.open("/attachment/memo?page=1&viewType=gallery", "_self");
-                  
                 }
                   
                 // 수정
@@ -668,36 +663,6 @@ export default {
         }
       );
     },
-    openChangePswModal(params, type) {
-      const modalsContainerStyle =
-          document.getElementById("modalsContainer").style;
-      modalsContainerStyle.display = "block";
-
-      const modalParameter = {
-        url: params,
-        modalType: type
-      }
-      
-      this.$modal.show(
-          // eslint-disable-next-line eqeqeq
-          pswChangeModal,
-          {
-            propsData: modalParameter
-          },
-          {
-            name: "pswChangeModal",
-            width: 400,
-            height: 300,
-            clickToClose: false,
-            adaptive: true,
-          },
-          {
-            "before-close": () => {
-                modalsContainerStyle.display = "none";
-            },
-          }
-      );
-    }
   },
   mounted() {
     const currentLang = sessionStorage.getItem("languageCode");
@@ -762,13 +727,18 @@ export default {
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
     }
-    if (sessionStorage.getItem("logoutId")) {
-      cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "jwt")
-      sessionStorage.removeItem("logoutId")
-    }
     if (sessionStorage.getItem("managerLogOut")) {
-      cookieSetting.deleteCookie(logoutId + "managerLoginTime")
+      if (sessionStorage.getItem("logoutId")) {
+        cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "jwt")
+        cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "managerLoginTime")
+        sessionStorage.removeItem("logoutId")
+      }
       sessionStorage.removeItem("managerLogOut")
+    } else {
+      if (sessionStorage.getItem("logoutId")) {
+        cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "jwt")
+        sessionStorage.removeItem("logoutId")
+      }
     }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.deleCookie("logined")

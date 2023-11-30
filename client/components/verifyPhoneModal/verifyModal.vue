@@ -36,6 +36,11 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            checkChangeDate: false
+        }
+    },
     methods: {
         close() {
             this.$modal.hide("verifyModal")
@@ -59,7 +64,7 @@ export default {
                         phone: response.data.phone_number,
                         birthday: response.data.birthday,
                         id: response.data.id,
-                        changePsw: self.propsData.changePsw
+                        changePsw: self.checkChangeDate
                     }
                 
                 danalVerify(params, 0)
@@ -70,36 +75,59 @@ export default {
         },
         openChangePswModal(params, type) {
             this.$modal.hide("verifyModal")
-            const modalsContainerStyle =
-                document.getElementById("modalsContainer").style;
-            modalsContainerStyle.display = "block";
+            if (params.changePsw) {
+                const modalsContainerStyle =
+                    document.getElementById("modalsContainer").style;
+                modalsContainerStyle.display = "block";
 
-            const modalParameter = {
-                loginData: params,
-                modalType: type
-            }
-            this.$modal.show(
-                // eslint-disable-next-line eqeqeq
-                pswChangeModal,
-                {
-                    propsData: modalParameter
-                },
-                {
-                    name: "pswChangeModal",
-                    width: 400,
-                    height: 300,
-                    clickToClose: false,
-                    adaptive: true,
-                },
-                    {
-                    "before-close": () => {
-                        modalsContainerStyle.display = "none";
-                    },
+                const modalParameter = {
+                    loginData: params,
+                    modalType: type
                 }
-            );
+                this.$modal.show(
+                    // eslint-disable-next-line eqeqeq
+                    pswChangeModal,
+                    {
+                        propsData: modalParameter
+                    },
+                    {
+                        name: "pswChangeModal",
+                        width: 400,
+                        height: 300,
+                        clickToClose: false,
+                        adaptive: true,
+                    },
+                        {
+                        "before-close": () => {
+                            modalsContainerStyle.display = "none";
+                        },
+                    }
+                );
+            }
         }
     },
     mounted() {
+        if (process.env.useEnterprise == "dlenc" && sessionStorage.getItem("deviceType") != 2 && sessionStorage.getItem("auth") !== 4) {
+            this.$axios
+            .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
+                id: this.propsData.id
+            })
+            .then((res) => {
+                const changedDate =  res.data // 비밀번호 변경한 날자 (unixtime으로 옴 초까지만!!!!!!)
+                const now = Math.floor(new Date().getTime() / 1000) // 현재 시간
+                const unix180Day = 180 *24 * 60 * 60 // 180일
+                console.log(changedDate + unix180Day)
+                console.log(now)
+                if (now > changedDate + unix180Day) {
+                    this.checkChangeDate = true
+                } else {
+                    this.checkChangeDate = false
+                }
+            })
+            .catch((err) => {
+                console.log("getChangeDate Err: ", err)
+            })
+        }
         window.addEventListener("finishVerifyOpenChangePsw", (e) => {
             this.openChangePswModal(e.detail, 2)
         })

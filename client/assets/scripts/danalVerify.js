@@ -145,7 +145,6 @@ function login(logInData) {
 // iamport 에서 받은 imp_uid를 토대로 백엔드에서 토큰 생성 및 토큰으로 이름, 생년월일과 같은 개인정보를 가져오는 부분
 async function getUserInfo(uid, params, type) {
     let result
-    console.log(type, "============================================")
     // 회원가입인 경우
     if (type == 1) {
         // impuid만 전달하면 된다.

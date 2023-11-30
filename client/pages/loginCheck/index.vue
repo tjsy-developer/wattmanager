@@ -58,7 +58,13 @@ export default {
                     checkParameter =  false
                 }
                 if (checkParameter) {
-                    window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + this.$route.query.lang
+                    // watt talk에서 여는 경우 로그인 정보 확인 후 attchment로 보내줌
+                    if (this.$route.query.type == "video") {
+                        window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + this.$route.query.lang
+                    } else if (this.$route.query.type == "profile") {
+                        // 비밀번호 변경 안내 모달을 통해 접근 한 경우 내정보 > 비밀번호 변경을 실행시켜준다
+                        window.open("/profile?changePsw=true", "_self")
+                    }
                 } else {
                     alert(this.$t("loginCheck")[0])
                     sessionStorage.clear()
