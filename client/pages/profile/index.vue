@@ -107,7 +107,7 @@ export default {
                 getSelf.$axios
                   .post(backendAPI, formData, { headers })
                   .then((res) => {
-                    const fileName = process.env.profilePhotoUrl + "\\" + res.data.FILE_NAME
+                    const fileName = process.env.profilePhotoUrl + res.data.FILE_NAME
                     getSelf.$axios
                       // .post("userRest/user_update_my", {
                       .post(process.env.backendURL + "userRest/user_update_my", {

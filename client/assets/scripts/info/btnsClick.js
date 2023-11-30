@@ -157,7 +157,7 @@ const btnsClick = {
           .post(backendAPI, params.imgFormData, { headers })
           .then((res) => {
             console.log("profileImg save success")
-            const fileName = process.env.profilePhotoUrl + "\\" + res.data.FILE_NAME
+            const fileName = process.env.profilePhotoUrl + res.data.FILE_NAME
             params.image = fileName
             axios
               .post(path, params)
