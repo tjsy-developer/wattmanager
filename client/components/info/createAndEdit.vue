@@ -232,7 +232,7 @@ export default {
             en_seq: appCopyEnSeq,
             hq_seq: appCopyHqSeq,
             br_seq: appCopyBrSeq,
-            jwt: localStorage.getItem("jwt")
+            jwt: sessionStorage.getItem("jwt")
           })
           .then(function(res) {
             console.log(res.data)
@@ -331,9 +331,9 @@ export default {
     // this.check2Factor = sessionStorage.getItem("check2Factor")
     this.$axios
       .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-        en_seq: Number(localStorage.getItem("enSeq")),
-        hq_seq: Number(localStorage.getItem("hqSeq")),
-        br_seq: Number(localStorage.getItem("brSeq"))
+        en_seq: Number(sessionStorage.getItem("enSeq")),
+        hq_seq: Number(sessionStorage.getItem("hqSeq")),
+        br_seq: Number(sessionStorage.getItem("brSeq"))
       })
       .then((response) => {
         const jsonFactorList = response.data[0].app_detail_json

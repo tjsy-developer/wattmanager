@@ -56,7 +56,7 @@ export default {
         )
       )
         return alert(this.$t("dateFormat"))
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       // this.getWorldTime(getInfo.getInputValue(0))
       btnsClick.edit(
         this.listFilters,
@@ -73,7 +73,7 @@ export default {
       window.history.back()
     },
     deleteBtnClick() {
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       const result = confirm(btnsClick.lang[7])
       if (result) {
         btnsClick.delete(process.env.backendURL + "noticeRest/noti_delete", {
@@ -116,10 +116,10 @@ export default {
       this.$t("listComp")[15],
       this.$t("notice")[8]
     ])
-    this.auth = localStorage.getItem("auth")
-    this.enSeq = localStorage.getItem("enSeq")
+    this.auth = sessionStorage.getItem("auth")
+    this.enSeq = sessionStorage.getItem("enSeq")
     const self = this
-    const token = localStorage.getItem("jwt")
+    const token = sessionStorage.getItem("jwt")
     this.$axios
       .post(process.env.backendURL + "noticeRest/noti_info_one", {
         noti_seq: self.seq,

@@ -21,7 +21,7 @@ export default {
         createAndEditSpanSize: 120,
         type: "create",
         createBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           btnsClick.create(
             this.listFilters,
             process.env.backendURL + "hqtsRest/hq_create",

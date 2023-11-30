@@ -25,7 +25,7 @@ export default {
         selected: [],
         limitText: this.$t("Limit number of characters"),
         editBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           if (getInfo.getTextareaValue(0).length > 1000) {
             alert(this.limitText)
           } else {
@@ -54,7 +54,7 @@ export default {
           }
         },
         deleteBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[7])
           if (result) {
             btnsClick.delete(process.env.backendURL + "appRest/app_delete", {
@@ -82,7 +82,7 @@ export default {
     ])
 
     const self = this
-    this.token = localStorage.getItem("jwt")
+    this.token = sessionStorage.getItem("jwt")
     this.$axios
       .post(process.env.backendURL + axiosJson.app.app_info_one, {
         app_seq: self.compData.appSeq,

@@ -47,7 +47,7 @@ export default {
 	// 	}
 	// },
     mounted() {
-        localStorage.setItem("opendDialog", true)
+        sessionStorage.setItem("opendDialog", true)
         window.addEventListener("openDialog", (e) => {
             const detail = e.detail
             this.guideDialogToggle = detail.guideDialogToggle
@@ -59,7 +59,7 @@ export default {
             this.guideDialogToggle = detail.guideDialogToggle
             this.guideDialogType = detail.guideDialogType
             this.guideDialogInfo = detail.guideDialogInfo
-            localStorage.setItem("opendDialog", false)
+            sessionStorage.setItem("opendDialog", false)
         })
     }
 }

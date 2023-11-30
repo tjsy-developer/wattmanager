@@ -38,12 +38,24 @@ export default {
             }
         },
         changePsw() {
+            // 이런 경우는 거의 없지만 혹여라도 sessionStorage에 셋팅이 안된 경우를 위해
+            const managerParameter =
+				"&jwt=" + sessionStorage.getItem("jwt") + "&id=" + sessionStorage.getItem("id") +
+				"&auth=" + sessionStorage.getItem("auth") + "&hqSeq=" + sessionStorage.getItem("hqSeq") +
+				"&enSeq=" + sessionStorage.getItem("enSeq") + "&brSeq=" + sessionStorage.getItem("brSeq") +
+				"&logined=" + sessionStorage.getItem("logined") + "&userSeq=" + sessionStorage.getItem("userSeq") +
+				"&deviceType=" + sessionStorage.getItem("deviceType") + "&type=profile"
+
             // ?changePsw=ture <- profile edit page로 이동시 자동으로 비밀번호 변경 모달을 띄우기위해
             if (this.propsData.modalType == 1) {
+                
                 window.open("/profile?changePsw=true", "_self")
                 return
             } else {
-                window.open("/profile?changePsw=true")
+                window.open(
+                    "/loginCheck?lang=" + sessionStorage.getItem("languageCode") +
+                    managerParameter
+                )
             }
             this.close()
         },

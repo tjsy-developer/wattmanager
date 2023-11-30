@@ -28,7 +28,7 @@ const getInfo = {
     getInfo.permission.options[0].text = lang[10]
     getInfo.permission.options[1].text = lang[11]
     getInfo.permission.selectedText = getInfo.permission.options[0]
-    // const token = localStorage.getItem("jwt")
+    // const token = sessionStorage.getItem("jwt")
     getInfo.enList.placeholder = lang[12]
     getInfo.enList.selectedText = lang[12]
     getInfo.hqList.placeholder = lang[13]
@@ -101,7 +101,7 @@ const getInfo = {
       axios
         // .post("appRest/app_code_list")
         .post(process.env.backendURL + "appRest/app_code_list", {
-          jwt: localStorage.getItem("jwt")
+          jwt: sessionStorage.getItem("jwt")
         })
         .then(function(res) {
           const result = []
@@ -212,7 +212,7 @@ const getInfo = {
     selectedValue: undefined
   },
   setAuthority() {
-    const authority = window.localStorage.getItem("auth")
+    const authority = window.sessionStorage.getItem("auth")
     if (authority < 4) {
       getInfo.enterpriseCompData.disabled = true
       getInfo.authority.options.splice(3)

@@ -72,7 +72,7 @@ export default {
         selected: [],
         nameSpaceCheck: this.$t("no spaces text"),
         editBtnClick() {
-          const deviceType = localStorage.getItem("deviceType")
+          const deviceType = sessionStorage.getItem("deviceType")
           console.log(this.selected, "selected")
           const getSelf = this.self
           const getInput = document.querySelectorAll("input")
@@ -94,7 +94,7 @@ export default {
               
               const headers = {
                 "Content-Type": "multipart/form-data",
-                "jwt": localStorage.getItem("jwt")
+                "jwt": sessionStorage.getItem("jwt")
               }
               formData.append("save_folder", savePath)
               if (profileImg) {
@@ -133,7 +133,7 @@ export default {
                           deviceType != 2
                           ? getInfo.getInputValue(8)
                           : "",
-                        jwt: localStorage.getItem("jwt")
+                        jwt: sessionStorage.getItem("jwt")
                       })
                       .then(function(res) {
                         console.log(res.data)
@@ -186,7 +186,7 @@ export default {
                       deviceType != 2
                       ? getInfo.getInputValue(8)
                       : "",
-                    jwt: localStorage.getItem("jwt")
+                    jwt: sessionStorage.getItem("jwt")
                   })
                   .then(function(res) {
                     console.log(res.data)
@@ -262,14 +262,14 @@ export default {
     } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
-    const getUserSeq = Number(localStorage.getItem("userSeq"))
+    const getUserSeq = Number(sessionStorage.getItem("userSeq"))
     this.compData.userSeq = getUserSeq
     const self = this
     this.$axios
       // .post(axiosJson.user.user_info_one, {
       .post(process.env.backendURL + axiosJson.user.user_info_one, {
         user_seq: getUserSeq,
-        jwt: localStorage.getItem("jwt")
+        jwt: sessionStorage.getItem("jwt")
       })
       .then(function(res) {
         console.log(res)
@@ -370,8 +370,8 @@ export default {
       .catch(function(error) {
         console.log("user profile page error : ", error)
       })
-    this.deviceType = localStorage.getItem("deviceType")
-    this.auth = localStorage.getItem("auth")
+    this.deviceType = sessionStorage.getItem("deviceType")
+    this.auth = sessionStorage.getItem("auth")
     // eslint-disable-next-line eqeqeq
     if (this.deviceType == 3 && this.auth != 4) {
       this.compData.listFilters[6].edit = true

@@ -398,8 +398,8 @@ export default {
         this.$emit("child");
         return;
       }
-      // 2021.04.14 ksh :: 파워톡 -> 파워매니저 영상관리 접근 시 로그아웃 숨김으로 인해 등록했던 localStorage를 초기화
-      localStorage.removeItem("logoutStatus");
+      // 2021.04.14 ksh :: 파워톡 -> 파워매니저 영상관리 접근 시 로그아웃 숨김으로 인해 등록했던 sessionStorage를 초기화
+      sessionStorage.removeItem("logoutStatus");
       const userId = document.getElementById("idInput").value;
       const userPwd = document.getElementById("pwdInput").value;
       const self = this;
@@ -417,17 +417,16 @@ export default {
           }
           if (response.data[0] === 1) {
             sessionStorage.removeItem("forcedLogout")
-            localStorage.removeItem("managerLogOut")
-            localStorage.removeItem("jwt")
-            localStorage.removeItem("userSeq")
-            localStorage.removeItem("auth")
-            localStorage.removeItem("id")
-            localStorage.removeItem("hqSeq")
-            localStorage.removeItem("enSeq")
-            localStorage.removeItem("opendDialog")
-            localStorage.removeItem("brSeq")
-            localStorage.removeItem("deviceType")
-            cookieSetting.setCookie("managerLogined", true)
+            sessionStorage.removeItem("managerLogOut")
+            sessionStorage.removeItem("jwt")
+            sessionStorage.removeItem("userSeq")
+            sessionStorage.removeItem("auth")
+            sessionStorage.removeItem("id")
+            sessionStorage.removeItem("hqSeq")
+            sessionStorage.removeItem("enSeq")
+            sessionStorage.removeItem("opendDialog")
+            sessionStorage.removeItem("brSeq")
+            sessionStorage.removeItem("deviceType")
             /* sessionStorage ID 기억기능 추가 */
             // sessionStorage.setItem("logined", userId)
 
@@ -435,15 +434,23 @@ export default {
             // cookieSetting.setCookie("logined", userId, 3)
 
             /* 로그인 사용자의 정보 저장 */
-            localStorage.setItem("jwt", response.data[2]);
-            localStorage.setItem("userSeq", response.data[1].user_seq);
-            localStorage.setItem("enSeq", response.data[1].en_seq);
-            localStorage.setItem("hqSeq", response.data[1].hq_seq);
-            localStorage.setItem("brSeq", response.data[1].br_seq);
-            localStorage.setItem("auth", response.data[1].auth);
-            localStorage.setItem("id", response.data[1].id);
-            localStorage.setItem("deviceType", response.data[1].device_type);
+            sessionStorage.setItem("jwt", response.data[2]);
+            sessionStorage.setItem("userSeq", response.data[1].user_seq);
+            sessionStorage.setItem("enSeq", response.data[1].en_seq);
+            sessionStorage.setItem("hqSeq", response.data[1].hq_seq);
+            sessionStorage.setItem("brSeq", response.data[1].br_seq);
+            sessionStorage.setItem("auth", response.data[1].auth);
+            sessionStorage.setItem("id", response.data[1].id);
+            sessionStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
+            const urlParameter = "&id=" + sessionStorage.getItem("id") + "&auth=" + sessionStorage.getItem("auth") +
+              "&hqSeq=" + sessionStorage.getItem("hqSeq") +
+              "&enSeq=" + sessionStorage.getItem("enSeq") + "&brSeq=" + sessionStorage.getItem("brSeq") +
+              "&logined=" + sessionStorage.getItem("logined") + "&userSeq=" + sessionStorage.getItem("userSeq") +
+              "&deviceType=" + sessionStorage.getItem("deviceType")
+            
+            const cookieName = response.data[1].id + "jwt"
+            cookieSetting.setCookie(cookieName, response.data[2])
             self.$axios
               .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
                 en_seq: response.data[1].en_seq,
@@ -492,7 +499,9 @@ export default {
                 })
                 if (process.env.useEnterprise == "dlenc") {
                   const loginTime = Math.floor(new Date().getTime() / 1000)
-                  cookieSetting.setCookie("managerLoginTime", loginTime)
+                  const managerLoginTimeCookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
+                  console.log(managerLoginTimeCookieName)
+                  cookieSetting.setCookie(managerLoginTimeCookieName, loginTime)
                 }
                 if (checkByPass == false) {
                   let modalType
@@ -511,12 +520,7 @@ export default {
                 if (response.data[1].auth === 4)
                   window.open("/attachment/video?page=1&viewType=gallery", "_self");
                 else if (response.data[1].device_type === 2) {
-                  if (self.changePsw) {
-                    self.openChangePswModal("/attachment/memo?page=1&viewType=gallery", 1)
-                    return
-                  }
                   window.open("/attachment/memo?page=1&viewType=gallery", "_self");
-                  
                 }
                   
                 // 수정
@@ -544,14 +548,13 @@ export default {
                   } else {
                     self.params = response.data[2] + "&login_type=1&lang=" + lang;
                   }
-
                   /* 와트톡 로그인 체크 페이지로 이동 */
                   // eslint-disable-next-line no-lonely-if
                   if (process.env.powertlakState === "loginCheck") {
                     // 로컬
                     if (window.location.hostname === "localhost") {
                       window.open(
-                        process.env.powertalkLogin_local + self.params,
+                        process.env.powertalkLogin_local + self.params + urlParameter,
                         "_self"
                       );
 
@@ -559,12 +562,12 @@ export default {
                     } else {
                       if (window.location.hostname == "kepco.watttalk.kr") {
                         window.open(
-                          process.env.kepcoLogin + self.params,
+                          process.env.kepcoLogin + self.params + urlParameter,
                           "_self"
                         );
                       } else {
                         window.open(
-                          process.env.powertalkLogin + self.params,
+                          process.env.powertalkLogin + self.params + urlParameter,
                           "_self"
                         );
                       }
@@ -660,36 +663,6 @@ export default {
         }
       );
     },
-    openChangePswModal(params, type) {
-      const modalsContainerStyle =
-          document.getElementById("modalsContainer").style;
-      modalsContainerStyle.display = "block";
-
-      const modalParameter = {
-        url: params,
-        modalType: type
-      }
-      
-      this.$modal.show(
-          // eslint-disable-next-line eqeqeq
-          pswChangeModal,
-          {
-            propsData: modalParameter
-          },
-          {
-            name: "pswChangeModal",
-            width: 400,
-            height: 300,
-            clickToClose: false,
-            adaptive: true,
-          },
-          {
-            "before-close": () => {
-                modalsContainerStyle.display = "none";
-            },
-          }
-      );
-    }
   },
   mounted() {
     const currentLang = sessionStorage.getItem("languageCode");
@@ -754,9 +727,18 @@ export default {
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
     }
-    if (localStorage.getItem("managerLogOut")) {
-      cookieSetting.deleteCookie("managerLogined")
-      cookieSetting.deleteCookie("managerLoginTime")
+    if (sessionStorage.getItem("managerLogOut")) {
+      if (sessionStorage.getItem("logoutId")) {
+        cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "jwt")
+        cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "managerLoginTime")
+        sessionStorage.removeItem("logoutId")
+      }
+      sessionStorage.removeItem("managerLogOut")
+    } else {
+      if (sessionStorage.getItem("logoutId")) {
+        cookieSetting.deleteCookie(sessionStorage.getItem("logoutId") + "jwt")
+        sessionStorage.removeItem("logoutId")
+      }
     }
     /* 로그인한 사용자의 아이디 쿠키값 삭제 */
     // this.deleCookie("logined")
@@ -772,52 +754,6 @@ export default {
         if (langCode) {
           sessionStorage.setItem("languageCode", langCode)
         }
-        // const checkLogined = cookieSetting.getCookie("managerLogined")
-        // if (checkLogined) {
-        //   if (localStorage.getItem("jwt")) {
-        //     if (localStorage.getItem("auth") == 4 || localStorage.getItem("deviceType") == 2) {
-        //       window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + langCode
-        //     } else {
-        //       const urlParameter = localStorage.getItem("jwt") + "&login_type=1&lang=" + langCode
-        //       if (window.location.hostname === "localhost") {
-        //         window.open(
-        //           process.env.powertalkLogin_local + urlParameter,
-        //           "_self"
-        //         );
-
-        //         // 와트톡
-        //       } else {
-        //         if (window.location.hostname == "kepco.watttalk.kr") {
-        //           window.open(
-        //             process.env.kepcoLogin + urlParameter,
-        //             "_self"
-        //           );
-        //         } else {
-        //           window.open(
-        //             process.env.powertalkLogin + urlParameter,
-        //             "_self"
-        //           );
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-        // if (sessionStorage.getItem("forcedLogout")) {
-        //   return
-        // } else {
-        //   console.log("===================================================")
-        //   localStorage.removeItem("managerLogOut")
-        //   localStorage.removeItem("jwt")
-        //   localStorage.removeItem("userSeq")
-        //   localStorage.removeItem("auth")
-        //   localStorage.removeItem("id")
-        //   localStorage.removeItem("hqSeq")
-        //   localStorage.removeItem("enSeq")
-        //   localStorage.removeItem("opendDialog")
-        //   localStorage.removeItem("brSeq")
-        //   localStorage.removeItem("deviceType")
-        //   sessionStorage.clear()
-        // }
     })
   }
 };

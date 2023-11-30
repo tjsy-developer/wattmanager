@@ -8,7 +8,7 @@
 					class="col-auto tab"
 					:href="'/attachment/video?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-video' ? '#0061D1' : '#BFCCD6' }"
-					@click="clearLocalStorage"
+					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[1] }}
 				</a>
@@ -17,7 +17,7 @@
 					class="col-auto tab"
 					:href="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-picture' ? '#0061D1' : '#BFCCD6' }"
-					@click="clearLocalStorage"
+					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[2] }}
 				</a>
@@ -26,7 +26,7 @@
 					class="col-auto tab"
 					:href="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-favorite' ? '#0061D1' : '#BFCCD6' }"
-					@click="clearLocalStorage"
+					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[3] }}
 				</a>
@@ -34,7 +34,7 @@
 					class="col-auto tab"
 					:href="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }"
-					@click="clearLocalStorage"
+					@click="clearsessionStorage"
 				>
 					{{ $t("memo")[1] }}
 				</a>
@@ -79,9 +79,9 @@ export default {
         )
       else alert(this.$t("searchBarComp")[5])
     },
-    clearLocalStorage() {
-      localStorage.removeItem("selectedFilters")
-      localStorage.removeItem("selectedFiltersOptions")
+    clearsessionStorage() {
+      sessionStorage.removeItem("selectedFilters")
+      sessionStorage.removeItem("selectedFiltersOptions")
     },
     deleteBtn() {
       window.open(
@@ -91,8 +91,8 @@ export default {
     }
   },
   mounted() {
-    this.deviceType = localStorage.getItem("deviceType")
-    this.auth = localStorage.getItem("auth")
+    this.deviceType = sessionStorage.getItem("deviceType")
+    this.auth = sessionStorage.getItem("auth")
 
     // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
     // att_access_user = true 일 경우 기존 권한 조건

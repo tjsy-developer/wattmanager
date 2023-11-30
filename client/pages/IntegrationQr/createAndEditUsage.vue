@@ -80,14 +80,14 @@ export default {
         }
     },
     mounted() {
-        this.chapter_seq = Number(localStorage.getItem("chapter_seq"))
+        this.chapter_seq = Number(sessionStorage.getItem("chapter_seq"))
         this.getusageInfo()
     },
     methods: {
         getusageInfo() {
             this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.chapterInfo, {
-                    jwt: localStorage.getItem("jwt"),
+                    jwt: sessionStorage.getItem("jwt"),
                     chapter_seq: this.chapter_seq
                 })
                 .then((res) => {
@@ -143,7 +143,7 @@ export default {
             }
             this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.chapterSave, {
-                    jwt: localStorage.getItem("jwt"),
+                    jwt: sessionStorage.getItem("jwt"),
                     crud: this.usageCrud,
                     chapter_seq: this.chapter_seq,
                     chapter_name: this.usageName,
@@ -182,7 +182,7 @@ export default {
                 const keySeq = this.qrKeyData[index].key_seq
                 this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.qrKeyDelete, {
-                    jwt: localStorage.getItem("jwt"),
+                    jwt: sessionStorage.getItem("jwt"),
                     key_seq: keySeq
                 })
                 .then((res) => {
@@ -213,7 +213,7 @@ export default {
             if (result != true) return
             this.$axios
                 .post(process.env.backendURL + axiosJson.qrManagement.chapterSave, {
-                    jwt: localStorage.getItem("jwt"),
+                    jwt: sessionStorage.getItem("jwt"),
                     crud: "delete",
                     chapter_seq: this.chapter_seq
                 })

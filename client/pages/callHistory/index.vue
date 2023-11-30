@@ -163,8 +163,8 @@ export default {
 			}
 
 			const params = {
-				// en_seq: parseInt(localStorage.getItem("enSeq")),
-				en_seq: parseInt(localStorage.getItem("enSeq")),
+				// en_seq: parseInt(sessionStorage.getItem("enSeq")),
+				en_seq: parseInt(sessionStorage.getItem("enSeq")),
 				start_time: startDateTs,
 				end_time: endDateTs,
 				device_id: this.selectedPartic ? this.selectedPartic : null

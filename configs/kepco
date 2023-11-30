@@ -14,6 +14,8 @@ att_videoPlayPath=https://kepcos.watttalk.kr/Storage/powertalk/kepcos/Dashs/Src/
 att_filePath=https://kepcos.watttalk.kr/storage/watttalk/kepcos/filebox/
 detailFilePath=/home/watt/hdd_ext/Storage/watttalk/kepcos/filebox/
 fileUploadBackend=https://kepcos.watttalk.kr/wattmanager-server
+profilePhotoSavefolder=D:\\Storage\\sftp\\dev
+profilePhotoUrl=https://dev.watttalk.kr:8222/storage/sftp/dev
 useEnterprise=kepco
 use_bento4=false
 elecQR=true
@@ -28,7 +30,6 @@ forceLogout24=false
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=""
 pg=""
-# kepco 로그인 주소 관리
 kepcoLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
 
 

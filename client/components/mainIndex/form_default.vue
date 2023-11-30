@@ -167,8 +167,8 @@ export default {
         return
       }
 
-      // 2021.04.14 ksh :: 파워톡 -> 파워매니저 영상관리 접근 시 로그아웃 숨김으로 인해 등록했던 localStorage를 초기화
-      localStorage.removeItem("logoutStatus")
+      // 2021.04.14 ksh :: 파워톡 -> 파워매니저 영상관리 접근 시 로그아웃 숨김으로 인해 등록했던 sessionStorage를 초기화
+      sessionStorage.removeItem("logoutStatus")
       const userId = document.getElementById("idInput").value
       const userPwd = document.getElementById("pwdInput").value
 
@@ -190,14 +190,14 @@ export default {
             if (response.data[0] === 1) {
               console.log(response.data[1])
               cookieSetting.setCookie("logined", userId, 3)
-              localStorage.setItem("jwt", response.data[2])
-              localStorage.setItem("userSeq", response.data[1].user_seq)
-              localStorage.setItem("enSeq", response.data[1].en_seq)
-              localStorage.setItem("hqSeq", response.data[1].hq_seq)
-              localStorage.setItem("brSeq", response.data[1].br_seq)
-              localStorage.setItem("auth", response.data[1].auth)
-              localStorage.setItem("id", response.data[1].id)
-              localStorage.setItem("deviceType", response.data[1].device_type)
+              sessionStorage.setItem("jwt", response.data[2])
+              sessionStorage.setItem("userSeq", response.data[1].user_seq)
+              sessionStorage.setItem("enSeq", response.data[1].en_seq)
+              sessionStorage.setItem("hqSeq", response.data[1].hq_seq)
+              sessionStorage.setItem("brSeq", response.data[1].br_seq)
+              sessionStorage.setItem("auth", response.data[1].auth)
+              sessionStorage.setItem("id", response.data[1].id)
+              sessionStorage.setItem("deviceType", response.data[1].device_type)
               if (response.data[1].auth === 4)
                 window.open(
                   "/attachment/video?page=1&viewType=gallery",
