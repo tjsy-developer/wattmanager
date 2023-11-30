@@ -25,6 +25,7 @@ export default {
   methods: {
     close() {
       this.$modal.hide("forgotPasswordModal")
+      window.location.href = "/profile"
     },
     confirm() {
       if (
@@ -41,18 +42,28 @@ export default {
       ) {
         const self = this
         this.$axios
-          // .post("userRest/user_password_check_change", {
           .post(
             process.env.backendURL + "userRest/user_password_check_change",
             {
-              user_seq: this.userSeq,
+              jwt: localStorage.getItem("jwt"),
+              user_seq: Number(localStorage.getItem("userSeq")),
               password: this.password,
-              password_new: this.newPassword,
-              jwt: localStorage.getItem("jwt")
+              password_new: this.newPassword
             }
           )
           .then(function(res) {
             if (res.data) {
+              self.$axios
+                .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
+                  id: localStorage.getItem("id")
+                })
+                .then((res) => {
+                  console.log(res)
+                  console.log(res.data)
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
               alert(self.$t("attachment")[1])
               self.close()
             } else alert(self.$t("profilePassword")[3])

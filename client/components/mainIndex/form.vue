@@ -772,52 +772,6 @@ export default {
         if (langCode) {
           sessionStorage.setItem("languageCode", langCode)
         }
-        // const checkLogined = cookieSetting.getCookie("managerLogined")
-        // if (checkLogined) {
-        //   if (localStorage.getItem("jwt")) {
-        //     if (localStorage.getItem("auth") == 4 || localStorage.getItem("deviceType") == 2) {
-        //       window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + langCode
-        //     } else {
-        //       const urlParameter = localStorage.getItem("jwt") + "&login_type=1&lang=" + langCode
-        //       if (window.location.hostname === "localhost") {
-        //         window.open(
-        //           process.env.powertalkLogin_local + urlParameter,
-        //           "_self"
-        //         );
-
-        //         // 와트톡
-        //       } else {
-        //         if (window.location.hostname == "kepco.watttalk.kr") {
-        //           window.open(
-        //             process.env.kepcoLogin + urlParameter,
-        //             "_self"
-        //           );
-        //         } else {
-        //           window.open(
-        //             process.env.powertalkLogin + urlParameter,
-        //             "_self"
-        //           );
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-        // if (sessionStorage.getItem("forcedLogout")) {
-        //   return
-        // } else {
-        //   console.log("===================================================")
-        //   localStorage.removeItem("managerLogOut")
-        //   localStorage.removeItem("jwt")
-        //   localStorage.removeItem("userSeq")
-        //   localStorage.removeItem("auth")
-        //   localStorage.removeItem("id")
-        //   localStorage.removeItem("hqSeq")
-        //   localStorage.removeItem("enSeq")
-        //   localStorage.removeItem("opendDialog")
-        //   localStorage.removeItem("brSeq")
-        //   localStorage.removeItem("deviceType")
-        //   sessionStorage.clear()
-        // }
     })
   }
 };
