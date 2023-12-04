@@ -51,10 +51,10 @@ export default {
   props: ["compData", "files", "webServerFilePathJson"],
   data() {
     return {
-      userId: localStorage.getItem("id"),
-      auth: localStorage.getItem("auth"),
-      loginUserHqSeq: localStorage.getItem("hqSeq"),
-      loginUserBrSeq: localStorage.getItem("brSeq"),
+      userId: sessionStorage.getItem("id"),
+      auth: sessionStorage.getItem("auth"),
+      loginUserHqSeq: sessionStorage.getItem("hqSeq"),
+      loginUserBrSeq: sessionStorage.getItem("brSeq"),
       editAuth: true
     }
   },
@@ -66,7 +66,7 @@ export default {
         .post(process.env.backendURL + axiosJson.memo.memo_update, {
           memo_seq: this.compData.seq,
           memo_contents: getValue,
-          jwt: localStorage.getItem("jwt")
+          jwt: sessionStorage.getItem("jwt")
         })
         .then(function(res) {
           if (res) {
@@ -85,14 +85,14 @@ export default {
         this.$axios
           .post(process.env.backendURL + axiosJson.memo.memo_join_file_delete, {
             memo_seq: this.compData.seq,
-            jwt: localStorage.getItem("jwt")
+            jwt: sessionStorage.getItem("jwt")
           })
           .then(function(res) {
             if (res) {
               self.$axios
                 .post(process.env.backendURL + axiosJson.memo.memo_delete, {
                   memo_seq: self.compData.seq,
-                  jwt: localStorage.getItem("jwt")
+                  jwt: sessionStorage.getItem("jwt")
                 })
                 .then(function(res2) {
                   if (res2) {
@@ -131,7 +131,7 @@ export default {
         this.$axios
           .post(process.env.backendURL + axiosJson.memo.file_delete, {
             file_seq: file.file_seq,
-            jwt: localStorage.getItem("jwt")
+            jwt: sessionStorage.getItem("jwt")
           })
           .then(function(res) {
             if (res.data === "pass") {

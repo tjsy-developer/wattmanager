@@ -22,7 +22,7 @@ export default {
         type: "create",
         limitText: this.$t("Limit number of characters"),
         createBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           if (getInfo.getTextareaValue(0).length > 1000) {
             alert(this.limitText)
           } else {

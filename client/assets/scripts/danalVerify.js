@@ -189,7 +189,7 @@ async function getUserInfo(uid, params, type) {
         .post(process.env.backendURL + axiosJson.account.verify_iamport_result, {
             id: params,
             imp_uid: uid,
-            jwt: localStorage.getItem("jwt")
+            jwt: sessionStorage.getItem("jwt")
         })
         .then((response) => {
             console.log(response)

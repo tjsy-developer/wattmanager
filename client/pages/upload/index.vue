@@ -164,7 +164,7 @@ export default {
         this.uploadOrfileBox == "upload" ? "upload" : "filebox"
       )
       // �α����� ������� ��ū ������ formData�� �ִ´�
-      formData.append("jwt", localStorage.getItem("jwt"))
+      formData.append("jwt", sessionStorage.getItem("jwt"))
 
       // �Ŀ��Ŵ������� ���ε� �ߴٶ�� ����
       formData.append("pmUpload", true)
@@ -243,7 +243,7 @@ export default {
     }
   },
   mounted() {
-    this.compData.getListDataParams.jwt = localStorage.getItem("jwt")
+    this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
     this.compData.getListDataParams.page = Number(this.$route.query.page)
     this.uploadOrfileBox = this.$route.query.viewType
     this.compData.type = this.$route.query.viewType

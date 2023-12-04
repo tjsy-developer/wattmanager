@@ -69,7 +69,7 @@ export default {
               getListData[i].order_by_num,
               {
                 seq: getListData[i].user_seq,
-                auth: getListData[i].auth < localStorage.getItem("auth")
+                auth: getListData[i].auth < sessionStorage.getItem("auth")
               }
             ])
             this.deviceTypeList.push(getListData[i].device_type)

@@ -24,10 +24,10 @@
                 this.$nuxt.$emit("selectLoadingBar", true)
                 this.logsheetURL =
                     process.env.logsheetURL +
-                    "?en_seq=" + localStorage.getItem("enSeq")+
-                    "&hq_seq=" + localStorage.getItem("hqSeq")+
-                    "&br_seq=" + localStorage.getItem("brSeq") +
-                    "&auth=" + localStorage.getItem("auth") +
+                    "?en_seq=" + sessionStorage.getItem("enSeq")+
+                    "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                    "&br_seq=" + sessionStorage.getItem("brSeq") +
+                    "&auth=" + sessionStorage.getItem("auth") +
                     "&version=1"
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {

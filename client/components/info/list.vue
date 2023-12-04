@@ -1,7 +1,7 @@
 <template>
   <div class="row content-start list">
     <div class="col-12 row listFilters">
-      <div class="div row justify-center" v-for="bar in compData.listFilters" :class="[ bar.width?'col-auto':'col' ]" :style="{ width: bar.width+'px' }">
+      <div class="div row justify-center" v-for="(bar, test) in compData.listFilters" :key="test" :class="[ bar.width?'col-auto':'col' ]" :style="{ width: bar.width+'px' }">
         <button v-if="bar.align" class="row items-center" @click="alignBtnClick(bar)">
           <span class="titleBarText">{{bar.text}}</span>
           <img
@@ -156,7 +156,7 @@ export default {
 
       if (QAResult) {
         const dataParams = {
-          jwt: localStorage.getItem("jwt"),
+          jwt: sessionStorage.getItem("jwt"),
           upload_seq: seq,
           file_path: process.env.detailFilePath + "\\\\",
           file_name: fileName

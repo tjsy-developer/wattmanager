@@ -45,8 +45,8 @@ export default {
           .post(
             process.env.backendURL + "userRest/user_password_check_change",
             {
-              jwt: localStorage.getItem("jwt"),
-              user_seq: Number(localStorage.getItem("userSeq")),
+              jwt: sessionStorage.getItem("jwt"),
+              user_seq: Number(sessionStorage.getItem("userSeq")),
               password: this.password,
               password_new: this.newPassword
             }
@@ -55,7 +55,7 @@ export default {
             if (res.data) {
               self.$axios
                 .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
-                  id: localStorage.getItem("id")
+                  id: sessionStorage.getItem("id")
                 })
                 .then((res) => {
                   console.log(res)

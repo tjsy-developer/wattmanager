@@ -97,7 +97,7 @@ export default {
 			.post(process.env.fileUploadBackend + "fileupload/get_codec_name", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
-					"jwt": localStorage.getItem("jwt")
+					"jwt": sessionStorage.getItem("jwt")
 				}
 			})
 			.then((res) => {
@@ -152,7 +152,7 @@ export default {
         const formData = new FormData()
 
         // 로그인한 사용자의 토큰 정보를 formData에 넣는다
-        formData.append("jwt", localStorage.getItem("jwt"))
+        formData.append("jwt", sessionStorage.getItem("jwt"))
         // 백엔드가 userId를 가지고 기업, 본부, 지사번호를 조회한다.
         formData.append("user_id", sessionStorage.getItem("logined"))
         // 파워매니저에서 업로드 했다라고 구분
@@ -187,7 +187,7 @@ export default {
         .post(process.env.fileUploadBackend + "fileupload/memo_insert", formData, {
             headers: {
                 "Content-Type": "multipart/form-data; charset=UTF-8;",
-                "jwt": localStorage.getItem("jwt")
+                "jwt": sessionStorage.getItem("jwt")
             }
         })
         .then(function(res) {

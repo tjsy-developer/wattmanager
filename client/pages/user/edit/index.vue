@@ -49,7 +49,7 @@ export default {
           
           const headers = {
             "Content-Type": "multipart/form-data",
-            "jwt": localStorage.getItem("jwt")
+            "jwt": sessionStorage.getItem("jwt")
           }
           formData.append("save_folder", savePath)
           if (profileImg) {
@@ -58,7 +58,7 @@ export default {
             formData = null
           }
           const getCheckboxCompData = this.listFilters[9].checkboxCompData
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           const setCheckboxCompData = []
           for (let i = 0; i < getCheckboxCompData.list.length; i++) {
             if (
@@ -151,7 +151,7 @@ export default {
           }
         },
         deleteBtnClick() {
-          const token = localStorage.getItem("jwt")
+          const token = sessionStorage.getItem("jwt")
           const result = confirm(btnsClick.lang[10])
           if (result) {
             btnsClick.delete(process.env.backendURL + "userRest/user_delete", {
@@ -204,7 +204,7 @@ export default {
       this.$t("user")[5],
       this.$t("attachment")[5]
     ])
-    this.token = localStorage.getItem("jwt")
+    this.token = sessionStorage.getItem("jwt")
     this.$axios
       .post(process.env.backendURL + axiosJson.user.user_info_one, {
         user_seq: self.compData.userSeq,
@@ -378,7 +378,7 @@ export default {
                                 "userRest/user_info_one_app_list",
                               {
                                 br_seq: self.compData.selected[3],
-                                jwt: localStorage.getItem("jwt")
+                                jwt: sessionStorage.getItem("jwt")
                               }
                             )
                             .then(function(userInfoOneAppList) {

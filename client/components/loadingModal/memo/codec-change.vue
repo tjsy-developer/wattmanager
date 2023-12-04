@@ -58,7 +58,7 @@ export default {
             }
             const formData = new FormData()
             // 로그인한 사용자의 토큰 정보를 formData에 넣는다
-            formData.append("jwt", localStorage.getItem("jwt"))
+            formData.append("jwt", sessionStorage.getItem("jwt"))
             // 파워매니저에서 업로드 했다라고 구분
             formData.append("upload_file", this.file)
             // 메모 저장 위치
@@ -73,7 +73,7 @@ export default {
 			.post(process.env.fileUploadBackend + "fileupload/video_encoding", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
-					"jwt": localStorage.getItem("jwt")
+					"jwt": sessionStorage.getItem("jwt")
 				}
 			})
             .then((res)=> {

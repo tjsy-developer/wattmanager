@@ -50,7 +50,7 @@ export default {
             this.$axios
             .post(process.env.backendURL + axiosJson.user.user_info_one, {
                 user_seq: this.propsData.user_seq,
-                jwt: localStorage.getItem("jwt")
+                jwt: sessionStorage.getItem("jwt")
             })
             .then(function (response) {
                 const params ={

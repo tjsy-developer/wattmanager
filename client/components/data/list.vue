@@ -76,9 +76,9 @@
           </div>
           <div class="col-auto row items-center">
             <button
+             v-for="selectedFilter in selectedFilters"
               v-if="selectedFilter.group !== 'hq_alias' && selectedFilter.group !== 'en_alias'"
               class="col-auto row items-center filterBox"
-              v-for="selectedFilter in selectedFilters"
 						  @click="filterBoxBtnClick(selectedFilter)"
             >
               <span v-if="selectedFilter.group === 'br_alias'">
@@ -261,7 +261,7 @@ import filterBox from "@/components/data/filterBox"
 import pictureZoomInModal from "@/components/data/pictureZoomInModal"
 import changeViewType from "@/components/data/changeViewType"
 import showShareModal from "@/assets/scripts/data/showShareModal"
-import initLocalStorage from "@/assets/scripts/initialize/localStorage"
+import initSessionStorage from "@/assets/scripts/initialize/sessionStorage"
 import favorite from "@/assets/scripts/data/favorite"
 import axiosJson from "@/assets/jsons/axios"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
@@ -509,7 +509,7 @@ export default {
     },
     removeBtnClick(e) {
       const self = this
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       const result = confirm(self.$t("listComp")[18])
       if (result) {
         this.$axios
@@ -527,7 +527,6 @@ export default {
             console.log("list.vue removeBtnClick error : ", error)
             alert(self.$t("listComp")[15])
           })
-      } else {
       }
     },
     favoriteBtnClick(e, index) {
@@ -547,7 +546,7 @@ export default {
 
     // 선택된 filter를 localStorate에 저장
     filterBoxBtnClick(e) {
-      const getSelectedFilters = initLocalStorage.get("selectedFilters")
+      const getSelectedFilters = initSessionStorage.get("selectedFilters")
 
       if (e.constructor === Object) {
         let selectedFilterIndex = 0
@@ -567,7 +566,7 @@ export default {
         getSelectedFilters.splice(selectedFilterIndex, 1)
       } else getSelectedFilters.splice(getSelectedFilters.indexOf(e), 1)
 
-      initLocalStorage.set("selectedFilters", getSelectedFilters)
+      initSessionStorage.set("selectedFilters", getSelectedFilters)
 
       window.location.reload()
     },
@@ -614,7 +613,7 @@ export default {
     // 필터 클릭시 list setting
     setTitleBarFilterList(index) {
       const getTitleBarFilter = this.titleBarFilters[index]
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
 
       if (getTitleBarFilter.getFilterListUrl)
         this.$axios
@@ -627,7 +626,7 @@ export default {
               getTitleBarFilter.filterList = []
 
             for (let i = 0; i < res.data.length; i++) {
-              if (res.data[i] != null && res.data[i] !== "")
+              if (res.data[i] != null && res.data[i] !== "") {
                 if (getTitleBarFilter.align.column === "hq_alias") {
                   if (res.data[i].en_alias !== null) {
                     // filterList 배열에 현재 추가할 기업 존재여부확인
@@ -715,14 +714,15 @@ export default {
                     group: getTitleBarFilter.align.column
                   })
                 }
+              }
             }
-            const getSelectedFiltersOptions = initLocalStorage.get(
+            const getSelectedFiltersOptions = initSessionStorage.get(
               "selectedFiltersOptions"
             )
             getSelectedFiltersOptions.searchKeyword = ""
             getSelectedFiltersOptions.searchList = getTitleBarFilter.filterList
 
-            initLocalStorage.set(
+            initSessionStorage.set(
               "selectedFiltersOptions",
               getSelectedFiltersOptions
             )
@@ -740,12 +740,12 @@ export default {
 
       if (e.isFilterClicked) {
         e.isFilterClicked = false
-        initLocalStorage.remove("selectedFiltersOptions")
+        initSessionStorage.remove("selectedFiltersOptions")
       } else {
         for (let i = 0; i < this.titleBarFilters.length; i++)
           this.titleBarFilters[i].isFilterClicked = false
         e.isFilterClicked = true
-        initLocalStorage.set("selectedFiltersOptions", { column: index + 1 })
+        initSessionStorage.set("selectedFiltersOptions", { column: index + 1 })
 
         // 소속 필터의 경우만 해당
         if (index === 3) {
@@ -758,11 +758,11 @@ export default {
         for (let i = 0; i < this.titleBarFilters.length; i++)
           this.titleBarFilters[i].isFilterClicked = false
 
-        initLocalStorage.remove("selectedFiltersOptions")
+          initSessionStorage.remove("selectedFiltersOptions")
       }
     },
     shareBtnClick(e) {
-      const token = localStorage.getItem("jwt")
+      const token = sessionStorage.getItem("jwt")
       this.$axios
         .post(
           e.fileType === "video"
@@ -860,7 +860,7 @@ export default {
   mounted() {
     console.log("*****titleBarFilters mounted start")
     // 로컬스토리지에서 필터 옵션 목록을 가져온다
-    const getSelectedFiltersOptions = initLocalStorage.get(
+    const getSelectedFiltersOptions = initSessionStorage.get(
       "selectedFiltersOptions"
     )
 
@@ -877,7 +877,7 @@ export default {
         ).value = getSelectedFiltersOptions.searchKeyword
       } else this.setTitleBarFilterList(getSelectedFiltersOptions.column - 1)
     }
-    const getSelectedFilters = initLocalStorage.get("selectedFilters")
+    const getSelectedFilters = initSessionStorage.get("selectedFilters")
     if (getSelectedFilters && getSelectedFilters.length) {
       for (let i = 0; i < getSelectedFilters.length; i++) {
         this.selectedFilters.push(getSelectedFilters[i])
@@ -914,7 +914,7 @@ export default {
         this.$refs.childFilterBox[3].searchBtnClick()
       }
     }
-    this.loginUserAuth = localStorage.getItem("auth")
+    this.loginUserAuth = sessionStorage.getItem("auth")
   },
   watch: {
     "compData.listData"() {

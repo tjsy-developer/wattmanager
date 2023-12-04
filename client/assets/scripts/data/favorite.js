@@ -6,7 +6,7 @@ export default {
     axios
       .post(process.env.backendURL + "attRest/fav_insert", {
         att_seq: seq,
-        jwt: localStorage.getItem("jwt")
+        jwt: sessionStorage.getItem("jwt")
       })
       .then(function(res) {
         if (!res) console.log("즐겨찾기 추가 실패")
@@ -20,7 +20,7 @@ export default {
     axios
       .post(process.env.backendURL + "attRest/fav_delete", {
         att_seq: seq,
-        jwt: localStorage.getItem("jwt")
+        jwt: sessionStorage.getItem("jwt")
       })
       .then(function(res) {
         if (!res.data) console.log("즐겨찾기 삭제 실패")

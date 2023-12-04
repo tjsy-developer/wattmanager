@@ -102,10 +102,10 @@ export default {
     }
   },
   mounted() {
-    this.enSeq = localStorage.getItem("enSeq")
-    this.id = localStorage.getItem("id")
-    this.auth = localStorage.getItem("auth")
-    this.token = localStorage.getItem("jwt")
+    this.enSeq = sessionStorage.getItem("enSeq")
+    this.id = sessionStorage.getItem("id")
+    this.auth = sessionStorage.getItem("auth")
+    this.token = sessionStorage.getItem("jwt")
     getInfo.setLang(this.$t("getInfo"))
     btnsClick.setLang([
       this.$t("btnsClick")[0],

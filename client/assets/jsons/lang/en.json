@@ -575,5 +575,8 @@
 	"guestNotice": [
 		"Guest Option is not possible due to administrator privileges.",
 		"Guest Option"
+	],
+	"loginCheck": [
+		"The login information is incorrect. Please try logging in again"
 	]
 }
