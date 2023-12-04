@@ -25,7 +25,6 @@ export default {
   methods: {
     close() {
       this.$modal.hide("forgotPasswordModal")
-      // 180일 이벤트로 들어온 경우 종료 후 /profile 로 이동시켜줘야함
       window.location.href = "/profile"
     },
     confirm() {
