@@ -105,7 +105,7 @@ export default {
                   auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
                   glass_app_range: setGlassAppRange,
-                  image: this.selected[13],
+                  image: this.selected[13] ? this.selected[13] : "",
                   pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 5)),
                   device_type: Number(sessionStorage.getItem("deviceType")),
@@ -134,8 +134,8 @@ export default {
                   auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
                   glass_app_range: setGlassAppRange,
-                  image: this.selected[10],
-                  pc_app_range: this.selected[11],
+                  image: this.selected[10] ? this.selected[10] : "",
+                  pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 2)),
                   device_type: Number(sessionStorage.getItem("deviceType")),
                   phone_number: "",
@@ -143,7 +143,8 @@ export default {
                   email: getInfo.getInputValue(2),
                   jwt: token,
                   imgFormData: formData,
-                  formDataHeader: headers
+                  formDataHeader: headers,
+                  guest: 0
                 },
                 1
               )
