@@ -74,7 +74,12 @@ export default {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
     },
+    testFunc(res) {
+    },
     logoutBtnClick() {
+      if (process.env.forceLogout24) {
+        window.removeEventListener("forceLogoutEvent", this.testFunc())
+      }
       const lang = sessionStorage.getItem("languageCode")
       const jwtToken = sessionStorage.getItem("jwt")
       sessionStorage.clear()
@@ -151,6 +156,26 @@ export default {
     },
     closeTab() {
       window.close()
+    },
+    checkLoginTime() {
+      // 현재 시간
+      const currentTime = Math.floor(Date.now() / 1000)
+      const cookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
+      // 로그인 시에 기록된 시간
+      const loginTime = cookieSetting.getCookie(cookieName)
+      if (!loginTime) return
+      const forceLogoutEvent = new CustomEvent("forceLogoutEvent", {detail: true})
+      const unix24Hour = 8 * 60 * 60
+      if (loginTime == "calling") {
+        return
+      } else if(loginTime == "logout") {
+        window.dispatchEvent(forceLogoutEvent)
+        console.log(currentTime)
+      } else if (currentTime > Number(loginTime) + Number(unix24Hour)) {
+        cookieSetting.deleteCookie(cookieName)
+        cookieSetting.setCookie(cookieName, "")
+        window.dispatchEvent(forceLogoutEvent)
+      }
     }
   },
   mounted() {
@@ -224,8 +249,12 @@ export default {
     }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
-    // window.addEventListener("forceLogoutEvent", this.logoutBtnClick())
     if (process.env.forceLogout24) {
+      window.addEventListener("forceLogoutEvent",(e) => {
+        if (e.detail == true) {
+          this.logoutBtnClick()
+        }
+      })
       setInterval(() => {
         this.checkLoginTime()
       }, 600000);

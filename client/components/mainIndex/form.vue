@@ -497,7 +497,7 @@ export default {
                     checkByPass = true
                   }
                 })
-                if (process.env.useEnterprise == "dlenc") {
+                if (process.env.forceLogout24 == true) {
                   const loginTime = Math.floor(new Date().getTime() / 1000)
                   const managerLoginTimeCookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
                   console.log(managerLoginTimeCookieName)

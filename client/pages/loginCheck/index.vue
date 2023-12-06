@@ -18,7 +18,6 @@ export default {
 			sessionStorage.setItem("logined", this.$route.query.logined)
 			sessionStorage.setItem("userSeq", this.$route.query.userSeq)
 			sessionStorage.setItem("deviceType", this.$route.query.deviceType)
-
             let checkParameter = true
             
             const cookieName = this.$route.query.id + "jwt"
@@ -58,6 +57,11 @@ export default {
                     checkParameter =  false
                 }
                 if (checkParameter) {
+                    const currentTime = Math.floor(Date.now() / 1000)
+                    if (process.env.forceLogout24 == true) {
+                        const cookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
+                        cookieSetting.setCookie(cookieName, currentTime)
+                    }
                     // watt talk에서 여는 경우 로그인 정보 확인 후 attchment로 보내줌
                     if (this.$route.query.type == "video") {
                         window.location.href = "attachment/video?page=1&viewType=gallery&lang=" + this.$route.query.lang
