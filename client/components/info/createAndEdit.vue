@@ -314,8 +314,7 @@ export default {
     },
     checkGuest(val) {
       this.isGuest = !this.isGuest
-      console.log(this.isGuest)
-    }
+    },
   },
   updated() {
     // if (this.$route.name === "app-edit") {
