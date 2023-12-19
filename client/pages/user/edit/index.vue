@@ -132,7 +132,7 @@ export default {
                   br_seq: getInfo.getSelectValue(this.listFilters, 4),
                   auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
-                  glass_app_range: setGlassAppRange ? setGlassAppRange : "",
+                  glass_app_range: setGlassAppRange,
                   image: this.selected[10] ? this.selected[10] : "",
                   pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 2)),
