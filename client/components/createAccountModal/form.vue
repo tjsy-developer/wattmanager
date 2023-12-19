@@ -12,7 +12,7 @@
         <button class="idChkBtn col-auto" @click="idCheckBtnClick">{{ $t("account")[18] }}</button>
         <input class="input" id="accountPWD" :placeholder="$t('account')[14]" v-model="password" @change="passWordPaternCheck()" type="password" />
         <!-- 비밀번호 규칙이 있는 경우만 -->
-        <span v-if="checkPatern" class="pswPatern">{{ $t("checkPswPatern")[0] }}</span>
+        <span v-if="checkPatern == 'true'" class="pswPatern">{{ $t("checkPswPatern")[0] }}</span>
         <input class="input" :placeholder="$t('account')[15]" v-model="passwordCheck" type="password" />
         <input class="nameInput col" id="accountName" :placeholder="$t('account')[16]" v-model="name" @keyup.enter="nameCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
@@ -529,7 +529,7 @@ export default {
     },
     // 비밀번호 규칙이 있을 경우만
     passWordPaternCheck() {
-      if (this.checkPatern) {
+      if (this.checkPatern == "true") {
         const psw = this.password
         if (psw.length < 10) {
           alert(this.$t("checkPswPatern")[1])
