@@ -531,7 +531,7 @@ export default {
     passWordPaternCheck() {
       if (this.checkPatern) {
         const psw = this.password
-        if (psw.length < 11) {
+        if (psw.length < 10) {
           alert(this.$t("checkPswPatern")[1])
           this.password = ""
           return

@@ -35,17 +35,16 @@ export default {
         isGuest: "",
         editBtnClick() {
           let checkGuest = ""
-          if (getInfo.getInputValue(6) == "true") {
-            checkGuest = 1
-          } else {
-            checkGuest = 0
+          if (sessionStorage.getItem("deviceType") != 2) {
+            if (getInfo.getInputValue(6) == "true") {
+              checkGuest = 1
+            } else {
+              checkGuest = 0
+            }
           }
           let formData = new FormData()
           const savePath = process.env.profilePhotoSavefolder
           const profileImg = this.imageFile
-
-
-          console.log(profileImg)
           
           const headers = {
             "Content-Type": "multipart/form-data",
@@ -385,6 +384,7 @@ export default {
                             .then(function(userInfoOneAppList) {
                               console.log(userInfoOneAppList)
                               if (userInfoOneAppList.data) {
+                                console.log(self.compData.selected)
                                 const getGlassAppRange = self.compData.selected[8].split(
                                   "|"
                                 )
