@@ -70,9 +70,6 @@ export default {
         listFilters: getFilters(
           [
             this.$t("infoFilters")[0],
-            this.$t("infoFilters")[1],
-            this.$t("infoFilters")[2],
-            this.$t("infoFilters")[3],
             this.$t("infoFilters")[9],
             this.$t("infoFilters")[15],
             this.$t("infoFilters")[16]
@@ -96,9 +93,6 @@ export default {
             const date = ("0" + a.getDate()).slice(-2)
             const time = `${year}-${month}-${date}`
             this.listData.push([
-              getListData[i].en_alias,
-              getListData[i].hq_alias,
-              getListData[i].br_alias,
               getListData[i].name,
               // eslint-disable-next-line eqeqeq
               this.type == "upload"

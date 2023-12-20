@@ -4,36 +4,6 @@
 		"width": 80
 	},
 	{
-		"text": "기업 코드",
-		"align": {
-			"column": "en_seq",
-			"status": "desc"
-		},
-		"edit": "select",
-		"selectCompData": {},
-		"width": 110
-	},
-	{
-		"text": "본부 코드",
-		"align": {
-			"column": "hq_seq",
-			"status": "desc"
-		},
-		"edit": "select",
-		"selectCompData": {},
-		"width": 130
-	},
-	{
-		"text": "지사 코드",
-		"align": {
-			"column": "br_seq",
-			"status": "desc"
-		},
-		"edit": "select",
-		"selectCompData": {},
-		"width": 100
-	},
-	{
 		"text": "이름",
 		"align": {
 			"column": "name",
@@ -49,7 +19,7 @@
 			"status": "desc"
 		},
 		"edit": true,
-		"width": 520
+		"width": 850
 	},
 	{
 		"text": "날짜",
