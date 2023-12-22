@@ -17,6 +17,7 @@
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
+        <a v-if="showTBM || authority == '4'" class="col-auto" id="logsheetBtn" @click="hrefSmartTbm()">{{ $t("smartTBM") }}</a>
         <a v-if="logSheet == 'true'" id="logsheetBtn" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
@@ -50,6 +51,7 @@
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode"
 import cookieSetting from "@/assets/scripts/data/cookie"
+import axiosJson from "@/assets/jsons/axios";
 
 export default {
   data() {
@@ -66,15 +68,14 @@ export default {
       useEnterprise: process.env.useEnterprise,
       logSheet: process.env.logsheet,
       checkAdmin: false,
-      glassLogin: false
+      glassLogin: false,
+      showTBM: false
     }
   },
   methods: {
     switchLocale(locale) {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
-    },
-    testFunc(res) {
     },
     logoutBtnClick() {
       if (process.env.forceLogout24) {
@@ -154,6 +155,11 @@ export default {
       sessionStorage.removeItem("path_trans")
       open("/logsheet", "_self")
     },
+    hrefSmartTbm() {
+      sessionStorage.setItem("init", true)
+      sessionStorage.removeItem("path_trans")
+      open("/smarttbm", "_self")
+    },
     closeTab() {
       window.close()
     },
@@ -176,6 +182,30 @@ export default {
         cookieSetting.setCookie(cookieName, "")
         window.dispatchEvent(forceLogoutEvent)
       }
+    },
+    getAppInfo() {
+      this.$axios
+        .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+          en_seq: Number(sessionStorage.getItem("enSeq")),
+          hq_seq: Number(sessionStorage.getItem("hqSeq")),
+          br_seq: Number(sessionStorage.getItem("brSeq"))
+        })
+        .then((res) => {
+          const jsonAppList = res.data[0].app_detail_json
+          const appList = JSON.parse(jsonAppList)
+          if (appList["smart_tbm_visible"] == "True") {
+            this.showTBM = true
+          } else {
+            this.showTBM = false
+          }
+        })
+        .catch((err) => {
+          if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
+            this.showTBM = false
+          } else {
+            console.log("2Factor Error :", err)
+          }
+        })
     }
   },
   mounted() {
@@ -226,7 +256,7 @@ export default {
         location.reload()
       }
     }
-
+    this.getAppInfo()
     // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
     // att_access_user = true 일 경우 기존 권한 조건
     // eslint-disable-next-line eqeqeq
@@ -238,7 +268,6 @@ export default {
       // 2. att_access_user 이 false 일경우 auth > 0 이라면 tab 권한 있음
       this.attViewAuth = false
     }
-
      // 한국 전력공사 로고이미지 변경
     if(window.location.hostname == 'kepco.watttalk.kr') {
       this.useEnterprise = "kepco"
