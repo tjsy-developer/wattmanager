@@ -578,5 +578,6 @@
 	],
 	"loginCheck": [
 		"The login information is incorrect. Please try logging in again"
-	]
+	],
+	"smartTBM": "Smart TBM"
 }

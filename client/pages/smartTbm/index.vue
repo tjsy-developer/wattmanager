@@ -1,6 +1,6 @@
 <template>
     <div class="mainWrap">
-        <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL" :style="{height: wattmanger2Height}" scrolling="no"></iframe>
+        <iframe ref="smarttbmFrame" id="smarttbm" class="iframe" :src="smarttbmURL" :style="{height: wattmanger2Height}" scrolling="no"></iframe>
     </div>
 </template>
 
@@ -9,37 +9,37 @@
         layout: "main",
         data () {
             return {
-                logsheetURL: "",
+                smarttbmURL: "",
                 bodyHeight: "",
                 wattmanger2Height: 0,
                 refreshURL: "",
-                logsheetInterval: "",
+                smarttbmInterval: "",
                 data: false
             }
         },
         mounted() {
-            const splitDomain = process.env.logsheetURL.split("/")
-            const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
+            const splitDomain = process.env.smarttbmURL.split("/")
+            const smarttbmDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == 'true') {
                 this.$nuxt.$emit("selectLoadingBar", true)
-                this.logsheetURL =
-                    process.env.logsheetURL +
+                this.smarttbmURL =
+                    process.env.smarttbmURL +
                     "?en_seq=" + sessionStorage.getItem("enSeq")+
                     "&hq_seq=" + sessionStorage.getItem("hqSeq")+
                     "&br_seq=" + sessionStorage.getItem("brSeq") +
                     "&auth=" + sessionStorage.getItem("auth") +
                     "&version=1&lang=" + sessionStorage.getItem("languageCode")
             } // 로그시트 첫페이지 새로고침 시
-            else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
-                this.logsheetURL = process.env.logsheetURL +
+            else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/smarttbm") {
+                this.smarttbmURL = process.env.smarttbmURL +
                 "?init=false"
             } else {
                 // 로그시트 일일~ 상세보기 화면
-                this.logsheetURL = logSheetDomain + sessionStorage.getItem("path_name") +
+                this.smarttbmURL = smarttbmDomain + sessionStorage.getItem("path_name") +
                 "?init=false"
             }
             window.addEventListener("message", (e) => {
-                const checkURL = process.env.logsheetURL.split("/")
+                const checkURL = process.env.smarttbmURL.split("/")
                 const originURL = checkURL[0] + "//" + checkURL[2]
                 if (e.origin == originURL) {
                     this.childData(e.data)
@@ -79,9 +79,9 @@
                 const mainWrap = document.getElementById("__nuxt")
                 mainWrap.style.overflow = "auto"
                 if (params == "auto") {
-					document.getElementById("logSheet").style.height = params
+					document.getElementById("smarttbm").style.height = params
 				} else {
-					document.getElementById("logSheet").style.height = params + "px"
+					document.getElementById("smarttbm").style.height = params + "px"
 				}
             },
             scrollInToTop(params) {
@@ -92,9 +92,6 @@
                 document.getElementById("main").scrollIntoView({behavior: "smooth"})
             },
         },
-        beforeDestroy() {
-            // 등록된 eventListener의 경우 기본적인 window event여서 제거시 sideeffect가 생길 것 같아 제거하지 않음
-        }
     }
 </script>
 

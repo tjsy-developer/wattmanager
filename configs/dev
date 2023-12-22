@@ -25,6 +25,7 @@ fileBoxBackend=https://dev.watttalk.kr:8221/
 separateBackendUploadPath=false
 logsheetURL=https://smartfactory.watttalk.kr/wattmanager2/safetycheck
 logsheet=true
+smarttbmURL=http://192.168.20.66:4000/wattmanager2/smarttbm
 checkPswPatern=false
 forceLogout24=false
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.

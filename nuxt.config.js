@@ -160,6 +160,7 @@ export default {
     forceLogout24: process.env.forceLogout24,
     impId: process.env.impId,
     pg: process.env.pg,
-    kepcoLogin: process.env.kepcoLogin
+    kepcoLogin: process.env.kepcoLogin,
+    smarttbmURL: process.env.smarttbmURL
   }
 }
