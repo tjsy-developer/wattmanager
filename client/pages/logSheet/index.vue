@@ -4,6 +4,7 @@
     </div>
 </template>
 
+
 <script>
     export default {
         layout: "main",
@@ -17,21 +18,22 @@
                 data: false
             }
         },
-        mounted() {
-            const splitDomain = process.env.logsheetURL.split("/")
+    mounted() {
+            const logsheetIframeURL = this.switchDomainURL(process.env.logsheetURL)
+            const splitDomain = logsheetIframeURL.split("/")
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
-            if (sessionStorage.getItem("init") == 'true') {
+            if (sessionStorage.getItem("init") == "true") {
                 this.$nuxt.$emit("selectLoadingBar", true)
                 this.logsheetURL =
-                    process.env.logsheetURL +
+                    logsheetIframeURL +
                     "?en_seq=" + sessionStorage.getItem("enSeq")+
                     "&hq_seq=" + sessionStorage.getItem("hqSeq")+
                     "&br_seq=" + sessionStorage.getItem("brSeq") +
                     "&auth=" + sessionStorage.getItem("auth") +
                     "&version=1&lang=" + sessionStorage.getItem("languageCode")
             } // 로그시트 첫페이지 새로고침 시
-            else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
-                this.logsheetURL = process.env.logsheetURL +
+            else if (sessionStorage.getItem("init") == "false" && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
+                this.logsheetURL = logsheetIframeURL +
                 "?init=false"
             } else {
                 // 로그시트 일일~ 상세보기 화면
@@ -39,7 +41,7 @@
                 "?init=false"
             }
             window.addEventListener("message", (e) => {
-                const checkURL = process.env.logsheetURL.split("/")
+                const checkURL = logsheetIframeURL.split("/")
                 const originURL = checkURL[0] + "//" + checkURL[2]
                 if (e.origin == originURL) {
                     this.childData(e.data)
@@ -63,7 +65,7 @@
                 }
             },
             childPath(url) {
-                if (sessionStorage.getItem("init") == 'true'|| sessionStorage.getItem("init") == null) {
+                if (sessionStorage.getItem("init") == "true"|| sessionStorage.getItem("init") == null) {
                     sessionStorage.setItem("init", false) 
                     this.$nuxt.$emit("selectLoadingBar", false)
                 }
