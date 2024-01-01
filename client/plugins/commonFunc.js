@@ -22,5 +22,30 @@ Vue.mixin({
     //     window.dispatchEvent(new Event("forceLogoutEvent"))
     //   }
     // }
+    /**
+     * 특정 도메인의 경우 iframe 도메인네임을 접속 도메인값으로 변경
+     * @param url 로그시트 iframe 호출 URL 
+     * @returns 변경된 iframe ULR 값
+     */
+    switchDomainURL(url) {
+      const getURL = url;
+      const checkDomains = ["kepco.watttalk.kr", "dev.watttalk.kr"];
+      const currentDomain = window.location.hostname;
+
+      let updatedRes = '';
+      // 현재 도메인이 checkDomains 배열에 포함되어 있는 경우에만 URL을 변경합니다.
+      if (checkDomains.includes(currentDomain)) {
+        const regex = /^(https?:\/\/)([^:\/]+)(:\d+)?(.*)/;
+        const match = getURL.match(regex);
+        if (match) {
+          const originalPort = match[3] ? match[3] : '';
+          updatedRes = `${match[1]}${currentDomain}${originalPort}${match[4]}`;
+        }
+      } else {
+        updatedRes = url;
+      }
+
+      return updatedRes ? updatedRes : url;
+    },
   },
 });
