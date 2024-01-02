@@ -53,6 +53,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    "@plugins/commonFunc",
     "@plugins/globalComponents",
     "@plugins/globalDirectives",
     "@plugins/globalMethods",

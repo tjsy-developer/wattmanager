@@ -79,6 +79,10 @@ export default {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
     },
+    testFunc() {
+      // removeEventListener 때문. 제거시 오류 발생
+      return
+    },
     logoutBtnClick() {
       if (process.env.forceLogout24) {
         window.removeEventListener("forceLogoutEvent", this.testFunc())
