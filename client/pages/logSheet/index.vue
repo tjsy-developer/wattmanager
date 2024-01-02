@@ -19,13 +19,15 @@
             }
         },
     mounted() {
-            const logsheetIframeURL = this.switchDomainURL(process.env.logsheetURL)
+            const presentUrl = window.location.origin
+            const initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
+            const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
             const splitDomain = logsheetIframeURL.split("/")
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == "true") {
                 this.$nuxt.$emit("selectLoadingBar", true)
                 this.logsheetURL =
-                    logsheetIframeURL +
+                    initLogSheetURL +
                     "?en_seq=" + sessionStorage.getItem("enSeq")+
                     "&hq_seq=" + sessionStorage.getItem("hqSeq")+
                     "&br_seq=" + sessionStorage.getItem("brSeq") +
