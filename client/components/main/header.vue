@@ -17,9 +17,9 @@
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <!-- <a v-if="showTBM || authority == '4'" class="col-auto" id="logsheetBtn" @click="hrefSmartTbm()">{{ $t("smartTBM") }}</a> -->
-        <a v-if="logSheet == 'true' && location !== 'kepco.watttalk.kr'" id="logsheetBtn" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
-        <a v-if="logSheet == 'true' && location == 'kepco.watttalk.kr'" id="logsheetBtn" class="col-auto" @click="hrefLogsheet()">{{  $t("kepcologSheet") }}</a>
+        <!-- <a v-if="showTBM || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSmartTbm()">{{ $t("smartTBM") }}</a> -->
+        <a v-if="logSheet == 'true' && location !== 'kepco.watttalk.kr'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
+        <a v-if="logSheet == 'true' && location == 'kepco.watttalk.kr'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{  $t("kepcologSheet") }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
