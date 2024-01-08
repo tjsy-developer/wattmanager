@@ -1,5 +1,6 @@
 v2.6.72
 -logsheet url <- env에 박아 넣지 않고, 현재 domian을 추출해서 조합하는 방식으로 변경
+-logsheet tab title wattmanager2로 전달
 v.2.6.71
 - smart TBM 탭 생성
 v2.6.70
