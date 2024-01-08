@@ -19,7 +19,15 @@
             }
         },
     mounted() {
-            const presentUrl = window.location.origin
+            let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
+            if (!logsheetTitle) {
+                logsheetTitle = "로그시트"
+            }
+            console.log(logsheetTitle)
+            let presentUrl = window.location.origin
+            if (presentUrl.includes("localhost")) {
+                presentUrl =" https://dev.watttalk.kr:8222"
+            }
             const initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
             const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
             const splitDomain = logsheetIframeURL.split("/")
@@ -32,7 +40,8 @@
                     "&hq_seq=" + sessionStorage.getItem("hqSeq")+
                     "&br_seq=" + sessionStorage.getItem("brSeq") +
                     "&auth=" + sessionStorage.getItem("auth") +
-                    "&version=1&lang=" + sessionStorage.getItem("languageCode")
+                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                    "&logsheetTitle=" + logsheetTitle
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == "false" && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
                 this.logsheetURL = logsheetIframeURL +
@@ -48,7 +57,6 @@
                 if (e.origin == originURL) {
                     this.childData(e.data)
                 }
-
             })
         },
         methods: {
