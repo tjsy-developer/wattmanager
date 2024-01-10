@@ -20,6 +20,7 @@
         },
     mounted() {
             let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
+            console.log(logsheetTitle)
             if (!logsheetTitle) {
                 logsheetTitle = "로그시트"
             }

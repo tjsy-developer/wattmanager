@@ -18,8 +18,7 @@
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
         <!-- <a v-if="showTBM || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSmartTbm()">{{ $t("smartTBM") }}</a> -->
-        <a v-if="logSheet == 'true' && location !== 'kepco.watttalk.kr'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ $t("logSheet") }}</a>
-        <a v-if="logSheet == 'true' && location == 'kepco.watttalk.kr'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{  $t("kepcologSheet") }}</a>
+        <a v-if="logSheet == 'true'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ logsheetTabTitle }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
@@ -71,7 +70,8 @@ export default {
       checkAdmin: false,
       glassLogin: false,
       showTBM: false,
-      location: ''
+      location: '',
+      logsheetTabTitle: "로그시트"
     }
   },
   methods: {
@@ -216,6 +216,11 @@ export default {
   },
   mounted() {
     this.location = window.location.hostname
+    if (this.location == "kepco.watttalk.kr") {
+      this.logsheetTabTitle = this.$t("kepcologSheet")
+    } else {
+      this.logsheetTabTitle = this.$t("logSheet")
+    }
     // 로그인한 계정이 admin인지 확인
     if (sessionStorage.getItem("id") === "administrator") {
       this.checkAdmin = true
