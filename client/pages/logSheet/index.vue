@@ -26,10 +26,11 @@
             }
             let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
             if (window.location.origin == "https://kepco.watttalk.kr:8322") {
-                this.logsheetTabTitle = this.$t("kepcologSheet")
+                logsheetTitle = this.$t("kepcologSheet")
             } else {
-                this.logsheetTabTitle = this.$t("logSheet")
+                logsheetTitle = this.$t("logSheet")
             }
+            console.log(logsheetTitle)
             const initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
             const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
             const splitDomain = logsheetIframeURL.split("/")
