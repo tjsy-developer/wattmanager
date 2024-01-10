@@ -20,10 +20,15 @@
         },
     mounted() {
             let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
-            console.log(logsheetTitle)
-            if (!logsheetTitle) {
-                logsheetTitle = "로그시트"
+            if (this.location == "kepco.watttalk.kr") {
+                this.logsheetTabTitle = this.$t("kepcologSheet")
+            } else {
+                this.logsheetTabTitle = this.$t("logSheet")
             }
+            console.log(logsheetTitle)
+            // if (!logsheetTitle) {
+            //     logsheetTitle = "로그시트"
+            // }
             console.log(logsheetTitle)
             let presentUrl = window.location.origin
             if (presentUrl.includes("localhost")) {

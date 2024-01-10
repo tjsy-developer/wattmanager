@@ -71,7 +71,7 @@ export default {
       glassLogin: false,
       showTBM: false,
       location: '',
-      logsheetTabTitle: "로그시트"
+      logsheetTabTitle: ""
     }
   },
   methods: {
