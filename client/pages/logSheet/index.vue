@@ -19,20 +19,16 @@
             }
         },
     mounted() {
-            let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
-            if (this.location == "kepco.watttalk.kr") {
-                this.logsheetTabTitle = this.$t("kepcologSheet")
-            } else {
-                this.logsheetTabTitle = this.$t("logSheet")
-            }
-            console.log(logsheetTitle)
-            // if (!logsheetTitle) {
-            //     logsheetTitle = "로그시트"
-            // }
             console.log(logsheetTitle)
             let presentUrl = window.location.origin
             if (presentUrl.includes("localhost")) {
                 presentUrl =" https://dev.watttalk.kr:8222"
+            }
+            let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
+            if (window.location.origin == "https://kepco.watttalk.kr:8322") {
+                this.logsheetTabTitle = this.$t("kepcologSheet")
+            } else {
+                this.logsheetTabTitle = this.$t("logSheet")
             }
             const initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
             const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
