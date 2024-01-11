@@ -19,7 +19,6 @@
             }
         },
     mounted() {
-            console.log(logsheetTitle)
             let presentUrl = window.location.origin
             if (presentUrl.includes("localhost")) {
                 presentUrl =" https://dev.watttalk.kr:8222"
