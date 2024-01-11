@@ -40,8 +40,8 @@ export default {
             this.listData.push([
               getListData[i].br_seq,
               this.self.$i18n.locale === "ko"
-                ? getListData[i].en_alias + " " + getListData[i].hq_alias
-                : getListData[i].en_alias_en + " " + getListData[i].hq_alias_en,
+                ? getListData[i].en_alias + "(" + getListData[i].en_seq + ") + " + getListData[i].hq_alias + "(" + getListData[i].hq_seq + ")"
+                : getListData[i].en_alias_en + "(" + getListData[i].en_seq + ") + " + getListData[i].hq_alias_en + "(" + getListData[i].hq_seq + ")",
               this.self.$i18n.locale === "ko"
                 ? getListData[i].alias
                 : getListData[i].alias_en,
