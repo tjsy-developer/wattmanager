@@ -1,50 +1,59 @@
 <template>
     <div class="mainWrap">
-        <iframe ref="smarttbmFrame" id="smarttbm" class="iframe" :src="smarttbmURL" :style="{height: wattmanger2Height}" scrolling="no"></iframe>
+        <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL" :style="{height: wattmanger2Height}" scrolling="no"></iframe>
     </div>
 </template>
+
 
 <script>
     export default {
         layout: "main",
         data () {
             return {
-                smarttbmURL: "",
+                logsheetURL: "",
                 bodyHeight: "",
                 wattmanger2Height: 0,
                 refreshURL: "",
-                smarttbmInterval: "",
+                logsheetInterval: "",
                 data: false
             }
         },
-        mounted() {
-            const splitDomain = process.env.smarttbmURL.split("/")
-            const smarttbmDomain = splitDomain[0] + "//" + splitDomain[2]
-            if (sessionStorage.getItem("init") == 'true') {
+    mounted() {
+            let presentUrl = window.location.origin
+            if (presentUrl.includes("localhost")) {
+                presentUrl =" https://dev.watttalk.kr:8222"
+            }
+            let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
+            if (window.location.origin == "https://kepco.watttalk.kr:8322") {
+                logsheetTitle = this.$t("kepcologSheet")
+            } else {
+                logsheetTitle = this.$t("logSheet")
+            }
+            console.log(logsheetTitle)
+            const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
+            const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
+            const splitDomain = logsheetIframeURL.split("/")
+            const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
+            if (sessionStorage.getItem("init") == "true") {
                 this.$nuxt.$emit("selectLoadingBar", true)
-                this.smarttbmURL =
-                    process.env.smarttbmURL +
+                this.logsheetURL =
+                    initLogSheetURL +
                     "?en_seq=" + sessionStorage.getItem("enSeq")+
                     "&hq_seq=" + sessionStorage.getItem("hqSeq")+
                     "&br_seq=" + sessionStorage.getItem("brSeq") +
                     "&auth=" + sessionStorage.getItem("auth") +
-                    "&version=1&lang=" + sessionStorage.getItem("languageCode")
+                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                    "&logsheetTitle=안전패트롤&template_id=safetypatrolKC"
             } // 로그시트 첫페이지 새로고침 시
-            else if (sessionStorage.getItem("init") == 'false' && sessionStorage.getItem("path_name") == "/wattmanager2/smarttbm") {
-                this.smarttbmURL = process.env.smarttbmURL +
-                "?init=false"
-            } else {
-                // 로그시트 일일~ 상세보기 화면
-                this.smarttbmURL = smarttbmDomain + sessionStorage.getItem("path_name") +
-                "?init=false"
+            else if (sessionStorage.getItem("init") == "false") {
+                this.logsheetURL = logsheetIframeURL
             }
             window.addEventListener("message", (e) => {
-                const checkURL = process.env.smarttbmURL.split("/")
+                const checkURL = logsheetIframeURL.split("/")
                 const originURL = checkURL[0] + "//" + checkURL[2]
                 if (e.origin == originURL) {
                     this.childData(e.data)
                 }
-
             })
         },
         methods: {
@@ -63,7 +72,7 @@
                 }
             },
             childPath(url) {
-                if (sessionStorage.getItem("init") == 'true'|| sessionStorage.getItem("init") == null) {
+                if (sessionStorage.getItem("init") == "true"|| sessionStorage.getItem("init") == null) {
                     sessionStorage.setItem("init", false) 
                     this.$nuxt.$emit("selectLoadingBar", false)
                 }
@@ -79,9 +88,9 @@
                 const mainWrap = document.getElementById("__nuxt")
                 mainWrap.style.overflow = "auto"
                 if (params == "auto") {
-					document.getElementById("smarttbm").style.height = params
+					document.getElementById("logSheet").style.height = params
 				} else {
-					document.getElementById("smarttbm").style.height = params + "px"
+					document.getElementById("logSheet").style.height = params + "px"
 				}
             },
             scrollInToTop(params) {
@@ -92,6 +101,9 @@
                 document.getElementById("main").scrollIntoView({behavior: "smooth"})
             },
         },
+        beforeDestroy() {
+            // 등록된 eventListener의 경우 기본적인 window event여서 제거시 sideeffect가 생길 것 같아 제거하지 않음
+        }
     }
 </script>
 
