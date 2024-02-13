@@ -1,7 +1,10 @@
+v2.6.75
+-safetypartol page 추가
+
 v2.6.74
 -지사 목록 조회 시 기업 본부 옆에 seq 표기
 
-v.2.6.73
+v.2.6.73np
 -logsheet tab title wattmanager2로 전달
 
 v2.6.72

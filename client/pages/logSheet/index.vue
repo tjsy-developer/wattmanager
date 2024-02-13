@@ -36,14 +36,28 @@
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == "true") {
                 this.$nuxt.$emit("selectLoadingBar", true)
-                this.logsheetURL =
-                    initLogSheetURL +
-                    "?en_seq=" + sessionStorage.getItem("enSeq")+
-                    "&hq_seq=" + sessionStorage.getItem("hqSeq")+
-                    "&br_seq=" + sessionStorage.getItem("brSeq") +
-                    "&auth=" + sessionStorage.getItem("auth") +
-                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                    "&logsheetTitle=" + logsheetTitle
+                if (window.location.origin == "https://kepco.watttalk.kr:8322") {
+                    this.logsheetURL =
+                        initLogSheetURL +
+                        "?en_seq=" + sessionStorage.getItem("enSeq")+
+                        "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                        "&br_seq=" + sessionStorage.getItem("brSeq") +
+                        "&auth=" + sessionStorage.getItem("auth") +
+                        "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                        "&logsheetTitle=" + logsheetTitle +
+                        "&template_id=comunicationtbm"
+                } else {
+                    // test를 위해 "&template_id=comunicationtbm" 붙어있음. 추후 제거
+                    this.logsheetURL =
+                        initLogSheetURL +
+                        "?en_seq=" + sessionStorage.getItem("enSeq")+
+                        "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                        "&br_seq=" + sessionStorage.getItem("brSeq") +
+                        "&auth=" + sessionStorage.getItem("auth") +
+                        "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                        "&logsheetTitle=" + logsheetTitle + 
+                        "&template_id=''"
+                }
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == "false" && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
                 this.logsheetURL = logsheetIframeURL +

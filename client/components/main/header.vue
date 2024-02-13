@@ -17,7 +17,7 @@
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <!-- <a v-if="showTBM || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSmartTbm()">{{ $t("smartTBM") }}</a> -->
+        <a v-if="showSafetyPatrol || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ $t("SafetyPatrol") }}</a>
         <a v-if="logSheet == 'true'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ logsheetTabTitle }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
@@ -69,7 +69,7 @@ export default {
       logSheet: process.env.logsheet,
       checkAdmin: false,
       glassLogin: false,
-      showTBM: false,
+      showSafetyPatrol: false,
       location: '',
       logsheetTabTitle: ""
     }
@@ -161,10 +161,10 @@ export default {
       sessionStorage.removeItem("path_trans")
       open("/logsheet", "_self")
     },
-    hrefSmartTbm() {
+    hrefSafetyPatrol() {
       sessionStorage.setItem("init", true)
       sessionStorage.removeItem("path_trans")
-      open("/smarttbm", "_self")
+      open("/safetyPatrol", "_self")
     },
     closeTab() {
       window.close()
@@ -199,15 +199,15 @@ export default {
         .then((res) => {
           const jsonAppList = res.data[0].app_detail_json
           const appList = JSON.parse(jsonAppList)
-          if (appList["smart_tbm_visible"] == "True") {
-            this.showTBM = true
+          if (appList["safetyPatrol"] == "True") {
+            this.showSafetyPatrol = true
           } else {
-            this.showTBM = false
+            this.showSafetyPatrol = false
           }
         })
         .catch((err) => {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-            this.showTBM = false
+            this.showSafetyPatrol = false
           } else {
             console.log("2Factor Error :", err)
           }
