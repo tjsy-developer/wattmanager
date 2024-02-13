@@ -35,7 +35,7 @@ export default {
         isGuest: "",
         editBtnClick() {
           let checkGuest = ""
-          if (sessionStorage.getItem("deviceType") != 2) {
+          if (sessionStorage.getItem("editUserDeviceType") != 2) {
             if (getInfo.getInputValue(6) == "true") {
               checkGuest = 1
             } else {
@@ -90,7 +90,7 @@ export default {
               this.check2Factor == "False"
             }
             // 글라스가 아닌경우
-            if (sessionStorage.getItem("deviceType") != 2) {
+            if (sessionStorage.getItem("editUserDeviceType") != 2) {
               btnsClick.edit2(
                 this.listFilters,
                 process.env.backendURL + "userRest/user_update",
@@ -107,7 +107,7 @@ export default {
                   image: this.selected[13] ? this.selected[13] : "",
                   pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 5)),
-                  device_type: Number(sessionStorage.getItem("deviceType")),
+                  device_type: Number(sessionStorage.getItem("editUserDeviceType")),
                   phone_number: getInfo.getInputValue(4),
                   birthday: getInfo.getInputValue(5),
                   email: getInfo.getInputValue(2),
@@ -136,7 +136,7 @@ export default {
                   image: this.selected[10] ? this.selected[10] : "",
                   pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 2)),
-                  device_type: Number(sessionStorage.getItem("deviceType")),
+                  device_type: Number(sessionStorage.getItem("editUserDeviceType")),
                   phone_number: "",
                   birthday: "",
                   email: getInfo.getInputValue(2),
@@ -234,7 +234,7 @@ export default {
             }
           })
           .then(() => {
-            sessionStorage.setItem("deviceType", res.data.device_type)
+            sessionStorage.setItem("editUserDeviceType", res.data.device_type)
             sessionStorage.setItem("check2Factor", self.check2Factor)
             if (res.data.phone_number) {
               self.phoneNumber = res.data.phone_number
@@ -286,7 +286,7 @@ export default {
             if (res.data.image) {
               const profileImage =  res.data.image
             } else {
-              if (sessionStorage.getItem("deviceType") != 2) {
+              if (sessionStorage.getItem("editUserDeviceType") != 2) {
                 self.compData.selected[12] = undefined
               } else {
                 // 이미지 없을때 초기값 설정
@@ -311,7 +311,7 @@ export default {
                         getInfo.branchCompData.options = branchRes
                       })
                       .then(() => {
-                        if (sessionStorage.getItem("deviceType") != 2) {
+                        if (sessionStorage.getItem("editUserDeviceType") != 2) {
                           self.compData.listFilters = setComboBox(
                             getFilters(
                               [
