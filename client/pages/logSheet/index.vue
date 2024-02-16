@@ -36,7 +36,7 @@
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == "true") {
                 this.$nuxt.$emit("selectLoadingBar", true)
-                if (window.location.origin == "https://kepco.watttalk.kr:8322") {
+                if (window.location.origin == "https://kepco.watttalk.kr") {
                     this.logsheetURL =
                         initLogSheetURL +
                         "?en_seq=" + sessionStorage.getItem("enSeq")+
