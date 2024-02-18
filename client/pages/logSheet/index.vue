@@ -36,7 +36,7 @@
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == "true") {
                 this.$nuxt.$emit("selectLoadingBar", true)
-                if (window.location.origin == "https://kepco.watttalk.kr:8322") {
+                if (window.location.origin == "https://kepco.watttalk.kr") {
                     this.logsheetURL =
                         initLogSheetURL +
                         "?en_seq=" + sessionStorage.getItem("enSeq")+
@@ -44,7 +44,7 @@
                         "&br_seq=" + sessionStorage.getItem("brSeq") +
                         "&auth=" + sessionStorage.getItem("auth") +
                         "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                        "&logsheetTitle=" + logsheetTitle +
+                        "&logsheetTitle=TBM관리" +
                         "&template_id=comunicationtbm"
                 } else {
                     // test를 위해 "&template_id=comunicationtbm" 붙어있음. 추후 제거
@@ -55,7 +55,7 @@
                         "&br_seq=" + sessionStorage.getItem("brSeq") +
                         "&auth=" + sessionStorage.getItem("auth") +
                         "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                        "&logsheetTitle=" + logsheetTitle + 
+                        "&logsheetTitle=로그시트" +
                         "&template_id=''"
                 }
             } // 로그시트 첫페이지 새로고침 시

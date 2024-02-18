@@ -1,36 +1,36 @@
 # port는 따로 nuxt.config.js에 설정해줘야한다. 자동화하면 배포 오류
 port=3000
 backendURL_local=""
-backendURL=https://kepcos.watttalk.kr/wattmanager-server/
+backendURL=https://kepco.watttalk.kr/wattmanager-server/
 powertlakState="loginCheck"
 powertalkLogin_local=""
-powertalkLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
-powermemo=https://kepcos.watttalk.kr/sftp/kepcos
-powermemoSavefolder=/home/sftproot/kepcos/
-qr_filePath=https://kepcos.watttalk.kr/storage/watttalk/kepcos/QR/folder
+powertalkLogin="https://kepco.watttalk.kr/watttalk/login/login-check?jwt_token="
+powermemo=https://kepco.watttalk.kr/sftp/kepco
+powermemoSavefolder=/home/sftproot/kepco/
+qr_filePath=https://kepco.watttalk.kr/storage/watttalk/kepco/QR/folder
 qr=default
 att_access_user=true
-att_videoPlayPath=https://kepcos.watttalk.kr/Storage/powertalk/kepcos/Dashs/Src/
-att_filePath=https://kepcos.watttalk.kr/storage/watttalk/kepcos/filebox/
-detailFilePath=/home/watt/hdd_ext/Storage/watttalk/kepcos/filebox/
-fileUploadBackend=https://kepcos.watttalk.kr/wattmanager-server
+att_videoPlayPath=https://kepco.watttalk.kr/Storage/powertalk/kepco/Dashs/Src/
+att_filePath=https://kepco.watttalk.kr/storage/watttalk/kepco/filebox/
+detailFilePath=/home/watt/hdd_ext/Storage/watttalk/kepco/filebox/
+fileUploadBackend=https://kepco.watttalk.kr/wattmanager-server
 profilePhotoSavefolder=D:\\Storage\\sftp\\dev
 profilePhotoUrl=https://dev.watttalk.kr:8222/storage/sftp/dev
 useEnterprise=kepco
 use_bento4=false
 elecQR=true
-elecFilePath=/home/watt/hdd_ext/Storage/watttalk/kepcos/QR/file
-elecFolderPath=D:\\Storage\\powertalk\\kepcos\\QR\\folder
-fileBoxBackend=https://kepcos.watttalk.kr/wattmanager-server
+elecFilePath=/home/watt/hdd_ext/Storage/watttalk/kepco/QR/file
+elecFolderPath=D:\\Storage\\powertalk\\kepco\\QR\\folder
+fileBoxBackend=https://kepco.watttalk.kr/wattmanager-server
 separateBackendUploadPath=false
-logsheetURL=https://kepcos.watttalk.kr/wattmanager2/safetycheck
+logsheetURL=https://kepco.watttalk.kr/wattmanager2/safetycheck
 logsheet=true
 checkPswPatern=false
 forceLogout24=false
 # impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
 impId=""
 pg=""
-kepcoLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
+kepcoLogin="https://kepco.watttalk.kr/watttalk/login/login-check?jwt_token="
 
 
 # qr 값에 따라서 tab 변동
