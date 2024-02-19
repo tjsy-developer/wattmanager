@@ -6,6 +6,8 @@
 
 
 <script>
+import axiosJson from "@/assets/jsons/axios";
+
     export default {
         layout: "main",
         data () {
@@ -15,49 +17,41 @@
                 wattmanger2Height: 0,
                 refreshURL: "",
                 logsheetInterval: "",
-                data: false
+                data: false,
+                logsheetTitle: "로그시트",
+                templateID: ""
             }
         },
-    mounted() {
+        mounted() {
             let presentUrl = window.location.origin
             if (presentUrl.includes("localhost")) {
                 presentUrl =" https://dev.watttalk.kr:8222"
             }
-            let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
-            if (window.location.origin == "https://kepco.watttalk.kr:8322") {
-                logsheetTitle = this.$t("kepcologSheet")
-            } else {
-                logsheetTitle = this.$t("logSheet")
-            }
-            console.log(logsheetTitle)
             const initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
             const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
             const splitDomain = logsheetIframeURL.split("/")
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == "true") {
-                this.$nuxt.$emit("selectLoadingBar", true)
-                if (window.location.origin == "https://kepco.watttalk.kr") {
-                    this.logsheetURL =
-                        initLogSheetURL +
-                        "?en_seq=" + sessionStorage.getItem("enSeq")+
-                        "&hq_seq=" + sessionStorage.getItem("hqSeq")+
-                        "&br_seq=" + sessionStorage.getItem("brSeq") +
-                        "&auth=" + sessionStorage.getItem("auth") +
-                        "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                        "&logsheetTitle=TBM관리" +
-                        "&template_id=comunicationtbm"
+                if (sessionStorage.getItem("logsheetTitle")) {
+                    this.logsheetTitle = sessionStorage.getItem("logsheetTitle")
                 } else {
-                    // test를 위해 "&template_id=comunicationtbm" 붙어있음. 추후 제거
-                    this.logsheetURL =
-                        initLogSheetURL +
-                        "?en_seq=" + sessionStorage.getItem("enSeq")+
-                        "&hq_seq=" + sessionStorage.getItem("hqSeq")+
-                        "&br_seq=" + sessionStorage.getItem("brSeq") +
-                        "&auth=" + sessionStorage.getItem("auth") +
-                        "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                        "&logsheetTitle=로그시트" +
-                        "&template_id=''"
+                    this.logsheetTitle = "로그시트"
                 }
+                if (sessionStorage.getItem("templateID")) {
+                    this.templateID = sessionStorage.getItem("templateID")
+                } else {
+                    this.templateID = ""
+                }
+                this.$nuxt.$emit("selectLoadingBar", true)
+                this.logsheetURL =
+                    initLogSheetURL +
+                    "?en_seq=" + sessionStorage.getItem("enSeq")+
+                    "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                    "&br_seq=" + sessionStorage.getItem("brSeq") +
+                    "&auth=" + sessionStorage.getItem("auth") +
+                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                    "&logsheetTitle=" + this.logsheetTitle +
+                    "&template_id=" + this.templateID
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == "false" && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
                 this.logsheetURL = logsheetIframeURL +
@@ -118,7 +112,7 @@
                     mainWrap.style.overflow = "hidden"
                 }
                 document.getElementById("main").scrollIntoView({behavior: "smooth"})
-            },
+            }
         },
         beforeDestroy() {
             // 등록된 eventListener의 경우 기본적인 window event여서 제거시 sideeffect가 생길 것 같아 제거하지 않음
