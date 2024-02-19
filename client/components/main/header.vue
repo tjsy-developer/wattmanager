@@ -204,6 +204,16 @@ export default {
           } else {
             this.showSafetyPatrol = false
           }
+          if (appList["logsheetTitle"]) {
+            sessionStorage.setItem("logsheetTitle", appList["logsheetTitle"])
+          } else {
+            sessionStorage.setItem("logsheetTitle", "로그시트")
+          }
+          if (appList["templateID"]) {
+            sessionStorage.setItem("templateID", appList["templateID"])
+          } else {
+            sessionStorage.setItem("templateID","")
+          }
         })
         .catch((err) => {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
