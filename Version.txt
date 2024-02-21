@@ -1,3 +1,7 @@
+v2.5.86
+-safetyPartol page 안정화
+-logsheet, safety patrol header ui 최적화
+
 v2.6.75
 -safetypartol page 추가
 
