@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center mainHeader">
-    <div class="row justify-between items-center maxWidth">
+    <div class="row justify-between items-center maxWidth" :style="{ width: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '90vw' : $contentMaxWidth, maxWidth: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '1554px' : '$contentMaxWidth' }">
       <button v-if="$i18n.locale != 'ko'" class="localeBtn" @click="switchLocale('ko')">한국어</button>
       <button v-else-if="$i18n.locale != 'en'" class="localeBtn" @click="switchLocale('en')">English</button>
       <img v-if="useEnterprise == 'samsung'" class="col-auto" src="@/assets/images/samsung_logo_2.png" />
@@ -71,7 +71,8 @@ export default {
       glassLogin: false,
       showSafetyPatrol: false,
       location: '',
-      logsheetTabTitle: ""
+      logsheetTabTitle: "",
+      pathName: ""
     }
   },
   methods: {
@@ -225,6 +226,7 @@ export default {
     }
   },
   mounted() {
+    this.pathName= window.location.pathname
     this.location = window.location.hostname
     if (this.location == "kepco.watttalk.kr") {
       this.logsheetTabTitle = this.$t("kepcologSheet")
