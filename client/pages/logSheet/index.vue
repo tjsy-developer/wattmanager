@@ -58,8 +58,8 @@ import axiosJson from "@/assets/jsons/axios";
                 "?init=false"
             } else {
                 // 로그시트 일일~ 상세보기 화면
-                this.logsheetURL = logSheetDomain + sessionStorage.getItem("path_name") +
-                "?init=false"
+                this.logsheetURL = logSheetDomain + sessionStorage.getItem("path_name")
+                // "?init=false"
             }
             window.addEventListener("message", (e) => {
                 const checkURL = logsheetIframeURL.split("/")
