@@ -223,6 +223,21 @@ export default {
             console.log("2Factor Error :", err)
           }
         })
+    },
+    getUserName() {
+      this.$axios
+          // .post(axiosJson.user.user_info_one, {
+          .post(process.env.backendURL + axiosJson.user.user_info_one, {
+              user_seq: Number(sessionStorage.getItem("userSeq")),
+              jwt: sessionStorage.getItem("jwt")
+          })
+          .then(function(res) {
+              sessionStorage.setItem("userName", res.data.name)
+              console.log(res.data.name)
+          })
+          .catch(function(error) {
+              console.log("user profile page error : ", error)
+          })
     }
   },
   mounted() {
@@ -281,6 +296,7 @@ export default {
       }
     }
     this.getAppInfo()
+    this.getUserName()
     // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
     // att_access_user = true 일 경우 기존 권한 조건
     // eslint-disable-next-line eqeqeq
