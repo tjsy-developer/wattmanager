@@ -77,7 +77,7 @@
             <img
               v-if="useEnterprise == 'kepco'"
               class="loginContentLogo"
-              src="@/assets/images/logo_kepco_watttalk.png"
+              src="@/assets/images/logo_kepco_watttalk_not_use.png"
             />
             <img
               v-if="useEnterprise == 'dlenc'"
