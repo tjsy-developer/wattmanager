@@ -58,6 +58,22 @@ export default {
                   }
                 } else if (error.request) {
                   console.log("request error")
+                  console.log(`picture request error : ${error.request}`)
+                    console.log(`picture request error status : ${error.request.status}`)
+                    if (error.request.status == 0){
+                      self.listData.push({
+                      seq: getListData[i].att_seq,
+                      img: require("@/assets/images/attach_noImage.png"),
+                      title: getListData[i].title,
+                      code: getListData[i].category,
+                      people: getListData[i].joined_members,
+                      hq: getListData[i].hq_alias,
+                      branch: getListData[i].br_alias,
+                      date: getListData[i].save_time,
+                      favorite: getListData[i].favYN !== "0",
+                      rate: 100
+                    })
+                    }
                 } else {
                   console.log("picture index axios error: ", error)
                 }

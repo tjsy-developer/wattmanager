@@ -42,6 +42,7 @@ export default {
           console.log(getListData)
           // listData init
           this.listData = []
+          console.log("===========================================")
           for (let i = 0; i < getListData.length; i++) {
             if (getListData[i].file_name.includes(".mp4")) {
               this.videolFileName = getListData[i].file_name.split(".mp4")[0]
@@ -117,7 +118,27 @@ export default {
                       })
                     }
                   } else if (error.request) {
-                    console.log("video request error")
+                    console.log(`video request error : ${error.request}`)
+                    console.log(`video request error status : ${error.request.status}`)
+                    if (error.request.status == 0){
+                      self.listData.push({
+                        seq: getListData[i].att_seq,
+                        video:
+                          getListData[i].file_path +
+                          "/" +
+                          getListData[i].file_name,
+                        thumbnail: require("@/assets/images/attach_noImage.png"),
+                        title: getListData[i].title,
+                        code: getListData[i].category,
+                        people: getListData[i].joined_members,
+                        hq: getListData[i].hq_alias,
+                        branch: getListData[i].br_alias,
+                        date: getListData[i].save_time,
+                        favorite: getListData[i].favYN !== "0",
+                        rate: getListData[i].rate,
+                        running_time: getListData[i].running_time
+                      })
+                    }
                   } else {
                     console.log("video index axios error: ", error)
                   }
