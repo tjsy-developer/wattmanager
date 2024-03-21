@@ -1,3 +1,6 @@
+v2.6.77
+- 영상관리 및 사진관리 cros origin error 예외처리 (no image)
+
 v2.6.76
 -safetyPartol page 안정화
 -logsheet, safety patrol header ui 최적화
