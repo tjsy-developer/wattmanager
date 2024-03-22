@@ -35,9 +35,12 @@ export default {
           for (let i = 0; i < getListData.length; i++)
             // get Thnumnail Image
             await this.axios
-              .get(getListData[i].file_path + "/" + getListData[i].file_name, {
-                responseType: "blob"
-              })
+              .get(getListData[i].file_path + "/" + getListData[i].file_name,
+                {
+                  timeout: 1000,
+                  responseType: "blob"
+                }
+              )
               // 예외처리
               .catch(function(error) {
                 if (error.response) {

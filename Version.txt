@@ -1,5 +1,7 @@
 v2.6.77
 - 영상관리 및 사진관리 cros origin error 예외처리 (no image)
+- 영상관리 및 사진관리 axios timeout 1초 설정
+- korail dev configs modify
 
 v2.6.76
 -safetyPartol page 안정화

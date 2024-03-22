@@ -88,7 +88,8 @@ export default {
                     this.videolFileName +
                     ".png",
                   {
-                    responseType: "blob"
+                    timeout: 1000,
+                    responseType: "blob",
                   }
                 )
                 // 예외처리
