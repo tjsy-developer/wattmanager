@@ -49,7 +49,7 @@ export default {
                 "&user_name=" + sessionStorage.getItem("userName")
         } // 로그시트 첫페이지 새로고침 시
         else if (sessionStorage.getItem("init") == "false") {
-            this.logsheetURL = logsheetIframeURL
+            this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")
         }
         window.addEventListener("message", (e) => {
             const checkURL = logsheetIframeURL.split("/")
@@ -78,14 +78,9 @@ export default {
             if (sessionStorage.getItem("init") == "true"|| sessionStorage.getItem("init") == null) {
                 sessionStorage.setItem("init", false) 
                 this.$nuxt.$emit("selectLoadingBar", false)
-            }
-            if (url == "/wattmanager2/safetycheck") {
-                sessionStorage.setItem("path_name", url)
-                sessionStorage.setItem("init", false)
             } else {
-                sessionStorage.setItem("path_name", url)
-                sessionStorage.setItem("init", false)
-            }
+				sessionStorage.setItem("path_name", url)
+			}
         },
         calcHeight(params) {
             const mainWrap = document.getElementById("__nuxt")
