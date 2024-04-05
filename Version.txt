@@ -1,3 +1,6 @@
+v2.6.78
+ - kwater 분기처리
+
 v2.6.77
 - 영상관리 및 사진관리 cros origin error 예외처리 (no image)
 - 영상관리 및 사진관리 axios timeout 1초 설정
