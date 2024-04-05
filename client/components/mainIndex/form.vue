@@ -84,6 +84,11 @@
               class="loginContentLogo"
               src="@/assets/images/dlenc_login_logo.png"
             />
+            <img
+              v-if="useEnterprise == 'kwater'"
+              class="loginContentLogo"
+              src="@/assets/images/logos/kwater_login_logo.png"
+            />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
             <input
@@ -565,7 +570,13 @@ export default {
                           process.env.kepcoLogin + self.params + urlParameter,
                           "_self"
                         );
-                      } else {
+                      } else if (window.location.hostname == "kwater.watttalk.kr") {
+                        window.open(
+                          "https://kwater.watttalk.kr/watttalk/login/login-check?jwt_token=" + self.params + urlParameter,
+                          "_self"
+                        );
+                      }
+                      else {
                         window.open(
                           process.env.powertalkLogin + self.params + urlParameter,
                           "_self"
@@ -726,6 +737,8 @@ export default {
       this.useEnterprise = "dlenc";
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
+    } else if (window.location.hostnmae == "kwater.watttalk.kr") {
+      this.useEnterprise = "kwater"
     }
     if (sessionStorage.getItem("managerLogOut")) {
       if (sessionStorage.getItem("logoutId")) {
