@@ -35,6 +35,8 @@ export default {
 			this.useEnterprise = "dlenc";
 		}else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
 			this.useEnterprise = "dlenc"
+		} else if (window.location.hostname == 'kwater.watttalk.kr') {
+			this.useEnterprise = "kwater"
 		}
 	}
 }

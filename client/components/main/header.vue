@@ -11,6 +11,7 @@
       <img v-if="useEnterprise == 'korail'" class="col-auto" src="@/assets/images/logo_korail_cloud.png" />
       <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
+      <img v-if="useEnterprise == 'kwater'" class="col-auto" src="@/assets/images/logos/kwater_header_logo.jpg" style="height: 38px" />
       <div class="col-auto row menus">
         <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
@@ -121,7 +122,7 @@ export default {
               lang,
               "_self"
             )
-          }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+          } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
             window.open(
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
               jwtToken +
@@ -129,7 +130,15 @@ export default {
               lang,
               "_self"
             )
-          }else {
+          }  else if (window.location.hostname == 'kwater.watttalk.kr') {
+            window.open(
+              "https://kwater.watttalk.kr/watttalk/login/login-check?jwt_token=" +
+                jwtToken +
+                "&login_type=3&lang=" +
+                lang,
+              "_self"
+             )
+          } else {
             window.open(
               process.env.powertalkLogin +
                 jwtToken +
@@ -243,7 +252,7 @@ export default {
   mounted() {
     this.pathName= window.location.pathname
     this.location = window.location.hostname
-    if (this.location == "kepco.watttalk.kr") {
+    if (this.location == "kepco.watttalk.kr" || this.location == "kwater.watttalk.kr") {
       this.logsheetTabTitle = this.$t("kepcologSheet")
     } else {
       this.logsheetTabTitle = this.$t("logSheet")
@@ -317,6 +326,8 @@ export default {
       this.useEnterprise = "dlenc"
     }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
+    } else if (window.location.hostname == 'kwater.watttalk.kr') {
+      this.useEnterprise = "kwater"
     }
     if (process.env.forceLogout24) {
       window.addEventListener("forceLogoutEvent",(e) => {
