@@ -24,13 +24,14 @@ export default {
         if (presentUrl.includes("localhost")) {
             presentUrl =" https://dev.watttalk.kr:8222"
         }
-        let logsheetTitle = document.getElementsByName("logsheetTitle")[0].innerText
+        let templateID
         if (window.location.origin == "https://kepco.watttalk.kr:8322") {
-            logsheetTitle = this.$t("kepcologSheet")
-        } else {
-            logsheetTitle = this.$t("logSheet")
+            templateID = "safetypatrolKC"
+        } else if (window.location.origin == "https://kwater.watttalk.kr:8322") {
+            templateID = "kwaterDaily"
         }
-        console.log(logsheetTitle)
+        
+        // kwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDaily
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
         const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
         const splitDomain = logsheetIframeURL.split("/")
@@ -44,7 +45,7 @@ export default {
                 "&br_seq=" + sessionStorage.getItem("brSeq") +
                 "&auth=" + sessionStorage.getItem("auth") +
                 "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                "&logsheetTitle=안전패트롤&template_id=safetypatrolKC" + 
+                "&logsheetTitle=안전패트롤&template_id=" +  templateID +
                 "&user_id=" + sessionStorage.getItem("id") +
                 "&user_name=" + sessionStorage.getItem("userName")
         } // 로그시트 첫페이지 새로고침 시
