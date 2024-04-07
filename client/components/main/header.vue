@@ -250,7 +250,6 @@ export default {
     }
   },
   mounted() {
-    this.useEnterprise == "kwater"
     this.pathName= window.location.pathname
     this.location = window.location.hostname
     if (this.location == "kepco.watttalk.kr" || this.location == "kwater.watttalk.kr") {
