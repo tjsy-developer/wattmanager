@@ -25,9 +25,9 @@ export default {
             presentUrl =" https://dev.watttalk.kr:8222"
         }
         let templateID
-        if (window.location.origin == "https://kepco.watttalk.kr:8322") {
+        if (window.location.hostname == "https://kepco.watttalk.kr") {
             templateID = "safetypatrolKC"
-        } else if (window.location.origin == "https://kwater.watttalk.kr:8322") {
+        } else if (window.location.hostname == "https://kwater.watttalk.kr") {
             templateID = "kwaterDaily"
         }
         
