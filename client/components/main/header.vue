@@ -257,7 +257,6 @@ export default {
     } else {
       this.logsheetTabTitle = this.$t("logSheet")
     }
-    this.logsheetTabTitle = this.$t("kepcologSheet")
     // 로그인한 계정이 admin인지 확인
     if (sessionStorage.getItem("id") === "administrator") {
       this.checkAdmin = true
