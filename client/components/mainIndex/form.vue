@@ -87,7 +87,8 @@
             <img
               v-if="useEnterprise == 'kwater'"
               class="loginContentLogo"
-              src="@/assets/images/logos/kwater_login_logo.png"
+              src="@/assets/images/logos/k_water.svg"
+              style="width: 200px"
             />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
