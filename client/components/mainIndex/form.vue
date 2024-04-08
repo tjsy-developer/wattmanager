@@ -572,7 +572,7 @@ export default {
                         );
                       } else if (window.location.hostname == "kwater.watttalk.kr") {
                         window.open(
-                          "https://kwater.watttalk.kr/watttalk/login/login-check?jwt_token=" + self.params + urlParameter,
+                          "https://kwater.watttalk.kr:8224/login/login-check?jwt_token=" + self.params + urlParameter,
                           "_self"
                         );
                       }
@@ -728,7 +728,7 @@ export default {
         document.getElementById("idInput").focus();
       }
     }
-
+    console.log(window.location.hostname)
     // 한국 전력공사 로고이미지 변경
     if (window.location.hostname == "kepco.watttalk.kr") {
       this.useEnterprise = "kepco";
@@ -737,7 +737,7 @@ export default {
       this.useEnterprise = "dlenc";
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
-    } else if (window.location.hostnmae == "kwater.watttalk.kr") {
+    } else if (window.location.hostname == "kwater.watttalk.kr") {
       this.useEnterprise = "kwater"
     }
     if (sessionStorage.getItem("managerLogOut")) {
