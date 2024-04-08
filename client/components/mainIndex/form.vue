@@ -572,7 +572,7 @@ export default {
                         );
                       } else if (window.location.hostname == "kwater.watttalk.kr") {
                         window.open(
-                          "https://kwater.watttalk.kr/watttalk/login/login-check?jwt_token=" + self.params + urlParameter,
+                          "https://kwater.watttalk.kr:8224/login/login-check?jwt_token=" + self.params + urlParameter,
                           "_self"
                         );
                       }

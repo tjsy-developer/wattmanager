@@ -132,7 +132,7 @@ export default {
             )
           }  else if (window.location.hostname == 'kwater.watttalk.kr') {
             window.open(
-              "https://kwater.watttalk.kr/watttalk/login/login-check?jwt_token=" +
+              "https://kwater.watttalk.kr:8224/login/login-check?jwt_token=" +
                 jwtToken +
                 "&login_type=3&lang=" +
                 lang,
