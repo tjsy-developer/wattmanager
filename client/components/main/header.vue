@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center mainHeader">
-    <div class="row justify-between items-center maxWidth" :style="{ width: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '90vw' : $contentMaxWidth, maxWidth: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '1554px' : '$contentMaxWidth' }">
+    <div class="row justify-between items-center maxWidth" :style="{ width: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '90vw' : '1260px', maxWidth: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '1554px' : '1260px' }">
       <button v-if="$i18n.locale != 'ko'" class="localeBtn" @click="switchLocale('ko')">한국어</button>
       <button v-else-if="$i18n.locale != 'en'" class="localeBtn" @click="switchLocale('en')">English</button>
       <img v-if="useEnterprise == 'samsung'" class="col-auto" src="@/assets/images/samsung_logo_2.png" />
@@ -78,6 +78,7 @@ export default {
   },
   methods: {
     switchLocale(locale) {
+      console.log(locale)
       sessionStorage.setItem("languageCode", locale)
       location.reload()
     },
@@ -300,8 +301,16 @@ export default {
       this.$route.query.lang !== ""
     ) {
       if (this.$route.query.lang !== sessionStorage.getItem("languageCode")) {
+        let langCode = this.$route.query.lang
+        if (langCode == 'es') langCode = 'en'
         sessionStorage.setItem("languageCode", this.$route.query.lang)
-        location.reload()
+        const queryParmas = new URLSearchParams(this.$route.query)
+        queryParmas.delete("lang")
+        const newQuery = queryParmas.toString()
+        window.open(
+          `${ this.$route.path}?${newQuery}`,
+          "_self"
+        )
       }
     }
     this.getAppInfo()
@@ -356,7 +365,7 @@ export default {
 	z-index: 1
 
 .maxWidth
-	width: $contentMaxWidth
+	width: 1260px
 
 .menus
 	padding-top: 10px

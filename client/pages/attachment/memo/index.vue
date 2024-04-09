@@ -195,7 +195,7 @@ export default {
 	font-weight: 800
 
 .maxWidth
-	width: $contentMaxWidth
+	width: 1260px
 
 .memoBtn
 	width: 32.51%

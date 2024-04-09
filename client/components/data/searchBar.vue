@@ -117,7 +117,7 @@ export default {
 	background-color: $contentBackground
 
 .maxWidth
-	width: $contentMaxWidth
+	width: 1260px
 
 .title
 	font-size: 20px

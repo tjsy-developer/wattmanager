@@ -32,13 +32,13 @@ export default {
 		margin-top: 35px
 
 .formTitle
-	width: $contentMaxWidth
+	width: 1260px
 	font-size: 24px
 	font-weight: 800
 	padding: 29px 0 20px
 
 .createDiv
-	width: $contentMaxWidth
+	width: 1260px
 
 	>.createTitle
 		height: 41px

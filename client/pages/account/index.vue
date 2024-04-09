@@ -270,7 +270,7 @@ export default {
 <style lang="sass" scoped>
 .account
 	width: 100%
-	min-width: $contentMaxWidth
+	min-width: 1260px
 	height: 100%
 	background: #EFF0F1
 

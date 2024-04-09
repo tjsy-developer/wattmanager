@@ -63,7 +63,7 @@ export default {
 <style lang="sass" scoped>
 #main
 	width: 100%
-	min-width: $contentMaxWidth
+	min-width: 1260px
 	height: 100%
 
 @media print 

@@ -936,7 +936,7 @@ export default {
 	margin-top: 50px
 
 .maxWidth
-	width: $contentMaxWidth
+	width: 1260px
 	margin-bottom: 40px
 
 .title

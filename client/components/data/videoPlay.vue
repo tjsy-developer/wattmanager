@@ -757,13 +757,13 @@ export default {
 <style lang="sass" scoped>
 .videoPlay
   width: 100%
-  min-width: $contentMaxWidth
+  min-width: 1260px
   background: white
   margin-top: 20px
   padding: 30px 0
 
 .videoPlay>div
-  width: $contentMaxWidth
+  width: 1260px
   max-height: 720px
 
 .left
