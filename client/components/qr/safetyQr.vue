@@ -178,13 +178,13 @@ input:focus::-webkit-input-placeholder
 
 .qrCreateContainer
 	width: 100%
-	min-width: $contentMaxWidth
+	min-width: 1260px
 	min-height: $contentHeight
 	background-color: $contentBackground
 
 .qrCreateContainer>div:not(.titleBar),
 .titleBar>span
-	width: $contentMaxWidth
+	width: 1260px
 
 .titleBar
 	margin-bottom: 36px

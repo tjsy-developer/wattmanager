@@ -126,7 +126,7 @@ export default {
 
 .notice
 	width: 100%
-	min-width: $contentMaxWidth
+	min-width: 1260px
 	min-height: $contentHeight
 	background-color: #EFF0F1
 
@@ -134,10 +134,10 @@ export default {
 	margin-bottom: 36px
 
 	>span
-		width: $contentMaxWidth
+		width: 1260px
 
 .subTitleDiv
-	width: $contentMaxWidth
+	width: 1260px
 
 .subTitle
 	height: 41px
@@ -151,7 +151,7 @@ export default {
 	border-radius: 2px
 
 .list
-	width: $contentMaxWidth
+	width: 1260px
 
 .listFilters
 	font-size: 16px

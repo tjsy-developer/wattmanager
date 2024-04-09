@@ -49,7 +49,7 @@ export default {
 	background: $contentBackground
 
 .maxWidth
-	width: $contentMaxWidth
+	width: 1260px
 	display: flex
 	justify-content: center
 	align-items: center

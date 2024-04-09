@@ -66,5 +66,5 @@ export default {
 	height: auto
 
 	>div
-		width: $contentMaxWidth
+		width: 1260px
 </style>

@@ -49,7 +49,7 @@ export default {
 	background: transparent linear-gradient(180deg, #0061D1 0%, #23A3DC 100%) 0% 0% no-repeat padding-box
 
 .search>div
-	width: $contentMaxWidth
+	width: 1260px
 
 .searchText
 	font-size: 18px

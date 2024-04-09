@@ -229,7 +229,7 @@ export default {
 
 .policy
     width: 100%
-    min-width: $contentMaxWidth
+    min-width: 1260px
     min-height: $contentHeight
     display: flex
     flex-direction: column
@@ -252,10 +252,10 @@ export default {
     margin-bottom: 36px
 
     >span
-        width: $contentMaxWidth
+        width: 1260px
 
 .main
-    width: $contentMaxWidth
+    width: 1260px
     display: flex
     flex-direction: column
     justify-content: center

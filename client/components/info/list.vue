@@ -210,7 +210,7 @@ export default {
 
 <style lang="sass" scoped>
 .list
-	width: $contentMaxWidth
+	width: 1260px
 
 .listFilters
 	font-size: 16px
