@@ -6,7 +6,6 @@
 
 
 <script>
-import axiosJson from "@/assets/jsons/axios";
 export default {
     layout: "main",
     data () {
@@ -31,7 +30,6 @@ export default {
             templateID = "kwaterDaily"
         }
         
-        // kwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDailykwaterDaily
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
         const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
         const splitDomain = logsheetIframeURL.split("/")
@@ -79,6 +77,7 @@ export default {
             if (sessionStorage.getItem("init") == "true"|| sessionStorage.getItem("init") == null) {
                 sessionStorage.setItem("init", false) 
                 this.$nuxt.$emit("selectLoadingBar", false)
+                sessionStorage.setItem("path_name", url)
             } else {
 				sessionStorage.setItem("path_name", url)
 			}

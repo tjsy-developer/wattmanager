@@ -571,13 +571,7 @@ export default {
                           process.env.kepcoLogin + self.params + urlParameter,
                           "_self"
                         );
-                      } else if (window.location.hostname == "kwater.watttalk.kr") {
-                        window.open(
-                          "https://kwater.watttalk.kr:8224/login/login-check?jwt_token=" + self.params + urlParameter,
-                          "_self"
-                        );
-                      }
-                      else {
+                      } else {
                         window.open(
                           process.env.powertalkLogin + self.params + urlParameter,
                           "_self"
@@ -738,8 +732,6 @@ export default {
       this.useEnterprise = "dlenc";
     } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
-    } else if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     if (sessionStorage.getItem("managerLogOut")) {
       if (sessionStorage.getItem("logoutId")) {

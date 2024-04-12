@@ -1,3 +1,8 @@
+v2.6.80
+    - safetyPatrol 새로고침 오류 수정
+    - safetyPatrol 및 logsheet menu click => sessionStorage: path_name 초기화
+    - kwater 로그아웃 분기 제거
+
 v2.6.79
     - css 공통 변수 종종 불러오지 못하는 버그 발생. 공통변수 호출 부분 하드코딩으로 변경($contentMaxWidth -> 1260px)
     - 와트톡에서 와트매니저 클라우드 접근 후 바로 언어 변경 시 정상적으로 변경안되는 오류 수정
