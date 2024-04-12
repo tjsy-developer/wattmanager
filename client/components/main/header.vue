@@ -131,15 +131,7 @@ export default {
               lang,
               "_self"
             )
-          }  else if (window.location.hostname == 'kwater.watttalk.kr') {
-            window.open(
-              "https://kwater.watttalk.kr:8224/login/login-check?jwt_token=" +
-                jwtToken +
-                "&login_type=3&lang=" +
-                lang,
-              "_self"
-             )
-          } else {
+          }   else {
             window.open(
               process.env.powertalkLogin +
                 jwtToken +
@@ -169,11 +161,13 @@ export default {
     },
     hrefLogsheet() {
       sessionStorage.setItem("init", true)
+      sessionStorage.removeItem("path_name")
       sessionStorage.removeItem("path_trans")
       open("/logsheet", "_self")
     },
     hrefSafetyPatrol() {
       sessionStorage.setItem("init", true)
+      sessionStorage.removeItem("path_name")
       sessionStorage.removeItem("path_trans")
       open("/safetyPatrol", "_self")
     },
@@ -335,8 +329,6 @@ export default {
       this.useEnterprise = "dlenc"
     }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'kwater.watttalk.kr') {
-      this.useEnterprise = "kwater"
     }
     if (process.env.forceLogout24) {
       window.addEventListener("forceLogoutEvent",(e) => {
