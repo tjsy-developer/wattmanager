@@ -30,7 +30,7 @@ export default {
             logSheetTitle = "안전패트롤"
         } else if (window.location.hostname == "kwater.watttalk.kr") {
             templateID = "kwaterDaily"
-            logSheetTitle = "일일체크리스트"
+            logSheetTitle = sessionStorage.getItem("safetyPatrolID")
         }
         
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
