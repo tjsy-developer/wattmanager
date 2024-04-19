@@ -19,6 +19,7 @@
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
         <a v-if="showSafetyPatrol || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ $t("SafetyPatrol") }}</a>
+        <a v-if="showDailyChecklist || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ $t("dailyChecklist") }}</a>
         <a v-if="logSheet == 'true'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ logsheetTabTitle }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
@@ -71,6 +72,7 @@ export default {
       checkAdmin: false,
       glassLogin: false,
       showSafetyPatrol: false,
+      showDailyChecklist: false,
       location: '',
       logsheetTabTitle: "",
       pathName: ""
@@ -205,7 +207,12 @@ export default {
           const jsonAppList = res.data[0].app_detail_json
           const appList = JSON.parse(jsonAppList)
           if (appList["safetyPatrol"] == "True") {
-            this.showSafetyPatrol = true
+            if (window.location.hostname == "kepco.watttalk.kr") {
+              this.showSafetyPatrol = true
+            }
+            if (window.location.hostname == "kwater.watttalk.kr") {
+              this.showDailyChecklist = true
+            }
           } else {
             this.showSafetyPatrol = false
           }

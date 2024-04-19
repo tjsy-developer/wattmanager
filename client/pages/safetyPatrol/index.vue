@@ -24,10 +24,13 @@ export default {
             presentUrl =" https://dev.watttalk.kr:8222"
         }
         let templateID
+        let logSheetTitle
         if (window.location.hostname == "kepco.watttalk.kr") {
             templateID = "safetypatrolKC"
+            logSheetTitle = "안전패트롤"
         } else if (window.location.hostname == "kwater.watttalk.kr") {
             templateID = "kwaterDaily"
+            logSheetTitle = "일일체크리스트"
         }
         
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
@@ -43,7 +46,7 @@ export default {
                 "&br_seq=" + sessionStorage.getItem("brSeq") +
                 "&auth=" + sessionStorage.getItem("auth") +
                 "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                "&logsheetTitle=안전패트롤&template_id=" +  templateID +
+                "&logsheetTitle=" + logSheetTitle + "&template_id=" +  templateID +
                 "&user_id=" + sessionStorage.getItem("id") +
                 "&user_name=" + sessionStorage.getItem("userName")
         } // 로그시트 첫페이지 새로고침 시
