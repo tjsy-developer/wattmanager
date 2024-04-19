@@ -216,20 +216,23 @@ export default {
           } else {
             this.showSafetyPatrol = false
           }
-          if (appList["logsheetTitle"]) {
-            sessionStorage.setItem("logsheetTitle", appList["logsheetTitle"])
+          if (appList["tbmTitle"]) {
+            sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
           } else {
-            sessionStorage.setItem("logsheetTitle", "로그시트")
+            sessionStorage.setItem("tbmTitle", "로그시트")
           }
-          if (appList["templateID"]) {
-            sessionStorage.setItem("templateID", appList["templateID"])
+          if (appList["tbmTemplateID"]) {
+            sessionStorage.setItem("tbmTemplateID", appList["tbmTemplateID"])
           } else {
-            sessionStorage.setItem("templateID","")
+            sessionStorage.setItem("tbmTemplateID","")
           }
-          if (appList["safetyPatrolID"]) {
-            sessionStorage.setItem("safetyPatrolID", appList["safetyPatrolID"])
+          if (appList["safetypatroTitle"]) {
+            sessionStorage.setItem("safetypatroTitle", appList["safetypatroTitle"])
+          }
+          if (appList["safetypatrolTemplateID"]) {
+            sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
           } else {
-            sessionStorage.setItem("safetyPatrolID", "")
+            sessionStorage.setItem("safetypatrolTemplateID", "")
           }
         })
         .catch((err) => {
