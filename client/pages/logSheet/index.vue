@@ -32,13 +32,13 @@ import axiosJson from "@/assets/jsons/axios";
             const splitDomain = logsheetIframeURL.split("/")
             const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
             if (sessionStorage.getItem("init") == "true") {
-                if (sessionStorage.getItem("logsheetTitle")) {
-                    this.logsheetTitle = sessionStorage.getItem("logsheetTitle")
+                if (sessionStorage.getItem("tbmTitle")) {
+                    this.logsheetTitle = sessionStorage.getItem("tbmTitle")
                 } else {
                     this.logsheetTitle = "로그시트"
                 }
-                if (sessionStorage.getItem("templateID")) {
-                    this.templateID = sessionStorage.getItem("templateID")
+                if (sessionStorage.getItem("tbmTemplateID")) {
+                    this.templateID = sessionStorage.getItem("tbmTemplateID")
                 } else {
                     this.templateID = ""
                 }
