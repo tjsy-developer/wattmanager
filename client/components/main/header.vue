@@ -226,6 +226,11 @@ export default {
           } else {
             sessionStorage.setItem("templateID","")
           }
+          if (appList["safetyPatrolID"]) {
+            sessionStorage.setItem("safetyPatrolID", appList["safetyPatrolID"])
+          } else {
+            sessionStorage.setItem("safetyPatrolID", "")
+          }
         })
         .catch((err) => {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
