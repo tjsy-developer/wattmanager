@@ -129,7 +129,7 @@ export default {
      */
     server: {
       host: "0.0.0.0",
-      port: 7223
+      port: 7222
     },
     publicRuntimeConfig: {
       port: process.env.port,

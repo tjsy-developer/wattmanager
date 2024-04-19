@@ -540,5 +540,6 @@
   "loginCheck": [
     "The login information is incorrect. Please try logging in again"
   ],
-  "SafetyPatrol": "Safety Patrol Management"
+  "SafetyPatrol": "Safety Patrol Management",
+  "dailyChecklist": "Daily Checklist Management"
 }
