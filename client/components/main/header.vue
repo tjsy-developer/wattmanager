@@ -226,8 +226,8 @@ export default {
           } else {
             sessionStorage.setItem("tbmTemplateID","")
           }
-          if (appList["safetypatroTitle"]) {
-            sessionStorage.setItem("safetypatroTitle", appList["safetypatroTitle"])
+          if (appList["safetypatrolTitle"]) {
+            sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
           }
           if (appList["safetypatrolTemplateID"]) {
             sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])

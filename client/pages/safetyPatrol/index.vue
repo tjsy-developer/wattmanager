@@ -20,15 +20,14 @@ export default {
     },
     mounted() {
         let presentUrl = window.location.origin
+        
+        let templateID
+        let logSheetTitle 
         if (presentUrl.includes("localhost")) {
             presentUrl =" https://dev.watttalk.kr:8222"
-        }
-        let templateID
-        let logSheetTitle
-        if (window.location.hostname == "kepco.watttalk.kr") {
             templateID = "safetypatrolKC"
             logSheetTitle = "안전패트롤"
-        } else if (window.location.hostname == "kwater.watttalk.kr") {
+        } else {
             templateID = sessionStorage.getItem("safetypatrolTemplateID")
             logSheetTitle = sessionStorage.getItem("safetypatroTitle")
         }
