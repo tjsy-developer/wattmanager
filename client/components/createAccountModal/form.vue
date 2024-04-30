@@ -120,7 +120,9 @@ export default {
       qrCodeImg: undefined,
       ret: undefined,
       checkPhone: undefined,
-      checkPatern: process.env.checkPswPatern
+      checkPatern: process.env.checkPswPatern,
+      syncManager2: false,
+      manager2ServerUrl: "https://dev.watttalk.kr:8222"
     }
   },
   methods: {
@@ -146,8 +148,29 @@ export default {
           .then(function(response) {
             if (response.data) {
               self.idCheck = self.id
-              alert(self.$t("account")[3])
-              document.getElementById("accountPWD").focus()
+              console.log(self.syncManager2, "===================================")
+              if (self.syncManager2) {
+                self.$axios
+                  .post(self.manager2ServerUrl + axiosJson.manger2Server.user_id_check, {
+                    user_id: self.id
+                  })
+                  .then((res) => {
+                    if (res.data.data.result == true) {
+                      alert(self.$t("account")[3])
+                      document.getElementById("accountPWD").focus()
+                    } else {
+                      self.idCheck = undefined
+                     alert(self.$t("account")[4])
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err)
+                  })
+              } else {
+                console.log("===================================")
+                alert(self.$t("account")[3])
+                document.getElementById("accountPWD").focus()
+              }
             } else {
               self.idCheck = undefined
               alert(self.$t("account")[4])
@@ -182,8 +205,28 @@ export default {
               )
               .then(function(response) {
                 if (response.data) {
-                  self.nameCheck = self.name
-                  alert(self.$t("account")[22])
+                  if (self.syncManager2) {
+                    self.$axios
+                      .post(self.manager2ServerUrl + axiosJson.manger2Server.user_name_check, {
+                        en_seq: self.enterpriseCompData.selectedValue,
+                        user_name: self.name
+                      })
+                      .then((res) => {
+                        if (res.data.data.result == true) {
+                          self.nameCheck = self.name
+                          alert(self.$t("account")[22])
+                        } else {
+                          self.nameCheck = undefined
+                          alert(self.$t("account")[23])
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err)
+                      })
+                  } else {
+                    self.nameCheck = self.name
+                    alert(self.$t("account")[22])
+                  }
                 } else {
                   self.nameCheck = undefined
                   alert(self.$t("account")[23])
@@ -373,10 +416,37 @@ export default {
                   personal_information_checked: 1
                 })
                 .then(function(response) {
-                  console.log(response)
                   if (response.data) {
-                    alert(self.$t("account")[9])
-                    window.open("/", "_self")
+                    if (self.syncManager2) {
+                      self.$axios
+                      .post(self.manager2ServerUrl + axiosJson.manger2Server.user_insert, {
+                        user_id: self.id,
+                        user_password: self.password,
+                        user_name: self.name,
+                        phone_number: "",
+                        en_seq: self.enterpriseCompData.selectedValue,
+                        hq_seq: self.hqCompData.selectedValue,
+                        br_seq: self.branchCompData.selectedValue,
+                        device_type: self.deviceTypeCompData.selectedValue,
+                        email: "",
+                        privacy_essential_agree: 1,
+                        privacy_optional_agree: 1,
+                        birthday: "",
+                        certification_uniquekey: "",
+                      })
+                      .then((secondResponse) => {
+                        console.log(secondResponse)
+                        if (secondResponse.data.data.result == true) {
+                          alert(self.$t("account")[9])
+                          window.open("/", "_self")
+                        } else {
+                          alert(self.$t("account")[10])
+                        }
+                      })
+                    } else {
+                      alert(self.$t("account")[9])
+                      window.open("/", "_self")
+                    }
                   } else alert(self.$t("account")[10])
                 })
                 .catch(function(error) {
@@ -569,6 +639,14 @@ export default {
       this.useEnterprise = "dlenc"
     } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
+    }
+    if (process.env.manager2serverURL !== "") {
+      this.syncManager2 = true
+      if (window.location.hostname.includes("localhost")) {
+        this.manager2ServerUrl = "https://dev.watttalk.kr:8222" + process.env.manager2serverURL
+      } else {
+        this.manager2ServerUrl = window.location.origin +  process.env.manager2serverURL
+      }
     }
     // 본인인증 후 data를 받아오기 위한 event
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)

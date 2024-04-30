@@ -226,13 +226,15 @@ export default {
           } else {
             sessionStorage.setItem("tbmTemplateID","")
           }
-          if (appList["safetypatroTitle"]) {
-            sessionStorage.setItem("safetypatroTitle", appList["safetypatroTitle"])
+          if (appList["safetypatrolTitle"]) {
+            sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
+          } else {
+            sessionStorage.setItem("safetypatrolTitle", "안전패트롤")
           }
           if (appList["safetypatrolTemplateID"]) {
             sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
           } else {
-            sessionStorage.setItem("safetypatrolTemplateID", "")
+            sessionStorage.setItem("safetypatrolTemplateID", "safetypatrolKC")
           }
         })
         .catch((err) => {

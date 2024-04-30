@@ -2,6 +2,7 @@
 port=8323
 backendURL_local=http://localhost:8090/
 backendURL=https://meet.watttalk.kr:8321/
+manager2serverURL=/wattmanager2-server/
 powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
 powertalkLogin="https://meet.watttalk.kr:8324/login/login-check?jwt_token="

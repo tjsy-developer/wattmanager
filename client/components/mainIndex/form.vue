@@ -723,7 +723,6 @@ export default {
         document.getElementById("idInput").focus();
       }
     }
-    console.log(window.location.hostname)
     // 한국 전력공사 로고이미지 변경
     if (window.location.hostname == "kepco.watttalk.kr") {
       this.useEnterprise = "kepco";

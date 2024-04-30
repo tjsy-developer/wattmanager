@@ -1,3 +1,4 @@
+// safetypatrol
 <template>
     <div class="mainWrap">
         <iframe ref="logsheetFrame" id="logSheet" class="iframe" :src="logsheetURL" :style="{height: wattmanger2Height}" scrolling="no"></iframe>
@@ -20,23 +21,19 @@ export default {
     },
     mounted() {
         let presentUrl = window.location.origin
-        if (presentUrl.includes("localhost")) {
-            presentUrl =" https://dev.watttalk.kr:8222"
-        }
         let templateID
         let logSheetTitle
-        if (window.location.hostname == "kepco.watttalk.kr") {
+        if (presentUrl.includes("localhost")) {
+            presentUrl =" https://dev.watttalk.kr:8222"
             templateID = "safetypatrolKC"
             logSheetTitle = "안전패트롤"
-        } else if (window.location.hostname == "kwater.watttalk.kr") {
+        } else {
             templateID = sessionStorage.getItem("safetypatrolTemplateID")
-            logSheetTitle = sessionStorage.getItem("safetypatroTitle")
+            logSheetTitle = sessionStorage.getItem("safetypatrolTitle")
         }
         
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
         const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
-        const splitDomain = logsheetIframeURL.split("/")
-        const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
         if (sessionStorage.getItem("init") == "true") {
             this.$nuxt.$emit("selectLoadingBar", true)
             this.logsheetURL =

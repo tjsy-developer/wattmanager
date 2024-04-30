@@ -2,6 +2,7 @@
 port=3000
 backendURL_local=""
 backendURL=https://kepco.watttalk.kr/wattmanager-server/
+manager2serverURL=/wattmanager2-server/
 powertlakState="loginCheck"
 powertalkLogin_local=""
 powertalkLogin="https://kepco.watttalk.kr/watttalk/login/login-check?jwt_token="
