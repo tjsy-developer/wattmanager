@@ -20,17 +20,17 @@ export default {
     },
     mounted() {
         let presentUrl = window.location.origin
-        
         let templateID
-        let logSheetTitle 
+        let logSheetTitle
         if (presentUrl.includes("localhost")) {
             presentUrl =" https://dev.watttalk.kr:8222"
             templateID = "safetypatrolKC"
             logSheetTitle = "안전패트롤"
         } else {
             templateID = sessionStorage.getItem("safetypatrolTemplateID")
-            logSheetTitle = sessionStorage.getItem("safetypatroTitle")
+            logSheetTitle = sessionStorage.getItem("safetypatrolTitle")
         }
+
         
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
         const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
