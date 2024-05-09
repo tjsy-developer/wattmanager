@@ -639,6 +639,9 @@ export default {
     } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
+    if (window.location.hostname == "kwater.watttalk.kr") {
+      this.useEnterprise = "kwater"
+    }
     if (process.env.manager2serverURL !== "") {
       this.syncManager2 = true
       if (window.location.hostname.includes("localhost")) {
