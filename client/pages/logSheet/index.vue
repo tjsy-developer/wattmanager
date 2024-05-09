@@ -134,9 +134,11 @@ import axiosJson from "@/assets/jsons/axios";
 }
 iframe {
     width: 100%;
-    margin: 0px;
     padding: 0px;
     min-height: calc(100vh - 84px);
     background-color: #f7f7f7; 
+    margin: auto;
+    display: block;
+    max-width: 1554px;
 }
 </style>

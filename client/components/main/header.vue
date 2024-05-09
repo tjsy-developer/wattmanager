@@ -18,10 +18,8 @@
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <a v-if="(showSafetyPatrol || authority == '4') && $i18n.locale == 'ko'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ safetyPatrolKo }}</a>
-        <a v-if="(showSafetyPatrol || authority == '4') && $i18n.locale == 'en'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ safetyPatrolEn }}</a>
-        <a v-if="logSheet == 'true' && $i18n.locale == 'ko'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ tbmTilteKo }}</a>
-        <a v-if="logSheet == 'true' && $i18n.locale == 'en'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ tbmTilteEn }}</a>
+        <a v-if="showSafetyPatrol || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</a>
+        <a v-if="logSheet == 'true'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ $i18n.locale == 'ko' ? tbmTitleKo : tbmTitleEn }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
@@ -72,7 +70,7 @@ export default {
       logSheet: process.env.logsheet,
       checkAdmin: false,
       glassLogin: false,
-      tbmTilteKo: "로그시트",
+      tbmTitleKo: "로그시트",
       tbmTitleEn: "LogSheet",
       showSafetyPatrol: false,
       safetyPatrolKo: "안전패트롤",
@@ -224,7 +222,7 @@ export default {
             }
             if (appList["tbmTitleKo"]) {
               sessionStorage.setItem("tbmTitle", appList["tbmTitleKo"])
-              this.tbmTilteKo = appList["tbmTitleKo"]
+              this.tbmTitleKo = appList["tbmTitleKo"]
               this.tbmTitleEn = appList["tbmTitleEn"]
             } else {
               sessionStorage.setItem("tbmTitle", "로그시트")
