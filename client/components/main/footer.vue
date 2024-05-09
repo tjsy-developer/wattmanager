@@ -33,8 +33,10 @@ export default {
 		} else if (window.location.hostname == "dlenc.watttalk.kr") {
 			// dlenc 분기처리!!
 			this.useEnterprise = "dlenc";
-		}else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+		} else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
 			this.useEnterprise = "dlenc"
+		} else  if (window.location.hostname == "kwater.watttalk.kr") {
+			this.useEnterprise = "kwater"
 		}
 	}
 }

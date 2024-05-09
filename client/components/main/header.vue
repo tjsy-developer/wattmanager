@@ -18,9 +18,10 @@
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <a v-if="showSafetyPatrol || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ $t("SafetyPatrol") }}</a>
-        <a v-if="showDailyChecklist || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ $t("dailyChecklist") }}</a>
-        <a v-if="logSheet == 'true'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ logsheetTabTitle }}</a>
+        <a v-if="(showSafetyPatrol || authority == '4') && $i18n.locale == 'ko'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ safetyPatrolKo }}</a>
+        <a v-if="(showSafetyPatrol || authority == '4') && $i18n.locale == 'en'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{ safetyPatrolEn }}</a>
+        <a v-if="logSheet == 'true' && $i18n.locale == 'ko'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ tbmTilteKo }}</a>
+        <a v-if="logSheet == 'true' && $i18n.locale == 'en'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ tbmTilteEn }}</a>
         <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
         <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
@@ -71,10 +72,12 @@ export default {
       logSheet: process.env.logsheet,
       checkAdmin: false,
       glassLogin: false,
+      tbmTilteKo: "로그시트",
+      tbmTitleEn: "LogSheet",
       showSafetyPatrol: false,
-      showDailyChecklist: false,
+      safetyPatrolKo: "안전패트롤",
+      safetyPatrolEn: "Safety Patrol",
       location: '',
-      logsheetTabTitle: "",
       pathName: ""
     }
   },
@@ -108,7 +111,6 @@ export default {
             "_self"
           )
         } else {
-            // 한국전력공사 로고이미지 변경
           if(window.location.hostname == 'kepco.watttalk.kr') {
              window.open(
               process.env.kepcoLogin +
@@ -133,7 +135,15 @@ export default {
               lang,
               "_self"
             )
-          }   else {
+          }  else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
+            window.open(
+              'https://' + window.location.hostname + ':7220/login/login-check?jwt_token=' +
+              jwtToken +
+              "&login_type=3&lang=" +
+              lang,
+              "_self"
+            )
+          } else {
             window.open(
               process.env.powertalkLogin +
                 jwtToken +
@@ -208,17 +218,14 @@ export default {
             const jsonAppList = res.data[0].app_detail_json
             const appList = JSON.parse(jsonAppList)
             if (appList["safetyPatrol"] == "True") {
-              if (window.location.hostname == "kepco.watttalk.kr") {
-                this.showSafetyPatrol = true
-              }
-              if (window.location.hostname == "kwater.watttalk.kr") {
-                this.showDailyChecklist = true
-              }
+              this.showSafetyPatrol = true
             } else {
               this.showSafetyPatrol = false
             }
-            if (appList["tbmTitle"]) {
-              sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
+            if (appList["tbmTitleKo"]) {
+              sessionStorage.setItem("tbmTitle", appList["tbmTitleKo"])
+              this.tbmTilteKo = appList["tbmTitleKo"]
+              this.tbmTitleEn = appList["tbmTitleEn"]
             } else {
               sessionStorage.setItem("tbmTitle", "로그시트")
             }
@@ -227,8 +234,10 @@ export default {
             } else {
               sessionStorage.setItem("tbmTemplateID",`""`)
             }
-            if (appList["safetypatrolTitle"]) {
-              sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
+            if (appList["safetypatrolTitleKo"]) {
+              sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitleKo"])
+              this.safetyPatrolKo = `${appList["safetypatrolTitleKo"]}관리`
+              this.safetyPatrolEn = `${appList["safetypatrolTitleEn"]} Management`
             } else {
               sessionStorage.setItem("safetypatrolTitle", `""`)
             }
@@ -273,11 +282,6 @@ export default {
   mounted() {
     this.pathName= window.location.pathname
     this.location = window.location.hostname
-    if (this.location == "kepco.watttalk.kr" || this.location == "kwater.watttalk.kr") {
-      this.logsheetTabTitle = this.$t("kepcologSheet")
-    } else {
-      this.logsheetTabTitle = this.$t("logSheet")
-    }
     // 로그인한 계정이 admin인지 확인
     if (sessionStorage.getItem("id") === "administrator") {
       this.checkAdmin = true
@@ -349,6 +353,9 @@ export default {
      // 한국 전력공사 로고이미지 변경
     if(window.location.hostname == 'kepco.watttalk.kr') {
       this.useEnterprise = "kepco"
+    }
+    if (window.location.hostname == "kwater.watttalk.kr") {
+      this.useEnterprise = "kwater"
     }
     if (window.location.hostname == 'dlenc.watttalk.kr') {
       // dlenc 분기처리!!
