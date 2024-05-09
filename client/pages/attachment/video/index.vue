@@ -42,7 +42,6 @@ export default {
           console.log(getListData)
           // listData init
           this.listData = []
-          console.log("===========================================")
           for (let i = 0; i < getListData.length; i++) {
             if (getListData[i].file_name.includes(".mp4")) {
               this.videolFileName = getListData[i].file_name.split(".mp4")[0]

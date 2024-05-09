@@ -1,3 +1,11 @@
+v2.6.82
+    - safetyPatrol, logsheet parameter 모두 app정보에서 가져오게 수정
+    - administrator계정은 예외처리
+
+v2.6.81
+    - 회원 가입 진행 시 manager2 backend 주소가 있는지 확인 후 있다면 manager2에서도 아이디, 이름 중복 확인.
+    - 중복 확인 후 최종 단계에서 manager2에 id, psw, en, br, hq seq 전달
+
 v2.6.80
     - safetyPatrol 새로고침 오류 수정
     - safetyPatrol 및 logsheet menu click => sessionStorage: path_name 초기화

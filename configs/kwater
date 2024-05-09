@@ -2,6 +2,7 @@
 port=7223
 backendURL_local=http://localhost:8090/
 backendURL=https://kwater.watttalk.kr:8221/
+manager2serverURL=/wattmanager2-server/
 powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:7221/login/login-check?jwt_token="
 powertalkLogin="https://kwater.watttalk.kr:7220/login/login-check?jwt_token="

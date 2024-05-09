@@ -2,6 +2,7 @@
 port=8205
 backendURL_local=http://localhost:8090/
 backendURL=https://koraildev.watttalk.kr/wattmanager-server/
+manager2serverURL=""
 powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
 powertalkLogin="https://koraildev.watttalk.kr/watttalk/login/login-check?jwt_token="

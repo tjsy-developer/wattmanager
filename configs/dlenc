@@ -2,6 +2,7 @@
 port=8205
 backendURL_local=http://192.168.20.131:9090/
 backendURL=https://dlenc.watttalk.kr:8101/
+manager2serverURL=/wattmanager2-server/
 powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
 powertalkLogin="https://dlenc.watttalk.kr:8102/login/login-check?jwt_token="

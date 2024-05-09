@@ -126,5 +126,10 @@
 	},
 	"fileupload": {
 		"profile_photos": "fileupload/profile_photos"
+	},
+	"manger2Server": {
+		"user_id_check": "accountRest/user_id_check",
+		"user_name_check": "accountRest/user_name_check",
+		"user_insert": "accountRest/user_insert"
 	}
 }
