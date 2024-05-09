@@ -24,13 +24,9 @@ export default {
         let logSheetTitle
         if (presentUrl.includes("localhost")) {
             presentUrl =" https://dev.watttalk.kr:8222"
-            templateID = "safetypatrolKC"
-            logSheetTitle = "안전패트롤"
-        } else {
-            templateID = sessionStorage.getItem("safetypatrolTemplateID")
-            logSheetTitle = sessionStorage.getItem("safetypatrolTitle")
         }
-
+        templateID = sessionStorage.getItem("safetypatrolTemplateID")
+        logSheetTitle = sessionStorage.getItem("safetypatrolTitle")
         
         const initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
         const logsheetIframeURL = this.switchDomainURL(initLogSheetURL)
@@ -38,16 +34,29 @@ export default {
         const logSheetDomain = splitDomain[0] + "//" + splitDomain[2]
         if (sessionStorage.getItem("init") == "true") {
             this.$nuxt.$emit("selectLoadingBar", true)
-            this.logsheetURL =
-                initLogSheetURL +
-                "?en_seq=" + sessionStorage.getItem("enSeq")+
-                "&hq_seq=" + sessionStorage.getItem("hqSeq")+
-                "&br_seq=" + sessionStorage.getItem("brSeq") +
-                "&auth=" + sessionStorage.getItem("auth") +
-                "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                "&logsheetTitle=" + logSheetTitle + "&template_id=" +  templateID +
-                "&user_id=" + sessionStorage.getItem("id") +
-                "&user_name=" + sessionStorage.getItem("userName")
+            if (sessionStorage.getItem("id") != "administrator") {
+                this.logsheetURL =
+                    initLogSheetURL +
+                    "?en_seq=" + sessionStorage.getItem("enSeq")+
+                    "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                    "&br_seq=" + sessionStorage.getItem("brSeq") +
+                    "&auth=" + sessionStorage.getItem("auth") +
+                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                    "&logsheetTitle=" + logSheetTitle + "&template_id=" +  templateID +
+                    "&user_id=" + sessionStorage.getItem("id") +
+                    "&user_name=" + sessionStorage.getItem("userName")
+            } else if (sessionStorage.getItem("id") === "administrator") {
+                this.logsheetURL =
+                    initLogSheetURL +
+                    "?en_seq=" + sessionStorage.getItem("enSeq")+
+                    "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                    "&br_seq=" + sessionStorage.getItem("brSeq") +
+                    "&auth=" + sessionStorage.getItem("auth") +
+                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                    "&user_id=" + sessionStorage.getItem("id") +
+                    "&user_name=" + sessionStorage.getItem("userName")
+            }
+            
         } // 로그시트 첫페이지 새로고침 시
         else if (sessionStorage.getItem("init") == "false") {
             this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")

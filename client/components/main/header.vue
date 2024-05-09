@@ -204,35 +204,46 @@ export default {
           br_seq: Number(sessionStorage.getItem("brSeq"))
         })
         .then((res) => {
-          const jsonAppList = res.data[0].app_detail_json
-          const appList = JSON.parse(jsonAppList)
-          if (appList["safetyPatrol"] == "True") {
-            if (window.location.hostname == "kepco.watttalk.kr") {
-              this.showSafetyPatrol = true
+          if (res.data.length > 0) {
+            const jsonAppList = res.data[0].app_detail_json
+            const appList = JSON.parse(jsonAppList)
+            if (appList["safetyPatrol"] == "True") {
+              if (window.location.hostname == "kepco.watttalk.kr") {
+                this.showSafetyPatrol = true
+              }
+              if (window.location.hostname == "kwater.watttalk.kr") {
+                this.showDailyChecklist = true
+              }
+            } else {
+              this.showSafetyPatrol = false
             }
-            if (window.location.hostname == "kwater.watttalk.kr") {
-              this.showDailyChecklist = true
+            if (appList["tbmTitle"]) {
+              sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
+            } else {
+              sessionStorage.setItem("tbmTitle", "로그시트")
+            }
+            if (appList["tbmTemplateID"]) {
+              sessionStorage.setItem("tbmTemplateID", appList["tbmTemplateID"])
+            } else {
+              sessionStorage.setItem("tbmTemplateID",`""`)
+            }
+            if (appList["safetypatrolTitle"]) {
+              sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
+            } else {
+              sessionStorage.setItem("safetypatrolTitle", `""`)
+            }
+            if (appList["safetypatrolTemplateID"]) {
+              sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
+            } else {
+              sessionStorage.setItem("safetypatrolTemplateID", `""`)
             }
           } else {
-            this.showSafetyPatrol = false
-          }
-          if (appList["tbmTitle"]) {
-            sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
-          } else {
-            sessionStorage.setItem("tbmTitle", "로그시트")
-          }
-          if (appList["tbmTemplateID"]) {
-            sessionStorage.setItem("tbmTemplateID", appList["tbmTemplateID"])
-          } else {
-            sessionStorage.setItem("tbmTemplateID","")
-          }
-          if (appList["safetypatrolTitle"]) {
-            sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
-          }
-          if (appList["safetypatrolTemplateID"]) {
-            sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
-          } else {
-            sessionStorage.setItem("safetypatrolTemplateID", "")
+            if (this.authority == '4') {
+              sessionStorage.setItem("tbmTitle", "로그시트")
+              sessionStorage.setItem("tbmTemplateID", `""`)
+              sessionStorage.setItem("safetypatrolTitle", `안전패트롤`)
+              sessionStorage.setItem("safetypatrolTemplateID", `""`)
+            }
           }
         })
         .catch((err) => {

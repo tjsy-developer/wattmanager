@@ -34,24 +34,30 @@ import axiosJson from "@/assets/jsons/axios";
             if (sessionStorage.getItem("init") == "true") {
                 if (sessionStorage.getItem("tbmTitle")) {
                     this.logsheetTitle = sessionStorage.getItem("tbmTitle")
-                } else {
-                    this.logsheetTitle = "로그시트"
                 }
                 if (sessionStorage.getItem("tbmTemplateID")) {
                     this.templateID = sessionStorage.getItem("tbmTemplateID")
-                } else {
-                    this.templateID = ""
                 }
                 this.$nuxt.$emit("selectLoadingBar", true)
-                this.logsheetURL =
-                    initLogSheetURL +
-                    "?en_seq=" + sessionStorage.getItem("enSeq")+
-                    "&hq_seq=" + sessionStorage.getItem("hqSeq")+
-                    "&br_seq=" + sessionStorage.getItem("brSeq") +
-                    "&auth=" + sessionStorage.getItem("auth") +
-                    "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-                    "&logsheetTitle=" + this.logsheetTitle +
-                    "&template_id=" + this.templateID
+                if (sessionStorage.getItem("id") != "administrator") {
+                    this.logsheetURL =
+                        initLogSheetURL +
+                        "?en_seq=" + sessionStorage.getItem("enSeq")+
+                        "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                        "&br_seq=" + sessionStorage.getItem("brSeq") +
+                        "&auth=" + sessionStorage.getItem("auth") +
+                        "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+                        "&logsheetTitle=" + this.logsheetTitle +
+                        "&template_id=" + this.templateID
+                } else if (sessionStorage.getItem("id") == "administrator") {
+                    this.logsheetURL =
+                        initLogSheetURL +
+                        "?en_seq=" + sessionStorage.getItem("enSeq")+
+                        "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+                        "&br_seq=" + sessionStorage.getItem("brSeq") +
+                        "&auth=" + sessionStorage.getItem("auth") +
+                        "&version=1&lang=" + sessionStorage.getItem("languageCode")
+                }
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == "false" && sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
                 this.logsheetURL = logsheetIframeURL +
