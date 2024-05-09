@@ -148,7 +148,6 @@ export default {
           .then(function(response) {
             if (response.data) {
               self.idCheck = self.id
-              console.log(self.syncManager2, "===================================")
               if (self.syncManager2) {
                 self.$axios
                   .post(self.manager2ServerUrl + axiosJson.manger2Server.user_id_check, {
