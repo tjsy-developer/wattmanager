@@ -250,6 +250,10 @@ export default {
               sessionStorage.setItem("tbmTemplateID", `""`)
               sessionStorage.setItem("safetypatrolTitle", `안전패트롤`)
               sessionStorage.setItem("safetypatrolTemplateID", `""`)
+              this.safetyPatrolKo = `안전패트롤 관리`
+              this.safetyPatrolEn = `Safety Patrol Management`
+              this.tbmTitleKo = "로그시트 관리"
+              this.tbmTitleEn = "Logsheet Management"
             }
           }
         })
