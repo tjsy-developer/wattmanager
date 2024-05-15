@@ -70,11 +70,11 @@ export default {
       logSheet: process.env.logsheet,
       checkAdmin: false,
       glassLogin: false,
-      tbmTitleKo: "로그시트",
-      tbmTitleEn: "LogSheet",
+      tbmTitleKo: "",
+      tbmTitleEn: "",
       showSafetyPatrol: false,
-      safetyPatrolKo: "안전패트롤",
-      safetyPatrolEn: "Safety Patrol",
+      safetyPatrolKo: "",
+      safetyPatrolEn: "",
       location: '',
       pathName: ""
     }
@@ -256,6 +256,13 @@ export default {
               this.tbmTitleEn = "Logsheet Management"
             }
           }
+          const params = {
+            tbmKo: this.tbmTitleKo,
+            tbmEn: this.tbmTitleEn,
+            safetyKo: this.safetyPatrolKo,
+            safetyEn: this.safetyPatrolEn
+          }
+          this.$store.commit("setHeaderInfo", params)
         })
         .catch((err) => {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
@@ -312,7 +319,12 @@ export default {
       // 2021.04.14 ksh :: 로그인 버튼 숨김 설정
       sessionStorage.setItem("logoutStatus", 0)
     }
-
+    if (this.$store.state.tbmKo != "" && this.$store.state.safetyKo != "") {
+      this.tbmTitleKo = this.$store.state.tbmKo
+      this.tbmTitleEn = this.$store.state.tbmEn
+      this.safetyPatrolKo = this.$store.state.safetyKo
+      this.safetyPatrolEn = this.$store.state.safetyEn
+    }
     this.authority = sessionStorage.getItem("auth")
     this.deviceType = sessionStorage.getItem("deviceType")
 
