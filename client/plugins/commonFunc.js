@@ -53,7 +53,6 @@ Vue.mixin({
       let url = ""
       let templateID = ""
       let logSheetTitle = ""
-      console.log(type)
       switch(type) {
         case 1:
           templateID = sessionStorage.getItem("safetypatrolTemplateID")
@@ -72,8 +71,6 @@ Vue.mixin({
           logSheetTitle = sessionStorage.getItem("tbmTitle")
           break
       }
-      console.log(templateID)
-      console.log(logSheetTitle)
       if (type == 2 || type == 4) {
         url = "?en_seq=" + sessionStorage.getItem("enSeq")+
           "&hq_seq=" + sessionStorage.getItem("hqSeq")+
@@ -100,7 +97,6 @@ Vue.mixin({
           "&template_id=" +  templateID
         }
       }
-      console.log(url)
       return url
     }
   },

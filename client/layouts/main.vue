@@ -1,6 +1,6 @@
 <template>
   <div v-show="isLoaded" id="main">
-    <mainHeader></mainHeader>
+    <mainHeader v-once></mainHeader>
     <modals-container id="modalsContainer"></modals-container>
     <nuxt></nuxt>
     <loadingBar v-if="fileUploadStatus" @setLoadingBar="set"></loadingBar>
