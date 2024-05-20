@@ -280,7 +280,7 @@ export default {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
             this.showSafetyPatrol = false
           } else {
-            console.log("2Factor Error :", err)
+            console.log("get App info one Error :", err)
           }
         })
     },
@@ -380,28 +380,6 @@ export default {
       }
       this.$store.commit("setHeaderInfo", params)
     }
-  },
-  beforeCreate() {
-    // if (this.$store.state.safetyKo) {
-    //   this.showSafetyPatrol = true
-    //   this.safetyPatrolKo = this.$store.state.safetyKo
-    //   this.safetyPatrolEn = this.$store.state.safetyEn
-    // }
-    // if (this.$store.state.dailyKo) {
-    //   this.showDailyCheck = true
-    //   this.dailyCheckTitleKo = this.$store.state.dailyKo
-    //   this.dailyCheckTitleEn = this.$store.state.dailyEn
-    // }
-    // if (this.$store.state.moemo2Ko) {
-    //   this.showMemo2 = true
-    //   this.memo2TitleKo = this.$store.state.moemo2Ko
-    //   this.memo2TitleEn = this.$store.state.moemo2En
-    // }
-    // if (this.$store.state.tbmKo) {
-    //   this.showTbm = true
-    //   this.tbmTitleKo = this.$store.state.tbmKo
-    //   this.tbmTitleEn = this.$store.state.tbmEn
-    // }
   },
   mounted() {
     this.pathName= window.location.pathname
