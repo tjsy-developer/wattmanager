@@ -18,10 +18,10 @@
         <nuxt-link v-if="authority == '4' && qrStatus == 'power'" to="/qr" class="col-auto">{{ $t("powerQR") }}</nuxt-link>
         <nuxt-link v-if="authority == '4'" to="/integrationQr">{{ $t("printQR")[0] }}</nuxt-link>
         <nuxt-link v-if="authority == '4'" to="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</nuxt-link>
-        <nuxt-link v-if="showSafetyPatrol || authority == '4'" to="/workflows" class="col-auto" id="tbmBtn" @click.native="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</nuxt-link>
-        <nuxt-link v-if="showDailyCheck || authority == '4'" to="/workflows" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click.native="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckTitleKo : dailyCheckTitleEn }}</nuxt-link>
-        <nuxt-link v-if="showMemo2 || authority == '4'" to="/workflows" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click.native="openIframe(3)">{{ $i18n.locale == 'ko' ? memo2TitleKo : memo2TitleEn }}</nuxt-link>
-        <nuxt-link v-if="showTbm || authority == '4'" to="/workflows" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click.native="openIframe(4)">{{ $i18n.locale == 'ko' ? tbmTitleKo : tbmTitleEn }}</nuxt-link>
+        <nuxt-link v-show="showSafetyPatrol || authority == '4'" to="/workflows" class="col-auto" id="safetyPatrol" @click.native="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</nuxt-link>
+        <nuxt-link v-show="showDailyCheck || authority == '4'" to="/workflows" id="dailyPatrol" class="col-auto" @click.native="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckTitleKo : dailyCheckTitleEn }}</nuxt-link>
+        <nuxt-link v-show="showMemo2 || authority == '4'" to="/workflows" id="memo2" class="col-auto" @click.native="openIframe(3)">{{ $i18n.locale == 'ko' ? memo2TitleKo : memo2TitleEn }}</nuxt-link>
+        <nuxt-link v-show="showTbm || authority == '4'" to="/workflows" id="tbm" class="col-auto" @click.native="openIframe(4)">{{ $i18n.locale == 'ko' ? tbmTitleKo : tbmTitleEn }}</nuxt-link>
         <nuxt-link class="col-auto" to="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</nuxt-link>
         <nuxt-link class="col-auto" to="/notice?page=1">{{ $t("notice")[0] }}</nuxt-link>
         <nuxt-link class="col-auto" to="/profile">{{ $t("profile") }}</nuxt-link>
@@ -95,7 +95,6 @@ export default {
   },
   methods: {
     switchLocale(locale) {
-      console.log(locale)
       sessionStorage.setItem("languageCode", locale)
       location.reload()
     },
@@ -210,7 +209,6 @@ export default {
         return
       } else if(loginTime == "logout") {
         window.dispatchEvent(forceLogoutEvent)
-        console.log(currentTime)
       } else if (currentTime > Number(loginTime) + Number(unix24Hour)) {
         cookieSetting.deleteCookie(cookieName)
         cookieSetting.setCookie(cookieName, "")
@@ -255,25 +253,14 @@ export default {
               this.tbmTitleKo = "로그시트관리"
               this.tbmTitleEn = "Logsheet Management"
             }
-            const params = {
-              safety: this.showSafetyPatrol,
-              daily: this.showDailyCheck,
-              memo2: this.showMemo2,
-              tbm: this.showTbm,
-
-              safetyKo: this.safetyPatrolKo,
-              safetyEn: this.safetyPatrolEn,
-
-              dailyKo: this.dailyCheckTitleKo,
-              dailyEn: this.dailyCheckTitleEn,
-
-              moemo2Ko: this.memo2TitleKo,
-              moemo2En: this.memo2TitleEn,
-              
-              tbmKo: this.tbmTitleKo,
-              tbmEn: this.tbmTitleEn
-            }
-            this.$store.commit("setHeaderInfo", params)
+            sessionStorage.setItem("safetyPatrolKo", this.safetyPatrolKo)
+            sessionStorage.setItem("safetyPatrolEn", this.safetyPatrolEn)
+            sessionStorage.setItem("dailyCheckTitleKo", this.dailyCheckTitleKo)
+            sessionStorage.setItem("dailyCheckTitleEn", this.dailyCheckTitleEn)
+            sessionStorage.setItem("memo2TitleKo", this.memo2TitleKo)
+            sessionStorage.setItem("memo2TitleEn", this.memo2TitleEn)
+            sessionStorage.setItem("tbmTitleKo", this.tbmTitleKo)
+            sessionStorage.setItem("tbmTitleEn", this.tbmTitleEn)
           }
         })
         .catch((err) => {
@@ -302,10 +289,13 @@ export default {
     setAppInfo(appList) {
       if (appList["safetyPatrol"] == "True") {
         this.showSafetyPatrol = true
+        sessionStorage.setItem("showSafetyPatrol", this.showSafetyPatrol)
         if (appList["safetypatrolTitle"]) {
           sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
           this.safetyPatrolKo = appList["safetypatrolMenuKo"]
           this.safetyPatrolEn = appList["safetypatrolMenuEn"]
+          sessionStorage.setItem("safetyPatrolKo", this.safetyPatrolKo)
+          sessionStorage.setItem("safetyPatrolEn", this.safetyPatrolEn)
         } else {
           sessionStorage.setItem("safetypatrolTitle", `""`)
         }
@@ -317,10 +307,13 @@ export default {
       }
       if (appList["dailyCheck"] == "True") {
         this.showDailyCheck = true
+        sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
         if (appList["dailyCheckTitle"]) {
           sessionStorage.setItem("dailyCheckTitle", appList["dailyCheckTitle"])
           this.dailyCheckTitleKo = appList["dailyCheckMenuKo"]
           this.dailyCheckTitleEn = appList["dailyCheckMenuEn"]
+          sessionStorage.setItem("dailyCheckTitleKo", this.dailyCheckTitleKo)
+          sessionStorage.setItem("dailyCheckTitleEn", this.dailyCheckTitleEn)
         } else {
           sessionStorage.setItem("dailyCheckTitle", `""`)
         }
@@ -332,10 +325,13 @@ export default {
       }
       if (appList["memo2"] == "True") {
         this.showMemo2 = true
+        sessionStorage.setItem("showMemo2", this.showMemo2)
         if (appList["memo2Title"]) {
           sessionStorage.setItem("memo2Title", appList["memo2Title"])
           this.memo2TitleKo = appList["memo2MenuKo"]
           this.memo2TitleEn = appList["memo2MenuEn"]
+          sessionStorage.setItem("memo2TitleKo", this.memo2TitleKo)
+          sessionStorage.setItem("memo2TitleEn", this.memo2TitleEn)
         } else {
           sessionStorage.setItem("memo2Title", "")
         }
@@ -347,10 +343,13 @@ export default {
       }
       if (appList["TBM"] == "True") {
         this.showTbm = true
+        sessionStorage.setItem("showTbm", this.showTbm)
         if (appList["tbmTitle"]) {
           sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
           this.tbmTitleKo = appList["tbmMenuKo"]
           this.tbmTitleEn = appList["tbmMenuEn"]
+          sessionStorage.setItem("tbmTitleKo", this.tbmTitleKo)
+          sessionStorage.setItem("tbmTitleEn", this.tbmTitleEn)
         } else {
           sessionStorage.setItem("tbmTitle", "로그시트")
         }
@@ -360,26 +359,22 @@ export default {
           sessionStorage.setItem("tbmTemplateID",`""`)
         }
       }
-      const params = {
-        safety: this.showSafetyPatrol,
-        daily: this.showDailyCheck,
-        memo2: this.showMemo2,
-        tbm: this.showTbm,
-
-        safetyKo: this.safetyPatrolKo,
-        safetyEn: this.safetyPatrolEn,
-
-        dailyKo: this.dailyCheckTitleKo,
-        dailyEn: this.dailyCheckTitleEn,
-
-        moemo2Ko: this.memo2TitleKo,
-        moemo2En: this.memo2TitleEn,
-        
-        tbmKo: this.tbmTitleKo,
-        tbmEn: this.tbmTitleEn
       }
-      this.$store.commit("setHeaderInfo", params)
-    }
+  },
+  beforeMount() {
+    this.showSafetyPatrol = sessionStorage.getItem("showSafetyPatrol") ? sessionStorage.getItem("showSafetyPatrol") : false
+    this.showDailyCheck = sessionStorage.getItem("showDailyCheck") ? sessionStorage.getItem("showDailyCheck") : false
+    this.showMemo2 = sessionStorage.getItem("showMemo2") ? sessionStorage.getItem("showMemo2") : false
+    this.showTbm = sessionStorage.getItem("showTbm") ? sessionStorage.getItem("showTbm") : false
+    this.safetyPatrolKo = sessionStorage.getItem("safetyPatrolKo") ? sessionStorage.getItem("safetyPatrolKo") : ""
+    this.safetyPatrolEn = sessionStorage.getItem("safetyPatrolEn") ? sessionStorage.getItem("safetyPatrolEn") : ""
+    this.dailyCheckTitleKo = sessionStorage.getItem("dailyCheckTitleKo") ? sessionStorage.getItem("dailyCheckTitleKo") : ""
+    this.dailyCheckTitleEn = sessionStorage.getItem("dailyCheckTitleEn") ? sessionStorage.getItem("dailyCheckTitleEn") : ""
+    this.memo2TitleKo = sessionStorage.getItem("memo2TitleKo") ? sessionStorage.getItem("memo2TitleKo") : ""
+    this.memo2TitleEn = sessionStorage.getItem("memo2TitleEn") ? sessionStorage.getItem("memo2TitleEn") : ""
+    this.tbmTitleKo = sessionStorage.getItem("tbmTitleKo") ? sessionStorage.getItem("tbmTitleKo") : ""
+    this.tbmTitleEn = sessionStorage.getItem("tbmTitleEn") ? sessionStorage.getItem("tbmTitleEn") : ""
+    this.getAppInfo()
   },
   mounted() {
     this.pathName= window.location.pathname
@@ -437,7 +432,6 @@ export default {
         )
       }
     }
-    this.getAppInfo()
     this.getUserName()
     // att_access_user = false 일 경우 일반 사용자 tab권한 없음 --> 삼성엔지니어링 요구사항
     // att_access_user = true 일 경우 기존 권한 조건
@@ -473,7 +467,7 @@ export default {
         this.checkLoginTime()
       }, 600000);
     }
-  }
+  },
 }
 </script>
 

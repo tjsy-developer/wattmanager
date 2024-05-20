@@ -59,7 +59,7 @@ export default {
                 this.logsheetURL = initLogSheetURL + urlParams
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == "false") {
-            this.setReloadedPath(logsheetIframeURL)
+                this.setReloadedPath(logsheetIframeURL)
             }
         },
         setReloadedPath(logsheetIframeURL) {
@@ -68,13 +68,15 @@ export default {
             if (type == 1 || type == 3) {
                 // 안전패트롤, 메모 reload
                 this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")    
-            } else if (sessionStorage.getItem("path_name") == "/wattmanager2/safetycheck") {
-                // 일일점검, tbm 최초화면
-                    this.logsheetURL = logsheetIframeURL +
-                "?init=false"
             } else {
-                // 일일점검, tbm 상세보기 화면
-                this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")
+                if (sessionStorage.getItem("path_name").includes("/wattmanager2/safetycheck")) {
+                    // 일일점검, tbm 최초화면
+                        this.logsheetURL = logsheetIframeURL +
+                    "?init=false"
+                } else {
+                    // 일일점검, tbm 상세보기 화면
+                    this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")
+                }
             }
         },
         childData(params) {
