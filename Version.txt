@@ -1,3 +1,8 @@
+v2.6.83
+    - 일일점검, 메모 메뉴 추가
+    - 앱정보의 iframe parameter 추가
+    - safetyPatrol, logsheet page등 iframe용 page 통폐합
+
 v2.6.82
     - safetyPatrol, logsheet parameter 모두 app정보에서 가져오게 수정
     - administrator계정은 예외처리
