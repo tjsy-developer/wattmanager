@@ -13,30 +13,32 @@
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <img v-if="useEnterprise == 'kwater'" class="col-auto" src="@/assets/images/logos/k_water_logo_2.svg" style="height: 38px" />
       <div class="col-auto row menus">
-        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
-        <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
-        <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
-        <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
-        <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <a v-if="showSafetyPatrol || authority == '4'" class="col-auto" id="tbmBtn" @click="hrefSafetyPatrol()" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</a>
-        <a v-if="logSheet == 'true'" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click="hrefLogsheet()">{{ $i18n.locale == 'ko' ? tbmTitleKo : tbmTitleEn }}</a>
-        <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
-        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
-        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
-        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
-        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
-        <a
+        <nuxt-link v-if="authority == '4' && elecQR" to="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</nuxt-link>
+        <nuxt-link v-if="authority == '4' && qrStatus == 'safety'" to="/qr" class="col-auto">{{ $t("safetyQR") }}</nuxt-link>
+        <nuxt-link v-if="authority == '4' && qrStatus == 'power'" to="/qr" class="col-auto">{{ $t("powerQR") }}</nuxt-link>
+        <nuxt-link v-if="authority == '4'" to="/integrationQr">{{ $t("printQR")[0] }}</nuxt-link>
+        <nuxt-link v-if="authority == '4'" to="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</nuxt-link>
+        <nuxt-link v-if="showSafetyPatrol || authority == '4'" to="/workflows" class="col-auto" id="tbmBtn" @click.native="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</nuxt-link>
+        <nuxt-link v-if="showDailyCheck || authority == '4'" to="/workflows" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click.native="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckTitleKo : dailyCheckTitleEn }}</nuxt-link>
+        <nuxt-link v-if="showMemo2 || authority == '4'" to="/workflows" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click.native="openIframe(3)">{{ $i18n.locale == 'ko' ? memo2TitleKo : memo2TitleEn }}</nuxt-link>
+        <nuxt-link v-if="showTbm || authority == '4'" to="/workflows" id="logsheetBtn" name="logsheetTitle" class="col-auto" @click.native="openIframe(4)">{{ $i18n.locale == 'ko' ? tbmTitleKo : tbmTitleEn }}</nuxt-link>
+        <nuxt-link class="col-auto" to="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</nuxt-link>
+        <nuxt-link class="col-auto" to="/notice?page=1">{{ $t("notice")[0] }}</nuxt-link>
+        <nuxt-link class="col-auto" to="/profile">{{ $t("profile") }}</nuxt-link>
+        <nuxt-link v-if="authority != '0' && deviceType != '2'" to="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</nuxt-link>
+        <nuxt-link v-if="authority != '0' && authority != '1' && deviceType != '2'" to="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</nuxt-link>
+        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</nuxt-link>
+        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</nuxt-link>
+        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</nuxt-link>
+        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</nuxt-link>
+        <nuxt-link
           class="col-auto"
-          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
+          :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
           @click="clearsessionStorage"
         >
           {{ $t("headerComp")[6] }}
-        </a>
-        <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
+        </nuxt-link>
+        <nuxt-link v-if="authority == '3'" :to="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</nuxt-link>
         <!-- <button  @click="closeTab()">닫기</button> -->
         <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
@@ -53,6 +55,7 @@
 import jwt_decode from "jwt-decode"
 import cookieSetting from "@/assets/scripts/data/cookie"
 import axiosJson from "@/assets/jsons/axios";
+import { mapState } from "vuex"
 
 export default {
   data() {
@@ -67,17 +70,28 @@ export default {
       // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리 이동 시 로그인 버튼 관리
       logoutStatus: 1,
       useEnterprise: process.env.useEnterprise,
-      logSheet: process.env.logsheet,
       checkAdmin: false,
       glassLogin: false,
-      tbmTitleKo: "",
-      tbmTitleEn: "",
       showSafetyPatrol: false,
+      showDailyCheck: false,
+      showMemo2: false,
+      showTbm: false,
       safetyPatrolKo: "",
       safetyPatrolEn: "",
-      location: '',
+      dailyCheckTitleKo: "",
+      dailyCheckTitleEn: "",
+      memo2TitleKo: "",
+      memo2TitleEn: "",
+      tbmTitleKo: "",
+      tbmTitleEn: "",
+      location: "",
       pathName: ""
     }
+  },
+  computed: {
+		...mapState({
+			allState: (state) => state
+		})
   },
   methods: {
     switchLocale(locale) {
@@ -158,7 +172,7 @@ export default {
     clearsessionStorage() {
       sessionStorage.removeItem("selectedFilters")
       sessionStorage.removeItem("selectedFiltersOptions")
-      sessionStorage.clearr
+      sessionStorage.clear
     },
     // 2021.04.14 ksh :: 파워톡 -> 파워매니저 자료관리로 접근 시 "종료" 버튼 클릭 시 창 닫기
     logoutBtnClose() {
@@ -169,17 +183,16 @@ export default {
       e.preventDefault()
       alert(this.$t("servicePreParation"))
     },
-    hrefLogsheet() {
+    openIframe(type) {
+      // type => 1: 안전패트롤, 2: 일일점검, 3: 메모, 4: TBM
       sessionStorage.setItem("init", true)
+      sessionStorage.removeItem("taskType")
       sessionStorage.removeItem("path_name")
       sessionStorage.removeItem("path_trans")
-      open("/logsheet", "_self")
-    },
-    hrefSafetyPatrol() {
-      sessionStorage.setItem("init", true)
-      sessionStorage.removeItem("path_name")
-      sessionStorage.removeItem("path_trans")
-      open("/safetyPatrol", "_self")
+      sessionStorage.setItem("taskType", type)
+      if (window.location.pathname == "/workflows") {
+        window.postMessage("workflow content modified")
+      }
     },
     closeTab() {
       window.close()
@@ -215,54 +228,53 @@ export default {
           if (res.data.length > 0) {
             const jsonAppList = res.data[0].app_detail_json
             const appList = JSON.parse(jsonAppList)
-            if (appList["safetyPatrol"] == "True") {
-              this.showSafetyPatrol = true
-            } else {
-              this.showSafetyPatrol = false
-            }
-            if (appList["tbmTitleKo"]) {
-              sessionStorage.setItem("tbmTitle", appList["tbmTitleKo"])
-              this.tbmTitleKo = appList["tbmTitleKo"]
-              this.tbmTitleEn = appList["tbmTitleEn"]
-            } else {
-              sessionStorage.setItem("tbmTitle", "로그시트")
-            }
-            if (appList["tbmTemplateID"]) {
-              sessionStorage.setItem("tbmTemplateID", appList["tbmTemplateID"])
-            } else {
-              sessionStorage.setItem("tbmTemplateID",`""`)
-            }
-            if (appList["safetypatrolTitleKo"]) {
-              sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitleKo"])
-              this.safetyPatrolKo = `${appList["safetypatrolTitleKo"]}관리`
-              this.safetyPatrolEn = `${appList["safetypatrolTitleEn"]} Management`
-            } else {
-              sessionStorage.setItem("safetypatrolTitle", `""`)
-            }
-            if (appList["safetypatrolTemplateID"]) {
-              sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
-            } else {
-              sessionStorage.setItem("safetypatrolTemplateID", `""`)
-            }
+            this.setAppInfo(appList)
           } else {
             if (this.authority == '4') {
-              sessionStorage.setItem("tbmTitle", "로그시트")
-              sessionStorage.setItem("tbmTemplateID", `""`)
               sessionStorage.setItem("safetypatrolTitle", `안전패트롤`)
               sessionStorage.setItem("safetypatrolTemplateID", `""`)
-              this.safetyPatrolKo = `안전패트롤 관리`
+
+              sessionStorage.setItem("dailyCheckTitle", "일일점검")
+              sessionStorage.setItem("dailyCheckTemplateID", "")
+
+              sessionStorage.setItem("memo2Title", "메모")
+              sessionStorage.setItem("memo2TemplateID", "")
+
+              sessionStorage.setItem("tbmTitle", "로그시트")
+              sessionStorage.setItem("tbmTemplateID", `""`)
+
+              this.safetyPatrolKo = `안전패트롤관리`
               this.safetyPatrolEn = `Safety Patrol Management`
-              this.tbmTitleKo = "로그시트 관리"
+
+              this.dailyCheckTitleKo = "일일점검"
+              this.dailyCheckTitleEn = "Daily Patrol"
+
+              this.memo2TitleKo = "메모"
+              this.memo2TitleEn = "Memo"
+
+              this.tbmTitleKo = "로그시트관리"
               this.tbmTitleEn = "Logsheet Management"
             }
+            const params = {
+              safety: this.showSafetyPatrol,
+              daily: this.showDailyCheck,
+              memo2: this.showMemo2,
+              tbm: this.showTbm,
+
+              safetyKo: this.safetyPatrolKo,
+              safetyEn: this.safetyPatrolEn,
+
+              dailyKo: this.dailyCheckTitleKo,
+              dailyEn: this.dailyCheckTitleEn,
+
+              moemo2Ko: this.memo2TitleKo,
+              moemo2En: this.memo2TitleEn,
+              
+              tbmKo: this.tbmTitleKo,
+              tbmEn: this.tbmTitleEn
+            }
+            this.$store.commit("setHeaderInfo", params)
           }
-          const params = {
-            tbmKo: this.tbmTitleKo,
-            tbmEn: this.tbmTitleEn,
-            safetyKo: this.safetyPatrolKo,
-            safetyEn: this.safetyPatrolEn
-          }
-          this.$store.commit("setHeaderInfo", params)
         })
         .catch((err) => {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
@@ -286,7 +298,110 @@ export default {
           .catch(function(error) {
               console.log("user profile page error : ", error)
           })
+    },
+    setAppInfo(appList) {
+      if (appList["safetyPatrol"] == "True") {
+        this.showSafetyPatrol = true
+        if (appList["safetypatrolTitle"]) {
+          sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
+          this.safetyPatrolKo = appList["safetypatrolMenuKo"]
+          this.safetyPatrolEn = appList["safetypatrolMenuEn"]
+        } else {
+          sessionStorage.setItem("safetypatrolTitle", `""`)
+        }
+        if (appList["safetypatrolTemplateID"]) {
+          sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
+        } else {
+          sessionStorage.setItem("safetypatrolTemplateID", `""`)
+        }
+      }
+      if (appList["dailyCheck"] == "True") {
+        this.showDailyCheck = true
+        if (appList["dailyCheckTitle"]) {
+          sessionStorage.setItem("dailyCheckTitle", appList["dailyCheckTitle"])
+          this.dailyCheckTitleKo = appList["dailyCheckMenuKo"]
+          this.dailyCheckTitleEn = appList["dailyCheckMenuEn"]
+        } else {
+          sessionStorage.setItem("dailyCheckTitle", `""`)
+        }
+        if (appList["dailyCheckTemplateID"]) {
+          sessionStorage.setItem("dailyCheckTemplateID", appList["dailyCheckTemplateID"])
+        } else {
+          sessionStorage.setItem("dailyCheckTemplateID", `""`)
+        }
+      }
+      if (appList["memo2"] == "True") {
+        this.showMemo2 = true
+        if (appList["memo2Title"]) {
+          sessionStorage.setItem("memo2Title", appList["memo2Title"])
+          this.memo2TitleKo = appList["memo2MenuKo"]
+          this.memo2TitleEn = appList["memo2MenuEn"]
+        } else {
+          sessionStorage.setItem("memo2Title", "")
+        }
+        if (appList["memo2TemplateID"]) {
+          sessionStorage.setItem("memo2TemplateID", appList["memo2TemplateID"])
+        } else {
+          sessionStorage.setItem("memo2TemplateID", "")
+        }
+      }
+      if (appList["TBM"] == "True") {
+        this.showTbm = true
+        if (appList["tbmTitle"]) {
+          sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
+          this.tbmTitleKo = appList["tbmMenuKo"]
+          this.tbmTitleEn = appList["tbmMenuEn"]
+        } else {
+          sessionStorage.setItem("tbmTitle", "로그시트")
+        }
+        if (appList["tbmTemplateID"]) {
+          sessionStorage.setItem("tbmTemplateID", appList["tbmTemplateID"])
+        } else {
+          sessionStorage.setItem("tbmTemplateID",`""`)
+        }
+      }
+      const params = {
+        safety: this.showSafetyPatrol,
+        daily: this.showDailyCheck,
+        memo2: this.showMemo2,
+        tbm: this.showTbm,
+
+        safetyKo: this.safetyPatrolKo,
+        safetyEn: this.safetyPatrolEn,
+
+        dailyKo: this.dailyCheckTitleKo,
+        dailyEn: this.dailyCheckTitleEn,
+
+        moemo2Ko: this.memo2TitleKo,
+        moemo2En: this.memo2TitleEn,
+        
+        tbmKo: this.tbmTitleKo,
+        tbmEn: this.tbmTitleEn
+      }
+      this.$store.commit("setHeaderInfo", params)
     }
+  },
+  beforeCreate() {
+    // if (this.$store.state.safetyKo) {
+    //   this.showSafetyPatrol = true
+    //   this.safetyPatrolKo = this.$store.state.safetyKo
+    //   this.safetyPatrolEn = this.$store.state.safetyEn
+    // }
+    // if (this.$store.state.dailyKo) {
+    //   this.showDailyCheck = true
+    //   this.dailyCheckTitleKo = this.$store.state.dailyKo
+    //   this.dailyCheckTitleEn = this.$store.state.dailyEn
+    // }
+    // if (this.$store.state.moemo2Ko) {
+    //   this.showMemo2 = true
+    //   this.memo2TitleKo = this.$store.state.moemo2Ko
+    //   this.memo2TitleEn = this.$store.state.moemo2En
+    // }
+    // if (this.$store.state.tbmKo) {
+    //   this.showTbm = true
+    //   this.tbmTitleKo = this.$store.state.tbmKo
+    //   this.tbmTitleEn = this.$store.state.tbmEn
+    // }
   },
   mounted() {
     this.pathName= window.location.pathname
@@ -305,7 +420,6 @@ export default {
     if (this.$route.query.jwt_token !== undefined) {
       // 파라미터로 받은 jwt_token을 복호화하여 로그인에 필요한 데이터를 담는다.
       const decodeData = jwt_decode(this.$route.query.jwt_token)
-      console.log(decodeData)
 
       sessionStorage.setItem("auth", decodeData.auth)
       sessionStorage.setItem("userSeq", decodeData.user_seq)
@@ -318,12 +432,6 @@ export default {
 
       // 2021.04.14 ksh :: 로그인 버튼 숨김 설정
       sessionStorage.setItem("logoutStatus", 0)
-    }
-    if (this.$store.state.tbmKo != "" && this.$store.state.safetyKo != "") {
-      this.tbmTitleKo = this.$store.state.tbmKo
-      this.tbmTitleEn = this.$store.state.tbmEn
-      this.safetyPatrolKo = this.$store.state.safetyKo
-      this.safetyPatrolEn = this.$store.state.safetyEn
     }
     this.authority = sessionStorage.getItem("auth")
     this.deviceType = sessionStorage.getItem("deviceType")

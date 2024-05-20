@@ -47,5 +47,61 @@ Vue.mixin({
 
       return updatedRes ? updatedRes : url;
     },
+    setUrlParameter() {
+      const type = Number(sessionStorage.getItem("taskType"))
+      // type => 1: 안전패트롤, 2: 일일점검, 3: 메모, 4: TBM
+      let url = ""
+      let templateID = ""
+      let logSheetTitle = ""
+      console.log(type)
+      switch(type) {
+        case 1:
+          templateID = sessionStorage.getItem("safetypatrolTemplateID")
+          logSheetTitle = sessionStorage.getItem("safetypatrolTitle")
+          break
+        case 2:
+          templateID = sessionStorage.getItem("dailyCheckTemplateID")
+          logSheetTitle = sessionStorage.getItem("dailyCheckTitle")
+          break
+        case 3:
+          templateID = sessionStorage.getItem("memo2TemplateID")
+          logSheetTitle = sessionStorage.getItem("memo2Title")
+          break
+        case 4:
+          templateID = sessionStorage.getItem("tbmTemplateID")
+          logSheetTitle = sessionStorage.getItem("tbmTitle")
+          break
+      }
+      console.log(templateID)
+      console.log(logSheetTitle)
+      if (type == 2 || type == 4) {
+        url = "?en_seq=" + sessionStorage.getItem("enSeq")+
+          "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+          "&br_seq=" + sessionStorage.getItem("brSeq") +
+          "&auth=" + sessionStorage.getItem("auth") +
+          "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+          "&task_type=" + type
+        if (sessionStorage.getItem("id") != "administrator") {
+          url = url + "&iframe_title=" + logSheetTitle +
+            "&template_id=" + templateID
+        }
+      } else {
+        url = "?en_seq=" + sessionStorage.getItem("enSeq")+
+          "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+          "&br_seq=" + sessionStorage.getItem("brSeq") +
+          "&auth=" + sessionStorage.getItem("auth") +
+          "&version=1&lang=" + sessionStorage.getItem("languageCode") +
+          "&user_id=" + sessionStorage.getItem("id") +
+          "&user_name=" + sessionStorage.getItem("userName") +
+          "&task_type=" + type
+        if (sessionStorage.getItem("id") != "administrator") {
+          url = url + 
+          "&iframe_title=" + logSheetTitle +
+          "&template_id=" +  templateID
+        }
+      }
+      console.log(url)
+      return url
+    }
   },
 });
