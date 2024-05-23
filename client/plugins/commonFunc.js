@@ -55,19 +55,19 @@ Vue.mixin({
       let logSheetTitle = ""
       switch(type) {
         case 1:
-          templateID = sessionStorage.getItem("safetypatrolTemplateID")
-          logSheetTitle = sessionStorage.getItem("safetypatrolTitle")
+          templateID = sessionStorage.getItem("safetyPatrolTemplateID") != `""` ? `&template_id=${sessionStorage.getItem("safetyPatrolTemplateID")}` : "&template_id="
+          logSheetTitle = sessionStorage.getItem("safetyPatrolTitle")
           break
         case 2:
-          templateID = sessionStorage.getItem("dailyCheckTemplateID")
+          templateID = sessionStorage.getItem("dailyCheckTemplateID") != `""` ? `&template_id=${sessionStorage.getItem("dailyCheckTemplateID")}` : "&template_id="
           logSheetTitle = sessionStorage.getItem("dailyCheckTitle")
           break
         case 3:
-          templateID = sessionStorage.getItem("memo2TemplateID")
+          templateID = sessionStorage.getItem("memo2TemplateID") != `""` ? `&template_id=${sessionStorage.getItem("memo2TemplateID")}` : "&template_id="
           logSheetTitle = sessionStorage.getItem("memo2Title")
           break
         case 4:
-          templateID = sessionStorage.getItem("tbmTemplateID")
+          templateID = sessionStorage.getItem("tbmTemplateID") != `""` ? `&template_id=${sessionStorage.getItem("tbmTemplateID")}` : "&template_id="
           logSheetTitle = sessionStorage.getItem("tbmTitle")
           break
       }
@@ -79,8 +79,7 @@ Vue.mixin({
           "&version=1&lang=" + sessionStorage.getItem("languageCode") +
           "&task_type=" + type
         if (sessionStorage.getItem("id") != "administrator") {
-          url = url + "&iframe_title=" + logSheetTitle +
-            "&template_id=" + templateID
+          url = url + "&iframe_title=" + logSheetTitle + templateID
         }
       } else {
         url = "?en_seq=" + sessionStorage.getItem("enSeq")+
@@ -93,8 +92,7 @@ Vue.mixin({
           "&task_type=" + type
         if (sessionStorage.getItem("id") != "administrator") {
           url = url + 
-          "&iframe_title=" + logSheetTitle +
-          "&template_id=" +  templateID
+          "&iframe_title=" + logSheetTitle + templateID
         }
       }
       return url
