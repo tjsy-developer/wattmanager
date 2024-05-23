@@ -84,6 +84,7 @@ export default {
             if (sessionStorage.getItem("init") == "true") {
                 if (!window.location.origin.includes("localhost")) {
                     this.$nuxt.$emit("selectLoadingBar", true)
+                    this.loading = true
                 } else {
                     this.loading = false
                 }
@@ -91,6 +92,7 @@ export default {
                 this.setSubTitle(urlParams)
             } // 로그시트 첫페이지 새로고침 시
             else if (sessionStorage.getItem("init") == "false") {
+                this.loading = true
                 this.setReloadedPath(logsheetIframeURL)
                 this.setSubTitle(sessionStorage.getItem("path_name"))
             }
@@ -139,7 +141,6 @@ export default {
 				sessionStorage.setItem("path_name", url)
 			}
             this.setSubTitle(url)
-			this.loading = false
         },
         calcHeight(params) {
             const mainWrap = document.getElementById("__nuxt")
