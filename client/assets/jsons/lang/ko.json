@@ -361,6 +361,7 @@
   "useOnPC": "PC 사용 여부",
   "useOnGlass": "Glass 사용 여부",
   "appDetailJson": "앱 상세정보",
+  "appDetailJsonUsage":"앱 상세정보 설명",
   "videoSecurity_1": "영상에 보안을 적용 중입니다. 잠시만 기다려주십시오.",
   "videoSecurity_2": "보안 적용 후 영상이 재생됩니다.",
   "personal info Unconsent": "개인정보 수집 동의에 체크해주세요",
@@ -524,5 +525,12 @@
   "guestNotice": ["관리자권한으로 게스트 선택 불가능합니다.", "게스트 지정"],
   "loginCheck": ["로그인 정보가 잘못 되었습니다. 로그인을 재 시도해주세요."],
   "SafetyPatrol": "안전패트롤 관리",
-  "dailyChecklist": "일일체크리스트 관리"
+  "dailyChecklist": "일일체크리스트 관리",
+  "jsonExplanation": [
+    "safetyPatrol: 안전패트롤 메뉴를 보여줄지 여부 값((True/False)\nsafetyPatrolTitle: manager2에 보내는 parameter & 한글 헤더\nsafetyPatrolTitleEn: 영어 헤더\nsafetyPatrolMenuKo: 안전패트롤 한글 메뉴명\nsafetyPatrolMenuEn: 안전패트롤 영어 메뉴명\nsafetyPatrolTemplateID: 안전패트롤 템플릿 id",
+    "dailyCheck: 일일점검 메뉴를 보여줄지 여부 값((True/False)\ndailyCheckTitle: manager2에 보내는 parameter & 한글 헤더\ndailyCheckTitleEn: 영어 헤더\ndailyCheckMenuKo: 일일점검 한글 메뉴명\ndailyCheckMenuEn: 일일점검 영어 메뉴명\ndailyCheckTemplateID: 일일점검 템플릿 id",
+    "memo2: 메모 메뉴를 보여줄지 여부 값((True/False)\nmemo2Title: manager2에 보내는 parameter & 한글 헤더\nmemo2TitleEn: 영어 헤더\nmemo2MenuKo: 메모 한글 메뉴명\nmemo2MenuEn: 메모 영어 메뉴명\nmemo2TemplatID: 메모 템플릿 id",
+    "tbm: tbm(logsheet) 메뉴를 보여줄지 여부 값(True/False)\ntbmTitle: manager2에 보내는 parameter & 한글 헤더\ntbmTitleEn: 영어 헤더\ntbmMenuKo: tbm 한글 메뉴명\ntbmMenuEn: tbm 영어 메뉴명\ntbmTemplateID: tbm 템플릿 id"
+  ],
+  "copyAppdetailJson": "앱 상세정보에 추가"
 }

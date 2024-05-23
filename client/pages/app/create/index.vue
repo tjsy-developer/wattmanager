@@ -23,7 +23,7 @@ export default {
         limitText: this.$t("Limit number of characters"),
         createBtnClick() {
           const token = sessionStorage.getItem("jwt")
-          if (getInfo.getTextareaValue(0).length > 1000) {
+          if (getInfo.getTextareaValue(0).length > 4000) {
             alert(this.limitText)
           } else {
             console.log(getInfo.getTextareaValue(0).length)
@@ -94,7 +94,8 @@ export default {
                   self.$t("infoFilters")[6],
                   self.$t("useOnPC"),
                   self.$t("useOnGlass"),
-                  self.$t("appDetailJson")
+                  self.$t("appDetailJson"),
+                  // self.$t("appDetailJsonUsage")
                 ],
                 createAndEditFiltersJson
               ),
@@ -137,7 +138,13 @@ export default {
                   ],
                   selectedText: undefined,
                   selectedValue: undefined
-                }
+                },
+                // {
+                //   safety: self.$t("jsonExplanation")[0],
+                //   daily: self.$t("jsonExplanation")[1],
+                //   memo: self.$t("jsonExplanation")[2],
+                //   tbm: self.$t("jsonExplanation")[3]
+                // }
               ]
             )
           })

@@ -13,32 +13,32 @@
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <img v-if="useEnterprise == 'kwater'" class="col-auto" src="@/assets/images/logos/k_water_logo_2.svg" style="height: 38px" />
       <div class="col-auto row menus">
-        <nuxt-link v-if="authority == '4' && elecQR" to="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</nuxt-link>
-        <nuxt-link v-if="authority == '4' && qrStatus == 'safety'" to="/qr" class="col-auto">{{ $t("safetyQR") }}</nuxt-link>
-        <nuxt-link v-if="authority == '4' && qrStatus == 'power'" to="/qr" class="col-auto">{{ $t("powerQR") }}</nuxt-link>
-        <nuxt-link v-if="authority == '4'" to="/integrationQr">{{ $t("printQR")[0] }}</nuxt-link>
-        <nuxt-link v-if="authority == '4'" to="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</nuxt-link>
-        <nuxt-link v-show="showSafetyPatrol || authority == '4'" to="/workflows" class="col-auto" id="safetyPatrol" @click.native="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</nuxt-link>
-        <nuxt-link v-show="showDailyCheck || authority == '4'" to="/workflows" id="dailyPatrol" class="col-auto" @click.native="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckTitleKo : dailyCheckTitleEn }}</nuxt-link>
-        <nuxt-link v-show="showMemo2 || authority == '4'" to="/workflows" id="memo2" class="col-auto" @click.native="openIframe(3)">{{ $i18n.locale == 'ko' ? memo2TitleKo : memo2TitleEn }}</nuxt-link>
-        <nuxt-link v-show="showTbm || authority == '4'" to="/workflows" id="tbm" class="col-auto" @click.native="openIframe(4)">{{ $i18n.locale == 'ko' ? tbmTitleKo : tbmTitleEn }}</nuxt-link>
-        <nuxt-link class="col-auto" to="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</nuxt-link>
-        <nuxt-link class="col-auto" to="/notice?page=1">{{ $t("notice")[0] }}</nuxt-link>
-        <nuxt-link class="col-auto" to="/profile">{{ $t("profile") }}</nuxt-link>
-        <nuxt-link v-if="authority != '0' && deviceType != '2'" to="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</nuxt-link>
-        <nuxt-link v-if="authority != '0' && authority != '1' && deviceType != '2'" to="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</nuxt-link>
-        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</nuxt-link>
-        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</nuxt-link>
-        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</nuxt-link>
-        <nuxt-link v-if="authority == '4' && deviceType != '2'" to="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</nuxt-link>
-        <nuxt-link
+        <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
+        <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
+        <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
+        <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
+        <a v-show="showSafetyPatrol || authority == '4'" href="/workflows" class="col-auto" id="safetyPatrol" @click="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</a>
+        <a v-show="showDailyCheck || authority == '4'" href="/workflows" id="dailyPatrol" class="col-auto" @click="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckMenuKo : dailyCheckMenuEn }}</a>
+        <a v-show="showMemo2 || authority == '4'" href="/workflows" id="memo2" class="col-auto" @click="openIframe(3)">{{ $i18n.locale == 'ko' ? memo2MenuKo : memo2MenuEn }}</a>
+        <a v-show="showTbm || authority == '4'" href="/workflows" id="tbm" class="col-auto" @click="openIframe(4)">{{ $i18n.locale == 'ko' ? tbmMenuKo : tbmMenuEn }}</a>
+        <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
+        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
+        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
+        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
+        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
+        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
+        <a
           class="col-auto"
-          :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
+          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
           @click="clearsessionStorage"
         >
           {{ $t("headerComp")[6] }}
-        </nuxt-link>
-        <nuxt-link v-if="authority == '3'" :to="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</nuxt-link>
+        </a>
+        <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
         <!-- <button  @click="closeTab()">닫기</button> -->
         <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
@@ -78,12 +78,12 @@ export default {
       showTbm: false,
       safetyPatrolKo: "",
       safetyPatrolEn: "",
-      dailyCheckTitleKo: "",
-      dailyCheckTitleEn: "",
-      memo2TitleKo: "",
-      memo2TitleEn: "",
-      tbmTitleKo: "",
-      tbmTitleEn: "",
+      dailyCheckMenuKo: "",
+      dailyCheckMenuEn: "",
+      memo2MenuKo: "",
+      memo2MenuEn: "",
+      tbmMenuKo: "",
+      tbmMenuEn: "",
       location: "",
       pathName: ""
     }
@@ -229,43 +229,50 @@ export default {
             this.setAppInfo(appList)
           } else {
             if (this.authority == '4') {
-              sessionStorage.setItem("safetypatrolTitle", `안전패트롤`)
-              sessionStorage.setItem("safetypatrolTemplateID", `""`)
+              sessionStorage.setItem("safetyPatrolTitle", `안전패트롤`)
+              sessionStorage.setItem("safetyPatrolTitleEn", `SafetyPatrol`)
+              sessionStorage.setItem("safetypatrolTemplateID", `''`)
 
               sessionStorage.setItem("dailyCheckTitle", "일일점검")
-              sessionStorage.setItem("dailyCheckTemplateID", "")
+              sessionStorage.setItem("dailyCheckTitleEn", "Daily Patrol")
+              sessionStorage.setItem("dailyCheckTemplateID", `''`)
 
               sessionStorage.setItem("memo2Title", "메모")
-              sessionStorage.setItem("memo2TemplateID", "")
+              sessionStorage.setItem("memo2TitleEn", "Memo")
+              sessionStorage.setItem("memo2TemplateID", `''`)
 
-              sessionStorage.setItem("tbmTitle", "로그시트")
-              sessionStorage.setItem("tbmTemplateID", `""`)
+              sessionStorage.setItem("tbmTitle", "tbm")
+              sessionStorage.setItem("tbmTitleEn", "tbm")
+              sessionStorage.setItem("tbmTemplateID", `''`)
 
-              this.safetyPatrolKo = `안전패트롤관리`
-              this.safetyPatrolEn = `Safety Patrol Management`
+              this.safetyPatrolKo = `안전패트롤`
+              this.safetyPatrolEn = `Safety Patrol`
 
-              this.dailyCheckTitleKo = "일일점검"
-              this.dailyCheckTitleEn = "Daily Patrol"
+              this.dailyCheckMenuKo = "일일점검"
+              this.dailyCheckMenuEn = "Daily Inspection"
 
-              this.memo2TitleKo = "메모"
-              this.memo2TitleEn = "Memo"
+              this.memo2MenuKo = "메모"
+              this.memo2MenuEn = "Memo"
 
-              this.tbmTitleKo = "로그시트관리"
-              this.tbmTitleEn = "Logsheet Management"
+              this.tbmMenuKo = "TBM"
+              this.tbmMenuEn = "TBM"
             }
-            sessionStorage.setItem("safetyPatrolKo", this.safetyPatrolKo)
-            sessionStorage.setItem("safetyPatrolEn", this.safetyPatrolEn)
-            sessionStorage.setItem("dailyCheckTitleKo", this.dailyCheckTitleKo)
-            sessionStorage.setItem("dailyCheckTitleEn", this.dailyCheckTitleEn)
-            sessionStorage.setItem("memo2TitleKo", this.memo2TitleKo)
-            sessionStorage.setItem("memo2TitleEn", this.memo2TitleEn)
-            sessionStorage.setItem("tbmTitleKo", this.tbmTitleKo)
-            sessionStorage.setItem("tbmTitleEn", this.tbmTitleEn)
+            sessionStorage.setItem("safetyPatrolMemuKo", this.safetyPatrolKo)
+            sessionStorage.setItem("safetyPatrolMemuEn", this.safetyPatrolEn)
+            sessionStorage.setItem("dailyCheckMenuKo", this.dailyCheckMenuKo)
+            sessionStorage.setItem("dailyCheckMenuEn", this.dailyCheckMenuEn)
+            sessionStorage.setItem("memo2MenuKo", this.memo2MenuKo)
+            sessionStorage.setItem("memo2MenuEn", this.memo2MenuEn)
+            sessionStorage.setItem("tbmMenuKo", this.tbmMenuKo)
+            sessionStorage.setItem("tbmMenuEn", this.tbmMenuEn)
           }
         })
         .catch((err) => {
           if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
             this.showSafetyPatrol = false
+            this.showDailyCheck = false
+            this.showMemo2 = false
+            this.showTbm = false
           } else {
             console.log("get App info one Error :", err)
           }
@@ -289,91 +296,107 @@ export default {
     setAppInfo(appList) {
       if (appList["safetyPatrol"] == "True") {
         this.showSafetyPatrol = true
-        sessionStorage.setItem("showSafetyPatrol", this.showSafetyPatrol)
-        if (appList["safetypatrolTitle"]) {
-          sessionStorage.setItem("safetypatrolTitle", appList["safetypatrolTitle"])
-          this.safetyPatrolKo = appList["safetypatrolMenuKo"]
-          this.safetyPatrolEn = appList["safetypatrolMenuEn"]
-          sessionStorage.setItem("safetyPatrolKo", this.safetyPatrolKo)
-          sessionStorage.setItem("safetyPatrolEn", this.safetyPatrolEn)
+        if (appList["safetyPatrolTitle"]) {
+          sessionStorage.setItem("safetyPatrolTitle", appList["safetyPatrolTitle"])
+          sessionStorage.setItem("safetyPatrolTitleEn", appList["safetyPatrolTitleEn"])
+          this.safetyPatrolKo = appList["safetyPatrolMenuKo"]
+          this.safetyPatrolEn = appList["safetyPatrolMenuEn"]
+          sessionStorage.setItem("safetyPatrolMemuKo", this.safetyPatrolKo)
+          sessionStorage.setItem("safetyPatrolMemuEn", this.safetyPatrolEn)
         } else {
-          sessionStorage.setItem("safetypatrolTitle", `""`)
+          sessionStorage.setItem("safetyPatrolTitle", `""`)
+          sessionStorage.setItem("safetyPatrolTitleEn", `""`)
         }
-        if (appList["safetypatrolTemplateID"]) {
-          sessionStorage.setItem("safetypatrolTemplateID", appList["safetypatrolTemplateID"])
+        if (appList["safetyPatrolTemplateID"]) {
+          sessionStorage.setItem("safetyPatrolTemplateID", appList["safetyPatrolTemplateID"])
         } else {
-          sessionStorage.setItem("safetypatrolTemplateID", `""`)
+          sessionStorage.setItem("safetyPatrolTemplateID", `""`)
         }
+      } else {
+        this.showSafetyPatrol = false
       }
       if (appList["dailyCheck"] == "True") {
         this.showDailyCheck = true
-        sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
         if (appList["dailyCheckTitle"]) {
           sessionStorage.setItem("dailyCheckTitle", appList["dailyCheckTitle"])
-          this.dailyCheckTitleKo = appList["dailyCheckMenuKo"]
-          this.dailyCheckTitleEn = appList["dailyCheckMenuEn"]
-          sessionStorage.setItem("dailyCheckTitleKo", this.dailyCheckTitleKo)
-          sessionStorage.setItem("dailyCheckTitleEn", this.dailyCheckTitleEn)
+          sessionStorage.setItem("dailyCheckTitleEn", appList["dailyCheckTitleEn"])
+          this.dailyCheckMenuKo = appList["dailyCheckMenuKo"]
+          this.dailyCheckMenuEn = appList["dailyCheckMenuEn"]
+          sessionStorage.setItem("dailyCheckMenuKo", this.dailyCheckMenuKo)
+          sessionStorage.setItem("dailyCheckMenuEn", this.dailyCheckMenuEn)
         } else {
           sessionStorage.setItem("dailyCheckTitle", `""`)
+          sessionStorage.setItem("dailyCheckTitleEn", `""`)
         }
         if (appList["dailyCheckTemplateID"]) {
           sessionStorage.setItem("dailyCheckTemplateID", appList["dailyCheckTemplateID"])
         } else {
           sessionStorage.setItem("dailyCheckTemplateID", `""`)
         }
+      } else {
+        this.showDailyCheck = false
       }
       if (appList["memo2"] == "True") {
         this.showMemo2 = true
-        sessionStorage.setItem("showMemo2", this.showMemo2)
         if (appList["memo2Title"]) {
           sessionStorage.setItem("memo2Title", appList["memo2Title"])
-          this.memo2TitleKo = appList["memo2MenuKo"]
-          this.memo2TitleEn = appList["memo2MenuEn"]
-          sessionStorage.setItem("memo2TitleKo", this.memo2TitleKo)
-          sessionStorage.setItem("memo2TitleEn", this.memo2TitleEn)
+          sessionStorage.setItem("memo2TitleEn", appList["memo2TitleEn"])
+          this.memo2MenuKo = appList["memo2MenuKo"]
+          this.memo2MenuEn = appList["memo2MenuEn"]
+          sessionStorage.setItem("memo2MenuKo", this.memo2MenuKo)
+          sessionStorage.setItem("memo2MenuEn", this.memo2MenuEn)
         } else {
           sessionStorage.setItem("memo2Title", "")
+          sessionStorage.setItem("memo2TitleEn", "")
         }
         if (appList["memo2TemplateID"]) {
           sessionStorage.setItem("memo2TemplateID", appList["memo2TemplateID"])
         } else {
-          sessionStorage.setItem("memo2TemplateID", "")
+          sessionStorage.setItem("memo2TemplateID", `""`)
         }
+      } else {
+        this.showMemo2 = false
       }
-      if (appList["TBM"] == "True") {
+      if (appList["tbm"] == "True") {
         this.showTbm = true
-        sessionStorage.setItem("showTbm", this.showTbm)
         if (appList["tbmTitle"]) {
           sessionStorage.setItem("tbmTitle", appList["tbmTitle"])
-          this.tbmTitleKo = appList["tbmMenuKo"]
-          this.tbmTitleEn = appList["tbmMenuEn"]
-          sessionStorage.setItem("tbmTitleKo", this.tbmTitleKo)
-          sessionStorage.setItem("tbmTitleEn", this.tbmTitleEn)
+          sessionStorage.setItem("tbmTitleEn", appList["tbmTitleEn"])
+          this.tbmMenuKo = appList["tbmMenuKo"]
+          this.tbmMenuEn = appList["tbmMenuEn"]
+          sessionStorage.setItem("tbmMenuKo", this.tbmMenuKo)
+          sessionStorage.setItem("tbmMenuEn", this.tbmMenuEn)
         } else {
-          sessionStorage.setItem("tbmTitle", "로그시트")
+          sessionStorage.setItem("tbmTitle", "")
+          sessionStorage.setItem("tbmTitleEn", "")
         }
         if (appList["tbmTemplateID"]) {
           sessionStorage.setItem("tbmTemplateID", appList["tbmTemplateID"])
         } else {
           sessionStorage.setItem("tbmTemplateID",`""`)
         }
+      } else {
+        this.showTbm = false
       }
-      }
+      sessionStorage.setItem("showSafetyPatrol", this.showSafetyPatrol)
+      sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
+      sessionStorage.setItem("showMemo2", this.showMemo2)
+      sessionStorage.setItem("showTbm", this.showTbm)
+    }
   },
   beforeMount() {
-    this.showSafetyPatrol = sessionStorage.getItem("showSafetyPatrol") ? sessionStorage.getItem("showSafetyPatrol") : false
-    this.showDailyCheck = sessionStorage.getItem("showDailyCheck") ? sessionStorage.getItem("showDailyCheck") : false
-    this.showMemo2 = sessionStorage.getItem("showMemo2") ? sessionStorage.getItem("showMemo2") : false
-    this.showTbm = sessionStorage.getItem("showTbm") ? sessionStorage.getItem("showTbm") : false
-    this.safetyPatrolKo = sessionStorage.getItem("safetyPatrolKo") ? sessionStorage.getItem("safetyPatrolKo") : ""
-    this.safetyPatrolEn = sessionStorage.getItem("safetyPatrolEn") ? sessionStorage.getItem("safetyPatrolEn") : ""
-    this.dailyCheckTitleKo = sessionStorage.getItem("dailyCheckTitleKo") ? sessionStorage.getItem("dailyCheckTitleKo") : ""
-    this.dailyCheckTitleEn = sessionStorage.getItem("dailyCheckTitleEn") ? sessionStorage.getItem("dailyCheckTitleEn") : ""
-    this.memo2TitleKo = sessionStorage.getItem("memo2TitleKo") ? sessionStorage.getItem("memo2TitleKo") : ""
-    this.memo2TitleEn = sessionStorage.getItem("memo2TitleEn") ? sessionStorage.getItem("memo2TitleEn") : ""
-    this.tbmTitleKo = sessionStorage.getItem("tbmTitleKo") ? sessionStorage.getItem("tbmTitleKo") : ""
-    this.tbmTitleEn = sessionStorage.getItem("tbmTitleEn") ? sessionStorage.getItem("tbmTitleEn") : ""
+    this.showSafetyPatrol = sessionStorage.getItem("showSafetyPatrol") && sessionStorage.getItem("showSafetyPatrol") == "true" ? true : false
+    this.showDailyCheck = sessionStorage.getItem("showDailyCheck") && sessionStorage.getItem("showDailyCheck") == "true" ? true : false
+    this.showMemo2 = sessionStorage.getItem("showMemo2") && sessionStorage.getItem("showMemo2") == "true" ? true : false
+    this.showTbm = sessionStorage.getItem("showTbm") && sessionStorage.getItem("showTbm") == "true" ? true : false
+    this.safetyPatrolKo = sessionStorage.getItem("safetyPatrolMemuKo") ? sessionStorage.getItem("safetyPatrolMemuKo") : ""
+    this.safetyPatrolEn = sessionStorage.getItem("safetyPatrolMemuEn") ? sessionStorage.getItem("safetyPatrolMemuEn") : ""
+    this.dailyCheckMenuKo = sessionStorage.getItem("dailyCheckMenuKo") ? sessionStorage.getItem("dailyCheckMenuKo") : ""
+    this.dailyCheckMenuEn = sessionStorage.getItem("dailyCheckMenuEn") ? sessionStorage.getItem("dailyCheckMenuEn") : ""
+    this.memo2MenuKo = sessionStorage.getItem("memo2MenuKo") ? sessionStorage.getItem("memo2MenuKo") : ""
+    this.memo2MenuEn = sessionStorage.getItem("memo2MenuEn") ? sessionStorage.getItem("memo2MenuEn") : ""
+    this.tbmMenuKo = sessionStorage.getItem("tbmMenuKo") ? sessionStorage.getItem("tbmMenuKo") : ""
+    this.tbmMenuEn = sessionStorage.getItem("tbmMenuEn") ? sessionStorage.getItem("tbmMenuEn") : ""
     this.getAppInfo()
   },
   mounted() {

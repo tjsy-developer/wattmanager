@@ -60,6 +60,12 @@
 		"edit": true
 	},
 	{
+		"text": "설명",
+		"width": 100,
+		"edit": "explanation",
+		"detail" : ""
+	},
+	{
 		"text": "편집",
 		"width": 110
 	}

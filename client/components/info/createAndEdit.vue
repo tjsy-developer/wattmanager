@@ -29,7 +29,7 @@
               </label>
             </div>
           </div>
-          <textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)">{{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}</textarea>
+          <textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)" @click="resize($event)">{{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}</textarea>
           <div v-else-if="content.edit == 'file'" class="fileTypeInputContainer">
             <img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
             <input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />
@@ -38,6 +38,23 @@
             <input type="checkbox" class="col-auto" v-bind:disabled="!getPermission" :value="compData.isGuest" @click="isGuest = !isGuest" v-model="compData.isGuest" />
             <span v-if="!getPermission">{{ $t("guestNotice")[0] }}</span>
             <span v-else>{{ $t("guestNotice")[1] }}</span>
+          </div>
+          <div v-else-if="content.edit == 'explanation'" class="explainDiv col">
+            <div class="row" style="height: 100%;">
+              <div class="explainDiv__wrap">
+                <div class="explainDiv__row">
+                  <div class="explainItem" v-html="formattedText(content.detail.safety)"></div>
+                  <div class="explainItem" v-html="formattedText(content.detail.daily)"></div>
+                </div>
+                <div class="explainDiv__row">
+                  <div class="explainItem" v-html="formattedText(content.detail.memo)"></div>
+                  <div class="explainItem" v-html="formattedText(content.detail.tbm)"></div>
+                </div>
+              </div>
+              <div class="explainDiv__btn">
+                <button @click="copyandPasteJson()">{{ $t("copyAppdetailJson") }}</button>
+              </div>
+            </div>
           </div>
           <input
             v-else
@@ -104,6 +121,9 @@ export default {
     }
   },
   methods: {
+    formattedText(parmas) {
+      return parmas.replace(/\n/g, '<br>');
+    },
     createBtnClick() {
       if (this.compData.createBtnClick) this.compData.createBtnClick()
     },
@@ -176,14 +196,14 @@ export default {
     // textArea keydown 이벤트 인식 및 rows 계산 함수 실행
     resize(e) {
       console.log(this.$route.name)
-      if (this.$route.name === "app-edit") {
+      if (this.$route.name === "app-edit" || this.$route.name === "app-create") {
         const changeAppDetailJson = document.getElementById("textarea")
         this.computeTextRows(changeAppDetailJson.value)
       }
     },
     // textArea rows 계산 함수
     computeTextRows(textContent) {
-      if (this.$route.name === "app-edit") {
+      if (this.$route.name === "app-edit" || this.$route.name === "app-create") {
         // const rows = textContent.split("\n").length
 
         const changeAppDetailJson = document.getElementById("textarea")
@@ -315,6 +335,26 @@ export default {
     checkGuest(val) {
       this.isGuest = !this.isGuest
     },
+    copyandPasteJson() {
+      const workflowInitValue = `"safetyPatrol":"",\n"safetyPatrolTitle":"",\n"safetyPatrolTitleEn":"",\n"safetyPatrolMenuKo":"",\n"safetyPatrolMenuEn":"",\n"safetyPatrolTemplateID":"",\n"dailyCheck":"",\n"dailyCheckTitle":"",\n"dailyCheckTitleEn":"",\n"dailyCheckMenuKo":"",\n"dailyCheckMenuEn":"",\n"dailyCheckTemplateID":"",\n"memo2":"",\n"memo2Title":"",\n"memo2TitleEn":"",\n"memo2MenuKo":"",\n"memo2MenuEn":"",\n"memo2TemplatID":"",\n"tbm":"",\n"tbmTitle":"",\n"tbmTitleEn":"",\n"tbmMenuKo":"",\n"tbmMenuEn":"",\n"tbmTemplateID":""`
+
+      console.log("*** copyandPasteJson > check value by className")
+      const originValue = document.getElementsByClassName("detailJson")[0].value
+
+      if (originValue == "") {
+        console.log("*** empty json create json")
+        document.getElementsByClassName("detailJson")[0].value = `{\n${workflowInitValue}\n}`
+      } else {
+        console.log("*** json exist add at the end")
+        let splitOriginValue = originValue.split("}")
+        splitOriginValue = splitOriginValue[0].slice(0, splitOriginValue[0].length-2)
+        const joinedValue = `${splitOriginValue},\n${workflowInitValue}\n}`
+        document.getElementsByClassName("detailJson")[0].value = joinedValue
+      }
+      this.$nextTick(() => {
+        this.resize()
+      })
+    }
   },
   updated() {
     // if (this.$route.name === "app-edit") {
@@ -528,4 +568,38 @@ export default {
   align-items: center
   input
     margin-right: 10px
+
+.explainDiv
+  height: 100%
+  &__wrap
+    width: 87%
+  &__row
+    width: 100%
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    &:first-child
+      margin-bottom: 20px
+      margin-top: 10px
+
+    .explainItem
+      width: 45%
+      height: auto
+      background-color: #fff
+      padding: 5px 0px 5px 10px
+      border-radius: 4px
+      &:first-child
+        margin-right: 30px
+  &__btn
+    width: 13%
+    height: 100%
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    button
+      width: auto
+      min-height: 38px
+      padding: 0px 5px 0px 5px
+      background:#1DBFA4 0% 0% no-repeat padding-box
+      color: #fff
 </style>

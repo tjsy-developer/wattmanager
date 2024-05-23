@@ -364,6 +364,7 @@
   "useOnPC": "useOnPC",
   "useOnGlass": "useOnGlass",
   "appDetailJson": "appDetailJson",
+  "appDetailJsonUsage":"appDetailJson usage expanation",
   "videoSecurity_1": "Securing video. Please wait a moment.",
   "videoSecurity_2": "Video will be played after security enforcement.",
   "personal info Unconsent": "Please check your consent to collect personal information.",
@@ -541,5 +542,12 @@
     "The login information is incorrect. Please try logging in again"
   ],
   "SafetyPatrol": "Safety Patrol Management",
-  "dailyChecklist": "Daily Checklist Management"
+  "dailyChecklist": "Daily Checklist Management",
+  "jsonExplanation": [
+    "safetyPatrol: Whether to show safetyPatrol((True/False)\nsafetyPatrolTitle: parmeter & header send to manager2\nsafetyPatrolTitleEn: en header\nsafetyPatrolMenuKo: manager1 safetyPatrol ko menu\nsafetyPatrolMenuEn: manager1 en safetyPatrol en menu\nsafetyPatrolTemplateID: safetyPatrol template id",
+    "dailyCheck: Whether to show dailyCheck((True/False)\ndailyCheckTitle: parmeter & header send to manager2\ndailyCheckTitleEn: en header\ndailyCheckMenuKo: manager1 dailyCheck ko menu\ndailyCheckMenuEn: manager1 dailyCheck en menu\ndailyCheckTemplateID: dailyCheck template id",
+    "memo2: Whether to show memo2((True/False)\nmemo2Title: parmeter & header send to manager2\nmemo2TitleEn: en header\nmemo2MenuKo: manager1 memo2 ko menu\nmemo2MenuEn: manager1 memo2 en menu\nmemo2TemplatID: memo2 template id",
+    "tbm: tbm(logsheet) Whether to show tbm(True/False)\ntbmTitle: parmeter & header send to manager2\ntbmTitleEn: en header\ntbmMenuKo: manager1 tbm ko menu\ntbmMenuEn: manager1 tbm en menu\ntbmTemplateID: tbm template id"
+  ],
+  "copyAppdetailJson": "Add at app details"
 }
