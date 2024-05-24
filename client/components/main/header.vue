@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center mainHeader">
-    <div class="row justify-between items-center maxWidth" :style="{ width: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '90vw' : '1260px', maxWidth: pathName == '/logsheet' || pathName == '/safetyPatrol' ? '1554px' : '1260px' }">
+    <div class="row justify-between items-center" :class="pathName == '/workflows' ? 'manager2Width' : 'maxWidth'">
       <button v-if="$i18n.locale != 'ko'" class="localeBtn" @click="switchLocale('ko')">한국어</button>
       <button v-else-if="$i18n.locale != 'en'" class="localeBtn" @click="switchLocale('en')">English</button>
       <img v-if="useEnterprise == 'samsung'" class="col-auto" src="@/assets/images/samsung_logo_2.png" />
@@ -509,6 +509,12 @@ export default {
 .maxWidth
 	width: 1260px
 
+.manager2Width
+  @media screen and (max-width: 1554px) 
+    width: calc(100% - 50px)
+  @media screen and (min-width: 1555px)
+    width: calc(100% - 256px)
+    max-width: 1554px
 .menus
 	padding-top: 10px
 
