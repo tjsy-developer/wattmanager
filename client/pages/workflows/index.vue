@@ -159,35 +159,38 @@ export default {
             document.getElementById("main").scrollIntoView({behavior: "smooth"})
         },
         setSubTitle(params) {
+            let taskKo = this.workflowTitleKo
+            let taskEn = this.workflowTitleEn
             if (params.includes("/logsheet/template")) {
-                this.workflowTitleKo = "템플릿"
-                this.workflowTitleEn = "Template"
+                taskKo = "템플릿"
+                taskEn = "Template"
             }
             if (params.includes("/safetycheck/setting")) {
-                this.workflowTitleKo = "TBM 세부화면"
-                this.workflowTitleEn = "TBM Detailed screen"
+                taskKo = "TBM 세부화면"
+                taskEn = "TBM Detailed screen"
             }
+            if (!params.includes("/logsheet/template") && !params.includes("/safetycheck/setting")) {}
             const splitParamas = params.split("/")
             const url = splitParamas[splitParamas.length - 1]
             if (url.includes("create")) {
-                this.titleKo = `${this.workflowTitleKo} 생성`
-                this.titleEn = `${this.workflowTitleEn} created`
+                this.titleKo = `${taskKo} 생성`
+                this.titleEn = `${taskEn} created`
             } else if (url.includes("detail")) {
-                this.titleKo = `${this.workflowTitleKo} 상세`
-                this.titleEn = `${this.workflowTitleEn} details`
+                this.titleKo = `${taskKo} 상세`
+                this.titleEn = `${taskEn} details`
             } else if (url.includes("edit") || url.includes("modify") || url.includes("update")) {
-                this.titleKo = `${this.workflowTitleKo} 수정`
-                this.titleEn = `${this.workflowTitleEn} edit`
+                this.titleKo = `${taskKo} 수정`
+                this.titleEn = `${taskEn} edit`
             } else if (url == "temp") {
-                this.titleKo = `일일 ${this.workflowTitleKo}`
+                this.titleKo = `일일 ${taskKo}`
                 this.titleEn = `daily ${this.workflowTitleKo}`
             } else if (url.includes("setting")) {
-                this.titleKo = `${this.workflowTitleKo} 설정`
-                this.titleEn = `${this.workflowTitleKo} setting`
+                this.titleKo = `${taskKo} 설정`
+                this.titleEn = `${taskEn} setting`
             }
             else {
-                this.titleKo = `${this.workflowTitleKo} 관리`
-                this.titleEn = `${this.workflowTitleKo} Management`
+                this.titleKo = `${taskKo} 관리`
+                this.titleEn = `${taskEn} Management`
             }
             this.loading = false
         }
