@@ -1,6 +1,5 @@
 /* 2021.01.26 common Func :: ksh */
 import Vue from "vue";
-import cookieSetting from "@/assets/scripts/data/cookie";
 
 Vue.mixin({
   methods: {
@@ -76,6 +75,8 @@ Vue.mixin({
           "&hq_seq=" + sessionStorage.getItem("hqSeq")+
           "&br_seq=" + sessionStorage.getItem("brSeq") +
           "&auth=" + sessionStorage.getItem("auth") +
+          "&user_id=" + sessionStorage.getItem("id") +
+          "&user_name=" + sessionStorage.getItem("userName") +
           "&version=1&lang=" + sessionStorage.getItem("languageCode") +
           "&task_type=" + type
         if (sessionStorage.getItem("id") != "administrator") {

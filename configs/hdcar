@@ -3,60 +3,54 @@ port=3000
 
 # 와트매니저 백엔드
 backendURL_local=""
-backendURL="https://hdcar.watttalk.kr/wattmanager-server/"
+backendURL=https://sg.auto-hmg.io:8205/wattmanager-server/
 
 # 와트매니저2 백엔드
-manager2serverURL="/wattmanager2-server/"
+manager2serverURL=/wattmanager2-server/
 
 # 와트톡
 powertlakState="loginCheck"
 powertalkLogin_local=""
-powertalkLogin="https://hdcar.watttalk.kr/watttalk/login/login-check?jwt_token="
+powertalkLogin="https://sg.auto-hmg.io:8205/watttalk/login/login-check?jwt_token="
 
 # 와트 메모
-powermemo="https://hdcar.watttalk.kr/storage/watttalk/hdcar"
-powermemoSavefolder="/home/watt/hdd_ext/Storage/watttalk/hdcar/"
+powermemo=https://sg.auto-hmg.io:8205/storage/watttalk/hdcar
+powermemoSavefolder=/data/Storage/watttalk/hdcar/
 
 # QR
-qr="default"
-elecQR="false"
-elecFilePath="/home/watt/hdd_ext/Storage/watttalk/hdcar/QR/file"
-elecFolderPath="/home/watt/hdd_ext/Storage/watttalk/hdcar/QR/folder"
+qr=default
+elecQR=false
+elecFilePath=/data/Storage/watttalk/hdcar/QR/file
+elecFolderPath=/data/Storage/watttalk/hdcar/QR/folder
 
 # 자료 관리
 # 일반 사용자 자료 관리 접근 권한 (true: 부여, false: 미부여)
-att_access_user="true"
-att_videoPlayPath='https://hdcar.watttalk.kr/storage/watttalk/hdcar/Dashs/Src/'
-att_filePath="https://hdcar.watttalk.kr/storage/watttalk/hdcar/filebox/"
-detailFilePath="/home/watt/hdd_ext/Storage/watttalk/hdcar/filebox/"
-fileUploadBackend="https://hdcar.watttalk.kr/wattmanager-server"
+att_access_user=true
+att_videoPlayPath=https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/Dashs/Src/
+att_filePath=https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/filebox/
+detailFilePath=/data/Storage/watttalk/hdcar/filebox/
+fileUploadBackend=https://sg.auto-hmg.io:8205/wattmanager-server
 
 # 프로필 사진
-profilePhotoSavefolder="/home/watt/hdd_ext/Storage/watttalk/hdcar/profile"
-profilePhotoUrl="https://hdcar.watttalk.kr/storage/watttalk/hdcar/profile/"
+profilePhotoSavefolder=/data/Storage/watttalk/hdcar/profile
+profilePhotoUrl=https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/profile/
 
 # 로고
-useEnterprise="hdcar"
+useEnterprise=hdcar
 
 # 동영상 보안
-use_bento4="false"
+use_bento4=false
 
 # 파일함
 # 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
-separateBackendUploadPath="false"
-fileBoxBackend="https://hdcar.watttalk.kr/wattmanager-server"
+separateBackendUploadPath=false
+fileBoxBackend=https://sg.auto-hmg.io:8205/wattmanager-server
 
 # 비밀번호 보안 적용
-checkPswPatern="false"
-
-# 현대 비밀번호규칙
-pswPaternHD="true"
+checkPswPatern=false
 
 # 자동 로그아웃
-forceLogout24="false"
-
-# 비밀번호 5회 오류 차단 설정. (backend도 같이 설정해줘야한다)
-blockAcount="true"
+forceLogout24=false
 
 # 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
 impId=""
