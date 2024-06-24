@@ -12,7 +12,7 @@
         <button class="idChkBtn col-auto" @click="idCheckBtnClick">{{ $t("account")[18] }}</button>
         <input class="input" id="accountPWD" :placeholder="$t('account')[14]" v-model="password" @change="passWordPaternCheck()" type="password" />
         <!-- 비밀번호 규칙이 있는 경우만 -->
-        <span v-if="checkPatern == 'true'" class="pswPatern">{{ $t("checkPswPatern")[0] }}</span>
+        <span v-if="checkPatern == 'true' || pswPaternHd == 'true'" class="pswPatern">{{ $t("checkPswPatern")[0] }}</span>
         <input class="input" :placeholder="$t('account')[15]" v-model="passwordCheck" type="password" />
         <input class="nameInput col" id="accountName" :placeholder="$t('account')[16]" v-model="name" @keyup.enter="nameCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
@@ -121,6 +121,7 @@ export default {
       ret: undefined,
       checkPhone: undefined,
       checkPatern: process.env.checkPswPatern,
+      pswPaternHd: process.env.pswPaternHD,
       syncManager2: false,
       manager2ServerUrl: "https://dev.watttalk.kr:8222"
     }
@@ -598,34 +599,63 @@ export default {
     },
     // 비밀번호 규칙이 있을 경우만
     passWordPaternCheck() {
+      if (this.checkPatern != "true" && this.this.pswPaternHD != "true") return
+      const psw = this.password
+
+      const capitalPatern = /[A-Z]/g
+      const lowerPatern = /[a-z]/g
+      const specialPatern = /[^A-Za-z0-9]/g
+      const numPatern = /\d+/g
+      const enPatern = /[A-Za-z]/g
+      
+      let checkPatern = 0
+
+      if (specialPatern.test(psw)) {
+        checkPatern = ++checkPatern
+      }
+      if (numPatern.test(psw)) {
+        checkPatern = ++checkPatern
+      }
+
       if (this.checkPatern == "true") {
-        const psw = this.password
         if (psw.length < 10) {
           alert(this.$t("checkPswPatern")[1])
           this.password = ""
           return
         }
-        const capitalPatern = /[A-Z]/g
-        const lowerPatern = /[a-z]/g
-        const specialPatern = /[^A-Za-z0-9]/g
-        const numPatern = /\d+/g
-        let checkPatern = 0
+       
         if (capitalPatern.test(psw)) {
           checkPatern = ++checkPatern
         }
         if (lowerPatern.test(psw)) {
           checkPatern = ++checkPatern
         }
-        if (specialPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-        if (numPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
+
         if(checkPatern < 2) {
           alert(this.$t("checkPswPatern")[2])
           this.password = ""
-          checkPatern = 0
+          return
+        }
+
+      } else if (this.pswPaternHd == "true") {
+        let alertToast = false
+        if (enPatern.test(psw)) {
+          checkPatern = ++checkPatern
+        }
+        
+        if (checkPatern < 2) {
+          alertToast = true
+        } else if (checkPatern < 3 && psw.length < 10) {
+          alertToast = true
+        } else if (3 < checkPatern && psw.length < 8) {
+          alertToast = true
+          
+        }
+
+        if (alertToast == true) {
+          alert(this.$t("checkPswPatern")[3])
+          this.password = ""
+          return
         }
       }
       return

@@ -525,7 +525,8 @@
   "checkPswPatern": [
     "* The password must be at least 10 characters, including upper/lower case and special characters.",
     "The password must be at least 10 characters long.",
-    "The password must contain upper/lower case and special characters."
+    "The password must contain upper/lower case and special characters.",
+    "The password must be at least 10 digits combined with at least 2 types of English, numbers, and special characters, or at least 8 digits combined with 3 types."
   ],
   "alertChangePsw": [
     "Guidance to Change Password",
@@ -533,6 +534,10 @@
     "For security purposes, we recommend changing your password.",
     "Change next time",
     "Change Password"
+  ],
+  "loginAlert":[
+    "Account has been unapproved due to 5 times incorrect passwords. Please contact Administrator",
+    "Account has been unapproved due to 90 days since the last connection date. Please contact your administrator."
   ],
   "guestNotice": [
     "Guest Option is not possible due to administrator privileges.",

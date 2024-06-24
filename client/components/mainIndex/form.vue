@@ -610,11 +610,15 @@ export default {
               self.$modal.hide("personalInfoModal");
               self.consentvalue = false;
             }
-            if (process.env.useEnterprise == "dlenc") {
+            // 비밀번호 5회 오류시 계정 미승인 처리 여부
+            // 미승인은 backend에서 해줌. 알려주는건 front가 조건 비교 필요.
+            // err count를 blockAcount만 세는게 아니고 전체 다 세서 그럼.
+            if (process.env.blockAcount) {
               if (response.data[3] > 4) {
-                alert("비밀번호 5회 오류로 인해 미승인되었습니다. 관리자에게 문의 바랍니다")
+                alert(self.$t("loginAlert")[0])
                 return
               }
+              // if (response.data[])
             }
             alert(self.$t("home")[1]);
           }
