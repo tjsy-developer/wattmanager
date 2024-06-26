@@ -90,8 +90,7 @@ export default {
                 }
                 this.logsheetURL = initLogSheetURL + urlParams
                 this.setSubTitle(urlParams)
-            } // 로그시트 첫페이지 새로고침 시
-            else if (sessionStorage.getItem("init") == "false") {
+            } else {
                 this.loading = true
                 this.setReloadedPath(logsheetIframeURL)
                 this.setSubTitle(sessionStorage.getItem("path_name"))
@@ -106,8 +105,7 @@ export default {
             } else {
                 if (!sessionStorage.getItem("path_name").includes("/temp") && !sessionStorage.getItem("path_name").includes("/setting") && !sessionStorage.getItem("path_name").includes("/logsheet/template")) {
                     // 일일점검, tbm 최초화면
-                        this.logsheetURL = logsheetIframeURL +
-                    "?init=false"
+                        this.logsheetURL = logsheetIframeURL
                 } else {
                     // 일일점검, tbm 상세보기 화면
                     this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")
@@ -132,13 +130,13 @@ export default {
             }
         },
         childPath(url) {
+            const replaceURL = url.replaceAll('&init=true', '')
             if (sessionStorage.getItem("init") == "true"|| sessionStorage.getItem("init") == null) {
-                sessionStorage.setItem("init", false) 
                 this.$nuxt.$emit("selectLoadingBar", false)
                 this.loading = false
-                sessionStorage.setItem("path_name", url)
+                sessionStorage.setItem("path_name", replaceURL)
             } else {
-				sessionStorage.setItem("path_name", url)
+				sessionStorage.setItem("path_name", replaceURL)
 			}
             this.setSubTitle(url)
         },
@@ -193,6 +191,9 @@ export default {
                 this.titleEn = `${taskEn} Management`
             }
             this.loading = false
+			if (sessionStorage.getItem("path_name")) {
+				sessionStorage.setItem("init", false)
+			}
         }
     },
     beforeDestroy() {

@@ -554,5 +554,6 @@
     "memo2: Whether to show memo2((True/False)\nmemo2Title: parmeter & header send to manager2\nmemo2TitleEn: en header\nmemo2MenuKo: manager1 memo2 ko menu\nmemo2MenuEn: manager1 memo2 en menu\nmemo2TemplatID: memo2 template id",
     "tbm: tbm(logsheet) Whether to show tbm(True/False)\ntbmTitle: parmeter & header send to manager2\ntbmTitleEn: en header\ntbmMenuKo: manager1 tbm ko menu\ntbmMenuEn: manager1 tbm en menu\ntbmTemplateID: tbm template id"
   ],
-  "copyAppdetailJson": "Add at app details"
+  "copyAppdetailJson": "Add at app details",
+  "loginBlock":"Account has been locked for 1 hour due to 10 times login failure"
 }

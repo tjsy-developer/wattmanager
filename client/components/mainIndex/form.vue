@@ -528,7 +528,6 @@ export default {
                 else if (response.data[1].device_type === 2) {
                   window.open("/attachment/memo?page=1&viewType=gallery", "_self");
                 }
-                  
                 // 수정
                 else {
                   // 회원이 이메일로 회의실입장하려고 하는 경우
@@ -614,11 +613,12 @@ export default {
             // 미승인은 backend에서 해줌. 알려주는건 front가 조건 비교 필요.
             // err count를 blockAcount만 세는게 아니고 전체 다 세서 그럼.
             if (process.env.blockAcount) {
-              if (response.data[3] > 4) {
+              if (response.data[3] > 4 && process.env.useEnterprise == "dlenc") {
                 alert(self.$t("loginAlert")[0])
                 return
+              } else if (response.data[3] > 9 && process.env.useEnterprise == "hd") {
+                alert(self.$t("loginBlock"))
               }
-              // if (response.data[])
             }
             alert(self.$t("home")[1]);
           }
@@ -677,7 +677,7 @@ export default {
           },
         }
       );
-    },
+    }
   },
   mounted() {
     const currentLang = sessionStorage.getItem("languageCode");
