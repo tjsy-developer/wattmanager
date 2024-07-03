@@ -200,18 +200,14 @@
 
 <script>
 import axiosJson from "@/assets/jsons/axios";
-import forgotPasswordModal from "@/components/forgotPasswordModal/form";
-import personalInfoModal from "@/components/personalInfoModal/form";
+import cookieSetting from "@/assets/scripts/data/cookie";
+import getInfo from "@/assets/scripts/info/getInfo";
 import createAccountModal from "@/components/createAccountModal/form";
+import forgotPasswordModal from "@/components/forgotPasswordModal/form";
 import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
-;
-import cookieSetting from "@/assets/scripts/data/cookie";
+import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
-
-
-// import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
 export default {
   components: { notice, personalInfoModal },
@@ -457,24 +453,22 @@ export default {
             
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
-            self.$axios
-              .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-                en_seq: response.data[1].en_seq,
-                hq_seq: response.data[1].hq_seq,
-                br_seq: response.data[1].br_seq
-              })
-              .then((res) => {
-                const jsonFactorList = res.data[0].app_detail_json
-                const factorList = JSON.parse(jsonFactorList)
-                self.check2Factor = factorList["2factor"]
-                self.bypassID =  factorList["2factorBypassId"].split(",")
+            getInfo.fetchAppSetting({
+              en_seq: response.data[1].en_seq,
+              hq_seq: response.data[1].hq_seq,
+              br_seq: response.data[1].br_seq
+            })
+              .then((appDetailJson) => {
+                const appInfo = JSON.parse(appDetailJson)
+                self.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+                self.bypassID =  appDetailJson["2factorBypassId"]?.split(",")
               })
               .catch((err) => {
                 if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-                  self.check2Factor = "False"
                 } else {
                   console.log("2Factor Error :", err)
                 }
+                self.check2Factor = false
               })
               .then(() => {
                 // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
@@ -485,7 +479,7 @@ export default {
                   checkAdmin = true
                 }
                 let checkByPass
-                if (self.check2Factor == "True") {
+                if (self.check2Factor === true) {
                   if (checkAdmin == true) {
                     // 2factor의 값이 true이나 관리자 및 glass 계정이면 bypass 활성화
                     checkByPass = true
@@ -494,11 +488,11 @@ export default {
                     // 2factor의 값이 true이고 checkAdmin이 false 이면 bypass 비활성화
                     checkByPass = false
                   }
-                } else if (self.check2Factor == "False") {
+                } else if (self.check2Factor === false) {
                   // 2factor의 값이 false면 bypass 활성화
                   checkByPass = true
                 }
-                self.bypassID.forEach((ele) => {
+                self.bypassID?.forEach((ele) => {
                   if (ele == userId) {
                     checkByPass = true
                   }
@@ -506,7 +500,6 @@ export default {
                 if (process.env.forceLogout24 == true) {
                   const loginTime = Math.floor(new Date().getTime() / 1000)
                   const managerLoginTimeCookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
-                  console.log(managerLoginTimeCookieName)
                   cookieSetting.setCookie(managerLoginTimeCookieName, loginTime)
                 }
                 if (checkByPass == false) {
