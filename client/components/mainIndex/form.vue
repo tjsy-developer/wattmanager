@@ -513,7 +513,7 @@ export default {
                   } else {
                     modalType = 3
                   }
-                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw);
+                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw, urlParameter);
                   return
                 }
                 if (response.data[1].auth === 4)
@@ -634,11 +634,12 @@ export default {
         pwdInput.type = "text";
       }
     },
-    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq, checkChangePsw) {
+    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq, checkChangePsw, urlParameter) {
       const modalsContainerStyle =
         document.getElementById("modalsContainer").style;
       modalsContainerStyle.display = "block";
       const modalParameter = {
+        queryParams: urlParameter,
         loginData: params,
         isMember: this.isMember,
         reservUserId: this.reservUserId,

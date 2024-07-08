@@ -91,6 +91,7 @@ function login(logInData) {
     const reservId = logInData.reservId
     const lang = logInData.lang
     const logInType = logInData.type
+    const queryParams = logInData.queryParams
     // 회원이 이메일로 회의실입장하려고 하는 경우
     /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
     2. isMember -> 이메일을 클릭하여 들어왔는지판단(회원판단) (true == 이메일로 접근) */
@@ -106,7 +107,7 @@ function login(logInData) {
                 "&login_type=1&lang=" +
                 lang +
                 "&reservId=" +
-                reservId;
+                reservId + queryParams;
         // 이메일을 타고 들어온 회원이지만 (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
         } else if (isMember && reservUserId !== userId) {
             alert(
@@ -114,10 +115,10 @@ function login(logInData) {
                 "\n" +
                 this.$t("go to the contact screen")
             );
-            params = loginData + "&login_type=1&lang=" + lang;
+            params = loginData + "&login_type=1&lang=" + lang + queryParams;
             // 이메일을 타고들어온 회원이 아님  && (이메일을 받은 회원 != 로그인 시도한 사용자)일 경우 연락처페이지로 이동시킨다
         } else {
-            params = loginData + "&login_type=1&lang=" + lang;
+            params = loginData + "&login_type=1&lang=" + lang + queryParams;
         }
 
         /* 와트톡 로그인 체크 페이지로 이동 */
