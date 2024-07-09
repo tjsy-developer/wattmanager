@@ -555,5 +555,8 @@
     "tbm: tbm(logsheet) Whether to show tbm(True/False)\ntbmTitle: parmeter & header send to manager2\ntbmTitleEn: en header\ntbmMenuKo: manager1 tbm ko menu\ntbmMenuEn: manager1 tbm en menu\ntbmTemplateID: tbm template id"
   ],
   "copyAppdetailJson": "Add at app details",
-  "loginBlock":"Account has been locked for 1 hour due to 10 times login failure"
+  "loginBlock":[
+    "Account has been locked for 1 hour due to 10 times login failure",
+    "Your account has not been approved due to 90 days of non-access. Please contact your administrator."
+  ]
 }

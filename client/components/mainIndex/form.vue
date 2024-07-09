@@ -90,6 +90,11 @@
               src="@/assets/images/logos/k_water.svg"
               style="width: 200px"
             />
+            <img
+              v-if="useEnterprise == 'hdcar'"
+              class="loginContentLogo"
+              src="@/assets/images/logos/hdcar_login.svg"
+            />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
             <input
@@ -201,13 +206,16 @@
 <script>
 import axiosJson from "@/assets/jsons/axios";
 import cookieSetting from "@/assets/scripts/data/cookie";
-import getInfo from "@/assets/scripts/info/getInfo";
 import createAccountModal from "@/components/createAccountModal/form";
 import forgotPasswordModal from "@/components/forgotPasswordModal/form";
 import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
+;
+
+
+// import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
 export default {
   components: { notice, personalInfoModal },
@@ -590,6 +598,9 @@ export default {
               self.consentvalue = false;
             }
             alert(self.$t("home")[0]);
+            // 3인 경우 90일 장기 미접속 차단 <- 현대 요청
+          } else if (response.data[0] === 3) {
+            alert(self.$t("loginBlock")[1])
           } else if (response.data[0] === 5) {
             // psw가 일치하지 않는 경우!
             if (self.loginErrBlock) {
@@ -609,8 +620,11 @@ export default {
               if (response.data[3] > 4 && process.env.useEnterprise == "dlenc") {
                 alert(self.$t("loginAlert")[0])
                 return
-              } else if (response.data[3] > 9 && process.env.useEnterprise == "hd") {
-                alert(self.$t("loginBlock"))
+              }
+              else if (response.data[3] > 9 && process.env.useEnterprise == "hdcar") {
+                const remainTime = self.calcRemainTime(response.data[4])
+                alert(`${self.$t("loginBlock")[0]}\n남은 시간은 ${remainTime}분입니다.`)
+                return
               }
             }
             alert(self.$t("home")[1]);
@@ -671,6 +685,13 @@ export default {
           },
         }
       );
+    },
+    // 계정 1시간 잠금 시 남은 시간 계산
+    calcRemainTime(unixTime) {
+      const now = Math.floor(new Date().getTime() / 1000) // 현재 시각
+      const realseTime = unixTime + Number(3600) // 해제시각 (잠금시간 + 1시간)
+      const remainTime = Number(realseTime - now) / 60 // 남은 시각은 unixTime임
+      return Math.floor(remainTime) // 소숫점 제거
     }
   },
   mounted() {

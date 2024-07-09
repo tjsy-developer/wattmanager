@@ -538,5 +538,8 @@
     "tbm: tbm(logsheet) 메뉴를 보여줄지 여부 값(True/False)\ntbmTitle: manager2에 보내는 parameter & 한글 헤더\ntbmTitleEn: 영어 헤더\ntbmMenuKo: tbm 한글 메뉴명\ntbmMenuEn: tbm 영어 메뉴명\ntbmTemplateID: tbm 템플릿 id"
   ],
   "copyAppdetailJson": "앱 상세정보에 추가",
-  "loginBlock":"로그인 10회 실패로 인해 1시간동안 계정이 잠금되었습니다."
+  "loginBlock":[
+    "로그인 10회 실패로 인해 1시간동안 계정이 잠금되었습니다.",
+    "90일 미접속으로 인해 계정이 미승인되었습니다. 관리자에게 문의 바랍니다."
+  ]
 }
