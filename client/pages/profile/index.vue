@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import getInfo from "@/assets/scripts/info/getInfo"
-import axiosJson from "@/assets/jsons/axios"
-import profile from "@/components/forgotPasswordModal/profile"
+import axiosJson from "@/assets/jsons/axios";
+import getInfo from "@/assets/scripts/info/getInfo";
+import profile from "@/components/forgotPasswordModal/profile";
 
 
 export default {
@@ -20,10 +20,12 @@ export default {
         self: this,
         userSeq: undefined,
         listTitle: this.$t("profile"),
-        check2Factor: "",
+        check2Factor: false,
         imageFile: "",
         listFilters: [
-          {},
+          {
+            text: '',
+          },
           {
             text: this.$t("id"),
             edit: "disabled"
@@ -126,27 +128,23 @@ export default {
                         // image: this.selected[7],
                         image: fileName,
                         phone_number:
-                          deviceType != 2
+                          deviceType != 2 && getSelf.compData.check2Factor !== false
                             ? getInfo.getInputValue(7)
                             : "",
                         birthday:
-                          deviceType != 2
+                          deviceType != 2 && getSelf.compData.check2Factor !== false
                           ? getInfo.getInputValue(8)
                           : "",
                         jwt: sessionStorage.getItem("jwt")
                       })
                       .then(function(res) {
-                        console.log(res.data)
-                        if (res.data === "Success") {
-                          alert(getSelf.$t("attachment")[1])
-                        } else if (res.data === "Exceeded quota")
-                          alert(getSelf.$t("ExceededQuota"))
-                        else if (res.data === "Duplicate Name")
-                          alert(getSelf.$t("device")[4])
-                        else if (res.data === "Duplicate Name_en")
-                          alert(getSelf.$t("device")[5])
-                        else if (res.data === "Duplicate Email")
-                          alert(getSelf.$t("user")[5])
+                        console.log(res.data == "Duplicate phone_number")
+                        if (res.data === "Success") alert(getSelf.$t("attachment")[1])
+                        else if (res.data === "Exceeded quota") alert(getSelf.$t("ExceededQuota"))
+                        else if (res.data === "Duplicate Name") alert(getSelf.$t("device")[4])
+                        else if (res.data === "Duplicate Name_en") alert(getSelf.$t("device")[5])
+                        else if (res.data === "Duplicate Email") alert(getSelf.$t("user")[5])
+                        else if (res.data === "Duplicate phone_number") alert(getSelf.$t("attachment")[5])
                         else alert(getSelf.$t("attachment")[2])
                       })
                       .catch(function(error) {
@@ -179,27 +177,22 @@ export default {
                       ? this.selected[9]
                       : this.selected[7],
                     phone_number:
-                      deviceType != 2
+                      deviceType != 2 && getSelf.compData.check2Factor !== false
                         ? getInfo.getInputValue(7)
                         : "",
                     birthday:
-                      deviceType != 2
+                      deviceType != 2 && getSelf.compData.check2Factor !== false
                       ? getInfo.getInputValue(8)
                       : "",
                     jwt: sessionStorage.getItem("jwt")
                   })
                   .then(function(res) {
-                    console.log(res.data)
-                    if (res.data === "Success") {
-                      alert(getSelf.$t("attachment")[1])
-                    } else if (res.data === "Exceeded quota")
-                      alert(getSelf.$t("ExceededQuota"))
-                    else if (res.data === "Duplicate Name")
-                      alert(getSelf.$t("device")[4])
-                    else if (res.data === "Duplicate Name_en")
-                      alert(getSelf.$t("device")[5])
-                    else if (res.data === "Duplicate Email")
-                      alert(getSelf.$t("user")[5])
+                    if (res.data === "Success") alert(getSelf.$t("attachment")[1])
+                    else if (res.data === "Exceeded quota") alert(getSelf.$t("ExceededQuota"))
+                    else if (res.data === "Duplicate Name") alert(getSelf.$t("device")[4])
+                    else if (res.data === "Duplicate Name_en") alert(getSelf.$t("device")[5])
+                    else if (res.data === "Duplicate Email") alert(getSelf.$t("user")[5])
+                    else if (res.data === "Duplicate phone_number") alert(getSelf.$t("attachment")[5])
                     else alert(getSelf.$t("attachment")[2])
                   })
                   .catch(function(error) {
@@ -249,6 +242,33 @@ export default {
       }
 
       return str
+    },
+    async fetchAppSetting(params) {
+      try {
+        const appDetailJson = await getInfo.fetchAppSetting(params)
+        const appInfo = JSON.parse(appDetailJson)
+        this.compData.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+      } catch(error) {
+        this.compData.check2Factor = undefined
+      } finally {
+        sessionStorage.setItem("check2Factor", this.compData.check2Factor)
+        this.compData.listFilters = this.compData.listFilters.map((value) => {
+          if (!value.text) return value
+          const columnText = value?.text.toLowerCase().replaceAll(" ", '')
+          if ((columnText === "휴대폰번호" || columnText === "생년월일" || columnText === "cellphone" || columnText === "birthday")) {
+            if (this.compData.check2Factor === false) {
+              return {
+                ...value,
+                edit: 'none'
+              }
+            } return {
+              ...value, 
+              edit: 'disabled'
+            }
+          } 
+          return value
+        })
+      }
     }
   },
   mounted() {
@@ -276,37 +296,14 @@ export default {
       .then(function(res) {
         console.log(res)
         sessionStorage.setItem("deviceType", res.data.device_type)
-        self.$axios
-          .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-            en_seq: res.data.en_seq,
-            hq_seq: res.data.hq_seq,
-            br_seq: res.data.br_seq
-          })
-          .then((response) => {
-            const jsonFactorList = response.data[0].app_detail_json
-            const factorList = JSON.parse(jsonFactorList)
-            self.check2Factor = factorList["2factor"]
-            if (self.useEnterprise != "dlenc") {
-              self.check2Factor = "False"
-            }
-            sessionStorage.setItem("check2Factor", self.check2Factor)
-          })
-          .catch((err) => {
-            if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-              self.check2Factor = "False"
-              sessionStorage.setItem("check2Factor", self.check2Factor)
-            } else {
-              console.log("2Factor Error :", err)
-            }
-          })
-          .then(() => {
+
             if (res.data.image) {
               let checkAdmin = false
               if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
                 checkAdmin = true
               }
               // 글라스 혹은 admin 계정
-              if (checkAdmin == true || sessionStorage.getItem("deviceType") == "2"){
+              if (checkAdmin == true || res.data.device_type == 2){
                 self.compData.listFilters.splice(8, 2)
                 self.compData.selected = [
                   res.data.id,
@@ -340,7 +337,7 @@ export default {
                 checkAdmin = true
               }
               console.log(checkAdmin)
-              if (checkAdmin == "true" || sessionStorage.getItem("deviceType") == "2") {
+              if (checkAdmin == "true" || res.data.device_type == 2) {
                 self.compData.listFilters.splice(8, 2)
                 self.compData.selected = [
                   res.data.id,
@@ -366,12 +363,17 @@ export default {
                   undefined
                 ]
               }
-            }
-          })
-      })
-      .catch(function(error) {
-        console.log("user profile page error : ", error)
-      })
+        }
+        console.log(self.compData.listFilters)
+        self.fetchAppSetting({
+          en_seq: res.data.en_seq,
+          hq_seq: res.data.hq_seq,
+          br_seq: res.data.br_seq
+        })
+    })
+    .catch(function(error) {
+      console.log("user profile page error : ", error)
+    })
     this.deviceType = sessionStorage.getItem("deviceType")
     this.auth = sessionStorage.getItem("auth")
     // eslint-disable-next-line eqeqeq

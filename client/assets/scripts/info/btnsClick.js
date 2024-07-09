@@ -1,6 +1,5 @@
-import axios from "axios"
 import axiosJson from "@/assets/jsons/axios"
-import { param } from "jquery"
+import axios from "axios"
 
 const btnsClick = {
   lang: [
@@ -140,15 +139,16 @@ const btnsClick = {
         }
         // eslint-disable-next-line no-throw-literal
         if (!getInput[i].value){
-          if (check2Factor === "False" && i == 4) {
+          if (check2Factor === false && i == 4) {
             getInput[i].value = ""
-          } else if (check2Factor === "False" && i == 5) {
+          } else if (check2Factor === false && i == 5) {
             getInput[i].value = ""
           } else {
             throw "input undefined" 
           }
         }
       }
+
       const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
       const headers = params.formDataHeader
       if (params.imgFormData) {
