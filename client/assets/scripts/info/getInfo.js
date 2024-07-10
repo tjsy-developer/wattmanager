@@ -122,7 +122,7 @@ const getInfo = {
    * @param {{ en_seq: number, hq_seq: number, br_seq: number}} params 
    * @returns 
    */
-  fetchAppSetting(params) {
+  appSetting(params) {
     return (
       axios
         .post(process.env.backendURL + "appRest/app_powertalkweb_info", {

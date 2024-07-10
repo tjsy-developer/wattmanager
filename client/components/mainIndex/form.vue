@@ -461,7 +461,7 @@ export default {
             
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
-            getInfo.fetchAppSetting({
+            getInfo.appSetting({
               en_seq: response.data[1].en_seq,
               hq_seq: response.data[1].hq_seq,
               br_seq: response.data[1].br_seq

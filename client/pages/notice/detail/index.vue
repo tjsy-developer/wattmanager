@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import createAndEditFiltersJson from "@/assets/jsons/info/notice/createAndEditFilters"
-import getFilters from "@/assets/scripts/info/getFilters"
+import createAndEditFiltersJson from "@/assets/jsons/info/notice/createAndEditFilters";
+import getFilters from "@/assets/scripts/info/getFilters";
 // import setComboBox from "@/assets/scripts/info/setComboBox"
-import getInfo from "@/assets/scripts/info/getInfo"
-import btnsClick from "@/assets/scripts/info/btnsClick"
+import btnsClick from "@/assets/scripts/info/btnsClick";
+import getInfo from "@/assets/scripts/info/getInfo";
 
 export default {
   layout: "main",
@@ -50,12 +50,6 @@ export default {
   },
   methods: {
     editBtnClick() {
-      if (
-        !/^(1|2)\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/.test(
-          getInfo.getInputValue(0)
-        )
-      )
-        return alert(this.$t("dateFormat"))
       const token = sessionStorage.getItem("jwt")
       // this.getWorldTime(getInfo.getInputValue(0))
       btnsClick.edit(

@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import QRCode from "qrcode"
-import getInfo from "@/assets/scripts/info/getInfo"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import getInfo from "@/assets/scripts/info/getInfo";
+import QRCode from "qrcode";
 
 export default {
   components: {},
@@ -91,9 +91,6 @@ export default {
     },
     idCheckBtnClick() {
       if (this.id) {
-        // eslint-disable-next-line no-useless-escape
-        if (!/^[A-Za-z0-9_\-]{4,50}$/.test(this.id))
-          return alert(this.$t("account")[11])
         // eslint-disable-next-line no-global-assign
         self = this
         this.$axios

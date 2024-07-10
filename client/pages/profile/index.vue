@@ -243,9 +243,9 @@ export default {
 
       return str
     },
-    async fetchAppSetting(params) {
+    async appSetting(params) {
       try {
-        const appDetailJson = await getInfo.fetchAppSetting(params)
+        const appDetailJson = await getInfo.appSetting(params)
         const appInfo = JSON.parse(appDetailJson)
         this.compData.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
       } catch(error) {
@@ -365,7 +365,7 @@ export default {
               }
         }
         console.log(self.compData.listFilters)
-        self.fetchAppSetting({
+        self.appSetting({
           en_seq: res.data.en_seq,
           hq_seq: res.data.hq_seq,
           br_seq: res.data.br_seq

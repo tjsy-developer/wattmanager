@@ -52,17 +52,20 @@ export default {
         this.loading = true
         this.setIframeUrl()
         window.addEventListener("message", (e) => {
+            console.log(e)
             const originURL = window.location.origin
-            if (e.origin == originURL) {
-                this.childData(e.data)
-            }
+            this.childData(e.data)
+            // if (e.origin == originURL) {
+            //     console.log(e.data)
+                
+            // }
         })
     },
     methods: {
         setIframeUrl() {
             let presentUrl = window.location.origin
             if (presentUrl.includes("localhost")) {
-                presentUrl =" https://dev.watttalk.kr:8222"
+                presentUrl = "http://localhost:5000"
             }
             const type = Number(sessionStorage.getItem("taskType"))
             let initLogSheetURL
@@ -99,17 +102,12 @@ export default {
         setReloadedPath(logsheetIframeURL) {
             const type = Number(sessionStorage.getItem("taskType"))
             // type 1: 안전패트롤, 2: 일일점검, 3: 메모, 4: tbm
-            if (type == 1 || type == 3) {
-                // 안전패트롤, 메모 reload
-                this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")    
+            if (!sessionStorage.getItem("path_name").includes("/temp") && !sessionStorage.getItem("path_name").includes("/setting") && !sessionStorage.getItem("path_name").includes("/logsheet/template")) {
+                // 일일점검, tbm 최초화면
+                this.logsheetURL = logsheetIframeURL
             } else {
-                if (!sessionStorage.getItem("path_name").includes("/temp") && !sessionStorage.getItem("path_name").includes("/setting") && !sessionStorage.getItem("path_name").includes("/logsheet/template")) {
-                    // 일일점검, tbm 최초화면
-                        this.logsheetURL = logsheetIframeURL
-                } else {
-                    // 일일점검, tbm 상세보기 화면
-                    this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")
-                }
+                // 일일점검, tbm 상세보기 화면
+                this.logsheetURL = 'http://localhost:5000' + sessionStorage.getItem("path_name")
             }
         },
         childData(params) {
@@ -235,6 +233,5 @@ iframe {
             max-width: 1554px;
         }
     }
-}
-	
+}	
 </style>

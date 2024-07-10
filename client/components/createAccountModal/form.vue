@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import axiosJson from "@/assets/jsons/axios"
-import getInfo from "@/assets/scripts/info/getInfo"
-import QRCode from "qrcode"
+import axiosJson from "@/assets/jsons/axios";
+import getInfo from "@/assets/scripts/info/getInfo";
+import QRCode from "qrcode";
 
-import { danalVerify } from "@/assets/scripts/danalVerify"
+import { danalVerify } from "@/assets/scripts/danalVerify";
 
 export default {
   components: {},
@@ -136,9 +136,7 @@ export default {
     },
     idCheckBtnClick() {
       if (this.id) {
-        // eslint-disable-next-line no-useless-escape
-        if (!/^[A-Za-z0-9_\-]{4,50}$/.test(this.id))
-          return alert(this.$t("account")[11])
+
         // eslint-disable-next-line no-global-assign
         self = this
         this.$axios
@@ -566,94 +564,10 @@ export default {
     },
     // 생년월일과 휴대폰번호 입력란 확인 함수
     filterKeyPress(params, type) {
-      const patern = /^\d+$/
-      if (type == 1) {
-        if (params.length != 11) {
-          return false
-        } else {
-          if (patern.test(params)) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-      else if (type == 2) {
-        if (params.length != 8) {
-          return false
-        } else {
-          if (patern.test(params)) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-      
     },
     // 비밀번호 규칙이 있을 경우만
     passWordPaternCheck() {
       if (this.checkPatern != "true" && this.pswPaternHD != "true") return
-      const psw = this.password
-
-      const capitalPatern = /[A-Z]/g
-      const lowerPatern = /[a-z]/g
-      const specialPatern = /[^A-Za-z0-9]/g
-      const numPatern = /\d+/g
-      const enPatern = /[A-Za-z]/g
-      
-      let checkPatern = 0
-
-      if (specialPatern.test(psw)) {
-        checkPatern = ++checkPatern
-      }
-      if (numPatern.test(psw)) {
-        checkPatern = ++checkPatern
-      }
-
-      if (this.checkPatern == "true") {
-        if (psw.length < 10) {
-          alert(this.$t("checkPswPatern")[1])
-          this.password = ""
-          return
-        }
-       
-        if (capitalPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-        if (lowerPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-
-        if(checkPatern < 2) {
-          alert(this.$t("checkPswPatern")[2])
-          this.password = ""
-          return
-        }
-
-      } else if (this.pswPaternHd == "true") {
-        let alertToast = false
-        if (enPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-        
-        if (checkPatern < 2) {
-          alertToast = true
-        } else if (checkPatern < 3 && psw.length < 10) {
-          alertToast = true
-        } else if (3 < checkPatern && psw.length < 8) {
-          alertToast = true
-          
-        }
-
-        if (alertToast == true) {
-          alert(this.$t("checkPswPatern")[3])
-          this.password = ""
-          return
-        }
-      }
-      return
-    }
   },
   mounted() {
     getInfo.setLang(this.$t("getInfo"))
@@ -693,7 +607,7 @@ export default {
     // 기업>본부>지사 선택시 2Factor값 확인하는 부분
     get2Factor() {
       if (this.enterpriseCompData.selectedValue && this.hqCompData.selectedValue && this.branchCompData.selectedValue) {
-        getInfo.fetchAppSetting({
+        getInfo.appSetting({
             en_seq: this.enterpriseCompData.selectedValue,
             hq_seq: this.hqCompData.selectedValue,
             br_seq: this.branchCompData.selectedValue,
