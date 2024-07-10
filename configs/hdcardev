@@ -14,26 +14,26 @@ powertalkLogin_local=""
 powertalkLogin="https://hdcardev.watttalk.kr/watttalk/login/login-check?jwt_token="
 
 # 와트 메모
-powermemo="https://hdcardev.watttalk.kr/storage/watttalk/hdcar"
-powermemoSavefolder="/storage/hdcar/watttalk/"
+powermemo="https://hdcardev.watttalk.kr/storage/watttalk"
+powermemoSavefolder="/storage/watttalk/"
 
 # QR
 qr="default"
 elecQR="false"
-elecFilePath="/storage/hdcar/watttalk/QR/file"
-elecFolderPath="/storage/hdcar/watttalk/QR/folder"
+elecFilePath="/storage/watttalk/QR/file"
+elecFolderPath="/storage/watttalk/QR/folder"
 
 # 자료 관리
 # 일반 사용자 자료 관리 접근 권한 (true: 부여, false: 미부여)
 att_access_user="true"
-att_videoPlayPath="https://hdcardev.watttalk.kr/storage/hdcar/watttalk/Dashs/Src/"
-att_filePath="https://hdcardev.watttalk.kr/storage/hdcar/watttalk/filebox/"
-detailFilePath="/storage/hdcar/watttalk/filebox/"
+att_videoPlayPath="https://hdcardev.watttalk.kr/storage/watttalk/Dashs/Src/"
+att_filePath="https://hdcardev.watttalk.kr/storage/watttalk/filebox/"
+detailFilePath="/storage/watttalk/filebox/"
 fileUploadBackend="https://hdcardev.watttalk.kr/wattmanager-server"
 
 # 프로필 사진
-profilePhotoSavefolder="/storage/hdcar/watttalk/profile"
-profilePhotoUrl="https://hdcardev.watttalk.kr/storage/hdcar/watttalk/profile/"
+profilePhotoSavefolder="/storage/watttalk/profile"
+profilePhotoUrl="https://hdcardev.watttalk.kr/storage/watttalk/profile/"
 
 # 로고
 useEnterprise="hdcar"
