@@ -52,6 +52,9 @@ checkPswPatern="false"
 # 자동 로그아웃
 forceLogout24="false"
 
+# 비밀번호 오류 시 계정 로그인 차단
+blockAcount="true"
+
 # 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
 impId=""
 pg=""
