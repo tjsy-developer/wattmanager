@@ -19,6 +19,7 @@ export default {
       token: "",
       defaultUserProfileBlob: "",
       compData: {
+        self: this,        
         useEnterprise: process.env.useEnterprise,
         userSeq: Number(this.$route.query.seq),
         listTitle: this.$t("user")[0],
@@ -35,6 +36,7 @@ export default {
         isGuest: "",
         editBtnClick() {
           let checkGuest = ""
+          const getSelf = this.self
           if (sessionStorage.getItem("editUserDeviceType") != 2) {
             if (getInfo.getInputValue(6) == "true") {
               checkGuest = 1
@@ -85,9 +87,9 @@ export default {
           const pattern = /\s/g
           if (getInfo.getInputValue(1).match(pattern)) {
           } else {
-            this.compData.check2Factor = sessionStorage.getItem("check2Factor")
+            getSelf.compData.check2Factor = sessionStorage.getItem("check2Factor")
             if (getInfo.getInputValue(0).includes("wattsupport")) {
-              this.compData.check2Factor = false
+              getSelf.compData.check2Factor = false
             }
             // 글라스가 아닌경우
             if (sessionStorage.getItem("editUserDeviceType") != 2) {
