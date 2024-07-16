@@ -6,7 +6,7 @@
         <span class="col-auto title">{{ $t("memo")[2] }}</span>
         <div class="col row justify-end">
           <changeViewType class="col-auto"></changeViewType>
-          <a class="col-auto createBtn" :href="'attachment/memo/create'">{{ $t("createAndEditComp")[0] }}</a>
+          <nuxt-link class="col-auto createBtn" to="'attachment/memo/create'">{{ $t("createAndEditComp")[0] }}</nuxt-link>
         </div>
         <div class="row col-12">
           <button v-if="$route.query.viewType == 'gallery'" class="row memoBtn" v-for="memo in compData.listData" @click="memoBtnClick(memo)">
