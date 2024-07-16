@@ -212,7 +212,7 @@ import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-;
+import getInfo from "@/assets/scripts/info/getInfo";
 
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
@@ -586,8 +586,8 @@ export default {
                     /* powertalk1으로 이동 */
                   } else {
                     const randomNumber =
-                      Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
-                    window.open("/powertalk/index.html?" + randomNumber, "_self");
+                    //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+                    // window.open("/powertalk/index.html?" + randomNumber, "_self");
                   }
                 }
               })

@@ -568,6 +568,7 @@ export default {
     // 비밀번호 규칙이 있을 경우만
     passWordPaternCheck() {
       if (this.checkPatern != "true" && this.pswPaternHD != "true") return
+    }
   },
   mounted() {
     getInfo.setLang(this.$t("getInfo"))

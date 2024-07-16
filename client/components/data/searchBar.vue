@@ -3,41 +3,41 @@
 		<div class="row justify-between items-center maxWidth">
 			<span class="col-auto title"> {{ $t("searchBarComp")[0] }}</span>
 			<div class="col-auto row">
-				<a
+				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					:href="'/attachment/video?page=1&viewType=' + $route.query.viewType"
+					to="'/attachment/video?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-video' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[1] }}
-				</a>
-				<a
+				</nuxt-link>
+				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					:href="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
+					to="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-picture' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[2] }}
-				</a>
-				<a
+				</nuxt-link>
+				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					:href="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
+					to="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-favorite' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[3] }}
-				</a>
-				<a
+				</nuxt-link>
+				<nuxt-link
 					class="col-auto tab"
-					:href="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
+					to="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("memo")[1] }}
-				</a>
+				</nuxt-link>
 			</div>
 			<div class="col-12 row items-center search">
 				<div class="col-auto searchText">{{ $t("searchBarComp")[4] }}</div>
