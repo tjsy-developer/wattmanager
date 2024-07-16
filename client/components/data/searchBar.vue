@@ -6,7 +6,7 @@
 				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					to="'/attachment/video?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/video?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-video' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
@@ -15,7 +15,7 @@
 				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					to="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-picture' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
@@ -24,7 +24,7 @@
 				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					to="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-favorite' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
@@ -32,7 +32,7 @@
 				</nuxt-link>
 				<nuxt-link
 					class="col-auto tab"
-					to="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>

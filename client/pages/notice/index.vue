@@ -7,7 +7,7 @@
       <div class="col-12 row justify-center">
         <div class="row justify-between subTitleDiv">
           <span class="col-auto subTitle">{{ compData.listTitle }}</span>
-          <nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" to="$route.name + '/create'">{{ $t("createAndEditComp")[0] }}</nuxt-link>
+          <nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :to="$route.name + '/create'">{{ $t("createAndEditComp")[0] }}</nuxt-link>
         </div>
       </div>
       <div class="col-12 row content-start list">
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="col-12 row contents">
-          <nuxt-link class="contentA col-12 row" v-for="(contents, contentskey) in compData.listData" :key="contentskey" to="$route.name + '/detail?seq=' + contents[contents.length-1]">
+          <nuxt-link class="contentA col-12 row" v-for="(contents, contentskey) in compData.listData" :key="contentskey" :to="$route.name + '/detail?seq=' + contents[contents.length-1]">
             <span :style="{ width: compData.listFilters[0].width+'px' }">{{contentskey+1+compData.contentsPerPage*($route.query.page -1)}}</span>
             <div
               class="row justify-center items-center content"

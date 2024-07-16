@@ -34,7 +34,7 @@
 				<div class="col-12 row justify-end list">
 					<div class="col-4 row items-end">
 						<span class="row items-end col-auto subTitle">{{ compData.listTitle }}</span>
-						<nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" to="$route.name + '/create'">
+						<nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :to="$route.name + '/create'">
 							{{ $t("createAndEditComp")[0] }}
 						</nuxt-link>
 					</div>
@@ -70,7 +70,7 @@
 				<div v-if="false" class="col-12 row justify-end list">
 					<div class="col-12 row items-end">
 						<span class="row items-end col-auto subTitle">참여자 통화 시간</span>
-						<nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" to="$route.name + '/create'">
+						<nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :to="$route.name + '/create'">
 							{{ $t("createAndEditComp")[0] }}
 						</nuxt-link>
 					</div>

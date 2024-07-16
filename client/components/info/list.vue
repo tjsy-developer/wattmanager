@@ -45,10 +45,10 @@
           :class="[ compData.listFilters[compData.listFilters.length-1].width?'col-auto':'col' ]"
           :style="{ width: compData.listFilters[compData.listFilters.length-1].width+'px' }"
         >
-          <nuxt-link v-if="contents[contents.length-1].auth && $route.name != 'upload'" to="$route.name + '/edit?seq=' + contents[contents.length-1].seq">
+          <nuxt-link v-if="contents[contents.length-1].auth && $route.name != 'upload'" :to="$route.name + '/edit?seq=' + contents[contents.length-1].seq">
             <img src="@/assets/images/member_list_icon_edit.png" />
           </nuxt-link>
-          <nuxt-link v-else-if="contents[contents.length-1].auth == false && $route.name == 'user'" to="$route.name + '/edit?seq=' + contents[contents.length-1].seq"></nuxt-link>
+          <nuxt-link v-else-if="contents[contents.length-1].auth == false && $route.name == 'user'" :to="$route.name + '/edit?seq=' + contents[contents.length-1].seq"></nuxt-link>
           <div v-else-if="$route.name == 'upload'" class="upload">
             <button v-if="$route.query.viewType == 'upload'" style="padding-right: 10px;" disabled>
               <img src="@/assets/images/list_icon_download.png" />
@@ -63,7 +63,7 @@
               <img src="@/assets/images/ic_trash.png" />
             </button>
           </div>
-          <nuxt-link v-else to="$route.name + '/edit?seq=' + contents[0]">
+          <nuxt-link v-else :to="$route.name + '/edit?seq=' + contents[0]">
             <img src="@/assets/images/member_list_icon_edit.png" />
           </nuxt-link>
         </div>
