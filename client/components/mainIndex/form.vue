@@ -206,13 +206,13 @@
 <script>
 import axiosJson from "@/assets/jsons/axios";
 import cookieSetting from "@/assets/scripts/data/cookie";
+import getInfo from "@/assets/scripts/info/getInfo";
 import createAccountModal from "@/components/createAccountModal/form";
 import forgotPasswordModal from "@/components/forgotPasswordModal/form";
 import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-import getInfo from "@/assets/scripts/info/getInfo";
 
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
@@ -585,7 +585,7 @@ export default {
                     }
                     /* powertalk1으로 이동 */
                   } else {
-                    const randomNumber =
+                    // const randomNumber =
                     //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
                     // window.open("/powertalk/index.html?" + randomNumber, "_self");
                   }
