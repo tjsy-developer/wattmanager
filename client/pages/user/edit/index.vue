@@ -87,7 +87,6 @@ export default {
           const pattern = /\s/g
           if (getInfo.getInputValue(1).match(pattern)) {
           } else {
-            getSelf.compData.check2Factor = sessionStorage.getItem("check2Factor")
             if (getInfo.getInputValue(0).includes("wattsupport")) {
               getSelf.compData.check2Factor = false
             }
@@ -395,9 +394,10 @@ export default {
                             )
                             .then(function(userInfoOneAppList) {
                               if (userInfoOneAppList.data) {
-                                const getGlassAppRange = self.compData.selected[8].split(
+                              console.log(userInfoOneAppList)
+                                const getGlassAppRange = self.compData.selected[8]?.split(
                                   "|"
-                                )
+                                ) || []
                                 self.compData.listFilters[9].checkboxCompData.selected = getGlassAppRange.slice(
                                   0,
                                   getGlassAppRange.length - 1
