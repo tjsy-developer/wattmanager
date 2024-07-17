@@ -3,7 +3,7 @@ port="3000"
 
 # 와트매니저 백엔드
 backendURL_local=""
-backendURL="https://meetdev.watttalk.kr/"
+backendURL="https://meetdev.watttalk.kr/wattmanager-server/"
 
 # 와트매니저2 백엔드
 manager2serverURL="/wattmanager2-server/"
