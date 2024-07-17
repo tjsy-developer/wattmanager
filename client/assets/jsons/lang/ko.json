@@ -537,5 +537,6 @@
     "memo2: 메모 메뉴를 보여줄지 여부 값((True/False)\nmemo2Title: manager2에 보내는 parameter & 한글 헤더\nmemo2TitleEn: 영어 헤더\nmemo2MenuKo: 메모 한글 메뉴명\nmemo2MenuEn: 메모 영어 메뉴명\nmemo2TemplatID: 메모 템플릿 id",
     "tbm: tbm(logsheet) 메뉴를 보여줄지 여부 값(True/False)\ntbmTitle: manager2에 보내는 parameter & 한글 헤더\ntbmTitleEn: 영어 헤더\ntbmMenuKo: tbm 한글 메뉴명\ntbmMenuEn: tbm 영어 메뉴명\ntbmTemplateID: tbm 템플릿 id"
   ],
-  "copyAppdetailJson": "앱 상세정보에 추가"
+  "copyAppdetailJson": "앱 상세정보에 추가",
+  "loginBlock":"로그인 10회 실패로 인해 1시간동안 계정이 잠금되었습니다."
 }

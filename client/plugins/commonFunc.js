@@ -70,31 +70,19 @@ Vue.mixin({
           logSheetTitle = sessionStorage.getItem("tbmTitle")
           break
       }
-      if (type == 2 || type == 4) {
-        url = "?en_seq=" + sessionStorage.getItem("enSeq")+
-          "&hq_seq=" + sessionStorage.getItem("hqSeq")+
+      url = "?en_seq=" + sessionStorage.getItem("enSeq") +
+          "&hq_seq=" + sessionStorage.getItem("hqSeq") +
           "&br_seq=" + sessionStorage.getItem("brSeq") +
           "&auth=" + sessionStorage.getItem("auth") +
           "&user_id=" + sessionStorage.getItem("id") +
           "&user_name=" + sessionStorage.getItem("userName") +
           "&version=1&lang=" + sessionStorage.getItem("languageCode") +
           "&task_type=" + type
-        if (sessionStorage.getItem("id") != "administrator") {
-          url = url + "&iframe_title=" + logSheetTitle + templateID
-        }
-      } else {
-        url = "?en_seq=" + sessionStorage.getItem("enSeq")+
-          "&hq_seq=" + sessionStorage.getItem("hqSeq")+
-          "&br_seq=" + sessionStorage.getItem("brSeq") +
-          "&auth=" + sessionStorage.getItem("auth") +
-          "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-          "&user_id=" + sessionStorage.getItem("id") +
-          "&user_name=" + sessionStorage.getItem("userName") +
-          "&task_type=" + type
-        if (sessionStorage.getItem("id") != "administrator") {
-          url = url + 
-          "&iframe_title=" + logSheetTitle + templateID
-        }
+      if (sessionStorage.getItem('init')) {
+        url = url + '&init=true'
+      }
+      if (sessionStorage.getItem("id") != "administrator") {
+        url = url + "&iframe_title=" + logSheetTitle + templateID
       }
       return url
     }

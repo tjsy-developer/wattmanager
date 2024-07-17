@@ -54,18 +54,18 @@ export default {
             })
             .then(function (response) {
                 const params ={
-                        loginData: self.propsData.loginData,
-                        isMember: self.propsData.isMember,
-                        userId: self.propsData.id,
-                        reservId: self.propsData.reservId,
-                        lang: self.propsData.language,
-                        type: self.propsData.type,
-                        name: response.data.name,
-                        phone: response.data.phone_number,
-                        birthday: response.data.birthday,
-                        id: response.data.id,
-                        changePsw: self.checkChangeDate
-                    }
+                    loginData: self.propsData.loginData,
+                    isMember: self.propsData.isMember,
+                    userId: self.propsData.id,
+                    reservId: self.propsData.reservId,
+                    lang: self.propsData.language,
+                    type: self.propsData.type,
+                    name: response.data.name,
+                    phone: response.data.phone_number,
+                    birthday: response.data.birthday,
+                    id: response.data.id,
+                    changePsw: self.checkChangeDate
+                }
                 
                 danalVerify(params, 0)
             })
@@ -85,7 +85,6 @@ export default {
                     modalType: type
                 }
                 this.$modal.show(
-                    // eslint-disable-next-line eqeqeq
                     pswChangeModal,
                     {
                         propsData: modalParameter
@@ -104,30 +103,51 @@ export default {
                     }
                 );
             }
+        },
+        checkPswChange() {
+            const self = this
+            // 앱 정보 확인
+            this.$axios
+                .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+                    en_seq: Number(sessionStorage.getItem("enSeq")),
+                    hq_seq: Number(sessionStorage.getItem("hqSeq")),
+                    br_seq: Number(sessionStorage.getItem("brSeq"))
+                })
+                .then((res) => {
+                    if (res.data.length > 0) {
+                        const jsonAppList = res.data[0].app_detail_json
+                        const appList = JSON.parse(jsonAppList)
+                        // 앱정보의 비밀번호 변경 안내 가 true이고 글라스가 아니며 admin이 아닌경우 비밀번호 변경일을 가져 옴
+                        if (appList["pswChangeAlert"] == "True" && sessionStorage.getItem("deviceType") != 2 && sessionStorage.getItem("auth") !== 4) {
+                            self.$axios
+                            .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
+                                id: self.propsData.id
+                            })
+                            .then((response) => {
+                                const changedDate =  response.data // 비밀번호 변경한 날자 (unixtime으로 옴 초까지만!!!!!!)
+                                const now = Math.floor(new Date().getTime() / 1000) // 현재 시간
+                                const unixChangeDuration = Number(appList["changeDuration"]) *24 * 60 * 60 // 앱정보에서 받은 설정 날자로 셋팅
+                                if (now > changedDate + unixChangeDuration) {
+                                    self.checkChangeDate = true
+                                } else {
+                                    self.checkChangeDate = false
+                                }
+                            })
+                            .catch((err) => {
+                                console.log("getChangeDate Err: ", err)
+                            })
+                        }
+                    }
+                })
+                .catch((err) => {
+                    console.log(`get app info one error : ${{err}}`)
+                })
         }
     },
     mounted() {
-        if (process.env.useEnterprise == "dlenc" && sessionStorage.getItem("deviceType") != 2 && sessionStorage.getItem("auth") !== 4) {
-            this.$axios
-            .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
-                id: this.propsData.id
-            })
-            .then((res) => {
-                const changedDate =  res.data // 비밀번호 변경한 날자 (unixtime으로 옴 초까지만!!!!!!)
-                const now = Math.floor(new Date().getTime() / 1000) // 현재 시간
-                const unix180Day = 180 *24 * 60 * 60 // 180일
-                console.log(changedDate + unix180Day)
-                console.log(now)
-                if (now > changedDate + unix180Day) {
-                    this.checkChangeDate = true
-                } else {
-                    this.checkChangeDate = false
-                }
-            })
-            .catch((err) => {
-                console.log("getChangeDate Err: ", err)
-            })
-        }
+        // 비밀번호 변경 안내 모달 띄울지 여부 확인
+        this.checkPswChange()
+        // 본인인증이 끝나고 비밀번호 변경 모달을 띄우는 것
         window.addEventListener("finishVerifyOpenChangePsw", (e) => {
             this.openChangePswModal(e.detail, 2)
         })
