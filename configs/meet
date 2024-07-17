@@ -32,8 +32,8 @@ detailFilePath="/storage/watttalk/filebox"
 fileUploadBackend="https://meetdev.watttalk.kr/wattmanager-server/"
 
 # 프로필 사진
-profilePhotoSavefolder="/storage"
-profilePhotoUrl="https://meetdev.watttalk.kr/storage"
+profilePhotoSavefolder="/storage/watttalk/profile"
+profilePhotoUrl="https://meetdev.watttalk.kr/storage/watttalk/profile/"
 
 # 로고
 useEnterprise="watt"
