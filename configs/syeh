@@ -29,7 +29,7 @@ att_access_user="true"
 att_videoPlayPath="https://syeh.watttalk.kr/storage/watttalk/Dashs/Src/"
 att_filePath="https://syeh.watttalk.kr/storage/watttalk/filebox/"
 detailFilePath="/storage/watttalk/filebox/"
-fileUploadBackend="https://syeh.watttalk.kr/wattmanager-server"
+fileUploadBackend="https://syeh.watttalk.kr/watttalk/wattmanager-server/"
 
 # 프로필 사진
 profilePhotoSavefolder="/storage/watttalk/profile"
@@ -44,7 +44,7 @@ use_bento4="false"
 # 파일함
 # 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
 separateBackendUploadPath="false"
-fileBoxBackend="https://syeh.watttalk.kr/wattmanager-server"
+fileBoxBackend="https://syeh.watttalk.kr/watttalk/wattmanager-server/"
 
 # 비밀번호 보안 적용
 checkPswPatern="false"
