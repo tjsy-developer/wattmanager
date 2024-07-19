@@ -29,7 +29,7 @@ att_access_user="true"
 att_videoPlayPath="https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/Dashs/Src/"
 att_filePath="https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/filebox/"
 detailFilePath="/data/Storage/watttalk/hdcar/filebox/"
-fileUploadBackend="https://sg.auto-hmg.io:8205/wattmanager-server"
+fileUploadBackend="https://sg.auto-hmg.io:8205/wattmanager-server/"
 
 # 프로필 사진
 profilePhotoSavefolder="/data/Storage/watttalk/hdcar/profile"
@@ -44,7 +44,7 @@ use_bento4="false"
 # 파일함
 # 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
 separateBackendUploadPath="false"
-fileBoxBackend="https://sg.auto-hmg.io:8205/wattmanager-server"
+fileBoxBackend="https://sg.auto-hmg.io:8205/wattmanager-server/"
 
 # 비밀번호 보안 적용
 checkPswPatern="false"
