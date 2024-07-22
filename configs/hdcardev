@@ -46,7 +46,8 @@ separateBackendUploadPath="false"
 fileBoxBackend="https://hdcardev.watttalk.kr/wattmanager-server/"
 
 # 비밀번호 보안 적용
-checkPswPatern="false"
+checkPswPatern="true"
+pwdRulesType=3
 
 # 자동 로그아웃
 forceLogout24="false"

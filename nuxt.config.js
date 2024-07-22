@@ -165,6 +165,7 @@ export default {
     kepcoLogin: process.env.kepcoLogin,
     smarttbmURL: process.env.smarttbmURL,
     manager2serverURL: process.env.manager2serverURL,
-    pswPaternHD: process.env.pswPaternHD
+    pswPaternHD: process.env.pswPaternHD,
+    pwdRulesType: process.env.pwdRulesType
   }
 }

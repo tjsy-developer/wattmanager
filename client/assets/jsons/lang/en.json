@@ -524,9 +524,9 @@
   "zipDownload": "Save All Attachments",
   "checkPswPatern": [
     "* The password must be at least 10 characters, including upper/lower case and special characters.",
-    "The password must be at least 10 characters long.",
-    "The password must contain upper/lower case and special characters.",
-    "The password must be at least 10 digits combined with at least 2 types of English, numbers, and special characters, or at least 8 digits combined with 3 types."
+    "* The password must be at least 10 characters long.",
+    "* The password must contain upper/lower case and special characters.",
+    "* The password must be at least 8 characters long and include at least 3 of the following types: English letters, numbers, and special characters."
   ],
   "alertChangePsw": [
     "Guidance to Change Password",
@@ -558,5 +558,6 @@
   "loginBlock":[
     "Account has been locked for 1 hour due to 10 times login failure",
     "Your account has not been approved due to 90 days of non-access. Please contact your administrator."
-  ]
+  ],
+  "incorrectPwdFormat" : "The password format is incorrect"
 }

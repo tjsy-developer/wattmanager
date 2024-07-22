@@ -85,6 +85,26 @@ Vue.mixin({
         url = url + "&iframe_title=" + logSheetTitle + templateID
       }
       return url
+    },
+    isValidPassword(value) {
+      const rulesType = Number(process.env.pwdRulesType)
+      let passwordRegex
+      switch (rulesType) {
+        case 0:
+          passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{10,}$/;
+          return passwordRegex.test(value)
+        case 1:
+          passwordRegex = /^.{10,}$/
+          return passwordRegex.test(value)
+        case 2:
+          passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/
+          return passwordRegex.test(value)
+        case 3:
+          passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/; 
+          return passwordRegex.test(value)
+        default:
+          return true
+      }
     }
   },
 });
