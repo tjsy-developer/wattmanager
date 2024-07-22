@@ -11,7 +11,7 @@ manager2serverURL="/wattmanager2-server/"
 # 와트톡
 powertlakState="loginCheck"
 powertalkLogin_local=""
-powertalkLogin="https://meetdev.watttalk.kr/login/login-check?jwt_token="
+powertalkLogin="https://meetdev.watttalk.kr/watttalk/login/login-check?jwt_token="
 
 # 와트 메모
 powermemo="https://meetdev.watttalk.kr/storage/powermemo"
