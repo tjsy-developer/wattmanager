@@ -95,7 +95,7 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.state.login.permissionLevel < 3) {
+    if (this.$store.state.user.permissionLevel < 3) {
       this.$router.replace('/err/404');
     }
     this.enSeq = sessionStorage.getItem("enSeq")

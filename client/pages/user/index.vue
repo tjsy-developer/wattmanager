@@ -81,7 +81,7 @@ export default {
   },
   mounted() {
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
-    if (this.$store.state.login.permissionLevel < 1) {
+    if (this.$store.state.user.permissionLevel < 1) {
       this.$router.replace('/err/404');
     }
   }
