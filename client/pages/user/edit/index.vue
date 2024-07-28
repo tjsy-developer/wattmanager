@@ -241,6 +241,9 @@ export default {
         jwt: this.token
       })
       .then(function (res) {
+        if (self.$store.state.login.permissionLevel <= res.data.auth) {
+          self.$router.replace('/err/404');
+        }
         sessionStorage.setItem("editUserDeviceType", res.data.device_type)
         if (res.data.phone_number) {
               self.phoneNumber = res.data.phone_number

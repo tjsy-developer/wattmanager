@@ -443,6 +443,7 @@ export default {
             /* ID 기억기능 쿠키저장 */
             // cookieSetting.setCookie("logined", userId, 3)
 
+            self.$store.dispatch('user/login', { permissionLevel:  response.data[1].auth })
             /* 로그인 사용자의 정보 저장 */
             sessionStorage.setItem("jwt", response.data[2]);
             sessionStorage.setItem("userSeq", response.data[1].user_seq);

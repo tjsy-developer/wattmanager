@@ -57,7 +57,8 @@ export default {
     "@plugins/globalComponents",
     "@plugins/globalDirectives",
     "@plugins/globalMethods",
-    "@plugins/vue-js-modal"
+    "@plugins/vue-js-modal",
+    "@plugins/vuex-persistedstate",
   ],
 
   /*

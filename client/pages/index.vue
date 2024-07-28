@@ -4,11 +4,9 @@
   </div>
 </template>
 <script>
-import axiosJson from "@/assets/jsons/axios"
-import loginForm from "@/components/mainIndex/form"
-import transModal from "@/components/info/transModal"
+import transModal from "@/components/info/transModal";
+import loginForm from "@/components/mainIndex/form";
 
-import cookieSetting from "@/assets/scripts/data/cookie"
 export default {
   data() {
     return {
@@ -63,6 +61,7 @@ export default {
   },
   mounted() {
     this.domainCheck()
+    this.$store.dispatch('user/logout')
   },
   components: {
     loginForm,
