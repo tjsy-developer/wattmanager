@@ -326,8 +326,8 @@ export default {
                   res.data.name,
                   res.data.name_en,
                   res.data.email,
-                  res.data.phone_number,
-                  res.data.birthday,
+                  res.data.phone_number || '',
+                  res.data.birthday || '',
                   res.data.image ? res.data.image : undefined
                 ]
               }
