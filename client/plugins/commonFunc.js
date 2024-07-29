@@ -107,7 +107,6 @@ Vue.mixin({
       }
     },
     async convertImageToBlob(src) {
-      console.log(src)
       try {
         const result = await axios
           .get(
@@ -117,7 +116,6 @@ Vue.mixin({
               responseType: "blob",
             }
         )
-        console.log(result)
         let blobURL = ''
         if (result.status === 200) {
           blobURL = URL.createObjectURL(result.data)
