@@ -172,6 +172,10 @@ export default {
                   getListData[i].file_type === "picture"
                     ? getListData[i].file_path + "/" + getListData[i].file_name
                     : undefined,
+                originalBlob: 
+                  getListData[i].file_type === "picture"
+                    ? self.blobPictureURL[self.blobPictureURL.length - 1]
+                    : undefined,
                 title: getListData[i].title,
                 code: getListData[i].category,
                 people: getListData[i].joined_members,

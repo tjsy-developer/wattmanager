@@ -95,6 +95,7 @@ export default {
                     imgName:
                       getListData[i].file_path + "/" + getListData[i].file_name,
                     img: self.blobPictureURL[self.blobPictureURL.length - 1],
+                    originalBlob: self.blobPictureURL[self.blobPictureURL.length - 1],
                     title: getListData[i].title,
                     code: getListData[i].category,
                     people: getListData[i].joined_members,

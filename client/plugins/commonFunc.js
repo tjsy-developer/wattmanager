@@ -1,6 +1,6 @@
 /* 2021.01.26 common Func :: ksh */
+import axios from 'axios';
 import Vue from "vue";
-
 Vue.mixin({
   methods: {
     // checkLoginTime() {
@@ -105,6 +105,28 @@ Vue.mixin({
         default:
           return true
       }
+    },
+    async convertImageToBlob(src) {
+      console.log(src)
+      try {
+        const result = await axios
+          .get(
+            src,
+            {
+              timeout: 4000,
+              responseType: "blob",
+            }
+        )
+        console.log(result)
+        let blobURL = ''
+        if (result.status === 200) {
+          blobURL = URL.createObjectURL(result.data)
+        }
+        return blobURL
+      } catch (err) {
+        return ''
+      }
+      
     }
   },
 });

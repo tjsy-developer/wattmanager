@@ -11,7 +11,7 @@
         <div class="row col-12">
           <button v-if="$route.query.viewType == 'gallery'" class="row memoBtn" v-for="memo in compData.listData" @click="memoBtnClick(memo)">
             <div v-if="memo.thumbnailName != null" class="col-12 row memoImgContainer">
-              <img class="memoImg" :src="webServerFilePathJson.thumbnail + memo.thumbnailName" />
+              <img class="memoImg" :src="memo.thumbnailBlob" />
               <div v-if="memo.fileType == 'V'" class="col-12 row justify-center items-center markImg">
                 <img src="@/assets/images/list_icon_play50.png" />
               </div>
@@ -28,7 +28,7 @@
           </button>
           <button v-else class="col-12 row items-center listViewMemoBtn" @click="memoBtnClick(memo)">
             <div v-if="memo.thumbnailName != null" class="col-auto row listViewMemoImgContainer">
-              <img class="memoImg" :src="webServerFilePathJson.thumbnail + memo.thumbnailName" />
+              <img class="memoImg" :src="memo.thumbnailBlob" />
               <div v-if="memo.fileType == 'V'" class="col-12 row justify-center items-center markImg">
                 <img src="@/assets/images/list_icon_play50.png" />
               </div>
@@ -58,7 +58,8 @@ import changeViewType from "@/components/data/changeViewType"
 
 
 const baseUrl = process.env.powermemo
-
+const originnalPath = "/PowerMemo/Original/"
+const thumbnailPath = "/PowerMemo/Thumbnail/"
 // "https://powermanagercloud.powertalk.co.kr/sftp/powermanager/PowerMemo/" // watt
 // const baseUrl = "https://samsungengineeringcloud.powertalk.kr/sftp/smartg/PowerMemo/" //samsung
 // const baseUrl = "https://kpjbcloud.powertalk.co.kr/sftp/kpjb/PowerMemo/" //kpjb
@@ -85,8 +86,11 @@ export default {
           keyword: "",
           page: 0
         },
-        setListData(getListData) {
-          for (let i = 0; i < getListData.length; i++)
+        getBlob: undefined,
+        async setListData(getListData) {
+          for (let i = 0; i < getListData.length; i++) {
+            // const originalBlob = await this.getBlob(baseUrl + originnalPath + getListData[i].thumbnail_name)
+            const thumbnailBlob = await this.getBlob(baseUrl + thumbnailPath + getListData[i].thumbnail_name)
             this.listData.push({
               seq: getListData[i].memo_seq,
               contents: getListData[i].memo_contents,
@@ -96,9 +100,12 @@ export default {
               thumbnailName: getListData[i].thumbnail_name,
               fileType: getListData[i].file_type,
               writerHqSeq: getListData[i].hq_seq,
-              writerBrSeq: getListData[i].br_seq
+              writerBrSeq: getListData[i].br_seq,
+              // originalBlob: originalBlob,
+              thumbnailBlob: thumbnailBlob
             })
-        }
+          }
+        }  
       }
     }
   },
@@ -114,7 +121,17 @@ export default {
           memo_seq: memo.seq,
           jwt: sessionStorage.getItem("jwt")
         })
-        .then(function(res) {
+        .then(async function (res) {
+          // 모든 `getBlob` 요청을 위한 배열을 준비합니다.
+          const blobPromises = res.data.map(async (element) => {
+            if (element.file_type === "P") {
+              element.originalBlob = await self.compData.getBlob(baseUrl + originnalPath + element.original_name);
+              element.thumbnailBlob = await self.compData.getBlob(baseUrl + thumbnailPath + element.thumbnail_name);
+            } else if (element.file_type === "V" || element.file_type === "F") {
+              element.thumbnailBlob = await self.compData.getBlob(baseUrl + thumbnailPath + element.thumbnail_name);
+            }
+          });
+          await Promise.all(blobPromises);
           self.$modal.show(
             memoModal,
             {
@@ -177,6 +194,7 @@ export default {
     // console.log(this.webServerFilePathJson.thumbnail)
     this.compData.getListDataParams.en_seq = sessionStorage.getItem("enSeq")
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
+    this.compData.getBlob = this.convertImageToBlob
   }
 }
 </script>

@@ -240,7 +240,7 @@ export default {
         user_seq: self.compData.userSeq,
         jwt: this.token
       })
-      .then(function (res) {
+      .then(async function (res) {
         if (self.$store.state.user.permissionLevel <= res.data.auth) {
           self.$router.replace('/err/404');
         }
@@ -253,6 +253,9 @@ export default {
             }
             if (res.data.guest) {
               self.compData.isGuest = res.data.guest
+            }
+            if (res.data.image) {
+              res.data.image = await self.convertImageToBlob(res.data.image)
             }
             // 글라스가 아닌 경우
             if (res.data.device_type != 2) {

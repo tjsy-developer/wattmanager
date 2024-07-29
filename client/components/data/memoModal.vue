@@ -5,16 +5,16 @@
       <button class="colseButton" @click="closeClick">X</button>
     </div>
     <div class="col row full-width contentsContainer">
-      <div v-if="files.length != 0" v-for="(file, fileKey) in files" :key="fileKey" class="col-12 row file">
-        <img v-if="file.file_type == 'P'" class="col-12" :src="webServerFilePathJson.original + file.original_name" />
+      <div v-if="files.length != 0" v-for="(file, fileKey) in files" :key="file.fileKey" class="col-12 row file">
+        <img v-if="file.file_type == 'P'" class="col-12" :src="file.originalBlob" :key="file.originalBlob" />
         <video
           v-else-if="file.file_type == 'V'"
           class="col-12"
           :src="webServerFilePathJson.original + file.original_name"
-          :poster="webServerFilePathJson.thumbnail + file.thumbnail_name"
+          :poster="file.thumbnailBlob"
           controls
         />
-        <img v-else :src="webServerFilePathJson.thumbnail + file.thumbnail_name" />
+        <img v-else :src="file.thumbnailBlob" />
         <button v-if="file.file_type == 'F'" class="pdfViewFile" @click="openPdf(webServerFilePathJson.original + file.original_name)">
           PDF {{ $t("open") }}
         </button>
@@ -113,7 +113,7 @@ export default {
     },
     saveFileClick(file) {
       const link = document.createElement("a")
-      const dataUrl = this.webServerFilePathJson.original + file.original_name
+      const dataUrl = file.originalBlob || this.webServerFilePathJson.original + file.original_name
       link.style.display = "none"
       link.href = dataUrl
       link.download = file.original_name
