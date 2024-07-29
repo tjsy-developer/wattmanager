@@ -81,7 +81,7 @@ export default {
           try {
             for (let i = 4; i < getInput.length - 1; i++) {
               // eslint-disable-next-line no-throw-literal
-              if (!getInput[i].value && getSelf.auth != 4) throw "input undefined"
+              // if (!getInput[i].value && getSelf.auth != 4) throw "input undefined"
             }
             const pattern = /\s/g
             if (getInfo.getInputValue(4).match(pattern)) {
