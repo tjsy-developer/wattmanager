@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams";
 
 export default {
   layout: "main",
@@ -39,7 +39,8 @@ export default {
                   getListData[i].file_path +
                     "/capture_images/" +
                     getListData[i].file_name.split(".")[0] +
-                    ".png",
+                    ".png"
+                    + `?token=${sessionStorage.getItem("jwt")}`,
                   {
                     responseType: "blob"
                   }
