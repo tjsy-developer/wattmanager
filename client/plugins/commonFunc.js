@@ -110,7 +110,7 @@ Vue.mixin({
       try {
         const result = await axios
           .get(
-            src,
+            src + `?token=${sessionStorage.getItem("jwt")}`,
             {
               timeout: 4000,
               responseType: "blob",
