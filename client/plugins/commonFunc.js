@@ -114,6 +114,9 @@ Vue.mixin({
             {
               timeout: 4000,
               responseType: "blob",
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("jwt")}`
+              }
             }
         )
         let blobURL = ''
