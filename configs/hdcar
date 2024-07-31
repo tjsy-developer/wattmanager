@@ -32,7 +32,7 @@ detailFilePath="/data/Storage/watttalk/hdcar/filebox/"
 fileUploadBackend="https://sg.auto-hmg.io:8205/wattmanager-server/"
 
 # 프로필 사진
-profilePhotoSavefolder="/data/Storage/watttalk/hdcar/profile"
+profilePhotoSavefolder="/storage/watttalk/profile/"
 profilePhotoUrl="https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/profile/"
 
 # 로고

@@ -31,7 +31,7 @@ att_filePath="https://hdcardev.watttalk.kr/storage/watttalk/filebox/"
 detailFilePath="/storage/watttalk/filebox/"
 fileUploadBackend="https://hdcardev.watttalk.kr/wattmanager-server/"
 # 프로필 사진
-profilePhotoSavefolder="/storage/watttalk/profile"
+profilePhotoSavefolder="/storage/watttalk/profile/"
 profilePhotoUrl="https://hdcardev.watttalk.kr/storage/watttalk/profile/"
 
 # 로고

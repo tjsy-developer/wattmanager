@@ -32,7 +32,7 @@ detailFilePath="/storage/watttalk/filebox/"
 fileUploadBackend="https://syeh.watttalk.kr/watttalk/wattmanager-server/"
 
 # 프로필 사진
-profilePhotoSavefolder="/storage/watttalk/profile"
+profilePhotoSavefolder="/storage/watttalk/profile/"
 profilePhotoUrl="https://syeh.watttalk.kr/watttalk/storage/watttalk/profile/"
 
 # 로고
