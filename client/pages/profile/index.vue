@@ -294,15 +294,15 @@ export default {
         jwt: sessionStorage.getItem("jwt")
       })
       .then(async function(res) {
-        console.log(res)
+
         sessionStorage.setItem("deviceType", res.data.device_type)
 
             if (res.data.image) {
               let checkAdmin = false
               if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
                 checkAdmin = true
-                res.data.image = await self.convertImageToBlob(res.data.image)
               }
+              res.data.image = await self.convertImageToBlob(res.data.image)
               // 글라스 혹은 admin 계정
               if (checkAdmin == true || res.data.device_type == 2){
                 self.compData.listFilters.splice(8, 2)
