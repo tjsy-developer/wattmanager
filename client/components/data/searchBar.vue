@@ -32,6 +32,7 @@
 				</nuxt-link>
 				<nuxt-link
 					class="col-auto tab"
+					v-if="showMemo"
 					:to="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
@@ -59,7 +60,8 @@ export default {
       inputVal: "",
       auth: 0,
       // eslint-disable-next-line eqeqeq
-      attViewAuth: false
+      attViewAuth: false,
+      showMemo: false
       // eslint-disable-next-line eqeqeq
     }
   },
@@ -88,6 +90,24 @@ export default {
         this.$route.path + "?page=1&viewType=" + this.$route.query.viewType,
         "_self"
       )
+    },
+    getAppInfo() {
+    	this.$axios
+    		.post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+          en_seq: Number(sessionStorage.getItem("enSeq")),
+          hq_seq: Number(sessionStorage.getItem("hqSeq")),
+          br_seq: Number(sessionStorage.getItem("brSeq"))
+        })
+    		.then((res) => {
+    			const jsonAppList = res.data[0].app_detail_json
+          const appList = JSON.parse(jsonAppList)
+		      // 와트매니저1 메모 보여줄지 여부
+		      if (appList["showMemo1"] == "True") {
+		        this.showMemo = true
+		      } else {
+		        this.showMemo = false
+		      }
+    		})
     }
   },
   mounted() {
@@ -107,6 +127,7 @@ export default {
     }
     console.log(this.attViewAuth)
   }
+  this.getAppInfo()
 }
 </script>
 

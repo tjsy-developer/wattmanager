@@ -129,7 +129,7 @@ export default {
    */
   server: {
     host: "0.0.0.0",
-    port: 8323
+    port: 3000
   },
   publicRuntimeConfig: {
     port: process.env.port,
@@ -159,6 +159,7 @@ export default {
     logsheet: process.env.logsheet,
     checkPswPatern: process.env.checkPswPatern,
     forceLogout24: process.env.forceLogout24,
+    blockAcount: process.env.blockAcount,
     impId: process.env.impId,
     pg: process.env.pg,
     kepcoLogin: process.env.kepcoLogin,

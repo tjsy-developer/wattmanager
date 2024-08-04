@@ -77,7 +77,8 @@ Vue.mixin({
           "&user_id=" + sessionStorage.getItem("id") +
           "&user_name=" + sessionStorage.getItem("userName") +
           "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-          "&task_type=" + type
+          "&task_type=" + type + 
+          "&lang=" + sessionStorage.getItem("languageCode")
       if (sessionStorage.getItem('init')) {
         url = url + '&init=true'
       }
