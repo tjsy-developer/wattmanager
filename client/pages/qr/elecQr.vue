@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import QRCode from "qrcode"
+import QRCode from "qrcode";
 
 export default {
   layout: "main",
@@ -136,7 +136,6 @@ export default {
 
       this.fileuploadApi = process.env.fileBoxBackend
 
-      // this.fileuploadApi = "http://192.168.20.79:8090/PowerManagerBackend/"
       // 업로드 api를 호출
       const self = this
 

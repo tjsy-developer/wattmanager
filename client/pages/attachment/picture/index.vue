@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
-import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters";
+import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams";
 
 export default {
   layout: "main",
@@ -35,7 +35,8 @@ export default {
           for (let i = 0; i < getListData.length; i++)
             // get Thnumnail Image
             await this.axios
-              .get(getListData[i].file_path + "/" + getListData[i].file_name,
+              .get(getListData[i].file_path + "/" + getListData[i].file_name
+                + `?token=${sessionStorage.getItem("jwt")}`,
                 {
                   timeout: 1000,
                   responseType: "blob"
@@ -95,6 +96,7 @@ export default {
                     imgName:
                       getListData[i].file_path + "/" + getListData[i].file_name,
                     img: self.blobPictureURL[self.blobPictureURL.length - 1],
+                    originalBlob: self.blobPictureURL[self.blobPictureURL.length - 1],
                     title: getListData[i].title,
                     code: getListData[i].category,
                     people: getListData[i].joined_members,

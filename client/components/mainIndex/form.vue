@@ -90,6 +90,11 @@
               src="@/assets/images/logos/k_water.svg"
               style="width: 200px"
             />
+            <img
+              v-if="useEnterprise == 'hdcar'"
+              class="loginContentLogo"
+              src="@/assets/images/logos/hdcar_login.svg"
+            />
           </div>
           <div v-if="useEnterprise == 'samsung'" class="col-12 maxWidth">
             <input
@@ -200,15 +205,14 @@
 
 <script>
 import axiosJson from "@/assets/jsons/axios";
-import forgotPasswordModal from "@/components/forgotPasswordModal/form";
-import personalInfoModal from "@/components/personalInfoModal/form";
+import cookieSetting from "@/assets/scripts/data/cookie";
+import getInfo from "@/assets/scripts/info/getInfo";
 import createAccountModal from "@/components/createAccountModal/form";
+import forgotPasswordModal from "@/components/forgotPasswordModal/form";
 import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
-;
-import cookieSetting from "@/assets/scripts/data/cookie";
+import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
 
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
@@ -439,6 +443,7 @@ export default {
             /* ID 기억기능 쿠키저장 */
             // cookieSetting.setCookie("logined", userId, 3)
 
+            self.$store.dispatch('user/login', { permissionLevel:  response.data[1].auth })
             /* 로그인 사용자의 정보 저장 */
             sessionStorage.setItem("jwt", response.data[2]);
             sessionStorage.setItem("userSeq", response.data[1].user_seq);
@@ -457,24 +462,22 @@ export default {
             
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
-            self.$axios
-              .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-                en_seq: response.data[1].en_seq,
-                hq_seq: response.data[1].hq_seq,
-                br_seq: response.data[1].br_seq
-              })
-              .then((res) => {
-                const jsonFactorList = res.data[0].app_detail_json
-                const factorList = JSON.parse(jsonFactorList)
-                self.check2Factor = factorList["2factor"]
-                self.bypassID =  factorList["2factorBypassId"].split(",")
+            getInfo.appSetting({
+              en_seq: response.data[1].en_seq,
+              hq_seq: response.data[1].hq_seq,
+              br_seq: response.data[1].br_seq
+            })
+              .then((appDetailJson) => {
+                const appInfo = JSON.parse(appDetailJson)
+                self.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+                self.bypassID =  appDetailJson["2factorBypassId"]?.split(",")
               })
               .catch((err) => {
                 if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-                  self.check2Factor = "False"
                 } else {
                   console.log("2Factor Error :", err)
                 }
+                self.check2Factor = false
               })
               .then(() => {
                 // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
@@ -485,7 +488,7 @@ export default {
                   checkAdmin = true
                 }
                 let checkByPass
-                if (self.check2Factor == "True") {
+                if (self.check2Factor === true) {
                   if (checkAdmin == true) {
                     // 2factor의 값이 true이나 관리자 및 glass 계정이면 bypass 활성화
                     checkByPass = true
@@ -494,11 +497,11 @@ export default {
                     // 2factor의 값이 true이고 checkAdmin이 false 이면 bypass 비활성화
                     checkByPass = false
                   }
-                } else if (self.check2Factor == "False") {
+                } else if (self.check2Factor === false) {
                   // 2factor의 값이 false면 bypass 활성화
                   checkByPass = true
                 }
-                self.bypassID.forEach((ele) => {
+                self.bypassID?.forEach((ele) => {
                   if (ele == userId) {
                     checkByPass = true
                   }
@@ -506,7 +509,6 @@ export default {
                 if (process.env.forceLogout24 == true) {
                   const loginTime = Math.floor(new Date().getTime() / 1000)
                   const managerLoginTimeCookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
-                  console.log(managerLoginTimeCookieName)
                   cookieSetting.setCookie(managerLoginTimeCookieName, loginTime)
                 }
                 if (checkByPass == false) {
@@ -520,7 +522,7 @@ export default {
                   } else {
                     modalType = 3
                   }
-                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw);
+                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw, urlParameter);
                   return
                 }
                 if (response.data[1].auth === 4)
@@ -565,28 +567,16 @@ export default {
 
                       // 와트톡
                     } else {
-                      if (window.location.hostname == "kepco.watttalk.kr") {
-                        window.open(
-                          process.env.kepcoLogin + self.params + urlParameter,
-                          "_self"
-                        );
-                      } else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
-                        window.open(
-                          "https://seoyoneh.watttalk.kr:7220/login/login-check?jwt_token=" + self.params + urlParameter,
-                          "_self"
-                        );
-                      } else {
-                        window.open(
-                          process.env.powertalkLogin + self.params + urlParameter,
-                          "_self"
-                        );
-                      }
+                      window.open(
+                        process.env.powertalkLogin + self.params + urlParameter,
+                        "_self"
+                      );
                     }
                     /* powertalk1으로 이동 */
                   } else {
-                    const randomNumber =
-                      Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
-                    window.open("/powertalk/index.html?" + randomNumber, "_self");
+                    // const randomNumber =
+                    //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+                    // window.open("/powertalk/index.html?" + randomNumber, "_self");
                   }
                 }
               })
@@ -597,6 +587,9 @@ export default {
               self.consentvalue = false;
             }
             alert(self.$t("home")[0]);
+            // 3인 경우 90일 장기 미접속 차단 <- 현대 요청
+          } else if (response.data[0] === 3) {
+            alert(self.$t("loginBlock")[1])
           } else if (response.data[0] === 5) {
             // psw가 일치하지 않는 경우!
             if (self.loginErrBlock) {
@@ -616,8 +609,11 @@ export default {
               if (response.data[3] > 4 && process.env.useEnterprise == "dlenc") {
                 alert(self.$t("loginAlert")[0])
                 return
-              } else if (response.data[3] > 9 && process.env.useEnterprise == "hd") {
-                alert(self.$t("loginBlock"))
+              }
+              else if (response.data[3] > 9 && process.env.useEnterprise == "hdcar") {
+                const remainTime = self.calcRemainTime(response.data[4])
+                alert(`${self.$t("loginBlock")[0]}\n남은 시간은 ${remainTime}분입니다.`)
+                return
               }
             }
             alert(self.$t("home")[1]);
@@ -641,11 +637,12 @@ export default {
         pwdInput.type = "text";
       }
     },
-    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq, checkChangePsw) {
+    openVerifyModal(params, userId, userPwd, lang, modalType, userSeq, checkChangePsw, urlParameter) {
       const modalsContainerStyle =
         document.getElementById("modalsContainer").style;
       modalsContainerStyle.display = "block";
       const modalParameter = {
+        queryParams: urlParameter,
         loginData: params,
         isMember: this.isMember,
         reservUserId: this.reservUserId,
@@ -677,6 +674,13 @@ export default {
           },
         }
       );
+    },
+    // 계정 1시간 잠금 시 남은 시간 계산
+    calcRemainTime(unixTime) {
+      const now = Math.floor(new Date().getTime() / 1000) // 현재 시각
+      const realseTime = unixTime + Number(3600) // 해제시각 (잠금시간 + 1시간)
+      const remainTime = Number(realseTime - now) / 60 // 남은 시각은 unixTime임
+      return Math.floor(remainTime) // 소숫점 제거
     }
   },
   mounted() {
@@ -733,15 +737,8 @@ export default {
       }
     }
     // 한국 전력공사 로고이미지 변경
-    if (window.location.hostname == "kepco.watttalk.kr") {
-      this.useEnterprise = "kepco";
-    } else if (window.location.hostname == "dlenc.watttalk.kr") {
-      // dlenc 분기처리!!
+    if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
-    } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
-      this.useEnterprise = "dlenc";
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     if (sessionStorage.getItem("managerLogOut")) {
       if (sessionStorage.getItem("logoutId")) {

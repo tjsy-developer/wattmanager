@@ -6,7 +6,7 @@
 			<div class="col-12 row justify-center">
 				<div class="row justify-between createDiv">
 					<span v-if="compData.listTitle != false" class="col-auto createTitle">{{ compData.listTitle }}</span>
-					<a v-if="compData.canCreate" class="col-auto createBtn" :href="$route.name + '/create'">{{ $t("createAndEditComp")[0] }}</a>
+					<nuxt-link v-if="compData.canCreate" class="col-auto createBtn" :to="$route.name + '/create'">{{ $t("createAndEditComp")[0] }}</nuxt-link>
 				</div>
 			</div>
 			<infoList class="col-8" :compData="compData"></infoList>

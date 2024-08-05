@@ -10,16 +10,16 @@
         </div>
         <input class="idInput col" id="accountID" :placeholder="$t('account')[13]" v-model="id" @keyup.enter="idCheckBtnClick" />
         <button class="idChkBtn col-auto" @click="idCheckBtnClick">{{ $t("account")[18] }}</button>
-        <input class="input" id="accountPWD" :placeholder="$t('account')[14]" v-model="password" @change="passWordPaternCheck()" type="password" />
+        <input class="input" id="accountPWD" :placeholder="$t('account')[14]" v-model="password" @input="passWordPaternCheck" type="password" />
         <!-- 비밀번호 규칙이 있는 경우만 -->
-        <span v-if="checkPatern == 'true' || pswPaternHd == 'true'" class="pswPatern">{{ $t("checkPswPatern")[0] }}</span>
+        <span v-if="checkPatern == 'true'" class="pswPatern">{{ pwdRulesDescript }}</span>
         <input class="input" :placeholder="$t('account')[15]" v-model="passwordCheck" type="password" />
         <input class="nameInput col" id="accountName" :placeholder="$t('account')[16]" v-model="name" @keyup.enter="nameCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
         <input class="emailInput" id="accountEMail" :placeholder="$t('account')[17]" v-model="EMail" @keyup.enter="emailCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="emailCheckBtnClick">{{ $t("account")[18] }}</button>
         <input
-          v-if="deviceTypeCompData.selectedValue == 3"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor !== false"
           class="input"
           id="birthday"
           :placeholder="$t('account')[35]"
@@ -27,14 +27,14 @@
           type="birthday"
         />
         <input
-          v-if="deviceTypeCompData.selectedValue == 3"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor !== false"
           id="phoneNumber"
           :placeholder="$t('account')[33]"
           v-model="phoneNum"
-          :class="[check2Factor != 'True' ? 'input' : checkAdminId == true ? 'input' : 'phoneInput']"
-        />
+          :class="[checkAdminId !== true && check2Factor == true ? 'phoneInput' : 'input']"
+        /> 
         <button
-          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == 'True' && checkAdminId == false"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == true && checkAdminId == false"
           class="phoneChkBtn col-auto"
           id="verifyBtn"
           @click="phoneCheckBtnClick"
@@ -45,8 +45,8 @@
         <selectComp :compData="enterpriseCompData"></selectComp>
         <selectComp :compData="hqCompData"></selectComp>
         <selectComp :compData="branchCompData"></selectComp>
-        <div class="policyNotice col-auto">
-          <div class="policyWrap" id="policyCheck">
+        <div class="policyNotice col-auto" v-if="deviceTypeCompData.selectedValue != 2">
+          <div class="policyWrap" id="policyCheck" >
             <input type="checkbox" class="policyCheck" v-model="policyCheck" />
             <span>{{ $t("personalTermAgree")[0] }}</span>
           </div>
@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import QRCode from "qrcode"
-import getInfo from "@/assets/scripts/info/getInfo"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import getInfo from "@/assets/scripts/info/getInfo";
+import QRCode from "qrcode";
 
-import { danalVerify } from "@/assets/scripts/danalVerify"
+import { danalVerify } from "@/assets/scripts/danalVerify";
 
 export default {
   components: {},
@@ -100,7 +100,7 @@ export default {
       birthday: "",
       birthdayCheck: undefined,
       useEnterprise: process.env.useEnterprise,
-      check2Factor: "False",
+      check2Factor: false,
       checkAdminId: false,
       policyCheck: false,
       bypassId: [],
@@ -121,9 +121,10 @@ export default {
       ret: undefined,
       checkPhone: undefined,
       checkPatern: process.env.checkPswPatern,
-      pswPaternHd: process.env.pswPaternHD,
       syncManager2: false,
-      manager2ServerUrl: "https://dev.watttalk.kr:8222"
+      manager2ServerUrl: "https://dev.watttalk.kr:8222",
+      validPassword: false, 
+      pwdRulesDescript: process.env.pwdRulesType ? this.$t("checkPswPatern")[Number(process.env.pwdRulesType)] : ''
     }
   },
   methods: {
@@ -136,9 +137,7 @@ export default {
     },
     idCheckBtnClick() {
       if (this.id) {
-        // eslint-disable-next-line no-useless-escape
-        if (!/^[A-Za-z0-9_\-]{4,50}$/.test(this.id))
-          return alert(this.$t("account")[11])
+
         // eslint-disable-next-line no-global-assign
         self = this
         this.$axios
@@ -311,10 +310,9 @@ export default {
         })
       }
     },
-    signUpBtnClick() {
+    async signUpBtnClick() {
       let checkVerify = sessionStorage.getItem("verify")
-      console.log(checkVerify, 1)
-      if (this.check2Factor != "True") {
+      if (this.check2Factor !== false) {
         checkVerify = "true"
         this.phoneCheck = this.phoneNum
         this.birthdayCheck = this.birthday
@@ -324,24 +322,24 @@ export default {
         this.phoneCheck = this.phoneNum
         this.birthdayCheck = this.birthday
       }
-      if (this.deviceTypeCompData.selectedValue === 3) {
-        // eslint-disable-next-line no-global-assign
-        self = this
-        if (
-          !this.id ||
-          !this.password ||
-          !this.passwordCheck ||
-          !this.name ||
-          !this.EMail ||
-          !this.enterpriseCompData.selectedValue ||
-          !this.hqCompData.selectedValue ||
-          !this.branchCompData.selectedValue ||
-          !this.phoneNum ||
-          !this.birthday
-        ) {
-          document.getElementById("accountID").focus()
-          return alert(this.$t("account")[6])
-        }
+
+      // pc, glass 공통 체크 항목
+      if (
+        !this.id ||
+        !this.password ||
+        !this.passwordCheck ||
+        !this.name ||
+        !this.EMail ||
+        !this.enterpriseCompData.selectedValue ||
+        !this.hqCompData.selectedValue ||
+        !this.branchCompData.selectedValue || 
+        !this.deviceTypeCompData.selectedValue
+      ) {
+        return alert(this.$t("account")[6])
+      }
+
+      if (this.deviceTypeCompData.selectedValue === 3 && this.check2Factor !== false) {
+        if (!this.phoneNum || !this.birthday) return alert(this.$t("account")[6])
         const checkPhoneStyle = this.filterKeyPress(this.phoneNum, 1)
         const checkBirthStyle = this.filterKeyPress(this.birthday, 2)
         if (checkBirthStyle == false) {
@@ -357,10 +355,16 @@ export default {
           return alert(this.$t("account")[7])
         }
 
+        if (this.validPassword == false) {
+          document.getElementById("accountPWD").focus()
+          return alert(this.$t("incorrectPwdFormat"))
+        }
+
         if (this.password !== this.passwordCheck) {
           document.getElementById("accountPWD").focus()
           return alert(this.$t("account")[8])
         }
+
         if (this.name !== this.nameCheck) {
           document.getElementById("accountName").focus()
           return alert(this.$t("account")[25])
@@ -392,92 +396,16 @@ export default {
           document.getElementById("policyCheck").focus()
           return alert(this.$t("personalTermAgree")[2])
         }
-        this.$axios
-          .post(process.env.backendURL + axiosJson.account.user_phone_number_check, {
-            phone_number: this.phoneNum,
-            en_seq: this.enterpriseCompData.selectedValue
-          })
-          .then((res) => {
-            if (res.data == true) {
-              this.$axios
-                // .post(axiosJson.account.user_insert, {
-                .post(process.env.backendURL + axiosJson.account.user_insert, {
-                  id: this.id,
-                  password: this.password,
-                  name: this.name,
-                  email: this.EMail,
-                  en_seq: this.enterpriseCompData.selectedValue,
-                  hq_seq: this.hqCompData.selectedValue,
-                  br_seq: this.branchCompData.selectedValue,
-                  device_type: this.deviceTypeCompData.selectedValue,
-                  phone_number: this.phoneNum,
-                  birthday: this.birthday,
-                  certification_uniquekey: this.certificationUniqueKey,
-                  personal_information_checked: 1
-                })
-                .then(function(response) {
-                  if (response.data) {
-                    if (self.syncManager2) {
-                      self.$axios
-                      .post(self.manager2ServerUrl + axiosJson.manger2Server.user_insert, {
-                        user_id: self.id,
-                        user_password: self.password,
-                        user_name: self.name,
-                        phone_number: "",
-                        en_seq: self.enterpriseCompData.selectedValue,
-                        hq_seq: self.hqCompData.selectedValue,
-                        br_seq: self.branchCompData.selectedValue,
-                        device_type: self.deviceTypeCompData.selectedValue,
-                        email: "",
-                        privacy_essential_agree: 1,
-                        privacy_optional_agree: 1,
-                        birthday: "",
-                        certification_uniquekey: "",
-                      })
-                      .then((secondResponse) => {
-                        console.log(secondResponse)
-                        if (secondResponse.data.data.result == true) {
-                          alert(self.$t("account")[9])
-                          window.open("/", "_self")
-                        } else {
-                          alert(self.$t("account")[10])
-                        }
-                      })
-                    } else {
-                      alert(self.$t("account")[9])
-                      window.open("/", "_self")
-                    }
-                  } else alert(self.$t("account")[10])
-                })
-                .catch(function(error) {
-                  console.log(error)
-                })
-            } else if (res.data == false) {
-              return alert(this.$t("phonCheck")[4])
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-      } else if (this.deviceTypeCompData.selectedValue === 2) {
-        // 디바이스타입이 글라스라면
-        if (
-          // 빈값이나 선택값이 남아있는 경우 팝업창
-          !this.id ||
-          !this.password ||
-          !this.passwordCheck ||
-          !this.name ||
-          !this.EMail ||
-          !this.enterpriseCompData.selectedValue ||
-          !this.hqCompData.selectedValue ||
-          !this.branchCompData.selectedValue
-        ) {
-          document.getElementById("accountID").focus()
-          return alert(this.$t("account")[6])
-        }
+      } else {
+        // 2차 인증이 필요없거나 글라스 인 경우
         if (this.id !== this.idCheck) {
           document.getElementById("accountID").focus()
           return alert(this.$t("account")[7])
+        }
+
+        if (this.validPassword == false) {
+          document.getElementById("accountPWD").focus()
+          return alert(this.$t("incorrectPwdFormat"))
         }
 
         if (this.password !== this.passwordCheck) {
@@ -492,66 +420,143 @@ export default {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
-
         if (this.enterpriseEnseq !== this.enterpriseCompData.selectedValue) {
           document.getElementById("accountName").focus()
           return alert(this.$t("account")[25])
         }
-
         if (this.enSeqCheck !== this.enterpriseCompData.selectedValue) {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
-        // Qr생성 true
-        this.isCreateQR = true
 
-        const enSelect = document.querySelectorAll("select")[1]
-        const hqSelect = document.querySelectorAll("select")[2]
-        const brSelect = document.querySelectorAll("select")[3]
+        if (this.deviceTypeCompData.selectedValue === 3 && this.policyCheck == false) {
+          document.getElementById("policyCheck").focus()
+          return alert(this.$t("personalTermAgree")[2])
+        }
+      }
 
-        const QrInfo =
-          '{"id":"' +
-          this.id +
-          '","name":"' +
-          this.name +
-          '","email":"' +
-          this.EMail +
-          '","password":"' +
-          this.password +
-          '","enSeq":"' +
-          this.enterpriseCompData.selectedValue +
-          '","enAlias":"' +
-          enSelect[enSelect.selectedIndex].text +
-          '","hqSeq":"' +
-          this.hqCompData.selectedValue +
-          '","hqAlias":"' +
-          hqSelect[hqSelect.selectedIndex].text +
-          '","brSeq":"' +
-          this.branchCompData.selectedValue +
-          '","brAlias":"' +
-          brSelect[brSelect.selectedIndex].text +
-          '"}'
-        console.log(QrInfo)
+      if (this.deviceTypeCompData.selectedValue === 2) {
+          // Qr생성 true
+          this.isCreateQR = true
 
-        const opts = {
-          errorCorrectionLevel: "H",
-          type: "image/png",
-          quality: 0.3,
-          margin: 1,
-          color: {
-            dark: "#000000",
-            light: "#ffffff"
+          const enSelect = document.querySelectorAll("select")[1]
+          const hqSelect = document.querySelectorAll("select")[2]
+          const brSelect = document.querySelectorAll("select")[3]
+
+          const QrInfo =
+            '{"id":"' +
+            this.id +
+            '","name":"' +
+            this.name +
+            '","email":"' +
+            this.EMail +
+            '","password":"' +
+            this.password +
+            '","enSeq":"' +
+            this.enterpriseCompData.selectedValue +
+            '","enAlias":"' +
+            enSelect[enSelect.selectedIndex].text +
+            '","hqSeq":"' +
+            this.hqCompData.selectedValue +
+            '","hqAlias":"' +
+            hqSelect[hqSelect.selectedIndex].text +
+            '","brSeq":"' +
+            this.branchCompData.selectedValue +
+            '","brAlias":"' +
+            brSelect[brSelect.selectedIndex].text +
+            '"}'
+
+          const opts = {
+            errorCorrectionLevel: "H",
+            type: "image/png",
+            quality: 0.3,
+            margin: 1,
+            color: {
+              dark: "#000000",
+              light: "#ffffff"
+            }
+          }
+          const qr = QRCode.create(QrInfo, opts)
+          const imgUrl = QRCode.toDataURL(QrInfo, opts)
+
+          // prototype promise
+          imgUrl.then(value => {
+            this.qrCodeImg = value
+          })
+      } else if (this.deviceTypeCompData.selectedValue === 3) {
+        let res;
+        if (this.check2Factor !== false) {
+          res = await this.$axios.post(
+            process.env.backendURL + axiosJson.account.user_phone_number_check,
+            {
+              phone_number: this.phoneNum,
+              en_seq: this.enterpriseCompData.selectedValue
+            })
+          if (res.data != true) {
+            return alert(this.$t("phonCheck")[4])
           }
         }
-        const qr = QRCode.create(QrInfo, opts)
-        console.log(qr)
-        const imgUrl = QRCode.toDataURL(QrInfo, opts)
 
-        // prototype promise
-        imgUrl.then(value => {
-          this.qrCodeImg = value
-        })
-      } else alert(this.$t("account")[2])
+        const params = {
+          id: this.id,
+          password: this.password,
+          name: this.name,
+          email: this.EMail,
+          en_seq: this.enterpriseCompData.selectedValue,
+          hq_seq: this.hqCompData.selectedValue,
+          br_seq: this.branchCompData.selectedValue,
+          device_type: this.deviceTypeCompData.selectedValue,
+          phone_number: this.phoneNum,
+          birthday: this.birthday,
+          certification_uniquekey: this.certificationUniqueKey,
+          personal_information_checked: 1
+        }
+
+        if (this.check2Factor === false) {
+          delete params.phone_number
+          delete params.birthday
+          delete params.certification_uniquekey
+        }
+
+        this.$axios
+          .post(process.env.backendURL + axiosJson.account.user_insert, params)
+          .then(function(response) {
+            if (response.data) {
+              if (self.syncManager2) {
+                self.$axios
+                .post(self.manager2ServerUrl + axiosJson.manger2Server.user_insert, {
+                  user_id: self.id,
+                  user_password: self.password,
+                  user_name: self.name,
+                  phone_number: "",
+                  en_seq: self.enterpriseCompData.selectedValue,
+                  hq_seq: self.hqCompData.selectedValue,
+                  br_seq: self.branchCompData.selectedValue,
+                  device_type: self.deviceTypeCompData.selectedValue,
+                  email: "",
+                  privacy_essential_agree: 1,
+                  privacy_optional_agree: 1,
+                  birthday: "",
+                  certification_uniquekey: "",
+                })
+                .then((secondResponse) => {
+                  if (secondResponse.data.data.result == true) {
+                    alert(self.$t("account")[9])
+                    window.open("/", "_self")
+                  } else {
+                    alert(self.$t("account")[10])
+                  }
+                })
+              } else {
+                alert(self.$t("account")[9])
+                window.open("/", "_self")
+              }
+            } else alert(self.$t("account")[10])
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        }
     },
     openPolicy() {
       const curLang = sessionStorage.getItem("languageCode")
@@ -572,105 +577,18 @@ export default {
     },
     // 생년월일과 휴대폰번호 입력란 확인 함수
     filterKeyPress(params, type) {
-      const patern = /^\d+$/
-      if (type == 1) {
-        if (params.length != 11) {
-          return false
-        } else {
-          if (patern.test(params)) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-      else if (type == 2) {
-        if (params.length != 8) {
-          return false
-        } else {
-          if (patern.test(params)) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-      
     },
     // 비밀번호 규칙이 있을 경우만
     passWordPaternCheck() {
-      if (this.checkPatern != "true" && this.this.pswPaternHD != "true") return
-      const psw = this.password
-
-      const capitalPatern = /[A-Z]/g
-      const lowerPatern = /[a-z]/g
-      const specialPatern = /[^A-Za-z0-9]/g
-      const numPatern = /\d+/g
-      const enPatern = /[A-Za-z]/g
-      
-      let checkPatern = 0
-
-      if (specialPatern.test(psw)) {
-        checkPatern = ++checkPatern
-      }
-      if (numPatern.test(psw)) {
-        checkPatern = ++checkPatern
-      }
-
-      if (this.checkPatern == "true") {
-        if (psw.length < 10) {
-          alert(this.$t("checkPswPatern")[1])
-          this.password = ""
-          return
-        }
-       
-        if (capitalPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-        if (lowerPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-
-        if(checkPatern < 2) {
-          alert(this.$t("checkPswPatern")[2])
-          this.password = ""
-          return
-        }
-
-      } else if (this.pswPaternHd == "true") {
-        let alertToast = false
-        if (enPatern.test(psw)) {
-          checkPatern = ++checkPatern
-        }
-        
-        if (checkPatern < 2) {
-          alertToast = true
-        } else if (checkPatern < 3 && psw.length < 10) {
-          alertToast = true
-        } else if (3 < checkPatern && psw.length < 8) {
-          alertToast = true
-          
-        }
-
-        if (alertToast == true) {
-          alert(this.$t("checkPswPatern")[3])
-          this.password = ""
-          return
-        }
-      }
-      return
+      if (this.checkPatern != "true") this.validPassword = true
+      else this.validPassword = this.isValidPassword(this.password)
     }
   },
   mounted() {
     getInfo.setLang(this.$t("getInfo"))
     // dlenc 분기처리!!
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     if (process.env.manager2serverURL !== "") {
       this.syncManager2 = true
@@ -680,6 +598,7 @@ export default {
         this.manager2ServerUrl = window.location.origin +  process.env.manager2serverURL
       }
     }
+
     // 본인인증 후 data를 받아오기 위한 event
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
   },
@@ -699,25 +618,26 @@ export default {
     // 기업>본부>지사 선택시 2Factor값 확인하는 부분
     get2Factor() {
       if (this.enterpriseCompData.selectedValue && this.hqCompData.selectedValue && this.branchCompData.selectedValue) {
-        const self = this
-        this.$axios
-          .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+        getInfo.appSetting({
             en_seq: this.enterpriseCompData.selectedValue,
             hq_seq: this.hqCompData.selectedValue,
             br_seq: this.branchCompData.selectedValue,
           })
-          .then((res) => {
-            const jsonFactorList = res.data[0].app_detail_json
-            const factorList = JSON.parse(jsonFactorList)
-            self.check2Factor = factorList["2factor"]
-            this.bypassId = factorList["2factorBypassId"].split(",")
+          .then((appDetailJson) => {
+            const appInfo = JSON.parse(appDetailJson)
+            this.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+            if (this.check2Factor === false) {
+              this.phoneNum = ''
+              this.birthday = ''
+            }
+            this.bypassId = appInfo["2factorBypassId"]?.split(",")
           })
           .catch((err) => {
             if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-              self.check2Factor = "False"
             } else {
               console.log("2Factor Error :", err)
             }
+            this.check2Factor = undefined
           })
       }
     },
@@ -727,8 +647,8 @@ export default {
       } else {
         this.checkAdminId = false
       }
-      if (this.bypassId.length != 0)
-      this.bypassId.forEach(ele => {
+      if (this.bypassId?.length != 0)
+      this.bypassId?.forEach(ele => {
           if (ele == res) {
             this.checkAdminId = true
           } else {

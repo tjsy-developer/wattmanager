@@ -3,13 +3,13 @@
 </template>
 
 <script>
+import axiosJson from "@/assets/jsons/axios"
 import filtersJson from "@/assets/jsons/info/user/editFilters"
 import glassEditFilters from "@/assets/jsons/info/user/glassEditFilters"
-import getFilters from "@/assets/scripts/info/getFilters"
-import setComboBox from "@/assets/scripts/info/setComboBox"
-import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
-import axiosJson from "@/assets/jsons/axios"
+import getFilters from "@/assets/scripts/info/getFilters"
+import getInfo from "@/assets/scripts/info/getInfo"
+import setComboBox from "@/assets/scripts/info/setComboBox"
 
 
 export default {
@@ -19,6 +19,7 @@ export default {
       token: "",
       defaultUserProfileBlob: "",
       compData: {
+        self: this,        
         useEnterprise: process.env.useEnterprise,
         userSeq: Number(this.$route.query.seq),
         listTitle: this.$t("user")[0],
@@ -27,7 +28,7 @@ export default {
         createAndEditSpanSize: 120,
         type: "edit",
         selected: [],
-        check2Factor: "",
+        check2Factor: false,
         nameSpaceCheck: this.$t("no spaces text"),
         phoneNumber: "",
         birthday: "",
@@ -35,6 +36,7 @@ export default {
         isGuest: "",
         editBtnClick() {
           let checkGuest = ""
+          const getSelf = this.self
           if (sessionStorage.getItem("editUserDeviceType") != 2) {
             if (getInfo.getInputValue(6) == "true") {
               checkGuest = 1
@@ -85,9 +87,8 @@ export default {
           const pattern = /\s/g
           if (getInfo.getInputValue(1).match(pattern)) {
           } else {
-            this.check2Factor = sessionStorage.getItem("check2Factor")
             if (getInfo.getInputValue(0).includes("wattsupport")) {
-              this.check2Factor == "False"
+              getSelf.compData.check2Factor = false
             }
             // 글라스가 아닌경우
             if (sessionStorage.getItem("editUserDeviceType") != 2) {
@@ -173,6 +174,33 @@ export default {
       }
 
       return str
+    },
+    async appSetting(params) {
+      try {
+        const appDetailJson = await getInfo.appSetting(params)
+        const appInfo = JSON.parse(appDetailJson)
+        this.compData.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+      } catch(error) {
+        this.compData.check2Factor = undefined
+      } finally {
+        sessionStorage.setItem("check2Factor", this.compData.check2Factor)
+        this.compData.listFilters = this.compData.listFilters.map((value) => {
+          const columnText = value.text.toLowerCase().replaceAll(" ", '')
+          if ((columnText === "휴대폰번호" || columnText === "생년월일" || columnText === "cellphone" || columnText === "birthday")) {
+            if (this.compData.check2Factor === false) {
+              return {
+                ...value,
+                edit: 'none'
+              }
+            } else {
+              return {
+                ...value,
+                edit: true
+              }
+            }
+          } return value
+        })
+      }
     }
   },
   mounted() {
@@ -180,13 +208,8 @@ export default {
       console.log(e)
       this.compData.imageFile = e.detail
     })
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     const self = this
     getInfo.setAuthority()
@@ -212,33 +235,12 @@ export default {
         user_seq: self.compData.userSeq,
         jwt: this.token
       })
-      .then(function(res) {
-        self.$axios
-          .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-            en_seq: res.data.en_seq,
-            hq_seq: res.data.hq_seq,
-            br_seq: res.data.br_seq
-          })
-          .then((response) => {
-            const jsonFactorList = response.data[0].app_detail_json
-            const factorList = JSON.parse(jsonFactorList)
-            self.check2Factor = factorList["2factor"]
-            if (!factorList["2factor"]) {
-              self.check2Factor = "False"
-            }
-          })
-          .catch((err) => {
-            if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-              self.check2Factor = "False"
-            } else {
-              self.check2Factor = "False"
-              console.log("2Factor Error :", err)
-            }
-          })
-          .then(() => {
-            sessionStorage.setItem("editUserDeviceType", res.data.device_type)
-            sessionStorage.setItem("check2Factor", self.check2Factor)
-            if (res.data.phone_number) {
+      .then(async function (res) {
+        if (self.$store.state.user.permissionLevel <= res.data.auth) {
+          self.$router.replace('/err/404');
+        }
+        sessionStorage.setItem("editUserDeviceType", res.data.device_type)
+        if (res.data.phone_number) {
               self.phoneNumber = res.data.phone_number
             }
             if (res.data.birthday) {
@@ -246,6 +248,9 @@ export default {
             }
             if (res.data.guest) {
               self.compData.isGuest = res.data.guest
+            }
+            if (res.data.image) {
+              res.data.image = await self.convertImageToBlob(res.data.image)
             }
             // 글라스가 아닌 경우
             if (res.data.device_type != 2) {
@@ -288,7 +293,7 @@ export default {
             if (res.data.image) {
               const profileImage =  res.data.image
             } else {
-              if (sessionStorage.getItem("editUserDeviceType") != 2) {
+              if (res.data.device_type !== 2) {
                 self.compData.selected[12] = undefined
               } else {
                 // 이미지 없을때 초기값 설정
@@ -302,18 +307,18 @@ export default {
               })
               .then(() => {
                 getInfo
-                  .hq(self.compData.selected[1])
+                  .hq(res.data.en_seq)
                   .then(hqRes => {
                     getInfo.hqCompData.options = hqRes
                   })
                   .then(() => {
                     getInfo
-                      .branch(self.compData.selected[2])
+                      .branch(res.data.hq_seq)
                       .then(branchRes => {
                         getInfo.branchCompData.options = branchRes
                       })
                       .then(() => {
-                        if (sessionStorage.getItem("editUserDeviceType") != 2) {
+                        if (res.data.device_type == 3) {
                           self.compData.listFilters = setComboBox(
                             getFilters(
                               [
@@ -345,7 +350,12 @@ export default {
                               getInfo.permission
                             ]
                           )
-                        } else if (self.compData.selected[12] === 2) {
+                          self.appSetting({
+                            en_seq: res.data.en_seq,
+                            hq_seq: res.data.hq_seq,
+                            br_seq: res.data.br_seq
+                          })
+                        } else if (res.data.device_type === 2) {
                           self.compData.listFilters = setComboBox(
                             getFilters(
                               [
@@ -379,17 +389,16 @@ export default {
                               process.env.backendURL +
                                 "userRest/user_info_one_app_list",
                               {
-                                br_seq: self.compData.selected[3],
+                                br_seq: res.data.br_seq,
                                 jwt: sessionStorage.getItem("jwt")
                               }
                             )
                             .then(function(userInfoOneAppList) {
-                              console.log(userInfoOneAppList)
                               if (userInfoOneAppList.data) {
-                                console.log(self.compData.selected)
-                                const getGlassAppRange = self.compData.selected[8].split(
+                              console.log(userInfoOneAppList)
+                                const getGlassAppRange = self.compData.selected[8]?.split(
                                   "|"
-                                )
+                                ) || []
                                 self.compData.listFilters[9].checkboxCompData.selected = getGlassAppRange.slice(
                                   0,
                                   getGlassAppRange.length - 1
@@ -455,11 +464,25 @@ export default {
                       })
                   })
               })
-          })
       })
       .catch(function(error) {
         console.log("user edit page error : ", error)
       })
+  },
+  computed: {
+    selectBranchValue() {
+      if (!this.compData.listFilters) return
+      return getInfo.getSelectValue(this.compData.listFilters, 4)
+    }
+  },
+  watch: {
+    selectBranchValue(newVal, oldVal) {
+      this.appSetting({
+        en_seq: getInfo.getSelectValue(this.compData.listFilters, 2),
+        hq_seq: getInfo.getSelectValue(this.compData.listFilters, 3),
+        br_seq: newVal
+      })
+    }
   },
   beforeDestroy() {
     if (this.defaultUserProfileBlob !== undefined) {

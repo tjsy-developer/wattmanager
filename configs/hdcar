@@ -29,10 +29,10 @@ att_access_user="true"
 att_videoPlayPath="https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/Dashs/Src/"
 att_filePath="https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/filebox/"
 detailFilePath="/data/Storage/watttalk/hdcar/filebox/"
-fileUploadBackend="https://sg.auto-hmg.io:8205/wattmanager-server"
+fileUploadBackend="https://sg.auto-hmg.io:8205/wattmanager-server/"
 
 # 프로필 사진
-profilePhotoSavefolder="/data/Storage/watttalk/hdcar/profile"
+profilePhotoSavefolder="/storage/watttalk/profile/"
 profilePhotoUrl="https://sg.auto-hmg.io:8205/storage/watttalk/hdcar/profile/"
 
 # 로고
@@ -44,16 +44,17 @@ use_bento4="false"
 # 파일함
 # 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
 separateBackendUploadPath="false"
-fileBoxBackend="https://sg.auto-hmg.io:8205/wattmanager-server"
+fileBoxBackend="https://sg.auto-hmg.io:8205/wattmanager-server/"
 
 # 비밀번호 보안 적용
-checkPswPatern="false"
-
-# 현대 비밀번호 보안 적용
-pswPaternHD="true"
+checkPswPatern="true"
+pwdRulesType="3"
 
 # 자동 로그아웃
 forceLogout24="false"
+
+# 비밀번호 오류 시 계정 로그인 차단
+blockAcount="true"
 
 # 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
 impId=""

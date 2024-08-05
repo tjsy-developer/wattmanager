@@ -27,6 +27,7 @@ export default {
             if (getCookieJwt !== this.$route.query.jwt) {
                 alert(this.$t("loginCheck")[0])
                 sessionStorage.clear()
+                this.$store.dispatch('user/logout')
                 open("/", "_self")
             } else {
                 if (this.$route.query.lang == undefined || this.$route.query.lang == "" || this.$route.query.lang == null) {
@@ -57,6 +58,7 @@ export default {
                     checkParameter =  false
                 }
                 if (checkParameter) {
+                    this.$store.dispatch('user/login', { permissionLevel:  this.$route.query.auth })
                     const currentTime = Math.floor(Date.now() / 1000)
                     if (process.env.forceLogout24 == true) {
                         const cookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
@@ -69,9 +71,11 @@ export default {
                         // 비밀번호 변경 안내 모달을 통해 접근 한 경우 내정보 > 비밀번호 변경을 실행시켜준다
                         window.open("/profile?changePsw=true", "_self")
                     }
+                    
                 } else {
                     alert(this.$t("loginCheck")[0])
                     sessionStorage.clear()
+                    this.$store.dispatch('user/logout')
                     open("/", "_self")
                 }
             }

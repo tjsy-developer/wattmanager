@@ -1,6 +1,6 @@
 /* 2021.01.26 common Func :: ksh */
+import axios from 'axios';
 import Vue from "vue";
-
 Vue.mixin({
   methods: {
     // checkLoginTime() {
@@ -77,7 +77,8 @@ Vue.mixin({
           "&user_id=" + sessionStorage.getItem("id") +
           "&user_name=" + sessionStorage.getItem("userName") +
           "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-          "&task_type=" + type
+          "&task_type=" + type + 
+          "&lang=" + sessionStorage.getItem("languageCode")
       if (sessionStorage.getItem('init')) {
         url = url + '&init=true'
       }
@@ -85,6 +86,46 @@ Vue.mixin({
         url = url + "&iframe_title=" + logSheetTitle + templateID
       }
       return url
+    },
+    isValidPassword(value) {
+      const rulesType = Number(process.env.pwdRulesType)
+      let passwordRegex
+      switch (rulesType) {
+        case 0:
+          passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{10,}$/;
+          return passwordRegex.test(value)
+        case 1:
+          passwordRegex = /^.{10,}$/
+          return passwordRegex.test(value)
+        case 2:
+          passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/
+          return passwordRegex.test(value)
+        case 3:
+          passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/; 
+          return passwordRegex.test(value)
+        default:
+          return true
+      }
+    },
+    async convertImageToBlob(src) {
+      try {
+        const result = await axios
+          .get(
+            src + `?token=${sessionStorage.getItem("jwt")}`,
+            {
+              timeout: 4000,
+              responseType: "blob",
+            }
+        )
+        let blobURL = ''
+        if (result.status === 200) {
+          blobURL = URL.createObjectURL(result.data)
+        }
+        return blobURL
+      } catch (err) {
+        return ''
+      }
+      
     }
   },
 });

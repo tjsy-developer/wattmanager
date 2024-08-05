@@ -3,7 +3,7 @@ port="3000"
 
 # 와트매니저 백엔드
 backendURL_local=""
-backendURL="https://syeh.watttalk.kr/wattmanager-server/"
+backendURL="https://meetdev.watttalk.kr/wattmanager-server/"
 
 # 와트매니저2 백엔드
 manager2serverURL="/wattmanager2-server/"
@@ -11,29 +11,29 @@ manager2serverURL="/wattmanager2-server/"
 # 와트톡
 powertlakState="loginCheck"
 powertalkLogin_local=""
-powertalkLogin="https://syeh.watttalk.kr/watttalk/login/login-check?jwt_token="
+powertalkLogin="https://meetdev.watttalk.kr/watttalk/login/login-check?jwt_token="
 
 # 와트 메모
-powermemo="https://syeh.watttalk.kr/storage/watttalk"
-powermemoSavefolder="/storage/watttalk/"
+powermemo="https://meetdev.watttalk.kr/storage/powermemo"
+powermemoSavefolder="/storage/powermemo"
 
 # QR
 qr="default"
 elecQR="false"
 elecFilePath="/storage/watttalk/QR/file"
-elecFolderPath="/storage/watttalk/QR/folder"
+elecFolderPath="/storage/watttalk/QR/file"
 
 # 자료 관리
 # 일반 사용자 자료 관리 접근 권한 (true: 부여, false: 미부여)
 att_access_user="true"
-att_videoPlayPath="https://syeh.watttalk.kr/storage/watttalk/Dashs/Src/"
-att_filePath="https://syeh.watttalk.kr/storage/watttalk/filebox/"
-detailFilePath="/storage/watttalk/filebox/"
-fileUploadBackend="https://syeh.watttalk.kr/wattmanager-server/"
+att_videoPlayPath="https://meetdev.watttalk.kr/storage/watttalk/Dashs/Src/"
+att_filePath="https://meetdev.watttalk.kr/storage/watttalk/filebox/"
+detailFilePath="/storage/watttalk/filebox"
+fileUploadBackend="https://meetdev.watttalk.kr/wattmanager-server/"
 
 # 프로필 사진
 profilePhotoSavefolder="/storage/watttalk/profile"
-profilePhotoUrl="https://syeh.watttalk.kr/storage/watttalk/profile/"
+profilePhotoUrl="https://meetdev.watttalk.kr/storage/watttalk/profile/"
 
 # 로고
 useEnterprise="watt"
@@ -44,7 +44,7 @@ use_bento4="false"
 # 파일함
 # 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
 separateBackendUploadPath="false"
-fileBoxBackend="https://syeh.watttalk.kr/wattmanager-server/"
+fileBoxBackend="https://meetdev.watttalk.kr/wattmanager-server/"
 
 # 비밀번호 보안 적용
 checkPswPatern="false"
@@ -54,7 +54,7 @@ pwdRulesType=""
 forceLogout24="false"
 
 # 비밀번호 오류 시 계정 로그인 차단
-blockAcount="true"
+blockAcount="false"
 
 # 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
 impId=""

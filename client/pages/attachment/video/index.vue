@@ -8,9 +8,9 @@
 
 <script>
 // import VueCookie from "vue-cookie"
-import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
-import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters";
+import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams";
 
 
 export default {
@@ -85,7 +85,7 @@ export default {
                   getListData[i].file_path +
                     "/capture_images/" +
                     this.videolFileName +
-                    ".png",
+                  ".png" + `?token=${sessionStorage.getItem("jwt")}`,
                   {
                     timeout: 1000,
                     responseType: "blob",

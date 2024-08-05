@@ -3,41 +3,42 @@
 		<div class="row justify-between items-center maxWidth">
 			<span class="col-auto title"> {{ $t("searchBarComp")[0] }}</span>
 			<div class="col-auto row">
-				<a
+				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					:href="'/attachment/video?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/video?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-video' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[1] }}
-				</a>
-				<a
+				</nuxt-link>
+				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					:href="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/picture?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-picture' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[2] }}
-				</a>
-				<a
+				</nuxt-link>
+				<nuxt-link
 					v-if="attViewAuth == false && deviceType != '2'"
 					class="col-auto tab"
-					:href="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
+					:to="'/attachment/favorite?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-favorite' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("searchBarComp")[3] }}
-				</a>
-				<a
+				</nuxt-link>
+				<nuxt-link
 					class="col-auto tab"
-					:href="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
+					v-if="showMemo"
+					:to="'/attachment/memo?page=1&viewType=' + $route.query.viewType"
 					:style="{ background:$route.name == 'attachment-memo' ? '#0061D1' : '#BFCCD6' }"
 					@click="clearsessionStorage"
 				>
 					{{ $t("memo")[1] }}
-				</a>
+				</nuxt-link>
 			</div>
 			<div class="col-12 row items-center search">
 				<div class="col-auto searchText">{{ $t("searchBarComp")[4] }}</div>
@@ -50,7 +51,7 @@
 </template>
 
 <script>
-
+import axiosJson from "@/assets/jsons/axios";
 
 export default {
   data() {
@@ -59,7 +60,8 @@ export default {
       inputVal: "",
       auth: 0,
       // eslint-disable-next-line eqeqeq
-      attViewAuth: false
+      attViewAuth: false,
+      showMemo: false
       // eslint-disable-next-line eqeqeq
     }
   },
@@ -88,6 +90,24 @@ export default {
         this.$route.path + "?page=1&viewType=" + this.$route.query.viewType,
         "_self"
       )
+    },
+    getAppInfo() {
+    	this.$axios
+    		.post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+          en_seq: Number(sessionStorage.getItem("enSeq")),
+          hq_seq: Number(sessionStorage.getItem("hqSeq")),
+          br_seq: Number(sessionStorage.getItem("brSeq"))
+        })
+    		.then((res) => {
+    			const jsonAppList = res.data[0].app_detail_json
+          const appList = JSON.parse(jsonAppList)
+		      // 와트매니저1 메모 보여줄지 여부
+		      if (appList["showMemo1"] == "True") {
+		        this.showMemo = true
+		      } else {
+		        this.showMemo = false
+		      }
+    		})
     }
   },
   mounted() {
@@ -105,7 +125,7 @@ export default {
       // 2. att_access_user 이 false 일경우 auth > 0 이라면 tab 권한 있음
       this.attViewAuth = false
     }
-    console.log(this.attViewAuth)
+	this.getAppInfo() 
   }
 }
 </script>

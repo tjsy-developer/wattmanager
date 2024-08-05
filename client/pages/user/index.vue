@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import filtersJson from "@/assets/jsons/info/user/filters"
-import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
-import getFilters from "@/assets/scripts/info/getFilters"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import filtersJson from "@/assets/jsons/info/user/filters";
+import getFilters from "@/assets/scripts/info/getFilters";
+import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams";
 
 export default {
   layout: "main",
@@ -81,6 +81,9 @@ export default {
   },
   mounted() {
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
+    if (this.$store.state.user.permissionLevel < 1) {
+      this.$router.replace('/err/404');
+    }
   }
 }
 </script>

@@ -33,11 +33,11 @@
 </template>
 
 <script>
-import createAndEditFiltersJson from "@/assets/jsons/info/notice/createAndEditFilters"
-import getFilters from "@/assets/scripts/info/getFilters"
+import createAndEditFiltersJson from "@/assets/jsons/info/notice/createAndEditFilters";
+import getFilters from "@/assets/scripts/info/getFilters";
 // import setComboBox from "@/assets/scripts/info/setComboBox"
-import getInfo from "@/assets/scripts/info/getInfo"
-import btnsClick from "@/assets/scripts/info/btnsClick"
+import btnsClick from "@/assets/scripts/info/btnsClick";
+import getInfo from "@/assets/scripts/info/getInfo";
 
 
 export default {
@@ -53,13 +53,6 @@ export default {
   },
   methods: {
     createBtnClick() {
-      if (
-        !/^(1|2)\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/.test(
-          getInfo.getInputValue(0)
-        )
-      )
-        return alert(this.$t("dateFormat"))
-
       let enSeq = 0
       // eslint-disable-next-line eqeqeq
       if (this.auth == 4) {
@@ -102,6 +95,9 @@ export default {
     }
   },
   mounted() {
+    if (this.$store.state.user.permissionLevel < 3) {
+      this.$router.replace('/err/404');
+    }
     this.enSeq = sessionStorage.getItem("enSeq")
     this.id = sessionStorage.getItem("id")
     this.auth = sessionStorage.getItem("auth")

@@ -45,11 +45,11 @@ export default {
           email: this.inputEMail
         })
         .then(function(res) {
-          if (res.data) {
+			console.log(res)
+          if (res.data == true) {
             alert(self.$t("check your e-mail"))
             self.compData.id = self.compData.inputId
             self.eMail = self.inputEMail
-            self.getCode = res.data
           } else alert(self.$t("check ID/e-mail"))
         })
         .catch(function(error) {
@@ -58,18 +58,31 @@ export default {
         })
     },
     next() {
-      if (!this.compData.inputId || !this.inputEMail || !this.inputCode)
-        return alert(this.$t("account")[6])
-      else if (
-        this.compData.inputId !== this.compData.id ||
-        this.inputEMail !== this.eMail
-      )
-        return alert(this.$t("check ID/e-mail"))
-      else if (this.inputCode !== this.getCode)
-        return alert(this.$t("check your code"))
-      else if (this.inputCode && this.inputCode === this.getCode)
-        this.compData.canNextStep = true
-      else alert("fail")
+		if (!this.compData.inputId || !this.inputEMail || !this.inputCode) {
+			return alert(this.$t("account")[6])
+		} else if (
+			this.compData.inputId !== this.compData.id ||
+			this.inputEMail !== this.eMail
+		) {
+			return alert(this.$t("check ID/e-mail"))
+		} else  {
+			const self = this
+			self.$axios
+				.post(process.env.backendURL + "accountRest/check_random_arr", {
+					id: self.compData.inputId,
+					random_arr: self.inputCode
+				})
+				.then((res) => {
+					if (res.data == true) {
+						self.compData.canNextStep = true
+					} else if (res.data == false) {
+						return alert(self.$t("check your code"))
+					}
+				})
+				.catch((err) => {
+					alert("오류 다시 시도 해주셈 error:", err)
+				})
+		}
     }
   }
 }

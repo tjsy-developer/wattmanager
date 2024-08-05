@@ -1,43 +1,68 @@
 # port는 따로 nuxt.config.js에 설정해줘야한다. 자동화하면 배포 오류
-port=8223
-backendURL_local=http://localhost:8090/
-backendURL=https://dev.watttalk.kr:8221/
-manager2serverURL=/wattmanager2-server/
+port="8223"
+
+# 와트매니저 백엔드
+backendURL_local="http://localhost:8090/"
+backendURL="https://dev.watttalk.kr:8221/"
+
+# 와트매니저2 백엔드
+manager2serverURL="/wattmanager2-server/"
+
+# 와트톡
 powertlakState="loginCheck"
 powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
 powertalkLogin="https://dev.watttalk.kr:8224/login/login-check?jwt_token="
-powermemo=https://dev.watttalk.kr:8222/storage/powermemo/dev
-powermemoSavefolder=D:\\Storage\\powermemo\\dev
-qr_filePath=https://dev.watttalk.kr:8222/storage/powertalk/dev/QR/folder
-qr=default
-att_access_user=true
-att_videoPlayPath=https://dev.watttalk.kr:8222/storage/powertalk/dev/Dashs/Src/
-att_filePath=https://dev.watttalk.kr:8222/storage/powertalk/dev/filebox/
-detailFilePath=D:\\Storage\\powertalk\\dev\\filebox
-fileUploadBackend=https://dev.watttalk.kr:8221/
-profilePhotoSavefolder=D:\\Storage\\sftp\\dev\\
-profilePhotoUrl=https://dev.watttalk.kr:8222/Storage/sftp/dev/
-useEnterprise=watt
-use_bento4=false
-elecQR=true
-elecFilePath=D:\\Storage\\powertalk\\dev\\QR\\file
-elecFolderPath=D:\\Storage\\powertalk\\dev\\QR\\folder
-fileBoxBackend=https://dev.watttalk.kr:8221/
-separateBackendUploadPath=false
-logsheetURL=https://dev.watttalk.kr:8222/wattmanager2/safetycheck
-logsheet=true
-smarttbmURL=http://192.168.20.66:4000/wattmanager2/smarttbm
-checkPswPatern=false
-forceLogout24=false
-# impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
-impId=imp67320503
-pg=danal.B010008141
-kepcoLogin="https://kepcos.watttalk.kr/watttalk/login/login-check?jwt_token="
 
+# 와트 메모
+powermemo="https://dev.watttalk.kr:8222/storage/powermemo/dev"
+powermemoSavefolder="D:\\Storage\\powermemo\\dev"
+
+# QR
+qr="default"
+elecQR="true"
+elecFilePath="D:\\Storage\\powertalk\\dev\\QR\\file"
+elecFolderPath="D:\\Storage\\powertalk\\dev\\QR\\folder"
+
+# 자료 관리
+# 일반 사용자 자료 관리 접근 권한 (true: 부여, false: 미부여)
+att_access_user="true"
+att_videoPlayPath="https://dev.watttalk.kr:8222/storage/powertalk/dev/Dashs/Src/"
+att_filePath="https://dev.watttalk.kr:8222/storage/powertalk/dev/filebox/"
+detailFilePath="D:\\Storage\\powertalk\\dev\\filebox"
+fileUploadBackend="https://dev.watttalk.kr:8221/"
+
+# 프로필 사진
+profilePhotoSavefolder="D:\\Storage\\sftp\\dev\\"
+profilePhotoUrl="https://dev.watttalk.kr:8222/Storage/sftp/dev/"
+
+# 로고
+useEnterprise="watt"
+
+# 동영상 보안
+use_bento4="false"
+
+# 파일함
+# 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
+separateBackendUploadPath="false"
+fileBoxBackend="https://dev.watttalk.kr:8221/"
+
+# 비밀번호 보안 적용
+checkPswPatern="false"
+pwdRulesType=""
+
+# 자동 로그아웃
+forceLogout24="false"
+
+# 비밀번호 오류 시 계정 로그인 차단
+blockAcount="false"
+
+# 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
+impId="imp67320503"
+pg="danal.B010008141"
 
 # qr 값에 따라서 tab 변동
 
-# QR tab (전자파일, 전자폴더) 만 보이는 설정
+# QR tab, 전자QR 보이는 설정
 # qr=default
 
 # QR tab, 안전QR 보이는 설정

@@ -15,11 +15,12 @@
       <div v-if="compData.type != 'edit'" class="row justify-left infoImg" style="margin-top:50px; ">
         <img v-if="compData.type == 'pictureEdit'" :src="compData.selected[0]" />
       </div>
-      <div v-if="content.edit" class="col-12 row" v-for="(content, contentKey) in compData.listFilters" :key="contentKey">
-        <div class="col-12 divisionLine"></div>
-        <div class="col-12 row editOptions items-center">
+      <div class="col-12 row" v-for="(content, contentKey) in compData.listFilters" :key="contentKey">
+        <div  class="col-12 row" v-if="content.edit">
+          <div class="col-12 divisionLine" v-show="content.edit !== 'none'"></div>
+          <div class="col-12 row editOptions items-center" v-show="content.edit !== 'none'" >
           <span class="col-auto" :style="{ minWidth: compData.createAndEditSpanSize + 'px' }">{{ content.text }}</span>
-          <selectComp v-if="content.edit == 'select'" class="col selectCompClass" :compData="content.selectCompData?content.selectCompData:undefined"></selectComp>
+          <selectComp v-if="content.edit == 'select'" class="col selectCompClass" :compData="content.selectCompData ? content.selectCompData : undefined"></selectComp>
           <div v-else-if="content.edit == 'checkbox'" class="col">
             <div class="appSettingContents" v-for="(checkbox, checkboxKey) in content.checkboxCompData.list" :key="checkboxKey">
               <input class="appSettingSort" type="number" v-model="checkbox.sort" />
@@ -61,17 +62,21 @@
             class="col"
             :value="compData.type == 'edit' ? compData.selected[contentKey - 1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
             :disabled="content.edit=='disabled'"
+            v-show="content.edit !== 'none'"
            />
            <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
            <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
            <button
-            v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && check2Factor == 'True'"
+            v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor == true"
             class="changePhone-btn"
             @click="changePhoneBtnClick"
           >
             {{ $t("changePhoneNumber") }}
           </button>
         </div>
+
+        </div>
+        
       </div>
       <div class="col-12 divisionLine"></div>
       <div v-if="compData.type=='create'" class="col-12 createBtns">
@@ -90,9 +95,9 @@
 <script>
 // import createAndEditFiltersJson from "@/assets/jsons/info/app/createAndEditFilters"
 
-import axiosJson from "@/assets/jsons/axios"
-import getInfo from "@/assets/scripts/info/getInfo"
-import { danalVerify } from "@/assets/scripts/danalVerify"
+import axiosJson from "@/assets/jsons/axios";
+import { danalVerify } from "@/assets/scripts/danalVerify";
+import getInfo from "@/assets/scripts/info/getInfo";
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 
@@ -115,7 +120,6 @@ export default {
       hqList: getInfo.hqList,
       brList: getInfo.brList,
       checkAdmin: false,
-      check2Factor: false,
       getPermission: true,
       isGuest: ""
     }
@@ -295,32 +299,6 @@ export default {
       sessionStorage.removeItem("phoneNum")
       this.$forceUpdate()
     },
-    changedCompData() {
-      const enSeq = Number(document.getElementsByClassName("selectCompClass")[0].value)
-      const hqSeq = Number(document.getElementsByClassName("selectCompClass")[1].value)
-      const brSeq = Number(document.getElementsByClassName("selectCompClass")[2].value)
-      console.log(enSeq, hqSeq, brSeq)
-      const self = this
-      this.$axios
-        .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-          en_seq: enSeq,
-          hq_seq: hqSeq,
-          br_seq: brSeq
-        })
-        .then((res) => {
-          const jsonFactorList = res.data[0].app_detail_json
-          const factorList = JSON.parse(jsonFactorList)
-          self.check2Factor = factorList["2factor"]
-          console.log(self.check2Factor)
-        })
-        .catch((err) => {
-          if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-            self.check2Factor = "False"
-          } else {
-            console.log("2Factor Error :", err)
-          }
-        })
-    },
     changedPermission() {
       const permission = (document.getElementsByClassName("selectCompClass")[3].value)
       if (permission != 0) {
@@ -367,38 +345,12 @@ export default {
     // }
   },
   mounted() {
-    // this.check2Factor = sessionStorage.getItem("check2Factor")
-    this.$axios
-      .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-        en_seq: Number(sessionStorage.getItem("enSeq")),
-        hq_seq: Number(sessionStorage.getItem("hqSeq")),
-        br_seq: Number(sessionStorage.getItem("brSeq"))
-      })
-      .then((response) => {
-        const jsonFactorList = response.data[0].app_detail_json
-        const factorList = JSON.parse(jsonFactorList)
-        this.check2Factor = factorList["2factor"]
-        sessionStorage.setItem("check2Factor", this.check2Factor)
-      })
-      .catch((err) => {
-        if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
-          this.check2Factor = "False"
-          sessionStorage.setItem("check2Factor", this.check2Factor)
-        } else {
-          console.log("2Factor Error :", err)
-        }
-      })
     // dlenc 분기처리!!
-    if (window.location.hostname == "dlenc.watttalk.kr") {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
-    window.addEventListener("changedCompData", this.changedCompData)
+    // window.addEventListener("changedCompData", this.changedCompData)
     window.addEventListener("changedPermission", this.changedPermission)
     sessionStorage.removeItem("mutationState")
     // 비밀번호 변경하기 버튼을 통해 접근한 경우 비밀번호 변경 모달을 실행시킨다
@@ -413,7 +365,7 @@ export default {
       URL.revokeObjectURL(this.profileImage)
     }
     window.removeEventListener("sessionStorageUpdated", this.sessionStorageChange)
-    window.removeEventListener("changedCompData", this.changedCompData)
+    // window.removeEventListener("changedCompData", this.changedCompData)
   }
 }
 </script>

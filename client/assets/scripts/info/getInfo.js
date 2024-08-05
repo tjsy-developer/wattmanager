@@ -1,6 +1,5 @@
 import axios from "axios"
 // eslint-disable-next-line no-unused-vars
-import { get } from "jquery"
 
 
 const getInfo = {
@@ -118,6 +117,27 @@ const getInfo = {
         })
     )
   },
+  /**
+   * powertalkweb 앱 정보 설정 값
+   * @param {{ en_seq: number, hq_seq: number, br_seq: number}} params 
+   * @returns 
+   */
+  appSetting(params) {
+    return (
+      axios
+        .post(process.env.backendURL + "appRest/app_powertalkweb_info", {
+          ...params
+        })
+        .then(function (res) {
+          return res.data?.[0]?.app_detail_json || {}
+        })
+        .catch(function(error) {
+          console.log(error)
+          return {}
+        })
+        .finally()
+    )
+  },
   deviceType() {
     return ["PC", "Mobile", "Glass"]
   },
@@ -227,7 +247,7 @@ const getInfo = {
     }
   },
   getInputValue(index) {
-    return document.querySelectorAll("input")[index].value
+    return document.querySelectorAll("input")[index]?.value
   },
   getTextareaValue(index) {
     return document.querySelectorAll("textarea")[index].value

@@ -12,6 +12,7 @@
       <img v-if="useEnterprise == 'kepco'" class="col-auto" src="@/assets/images/logo_kepco_cloud.png" />
       <img v-if="useEnterprise == 'dlenc'" class="col-auto" src="@/assets/images/dlenc_logo.png" style="height: 38px" />
       <img v-if="useEnterprise == 'kwater'" class="col-auto" src="@/assets/images/logos/k_water_logo_2.svg" style="height: 38px" />
+      <img v-if="useEnterprise == 'hdcar'" class="col-auto" src="@/assets/images/logos/hdcar_header.svg" style="width: 138px" />
       <div class="col-auto row menus">
         <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
@@ -31,14 +32,14 @@
         <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
         <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
         <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
-        <a
+        <nuxt-link
           class="col-auto"
-          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
+          :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
           @click="clearsessionStorage"
         >
           {{ $t("headerComp")[6] }}
-        </a>
-        <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
+        </nuxt-link>
+        <nuxt-link v-if="authority == '3'" :to="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</nuxt-link>
         <!-- <button  @click="closeTab()">닫기</button> -->
         <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
@@ -85,7 +86,8 @@ export default {
       tbmMenuKo: "",
       tbmMenuEn: "",
       location: "",
-      pathName: ""
+      pathName: "",
+      forceLogoutTime: ""
     }
   },
   computed: {
@@ -122,33 +124,9 @@ export default {
             "_self"
           )
         } else {
-          if(window.location.hostname == 'kepco.watttalk.kr') {
-             window.open(
-              process.env.kepcoLogin +
-                jwtToken +
-                "&login_type=3&lang=" +
-                lang,
-              "_self"
-             )
-          }  else if (window.location.hostname == 'dlenc.watttalk.kr') {
+          if (window.location.hostname == 'dlencmedia.watttalk.kr') {
             window.open(
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-              "_self"
-            )
-          } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-            window.open(
-              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-              "_self"
-            )
-          }  else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
-            window.open(
-              'https://' + window.location.hostname + ':7220/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
               lang,
@@ -204,7 +182,7 @@ export default {
       const loginTime = cookieSetting.getCookie(cookieName)
       if (!loginTime) return
       const forceLogoutEvent = new CustomEvent("forceLogoutEvent", {detail: true})
-      const unix24Hour = 8 * 60 * 60
+      const unix24Hour = Number(this.forceLogoutTime) * 60 * 60
       if (loginTime == "calling") {
         return
       } else if(loginTime == "logout") {
@@ -378,6 +356,8 @@ export default {
       } else {
         this.showTbm = false
       }
+      // 강제 로그아웃 활성화 시 로그아웃 진행 시간 가져옴
+      this.forceLogoutTime = appList["forceLogout"] ? Number(appList["forceLogout"]) : 8
       sessionStorage.setItem("showSafetyPatrol", this.showSafetyPatrol)
       sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
       sessionStorage.setItem("showMemo2", this.showMemo2)
@@ -468,16 +448,7 @@ export default {
       this.attViewAuth = false
     }
      // 한국 전력공사 로고이미지 변경
-    if(window.location.hostname == 'kepco.watttalk.kr') {
-      this.useEnterprise = "kepco"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
-    }
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
-      this.useEnterprise = "dlenc"
-    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
     if (process.env.forceLogout24) {
