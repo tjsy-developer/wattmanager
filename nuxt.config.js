@@ -163,7 +163,6 @@ export default {
     blockAcount: process.env.blockAcount,
     impId: process.env.impId,
     pg: process.env.pg,
-    kepcoLogin: process.env.kepcoLogin,
     smarttbmURL: process.env.smarttbmURL,
     manager2serverURL: process.env.manager2serverURL,
     pswPaternHD: process.env.pswPaternHD,

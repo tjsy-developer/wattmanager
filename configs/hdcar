@@ -48,10 +48,7 @@ fileBoxBackend="https://sg.auto-hmg.io:8205/wattmanager-server/"
 
 # 비밀번호 보안 적용
 checkPswPatern="true"
-pwdRulesType=3
-
-# 현대 비밀번호 보안 적용
-pswPaternHD="true"
+pwdRulesType="3"
 
 # 자동 로그아웃
 forceLogout24="false"

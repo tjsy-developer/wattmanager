@@ -51,7 +51,7 @@
 </template>
 
 <script>
-
+import axiosJson from "@/assets/jsons/axios";
 
 export default {
   data() {
@@ -125,9 +125,8 @@ export default {
       // 2. att_access_user 이 false 일경우 auth > 0 이라면 tab 권한 있음
       this.attViewAuth = false
     }
-    console.log(this.attViewAuth)
+	this.getAppInfo() 
   }
-  this.getAppInfo()
 }
 </script>
 

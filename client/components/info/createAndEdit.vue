@@ -346,13 +346,8 @@ export default {
   },
   mounted() {
     // dlenc 분기처리!!
-    if (window.location.hostname == "dlenc.watttalk.kr") {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
     // window.addEventListener("changedCompData", this.changedCompData)

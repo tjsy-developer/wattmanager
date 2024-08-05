@@ -276,13 +276,8 @@ export default {
       console.log(e)
       this.compData.imageFile = e.detail
     })
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     const getUserSeq = Number(sessionStorage.getItem("userSeq"))
     this.compData.userSeq = getUserSeq

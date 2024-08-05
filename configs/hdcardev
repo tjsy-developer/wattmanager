@@ -30,6 +30,7 @@ att_videoPlayPath="https://hdcardev.watttalk.kr/storage/watttalk/Dashs/Src/"
 att_filePath="https://hdcardev.watttalk.kr/storage/watttalk/filebox/"
 detailFilePath="/storage/watttalk/filebox/"
 fileUploadBackend="https://hdcardev.watttalk.kr/wattmanager-server/"
+
 # 프로필 사진
 profilePhotoSavefolder="/storage/watttalk/profile/"
 profilePhotoUrl="https://hdcardev.watttalk.kr/storage/watttalk/profile/"
@@ -47,7 +48,7 @@ fileBoxBackend="https://hdcardev.watttalk.kr/wattmanager-server/"
 
 # 비밀번호 보안 적용
 checkPswPatern="true"
-pwdRulesType=3
+pwdRulesType="3"
 
 # 자동 로그아웃
 forceLogout24="false"

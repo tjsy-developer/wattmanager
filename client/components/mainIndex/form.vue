@@ -567,22 +567,10 @@ export default {
 
                       // 와트톡
                     } else {
-                      if (window.location.hostname == "kepco.watttalk.kr") {
-                        window.open(
-                          process.env.kepcoLogin + self.params + urlParameter,
-                          "_self"
-                        );
-                      } else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
-                        window.open(
-                          "https://seoyoneh.watttalk.kr:7220/login/login-check?jwt_token=" + self.params + urlParameter,
-                          "_self"
-                        );
-                      } else {
-                        window.open(
-                          process.env.powertalkLogin + self.params + urlParameter,
-                          "_self"
-                        );
-                      }
+                      window.open(
+                        process.env.powertalkLogin + self.params + urlParameter,
+                        "_self"
+                      );
                     }
                     /* powertalk1으로 이동 */
                   } else {
@@ -749,15 +737,8 @@ export default {
       }
     }
     // 한국 전력공사 로고이미지 변경
-    if (window.location.hostname == "kepco.watttalk.kr") {
-      this.useEnterprise = "kepco";
-    } else if (window.location.hostname == "dlenc.watttalk.kr") {
-      // dlenc 분기처리!!
+    if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
-    } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
-      this.useEnterprise = "dlenc";
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     if (sessionStorage.getItem("managerLogOut")) {
       if (sessionStorage.getItem("logoutId")) {

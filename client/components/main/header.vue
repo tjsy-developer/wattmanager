@@ -86,7 +86,8 @@ export default {
       tbmMenuKo: "",
       tbmMenuEn: "",
       location: "",
-      pathName: ""
+      pathName: "",
+      forceLogoutTime: ""
     }
   },
   computed: {
@@ -123,33 +124,9 @@ export default {
             "_self"
           )
         } else {
-          if(window.location.hostname == 'kepco.watttalk.kr') {
-             window.open(
-              process.env.kepcoLogin +
-                jwtToken +
-                "&login_type=3&lang=" +
-                lang,
-              "_self"
-             )
-          }  else if (window.location.hostname == 'dlenc.watttalk.kr') {
+          if (window.location.hostname == 'dlencmedia.watttalk.kr') {
             window.open(
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-              "_self"
-            )
-          } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-            window.open(
-              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-              "_self"
-            )
-          }  else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
-            window.open(
-              'https://' + window.location.hostname + ':7220/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
               lang,
@@ -205,7 +182,7 @@ export default {
       const loginTime = cookieSetting.getCookie(cookieName)
       if (!loginTime) return
       const forceLogoutEvent = new CustomEvent("forceLogoutEvent", {detail: true})
-      const unix24Hour = 8 * 60 * 60
+      const unix24Hour = Number(this.forceLogoutTime) * 60 * 60
       if (loginTime == "calling") {
         return
       } else if(loginTime == "logout") {
@@ -379,6 +356,8 @@ export default {
       } else {
         this.showTbm = false
       }
+      // 강제 로그아웃 활성화 시 로그아웃 진행 시간 가져옴
+      this.forceLogoutTime = appList["forceLogout"] ? Number(appList["forceLogout"]) : 8
       sessionStorage.setItem("showSafetyPatrol", this.showSafetyPatrol)
       sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
       sessionStorage.setItem("showMemo2", this.showMemo2)
@@ -469,16 +448,7 @@ export default {
       this.attViewAuth = false
     }
      // 한국 전력공사 로고이미지 변경
-    if(window.location.hostname == 'kepco.watttalk.kr') {
-      this.useEnterprise = "kepco"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
-    }
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
-      this.useEnterprise = "dlenc"
-    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
     if (process.env.forceLogout24) {
