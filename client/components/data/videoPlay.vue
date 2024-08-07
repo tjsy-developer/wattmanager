@@ -158,6 +158,8 @@ export default {
 
           for (let i = 0; i < getListData.length; i++) {
             // get Thnumnail Image
+            const videoBlob = await self.convertImageToBlob(`${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`)
+
             await self.axios
               .get(
                 getListData[i].file_path +
@@ -178,8 +180,7 @@ export default {
                   if (error.response.status === 404) {
                     self.rightList.push({
                       seq: getListData[i].att_seq,
-                      video:
-                        getListData[i].file_path +
+                      video: videoBlob ||  getListData[i].file_path +
                         "/" +
                         getListData[i].file_name,
                       thumbnail: require("@/assets/images/attach_noImage.png"),
@@ -208,8 +209,7 @@ export default {
 
                   self.rightList.push({
                     seq: getListData[i].att_seq,
-                    video:
-                      getListData[i].file_path + "/" + getListData[i].file_name,
+                    video: videoBlob,
                     thumbnail:
                       self.rightListThumnailBlob[
                         self.rightListThumnailBlob.length - 1
@@ -304,7 +304,7 @@ export default {
           att_seq: getSeq,
           jwt: token
         })
-        .then(function(res) {
+        .then(async function(res) {
           if (!res.data.length) history.back()
           if (
             // eslint-disable-next-line eqeqeq
@@ -313,14 +313,15 @@ export default {
             res.data[0].file_type != "video"
           )
             history.back()
-
+          const videoBlob = await self.convertImageToBlob(`${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`)
+          // const videoBlob = await self.convertImageToBlob(`https://sg.auto-hmg.io:8205/storage/patrol/20240805173152048_4079_seelee.mp4?token=${sessionStorage.getItem("jwt")}`)
           /* preparing - 암호화 이미지 보여주는 부분 */
           if (self.selected === undefined) {
             // console.log("selected undefined")
             self.selected = {
               seq: res.data[0].att_seq,
               videoCheck: "preparing",
-              video: res.data[0].file_path + "/" + res.data[0].file_name,
+              video: videoBlob,
               thumbnail:
                 res.data[0].file_path +
                 "/capture_images/" +
@@ -334,7 +335,8 @@ export default {
               date: res.data[0].save_time,
               favorite: res.data[0].favYN !== "0",
               fileName: res.data[0].file_name,
-              videoName: res.data[0].file_path + "/" + res.data[0].file_name
+              videoName: res.data[0].file_path + "/" + res.data[0].file_name,
+              originalBlob: videoBlob
             }
 
             self.compData.isVideoPlayDataLoaded = true
@@ -347,7 +349,7 @@ export default {
             self.selected = {
               seq: res.data[0].att_seq,
               videoCheck: "preparing",
-              video: res.data[0].file_path + "/" + res.data[0].file_name,
+              video: videoBlob,
               thumbnail:
                 res.data[0].file_path +
                 "/capture_images/" +
@@ -361,7 +363,8 @@ export default {
               date: res.data[0].save_time,
               favorite: res.data[0].favYN !== "0",
               fileName: res.data[0].file_name,
-              videoName: res.data[0].file_path + "/" + res.data[0].file_name
+              videoName: res.data[0].file_path + "/" + res.data[0].file_name,
+              originalBlob: videoBlob
             }
 
             self.compData.isVideoPlayDataLoaded = true

@@ -96,7 +96,7 @@ export default {
         })
         .then(function(res) {
           self.compData.axios
-            .get(res.data[0].file_path + "/" + res.data[0].file_name, {
+            .get(`${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`, {
               responseType: "blob"
             })
             .then(function(blobres) {
