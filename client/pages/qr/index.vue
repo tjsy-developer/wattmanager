@@ -18,6 +18,9 @@ export default {
   components: {
     powerQr,
     safetyQr
+  },
+  mounted() {
+    this.refreshToken()
   }
 }
 </script>

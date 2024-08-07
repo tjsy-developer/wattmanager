@@ -1,6 +1,8 @@
 /* 2021.01.26 common Func :: ksh */
 import axios from 'axios';
 import Vue from "vue";
+import jwt_decode from 'jwt-decode';
+
 Vue.mixin({
   methods: {
     // checkLoginTime() {
@@ -126,6 +128,38 @@ Vue.mixin({
         return ''
       }
       
+    },
+    refreshToken() {
+      const self = this
+      let expTime // jwt exp time b
+      const presentTime = Math.floor((new Date()).getTime() / 1000); // 현재 unixTime sec
+      const presentJwt = sessionStorage.getItem("jwt")
+      let decodeResult = true
+
+      try {
+        const decodeJwt = jwt_decode(presentJwt)
+        expTime = decodeJwt.exp // unixTime sec
+      } catch {
+        console.log("decode error")
+        decodeResult = false
+      } finally {
+        
+        // jwt 유효시간이 지난 경우 || 해독하지 못한경우
+        if (expTime < presentTime || !decodeResult) {
+          self.$store.commit("setTokenState", true)
+        } else {
+          // self.$axios
+          //   .post(process.env.backendUrl + "token_api/refresh_token", {
+          //     jwt: presentJwt
+          //   })
+          //   .then ((res) => {
+          //     sessionStorage.setItme("jwt", res)
+          //   })
+          //   .catch((err) => {
+          //     console.log(`refresh token err:: ${err}`)
+          //   })
+        }
+      }
     }
   },
 });

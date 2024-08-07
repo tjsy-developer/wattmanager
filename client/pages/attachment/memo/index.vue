@@ -178,6 +178,7 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
     // if (window.location.hostname === "localhost") {
     //   this.baseUrl =
     //     "https://powermanagercloud.powertalk.co.kr/sftp/powermanager/PowerMemo/" // watt

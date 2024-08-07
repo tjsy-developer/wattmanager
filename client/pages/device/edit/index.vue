@@ -91,6 +91,7 @@ export default {
     ])
   },
   mounted() {
+    this.refreshToken()
     getInfo.setAuthority()
     getInfo.setLang(this.$t("getInfo"))
     const self = this

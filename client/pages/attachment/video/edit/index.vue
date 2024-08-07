@@ -81,6 +81,7 @@ export default {
     )
   },
   mounted() {
+    this.refreshToken()
     if (sessionStorage.auth) {
       const self = this
       this.$axios

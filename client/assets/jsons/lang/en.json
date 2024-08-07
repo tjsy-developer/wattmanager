@@ -559,5 +559,9 @@
     "Account has been locked for 1 hour due to 10 times login failure",
     "Your account has not been approved due to 90 days of non-access. Please contact your administrator."
   ],
-  "incorrectPwdFormat" : "The password format is incorrect"
+  "incorrectPwdFormat" : "The password format is incorrect",
+  "jwtTokenErr": [
+    "Invalid login.",
+    "Your login time has expired. Please log in again."
+  ]
 }

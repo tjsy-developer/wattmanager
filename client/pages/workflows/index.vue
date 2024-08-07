@@ -49,6 +49,7 @@ export default {
         }
     },
     mounted() {
+        this.refreshToken()
         this.loading = true
         this.setIframeUrl()
         window.addEventListener("message", (e) => {
@@ -103,6 +104,7 @@ export default {
             const scrollTop = params.scrollTop
             const height = params.height
             if (params == "workflow content modified") {
+                this.refreshToken()
                 this.setIframeUrl()
             }
             if (url) {

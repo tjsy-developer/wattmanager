@@ -36,7 +36,9 @@ const btnsClick = {
             alert(btnsClick.lang[0])
             sessionStorage.removeItem("deviceType")
             sessionStorage.removeItem("check2Factor")
-            window.location.href = document.referrer
+            // const prevUrl = checkPrevUrl(1)
+            // window.location.href = prevUrl
+            window.history.back()
           } else alert(btnsClick.lang[1])
         })
         .catch(function(error) {
@@ -77,7 +79,10 @@ const btnsClick = {
             alert(btnsClick.lang[3])
             sessionStorage.removeItem("deviceType")
             sessionStorage.removeItem("check2Factor")
-            window.location.href = document.referrer
+            // console.log(document)
+            // const prevUrl = checkPrevUrl(2)
+            // window.location.href = prevUrl
+            window.history.back()
           } else alert(btnsClick.lang[4])
         })
         .catch(function(error) {
@@ -167,8 +172,10 @@ const btnsClick = {
                     alert(btnsClick.lang[3])
                     sessionStorage.removeItem("deviceType")
                     sessionStorage.removeItem("check2Factor")
-                    console.log(document.referrer)
-                    window.location.href = document.referrer
+                    // console.log(document)
+                    // const prevUrl = checkPrevUrl(2)
+                    // window.location.href = prevUrl
+                    window.history.back()
                   } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
                   else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
                   else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
@@ -196,8 +203,9 @@ const btnsClick = {
                 alert(btnsClick.lang[3])
                 sessionStorage.removeItem("deviceType")
                 sessionStorage.removeItem("check2Factor")
-                console.log(document.referrer)
-                window.location.href = document.referrer
+                // const prevUrl = checkPrevUrl(2)
+                // window.location.href = prevUrl
+                window.history.back()
               } else if (res.data === "Exceeded quota") alert(btnsClick.lang[7])
               else if (res.data === "Duplicate Name") alert(btnsClick.lang[8])
               else if (res.data === "Duplicate Name en") alert(btnsClick.lang[9])
@@ -231,7 +239,9 @@ const btnsClick = {
           alert(btnsClick.lang[5])
           sessionStorage.removeItem("deviceType")
           sessionStorage.removeItem("check2Factor")
-          window.location.href = document.referrer
+          // const prevUrl = checkPrevUrl(2)
+          // window.location.href = prevUrl
+          window.history.back()
         } else {
           console.log(btnsClick.lang[6])
           alert(btnsClick.lang[6])
@@ -245,3 +255,19 @@ const btnsClick = {
 }
 
 export default btnsClick
+
+function checkPrevUrl(type) {
+  let defaultUrl = undefined
+  switch (type) {
+    case 1:
+      defaultUrl = window.location.href.split("/create")[0]
+      break
+    case 2:
+      defaultUrl = window.location.href.split("/edit")[0]
+      break
+  }
+  defaultUrl = defaultUrl + "?page=1"
+  const prevUrl =  window.$nuxt.$store.state.prevUrl != undefined ? window.$nuxt.$store.state.prevUrl : defaultUrl
+  window.$nuxt.$store.commit("setPrevUrl", undefined)
+  return prevUrl
+}

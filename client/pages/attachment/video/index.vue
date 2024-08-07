@@ -205,6 +205,7 @@ export default {
   mounted() {
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
     setGetListDataParamsFilters(this.compData.getListDataParams)
+    this.refreshToken()
   },
   beforeDestroy() {
     if (this.blobImageURL !== undefined) {

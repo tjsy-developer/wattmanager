@@ -69,6 +69,7 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
     this.uploadFiles = this.$refs.uploadFiles.files
   },
   methods: {

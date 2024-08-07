@@ -116,6 +116,7 @@ export default {
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
   },
   mounted() {
+    this.refreshToken()
     this.compData.auth = sessionStorage.getItem("auth")
   }
 }

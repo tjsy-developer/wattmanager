@@ -93,7 +93,19 @@ export default {
   computed: {
 		...mapState({
 			allState: (state) => state
-		})
+		}),
+    getTokenState() {
+      return this.$store.state.expiredToken
+    }
+  },
+  watch: {
+    getTokenState(res) {
+      if (res) {
+        alert(this.$t('jwtTokenErr')[1])
+        this.$store.commit("setTokenState", false)
+        this.logoutBtnClick()
+      }
+    }
   },
   methods: {
     switchLocale(locale) {

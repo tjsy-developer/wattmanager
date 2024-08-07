@@ -99,6 +99,7 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
     getInfo.setLang(this.$t("getInfo"))
     btnsClick.setLang([
       this.$t("btnsClick")[0],

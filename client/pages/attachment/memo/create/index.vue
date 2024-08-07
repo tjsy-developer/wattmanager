@@ -213,6 +213,7 @@ export default {
     }
   },
   mounted() {
+	this.refreshToken()
   }
 }
 </script>

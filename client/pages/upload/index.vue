@@ -237,6 +237,7 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
     this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
     this.compData.getListDataParams.page = Number(this.$route.query.page)
     this.uploadOrfileBox = this.$route.query.viewType

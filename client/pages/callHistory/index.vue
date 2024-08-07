@@ -145,6 +145,7 @@ export default {
         }
     },
 	mounted() {
+		this.refreshToken()
 		this.setPeriod(1)
 		this.getCallHistory()
 	},
