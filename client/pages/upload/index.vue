@@ -148,7 +148,7 @@ export default {
         }
       }
     },
-    submit() {
+    async submit() {
       // eslint-disable-next-line prefer-const
       const formData = new FormData()
       // ���Ͼ��ε� �޴�: upload Ÿ�� �Ķ���͸�, ������ �޴� : filebox Ÿ�� �Ķ���͸� ����
@@ -208,12 +208,23 @@ export default {
 
       // ���ε� api�� ȣ��
       const self = this
-      this.$axios
-        .post(this.fileuploadApi + "fileupload/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
+      const params = {
+        data: {
+          formData
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'jwt': sessionStorage.getItem('jwt')
+        },
+        api: this.fileuploadApi + "fileupload/"
+      }
+      // this.$axios
+      //   .post(this.fileuploadApi + "fileupload/", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data"
+      //     }
+      //   })
+      await this.axiosRequest('post', params)
         .then(function(res) {
           // ���� ���ε�� �ε��ٻ���
           self.loadingBarStatus = false

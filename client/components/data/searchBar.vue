@@ -91,13 +91,22 @@ export default {
         "_self"
       )
     },
-    getAppInfo() {
-    	this.$axios
-    		.post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-          en_seq: Number(sessionStorage.getItem("enSeq")),
-          hq_seq: Number(sessionStorage.getItem("hqSeq")),
-          br_seq: Number(sessionStorage.getItem("brSeq"))
-        })
+    async getAppInfo() {
+		const params = {
+			data: {
+				en_seq: Number(sessionStorage.getItem("enSeq")),
+				hq_seq: Number(sessionStorage.getItem("hqSeq")),
+				br_seq: Number(sessionStorage.getItem("brSeq"))
+			},
+			api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
+		}
+    	// this.$axios
+    	// 	.post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+        //   en_seq: Number(sessionStorage.getItem("enSeq")),
+        //   hq_seq: Number(sessionStorage.getItem("hqSeq")),
+        //   br_seq: Number(sessionStorage.getItem("brSeq"))
+        // })
+		this.axiosRequest('post', params)
     		.then((res) => {
     			const jsonAppList = res.data[0].app_detail_json
           const appList = JSON.parse(jsonAppList)

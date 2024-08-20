@@ -460,6 +460,10 @@ export default {
               "&logined=" + sessionStorage.getItem("logined") + "&userSeq=" + sessionStorage.getItem("userSeq") +
               "&deviceType=" + sessionStorage.getItem("deviceType")
             
+            const enRtoken = self.encryptData(response.data[3]);
+            self.$store.commit('token/setRToken', enRtoken);
+            self.setTokenCookie()
+
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
             getInfo.appSetting({

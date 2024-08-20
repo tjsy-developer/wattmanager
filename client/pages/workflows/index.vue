@@ -116,6 +116,7 @@ export default {
             if (scrollTop) {
                 this.scrollInToTop(height)
             }
+            this.checkJwt()
         },
         childPath(url) {
             const replaceURL = url.replaceAll('&init=true', '')

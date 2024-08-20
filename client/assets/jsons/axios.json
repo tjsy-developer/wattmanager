@@ -14,7 +14,8 @@
 		"verify_iamport_result": "verifyIamportRest/verifyIamport_result",
 		"user_phone_number_check": "accountRest/user_phone_number_check",
 		"getPasswordChangeDate": "accountRest/getPasswordChangeDate",
-		"resetPasswordChangeDate": "accountRest/resetPasswordChangeDate"
+		"resetPasswordChangeDate": "accountRest/resetPasswordChangeDate",
+		"token_refresh": "accountRest/token_refresh"
 	},
 	"user": {
 		"user_logout": "accountRest/user_logout",
@@ -131,5 +132,8 @@
 		"user_id_check": "accountRest/user_id_check",
 		"user_name_check": "accountRest/user_name_check",
 		"user_insert": "accountRest/user_insert"
+	},
+	"notice": {
+		"noti_info_one": "noticeRest/noti_info_one"
 	}
 }

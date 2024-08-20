@@ -36,6 +36,7 @@ import getFilters from "@/assets/scripts/info/getFilters";
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 import btnsClick from "@/assets/scripts/info/btnsClick";
 import getInfo from "@/assets/scripts/info/getInfo";
+import axiosJson from "@/assets/jsons/axios.json"
 
 export default {
   layout: "main",
@@ -98,7 +99,7 @@ export default {
       return convertToDate
     }
   },
-  mounted() {
+  async mounted() {
     this.refreshToken()
     getInfo.setLang(this.$t("getInfo"))
     btnsClick.setLang([
@@ -115,11 +116,19 @@ export default {
     this.enSeq = sessionStorage.getItem("enSeq")
     const self = this
     const token = sessionStorage.getItem("jwt")
-    this.$axios
-      .post(process.env.backendURL + "noticeRest/noti_info_one", {
+    const params = {
+      data: {
         noti_seq: self.seq,
         jwt: token
-      })
+      },
+      api: process.env.backendURL + axiosJson.notice.noti_info_one
+    }
+    // this.$axios
+    //   .post(process.env.backendURL + "noticeRest/noti_info_one", {
+    //     noti_seq: self.seq,
+    //     jwt: token
+    //   })
+    await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res)
         self.selected = [

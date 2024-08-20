@@ -2,27 +2,15 @@
 import axios from 'axios';
 import Vue from "vue";
 import jwt_decode from 'jwt-decode';
+import CryptoJS from 'crypto-js';
 
 Vue.mixin({
+  data() {
+    return {
+      key: process.env.skey,
+    }
+  },
   methods: {
-    // checkLoginTime() {
-    //   // 현재 시간
-    //   const currentTime = Math.floor(Date.now() / 1000)
-
-    //   // 로그인 시에 기록된 시간
-    //   const loginTime = cookieSetting.getCookie("managerLoginTime")
-
-    //   const unix24Hour = 1 * 60
-    //   if (loginTime == "calling") {
-    //     return
-    //   } else if(loginTime == "logout") {
-    //     window.dispatchEvent(new Event("forceLogoutEvent"))
-    //   } else if (currentTime > loginTime + unix24Hour) {
-    //     cookieSetting.deleteCookie("managerLoginTime")
-    //     cookieSetting.setCookie("managerLoinTime", "logout")
-    //     window.dispatchEvent(new Event("forceLogoutEvent"))
-    //   }
-    // }
     /**
      * 특정 도메인의 경우 iframe 도메인네임을 접속 도메인값으로 변경
      * @param url 로그시트 iframe 호출 URL 
@@ -111,14 +99,19 @@ Vue.mixin({
     },
     async convertImageToBlob(src) {
       try {
-        const result = await axios
-          .get(
-            src + `?token=${sessionStorage.getItem("jwt")}`,
-            {
-              timeout: 4000,
-              responseType: "blob",
-            }
-        )
+        const params = {
+          responseType: "blob",
+          api: src + `?token=${sessionStorage.getItem("jwt")}`
+        }
+        // const result = await axios
+        //   .get(
+        //     src + `?token=${sessionStorage.getItem("jwt")}`,
+        //     {
+        //       timeout: 4000,
+        //       responseType: "blob",
+        //     }
+        // )
+        const result = await axiosRequest('get', params)
         let blobURL = ''
         if (result.status === 200) {
           blobURL = URL.createObjectURL(result.data)
@@ -129,37 +122,56 @@ Vue.mixin({
       }
       
     },
+    // 임시 기능. access token, refresh token 활성화 후 제거!!!!
     refreshToken() {
       const self = this
-      let expTime // jwt exp time b
+      let expTime // jwt exp time
       const presentTime = Math.floor((new Date()).getTime() / 1000); // 현재 unixTime sec
       const presentJwt = sessionStorage.getItem("jwt")
       let decodeResult = true
 
       try {
         const decodeJwt = jwt_decode(presentJwt)
+        console.log(decodeJwt)
         expTime = decodeJwt.exp // unixTime sec
       } catch {
         console.log("decode error")
         decodeResult = false
       } finally {
-        
         // jwt 유효시간이 지난 경우 || 해독하지 못한경우
         if (expTime < presentTime || !decodeResult) {
           self.$store.commit("setTokenState", true)
         } else {
-          // self.$axios
-          //   .post(process.env.backendUrl + "token_api/refresh_token", {
-          //     jwt: presentJwt
-          //   })
-          //   .then ((res) => {
-          //     sessionStorage.setItme("jwt", res)
-          //   })
-          //   .catch((err) => {
-          //     console.log(`refresh token err:: ${err}`)
-          //   })
+          return
         }
       }
+    },
+
+    // 암호화.
+    encryptData(data) {
+        console.log('function encrypt')
+        const encryptData = CryptoJS.AES.encrypt(data, this.key).toString();
+        
+        return encryptData;
+    },
+
+    // 복호화.
+    decryptData(data) {
+        console.log('function decrypt')
+        try {
+          const decryptBytes = CryptoJS.AES.decrypt(data, this.key);
+        
+          const decryptData = decryptBytes.toString(CryptoJS.enc.Utf8);
+          
+          // 복호화 결과가 무효한 경우
+          if (!decryptData) decryptData = false;
+
+          return decryptData;
+        } catch  (err) {
+          // 복호화 못한 경우
+          console.log(`decrypt error: ${err.message}`);
+          return false;
+        }
     }
   },
 });

@@ -159,17 +159,21 @@ export default {
           for (let i = 0; i < getListData.length; i++) {
             // get Thnumnail Image
             const videoBlob = await self.convertImageToBlob(`${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`)
-
-            await self.axios
-              .get(
-                getListData[i].file_path +
-                  "/capture_images/" +
-                  getListData[i].file_name.split(".mp4")[0] +
-                  ".png",
-                {
-                  responseType: "blob"
-                }
-              )
+            const params = {
+              responseType: "blob",
+              api: getListData[i].file_path + "/capture_images/" + getListData[i].file_name.split(".mp4")[0] + ".png"
+            }
+            // await self.axios
+            //   .get(
+            //     getListData[i].file_path +
+            //       "/capture_images/" +
+            //       getListData[i].file_name.split(".mp4")[0] +
+            //       ".png",
+            //     {
+            //       responseType: "blob"
+            //     }
+            //   )
+            await self.axiosRequest('get', params)
               // 예외처리
               .catch(function(error) {
                 if (error.response) {
@@ -291,7 +295,7 @@ export default {
           : []
       }
     },
-    getSelected() {
+    async getSelected() {
       const getSeq = Number(this.$route.query.seq)
       if (!getSeq) {
         return
@@ -299,11 +303,19 @@ export default {
       const token = sessionStorage.getItem("jwt")
       const self = this
       console.log("getSelected !!")
-      this.$axios
-        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      const params = {
+        data: {
           att_seq: getSeq,
           jwt: token
-        })
+        },
+        api: process.env.backendURL + axiosJson.attachment.att_info_one
+      }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      //     att_seq: getSeq,
+      //     jwt: token
+      //   })
+      await this.axiosRequest('post', params)
         .then(async function(res) {
           if (!res.data.length) history.back()
           if (
@@ -411,17 +423,25 @@ export default {
         "_self"
       )
     },
-    removeBtnClick(e) {
+    async removeBtnClick(e) {
       const self = this
       const token = sessionStorage.getItem("jwt")
       const result = confirm(self.$t("listComp")[18])
       console.log(result)
       if (result) {
-        self.$axios
-          .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        const params = {
+          data: {
             att_seq: parseInt(this.$route.query.seq),
             jwt: token
-          })
+          },
+          api: process.env.backendURL + axiosJson.attachment.att_delete
+        }
+        // self.$axios
+        //   .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        //     att_seq: parseInt(this.$route.query.seq),
+        //     jwt: token
+        //   })
+        await self.axiosRequest('post', params)
           .then(function(res) {
             if (res) {
               alert(self.$t("listComp")[14])
@@ -435,15 +455,23 @@ export default {
       } else {
       }
     },
-    getPageNumber(seq) {
-      return this.$axios
-        .post(
-          process.env.backendURL + axiosJson.attachment.att_return_page_number,
-          {
-            att_seq: seq,
-            jwt: sessionStorage.getItem("jwt")
-          }
-        )
+    async getPageNumber(seq) {
+      const params = {
+        data: {
+          att_seq: seq,
+          jwt: sessionStorage.getItem("jwt")
+        },
+        api: process.env.backendURL + axiosJson.attachment.att_return_page_number
+      }
+      // return this.$axios
+      //   .post(
+      //     process.env.backendURL + axiosJson.attachment.att_return_page_number,
+      //     {
+      //       att_seq: seq,
+      //       jwt: sessionStorage.getItem("jwt")
+      //     }
+      //   )
+      return await this.axiosRequest('post', params)
         .then(response => {
           return response.data
         })
@@ -582,11 +610,16 @@ export default {
       console.log("getRightBarListEnd Function !")
       if (result === 1) {
         const self = this
+        const params = {
+          responseType: "blob",
+          api: self.selected.thumbnail
+        }
         // 썸네일 blob
-        this.$axios
-          .get(self.selected.thumbnail, {
-            responseType: "blob"
-          })
+        // this.$axios
+        //   .get(self.selected.thumbnail, {
+        //     responseType: "blob"
+        //   })
+        this.axiosRequest('get', params)
           // 예외처리
           .catch(function(error) {
             // 썸네일 이미지가 없어도, 영상을 불러와서 접근할 수 있도록 수정

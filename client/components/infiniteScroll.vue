@@ -28,16 +28,26 @@ export default {
   },
   methods: {
     async fetchData() {
-      const response = await this.$axios.post(
-        this.url,
-        this.compData.getListDataParams
-      )
+      const params = {
+        data: this.compData.getListDataParams,
+        api: this.url
+      }
+      // const response = await this.$axios.post(
+      //   this.url,
+      //   this.compData.getListDataParams
+      // )
+      const response = await this.axiosRequest('post', params)
       this.compData.setListData(response.data)
     },
     infiniteScroll(state) {
       setTimeout(() => {
-        this.$axios
-          .post(this.url, this.compData.getListDataParams)
+        const params = {
+          data: thithis.urls.compData.getListDataParams,
+          api: this.url
+        }
+        // this.$axios
+        //   .post(this.url, this.compData.getListDataParams)
+        this.axiosRequest('post', params)
           .then(response => {
             if (response.data.length) {
               this.compData.setListData(response.data)

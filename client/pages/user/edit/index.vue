@@ -203,7 +203,7 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.refreshToken()
     window.addEventListener("imageInputed", (e) => {
       console.log(e)
@@ -231,11 +231,19 @@ export default {
       this.$t("attachment")[5]
     ])
     this.token = sessionStorage.getItem("jwt")
-    this.$axios
-      .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    const params = {
+      data: {
         user_seq: self.compData.userSeq,
         jwt: this.token
-      })
+      },
+      api: process.env.backendURL + axiosJson.user.user_info_one
+    }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    //     user_seq: self.compData.userSeq,
+    //     jwt: this.token
+    //   })
+    this.axiosRequest('post', params)
       .then(async function (res) {
         if (self.$store.state.user.permissionLevel <= res.data.auth) {
           self.$router.replace('/err/404');
@@ -385,15 +393,23 @@ export default {
                               getInfo.permission
                             ]
                           )
-                          self.$axios
-                            .post(
-                              process.env.backendURL +
-                                "userRest/user_info_one_app_list",
-                              {
-                                br_seq: res.data.br_seq,
-                                jwt: sessionStorage.getItem("jwt")
-                              }
-                            )
+                          const parameter = {
+                            data: {
+                              br_seq: res.data.br_seq,
+                              jwt: sessionStorage.getItem("jwt")
+                            },
+                            api: process.env.backendURL + "userRest/user_info_one_app_list"
+                          }
+                          // self.$axios
+                          //   .post(
+                          //     process.env.backendURL +
+                          //       "userRest/user_info_one_app_list",
+                          //     {
+                          //       br_seq: res.data.br_seq,
+                          //       jwt: sessionStorage.getItem("jwt")
+                          //     }
+                          //   )
+                          self.axiosRequest('post', parameter)
                             .then(function(userInfoOneAppList) {
                               if (userInfoOneAppList.data) {
                               console.log(userInfoOneAppList)

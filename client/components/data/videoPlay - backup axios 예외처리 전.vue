@@ -146,16 +146,23 @@ export default {
           // console.log(self.getRightListDataParams)
           for (let i = 0; i < getListData.length; i++) {
             // get Thnumnail Image
-            await self.axios
-              .get(
-                getListData[i].file_path +
-                  "/capture_images/" +
-                  getListData[i].file_name.split(".")[0] +
-                  ".png",
-                {
+            const params = {
+              data: {
                   responseType: "blob"
-                }
-              )
+              },
+              api:  getListData[i].file_path + "/capture_images/" + getListData[i].file_name.split(".")[0] + ".png",
+            }
+            // await self.axios
+            //   .get(
+            //     getListData[i].file_path +
+            //       "/capture_images/" +
+            //       getListData[i].file_name.split(".")[0] +
+            //       ".png",
+            //     {
+            //       responseType: "blob"
+            //     }
+            //   )
+            self.axiosRequest('get', params)
               .then(function(blobres) {
                 if (blobres) {
                   // Thumnail Image Blob URL create

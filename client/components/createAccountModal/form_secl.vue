@@ -93,6 +93,11 @@ export default {
       if (this.id) {
         // eslint-disable-next-line no-global-assign
         self = this
+        const params = {
+          dat: {
+            id: this.id
+          }
+        }
         this.$axios
           // .post(axiosJson.account.user_id_check, {
           .post(process.env.backendURL + axiosJson.account.user_id_check, {

@@ -85,12 +85,20 @@ export default {
         this.getKeyData()
     },
     methods: {
-        getKeyData() {
-            this.$axios
-                .post(this.backendURL + axiosJson.qrManagement.chapterInfo, {
+        async getKeyData() {
+            const params = {
+                data: {
                     jwt: this.jwt,
                     chapter_seq: this.chapter_seq
-                })
+                },
+                api: this.backendURL + axiosJson.qrManagement.chapterInfo
+            }
+            // this.$axios
+            //     .post(this.backendURL + axiosJson.qrManagement.chapterInfo, {
+            //         jwt: this.jwt,
+            //         chapter_seq: this.chapter_seq
+            //     })
+            await this.axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data
                     const qrTitle = data.chapter_list.qr_title
@@ -107,12 +115,20 @@ export default {
                     console.log(err)
                 })
         },
-        getQrData() {
-            this.$axios
-                .post(this.backendURL + axiosJson.qrManagement.qrList, {
+        async getQrData() {
+            const params = {
+                data: {
                     jwt: this.jwt,
                     chapter_seq: this.chapter_seq
-                })
+                },
+                api: this.backendURL + axiosJson.qrManagement.qrList
+            }
+            // this.$axios
+            //     .post(this.backendURL + axiosJson.qrManagement.qrList, {
+            //         jwt: this.jwt,
+            //         chapter_seq: this.chapter_seq
+            //     })
+            await this.axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)
                     const data = res.data.data.qr_list

@@ -54,14 +54,20 @@ export default {
 
       window.open(path, "_self")
     },
-    getListCount() {
+    async getListCount() {
       this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
 
-      return this.$axios
-        .post(
-          process.env.backendURL + this.compData.getListCountUrl,
-          this.compData.getListDataParams
-        )
+      const params = {
+        data: this.compData.getListDataParams,
+        api: process.env.backendURL + this.compData.getListCountUrl
+      }
+      // return this.$axios
+        // .post(
+        //   process.env.backendURL + this.compData.getListCountUrl,
+        //   this.compData.getListDataParams
+        // )
+        
+      return await this.axiosRequest('post', params)
         .then(response => {
           console.log(response)
           if (response.data) this.totalItems = response.data
@@ -70,13 +76,19 @@ export default {
           console.log("pagination.vue getListCount error : ", err)
         })
     },
-    getListData() {
+    async getListData() {
       this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
-      return this.$axios
-        .post(
-          process.env.backendURL + this.compData.getListDataUrl,
-          this.compData.getListDataParams
-        )
+      const params = {
+        data: this.compData.getListDataParams,
+        api: process.env.backendURL + this.compData.getListDataUrl
+      }
+      // return this.$axios
+        // .post(
+        //   process.env.backendURL + this.compData.getListDataUrl,
+        //   this.compData.getListDataParams
+        // )
+        
+      return await this.axiosRequest('post', params)
         .then(response => {
           console.log(response)
           if (response.data.length) {
@@ -110,22 +122,24 @@ export default {
   mounted() {
     const self = this
 
+    self.getListFunction() // refresh access token 활성화에 따라 재요청 제거
+    
     // 비디오 영상관리 일 경우 interval 5초, 파일 송신율을 실시간으로 반영한다.
-    if (this.compData.getListDataUrl === "attRest/att_video_list") {
-      self.getListFunction()
-      // const getVideo = setInterval(function() {
-      //   self.getListFunction()
-      // }, 2000)
-      // // clearInterval(getVideo)
-      // setTimeout(function() {
-      //   clearInterval(getVideo)
-      // }, 2500)
-      this.getVideoRateInterval = setInterval(function() {
-        self.getListFunction()
-      }, 30000)
-    } else {
-      self.getListFunction()
-    }
+    // if (this.compData.getListDataUrl === "attRest/att_video_list") {
+    //   self.getListFunction()
+    //   // const getVideo = setInterval(function() {
+    //   //   self.getListFunction()
+    //   // }, 2000)
+    //   // // clearInterval(getVideo)
+    //   // setTimeout(function() {
+    //   //   clearInterval(getVideo)
+    //   // }, 2500)
+    //   this.getVideoRateInterval = setInterval(function() {
+    //     self.getListFunction()
+    //   }, 30000)
+    // } else {
+    //   self.getListFunction()
+    // }
   }
 }
 </script>

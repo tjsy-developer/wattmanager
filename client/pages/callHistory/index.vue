@@ -155,7 +155,7 @@ export default {
 			window.print(); // blocking
 			document.getElementById('__nuxt').style.overflow = 'auto'
 		},
-		getCallHistory() {
+		async getCallHistory() {
 			const [startDateTs, endDateTs] = this.convertToTimestamp()
 
 			if (!startDateTs || !endDateTs) {
@@ -163,18 +163,27 @@ export default {
 				return
 			}
 
-			const params = {
-				// en_seq: parseInt(sessionStorage.getItem("enSeq")),
-				en_seq: parseInt(sessionStorage.getItem("enSeq")),
-				start_time: startDateTs,
-				end_time: endDateTs,
-				device_id: this.selectedPartic ? this.selectedPartic : null
-			}
+			// const params = {
+			// 	// en_seq: parseInt(sessionStorage.getItem("enSeq")),
+			// 	en_seq: parseInt(sessionStorage.getItem("enSeq")),
+			// 	start_time: startDateTs,
+			// 	end_time: endDateTs,
+			// 	device_id: this.selectedPartic ? this.selectedPartic : null
+			// }
 			// 로딩바 on
 			this.$nuxt.$emit("selectLoadingBar", true)
-
-			this.$axios
-			.post(process.env.backendURL + axiosJson.call.callHistory_list, params)
+			const params = {
+				data: {
+					en_seq: parseInt(sessionStorage.getItem("enSeq")),
+					start_time: startDateTs,
+					end_time: endDateTs,
+					device_id: this.selectedPartic ? this.selectedPartic : null
+				},
+				api: process.env.backendURL + axiosJson.call.callHistory_list
+			}
+			// this.$axios
+			// .post(process.env.backendURL + axiosJson.call.callHistory_list, params)
+			await this.axiosRequest('post', params)
 			.then((res)=> {
 				console.log(res)
 				// res.data[0] :: 통화이력 Array

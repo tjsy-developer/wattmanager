@@ -32,7 +32,7 @@ export default {
         },
         async setListData(getListData) {
           const self = this
-          for (let i = 0; i < getListData.length; i++)
+          for (let i = 0; i < getListData.length; i++){
             // get Thnumnail Image
             await this.axios
               .get(getListData[i].file_path + "/" + getListData[i].file_name
@@ -108,6 +108,7 @@ export default {
                   })
                 }
               })
+          }
         }
       }
     }

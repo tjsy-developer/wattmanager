@@ -67,7 +67,7 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.refreshToken()
     getInfo.setAuthority()
     getInfo.setLang(this.$t("getInfo"))
@@ -84,11 +84,19 @@ export default {
 
     const self = this
     this.token = sessionStorage.getItem("jwt")
-    this.$axios
-      .post(process.env.backendURL + axiosJson.app.app_info_one, {
+    const params = {
+      data: {
         app_seq: self.compData.appSeq,
         jwt: this.token
-      })
+      },
+      api: process.env.backendURL + axiosJson.app.app_info_one
+    }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.app.app_info_one, {
+    //     app_seq: self.compData.appSeq,
+    //     jwt: this.token
+    //   })
+    await this.axiosRequest('post', params)
       .then(function(res) {
         self.compData.selected = [
           res.data[0].app_code_seq,

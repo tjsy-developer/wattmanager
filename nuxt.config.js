@@ -59,6 +59,7 @@ export default {
     "@plugins/globalMethods",
     "@plugins/vue-js-modal",
     "@plugins/vuex-persistedstate",
+    "@plugins/axiosRequest"
   ],
 
   /*
@@ -162,6 +163,7 @@ export default {
     forceLogout24: process.env.forceLogout24,
     blockAcount: process.env.blockAcount,
     impId: process.env.impId,
-    pg: process.env.pg
+    pg: process.env.pg,
+    skey: process.env.skey
   }
 }

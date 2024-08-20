@@ -37,7 +37,7 @@ export default {
       if (this.checkPatern != 'true') this.validPassword = true
       else this.validPassword = this.isValidPassword(this.newPassword)
     },
-    confirm() {
+   async confirm() {
       if (
         this.newPassword &&
         this.newPasswordCheck &&
@@ -58,22 +58,39 @@ export default {
         this.newPassword === this.newPasswordCheck
       ) {
         const self = this
-        this.$axios
-          .post(
-            process.env.backendURL + "userRest/user_password_check_change",
-            {
-              jwt: sessionStorage.getItem("jwt"),
-              user_seq: Number(sessionStorage.getItem("userSeq")),
-              password: this.password,
-              password_new: this.newPassword
-            }
-          )
+        const params = {
+          data: {
+            jwt: sessionStorage.getItem("jwt"),
+            user_seq: Number(sessionStorage.getItem("userSeq")),
+            password: this.password,
+            password_new: this.newPassword
+          },
+          api: process.env.backendURL + "userRest/user_password_check_change"
+        }
+        // this.$axios
+        //   .post(
+        //     process.env.backendURL + "userRest/user_password_check_change",
+        //     {
+        //       jwt: sessionStorage.getItem("jwt"),
+        //       user_seq: Number(sessionStorage.getItem("userSeq")),
+        //       password: this.password,
+        //       password_new: this.newPassword
+        //     }
+        //   )
+        await this.axiosRequest('post', params)
           .then(function(res) {
             if (res.data) {
-              self.$axios
-                .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
+              const parameter = {
+                data: {
                   id: sessionStorage.getItem("id")
-                })
+                },
+                api: process.env.backendURL + "accountRest/resetPasswordChangeDate"
+              }
+              // self.$axios
+              //   .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
+              //     id: sessionStorage.getItem("id")
+              //   })
+              self.axiosRequest('post', parameter)
                 .then((res) => {
                   console.log(res)
                   console.log(res.data)

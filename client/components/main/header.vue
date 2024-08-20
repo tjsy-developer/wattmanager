@@ -58,6 +58,7 @@ import cookieSetting from "@/assets/scripts/data/cookie"
 import axiosJson from "@/assets/jsons/axios";
 import { mapState } from "vuex"
 
+
 export default {
   data() {
     return {
@@ -96,6 +97,9 @@ export default {
 		}),
     getTokenState() {
       return this.$store.state.expiredToken
+    },
+    checkTokenState() {
+      return this.$store.state.token.tokenState
     }
   },
   watch: {
@@ -105,6 +109,15 @@ export default {
         this.$store.commit("setTokenState", false)
         this.logoutBtnClick()
       }
+    },
+    checkTokenState(res) {
+      // // 정상
+      // if (res == 0) return;
+      // // 변조 || 없음
+      // if (res == 1) alert(this.$t('jwtTokenErr')[0]);
+      // // 만료
+      // if (res == 2) alert(this.$t('jwtTokenErr')[1]);
+      // this.logoutBtnClick()
     }
   },
   methods: {
@@ -205,13 +218,22 @@ export default {
         window.dispatchEvent(forceLogoutEvent)
       }
     },
-    getAppInfo() {
-      this.$axios
-        .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+    async getAppInfo() {
+      const params = {
+        data: {
           en_seq: Number(sessionStorage.getItem("enSeq")),
           hq_seq: Number(sessionStorage.getItem("hqSeq")),
-          br_seq: Number(sessionStorage.getItem("brSeq"))
-        })
+          br_seq: Number(sessionStorage.getItem("brSeq")),
+        },
+        api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
+      }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+      //     en_seq: Number(sessionStorage.getItem("enSeq")),
+      //     hq_seq: Number(sessionStorage.getItem("hqSeq")),
+      //     br_seq: Number(sessionStorage.getItem("brSeq"))
+      //   })
+        await this.axiosRequest('post', params)
         .then((res) => {
           if (res.data.length > 0) {
             const jsonAppList = res.data[0].app_detail_json
@@ -268,20 +290,34 @@ export default {
           }
         })
     },
-    getUserName() {
+    async getUserName() {
+      const params = {
+        data: {
+          user_seq: Number(sessionStorage.getItem("userSeq")),
+          jwt: sessionStorage.getItem("jwt")
+        },
+        api: process.env.backendURL + axiosJson.user.user_info_one
+      }
       this.$axios
           // .post(axiosJson.user.user_info_one, {
           .post(process.env.backendURL + axiosJson.user.user_info_one, {
               user_seq: Number(sessionStorage.getItem("userSeq")),
               jwt: sessionStorage.getItem("jwt")
-          })
-          .then(function(res) {
-              sessionStorage.setItem("userName", res.data.name)
-              console.log(res.data.name)
-          })
-          .catch(function(error) {
-              console.log("user profile page error : ", error)
-          })
+            },
+            {
+              headers: {
+                "jwt": sessionStorage.getItem("jwt")
+              }
+            }
+          )
+      // await this.axiosRequest('post', params)
+        .then(function(res) {
+            sessionStorage.setItem("userName", res.data.name)
+            console.log(res.data.name)
+        })
+        .catch(function(error) {
+            console.log("user profile page error : ", error)
+        })
     },
     setAppInfo(appList) {
       if (appList["safetyPatrol"] == "True") {

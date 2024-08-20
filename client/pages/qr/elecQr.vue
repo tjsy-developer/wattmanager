@@ -146,12 +146,23 @@ export default {
       }
 
       this.$nuxt.$emit("setLoadingBar", true)
-      this.$axios
-        .post(this.fileuploadApi + "fileupload/qrcode", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
+      const params = {
+        data: {
+          formData
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'jwt': sessionStorage.getItem('jwt')
+        },
+        api: this.fileuploadApi + "fileupload/qrcode"
+      }
+      // this.$axios
+      //   .post(this.fileuploadApi + "fileupload/qrcode", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data"
+      //     }
+      //   })
+      this.axiosRequest('post', params)
         .then(function(res) {
           console.log(res)
           self.curQrInfo.QRName = []
