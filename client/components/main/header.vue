@@ -410,7 +410,13 @@ export default {
       sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
       sessionStorage.setItem("showMemo2", this.showMemo2)
       sessionStorage.setItem("showTbm", this.showTbm)
-    }
+    },
+    toastMessage() {
+          window.addEventListener('message', function(event) {
+            // if (event.hostname != window.location.hostname) return;
+            console.log(`message received ${event}`)
+          })
+      },
   },
   beforeMount() {
     this.showSafetyPatrol = sessionStorage.getItem("showSafetyPatrol") && sessionStorage.getItem("showSafetyPatrol") == "true" ? true : false
@@ -428,6 +434,11 @@ export default {
     this.getAppInfo()
   },
   mounted() {
+    // this.toastMessage()
+    window.addEventListener('message', (event) => {
+      // if (event.hostname != window.location.hostname) return;
+      console.log(`message received ${event}`)
+    })
     this.pathName= window.location.pathname
     this.location = window.location.hostname
     // 로그인한 계정이 admin인지 확인
@@ -452,7 +463,7 @@ export default {
       sessionStorage.setItem("enSeq", decodeData.en_seq)
       sessionStorage.setItem("brSeq", decodeData.br_seq)
       sessionStorage.setItem("deviceType", decodeData.device_type)
-      sessionStorage.setItem("jwt", this.$route.query.jwt_token)
+      // sessionStorage.setItem("jwt", this.$route.query.jwt_token)
 
       // 2021.04.14 ksh :: 로그인 버튼 숨김 설정
       sessionStorage.setItem("logoutStatus", 0)

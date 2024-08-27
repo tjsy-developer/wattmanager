@@ -124,35 +124,21 @@ Vue.mixin({
     },
     // 임시 기능. access token, refresh token 활성화 후 제거!!!!
     refreshToken() {
-      const self = this
-      let expTime // jwt exp time
-      const presentTime = Math.floor((new Date()).getTime() / 1000); // 현재 unixTime sec
-      const presentJwt = sessionStorage.getItem("jwt")
-      let decodeResult = true
-
-      try {
-        const decodeJwt = jwt_decode(presentJwt)
-        console.log(decodeJwt)
-        expTime = decodeJwt.exp // unixTime sec
-      } catch {
-        console.log("decode error")
-        decodeResult = false
-      } finally {
-        // jwt 유효시간이 지난 경우 || 해독하지 못한경우
-        if (expTime < presentTime || !decodeResult) {
-          self.$store.commit("setTokenState", true)
-        } else {
-          return
-        }
-      }
     },
 
     // 암호화.
     encryptData(data) {
         console.log('function encrypt')
-        const encryptData = CryptoJS.AES.encrypt(data, this.key).toString();
-        
+        let encryptData;
+        try {
+          encryptData = CryptoJS.AES.encrypt(data, this.key).toString();
+          return encryptData;
+        } catch (err) {
+          console.log(`encrypt error: ${err.message}`);
+          encryptData = false;
+        }
         return encryptData;
+
     },
 
     // 복호화.
@@ -162,9 +148,6 @@ Vue.mixin({
           const decryptBytes = CryptoJS.AES.decrypt(data, this.key);
         
           const decryptData = decryptBytes.toString(CryptoJS.enc.Utf8);
-          
-          // 복호화 결과가 무효한 경우
-          if (!decryptData) decryptData = false;
 
           return decryptData;
         } catch  (err) {

@@ -454,15 +454,18 @@ export default {
             sessionStorage.setItem("id", response.data[1].id);
             sessionStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
+            const enRtoken = self.encryptData(response.data[3]);
+            self.$store.commit('token/setRToken', enRtoken);
             const urlParameter = "&id=" + sessionStorage.getItem("id") + "&auth=" + sessionStorage.getItem("auth") +
               "&hqSeq=" + sessionStorage.getItem("hqSeq") +
               "&enSeq=" + sessionStorage.getItem("enSeq") + "&brSeq=" + sessionStorage.getItem("brSeq") +
               "&logined=" + sessionStorage.getItem("logined") + "&userSeq=" + sessionStorage.getItem("userSeq") +
-              "&deviceType=" + sessionStorage.getItem("deviceType")
+              "&deviceType=" + sessionStorage.getItem("deviceType") + `&rToken=${response.data[3]}`
             
-            const enRtoken = self.encryptData(response.data[3]);
-            self.$store.commit('token/setRToken', enRtoken);
-            self.setTokenCookie()
+            // if (cookieSetting.getCookie(`${sessionStorage.getItem('id')}enAToken`)) cookieSetting.deleteCookie(`${sessionStorage.getItem('id')}enAToken`)
+            // if (cookieSetting.getCookie(`${sessionStorage.getItem('id')}enRToken`)) cookieSetting.deleteCookie(`${sessionStorage.getItem('id')}enRToken`)
+            
+            
 
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
@@ -688,6 +691,8 @@ export default {
     }
   },
   mounted() {
+    // token 먼저 초기화
+    this.$store.commit('token/initToken');
     const currentLang = sessionStorage.getItem("languageCode");
     if (sessionStorage.getItem("languageCode") != null) {
       this.langImg = sessionStorage.getItem("languageCode");

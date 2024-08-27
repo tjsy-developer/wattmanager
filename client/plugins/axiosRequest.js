@@ -15,19 +15,18 @@ Vue.mixin({
         // type은 post get 두방식. params는 api, data 2가지로 구성.
         async axiosRequest(type, params) {
             console.log(`Func axiosRequest api: ${params.api}; type: ${type}`);
-
             this.jwt = sessionStorage.getItem('jwt');
             let response;
 
-            await this.checkCookie();
+            // await this.checkCookie();
 
             try {
                 response = await this.sendAxios(type, params);
             } catch {
                 console.log('axiosRequestFunc err');
-            } finally {
-                return response;
             }
+            
+            return response;
         },
 
         // type: post, get과 같은 요청 방식.
@@ -52,7 +51,7 @@ Vue.mixin({
             .catch((error) => {
                 console.log(`axios send fail. err: ${error}`);
                 const err = error.response;
-                if (err.status == '401') {
+                if (err.status == 401) {
                     if (err.data == 'none' || err.data == 'mutated')  {
                         this.$store.commit('token/mutateTokenState', 1);
                         return;
@@ -65,7 +64,7 @@ Vue.mixin({
             })
 
             if (requestAgain) {
-                result = await requestNewJwt(type, params);
+                result = await this.requestNewJwt(type, params);
             }
 
             return result;
@@ -81,27 +80,26 @@ Vue.mixin({
 
             const errorState = false;
 
-            this.checkJwt(decRToken)
-
             // 복호화에 실패한 경우
             if (!decRToken) return this.$store.commit('token/mutateTokenState', 1);
         
+            // deviceType은 watttalk 때문에 생겼다. manager에서는 빈값 유지
             await axios
                 .post(this.backendUrl + axiosJson.account.token_refresh, {
                     refreshToken: decRToken,
-                    token_type: 'default'
+                    deviceType: ''
                 })
                 .then((res) => {
                     // new access token, refresh token setting
-                    this.jwt = res.accessToken;
+                    this.jwt = res.data[0];
                     sessionStorage.setItem('jwt', this.jwt);
 
                     // refresh_token 암호화
-                    const enRtoken = this.encryptData(res.refreshToken);
+                    const enRtoken = this.encryptData(res.data[1]);
 
                     this.$store.commit('token/setRToken', enRtoken);
 
-                    this.setTokenCookie();
+                    // this.setTokenCookie();
                 })
                 .catch((error) => {
                     errorState = true;
@@ -120,12 +118,13 @@ Vue.mixin({
             if (!type && !params) return; // workflow page에서 요청이 들어온 경우
 
             if (errorState) return; // err인 경우 그냥 return 시킨다.
-
+            console.log(`resend axios`);
             return await this.sendAxios(type, params); // 정상적으로 토큰 재발급받았을 시 기존 요청 다시 보낸다.
         },
 
         // 와트톡과의 token 공유를 위하여.
         async setTokenCookie() {
+            this.jwt = sessionStorage.getItem('jwt');
             if (this.jwt == null) this.jwt = sessionStorage.getItem('jwt')
             // access totken 암호화 refresh token은 이미 암호화해서 저장시켜둠.
             const enAToken = await this.encryptData(this.jwt);
@@ -138,8 +137,9 @@ Vue.mixin({
 
         // axios 요청 전에, watttalk에서 신규로 발급받은 token이 있는지 확인!
         checkCookie() {
+            console.log(`func checkCookie`);
             // cookie에 없는 경우 비교할 필요 x return true
-            if (!getCookie(`${sessionStorage.getItem('id')}enAToken`) && !getCookie(`${sessionStorage.getItem('id')}enRToken`)) return true;
+            // if (!getCookie(`${sessionStorage.getItem('id')}enAToken`) && !getCookie(`${sessionStorage.getItem('id')}enRToken`)) return true;
 
             const enAToken = getCookie(`${sessionStorage.getItem('id')}enAToken`);
             const enRToken = getCookie(`${sessionStorage.getItem('id')}enRToken`);
@@ -154,7 +154,7 @@ Vue.mixin({
             if (deAToken !== this.jwt && enRToken !== this.$store.state.token.enRToken) {
                 this.jwt = deAToken;
                 sessionStorage.setItem('jwt', deAToken);
-                deleteCookie(`${sessionStorage.getItem('id')}enAToken`);
+                // deleteCookie(`${sessionStorage.getItem('id')}enAToken`);
 
                 
                 this.$store.commit('token/setRToken', enRToken);
@@ -201,7 +201,6 @@ function setCookie(cookieName, cookieValue, exdays) {
     const value =
         escape(cookieValue) +
         (exdays == null ? "" : "; expires= " + exdate.toUTCString())
-    console.log(value)
     document.cookie = cookieName + "=" + value
 }
 
@@ -224,6 +223,7 @@ function getCookie(cookieName) {
 
     /* 저장된 쿠키값 삭제하는 함수 (쿠키이름) */
 function deleteCookie(cookieName) {
+    console.log(`delete cookie func`)
     const date = new Date()
     date.setDate(date.getDate() - 100)
     const Cookie = cookieName + "=; expires= " + date.toUTCString()
