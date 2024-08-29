@@ -98,8 +98,7 @@ Vue.mixin({
                     const enRtoken = this.encryptData(res.data[1]);
 
                     this.$store.commit('token/setRToken', enRtoken);
-
-                    // this.setTokenCookie();
+                    toastMessage()
                 })
                 .catch((error) => {
                     errorState = true;
@@ -122,47 +121,6 @@ Vue.mixin({
             return await this.sendAxios(type, params); // 정상적으로 토큰 재발급받았을 시 기존 요청 다시 보낸다.
         },
 
-        // 와트톡과의 token 공유를 위하여.
-        async setTokenCookie() {
-            this.jwt = sessionStorage.getItem('jwt');
-            if (this.jwt == null) this.jwt = sessionStorage.getItem('jwt')
-            // access totken 암호화 refresh token은 이미 암호화해서 저장시켜둠.
-            const enAToken = await this.encryptData(this.jwt);
-            const enRToken = this.$store.state.token.enRToken;
-
-            // 암호화된 access token, refresh token cookie에 저장.
-            setCookie(`${sessionStorage.getItem('id')}enAToken`, enAToken);
-            setCookie(`${sessionStorage.getItem('id')}enRToken`, enRToken);
-        },
-
-        // axios 요청 전에, watttalk에서 신규로 발급받은 token이 있는지 확인!
-        checkCookie() {
-            console.log(`func checkCookie`);
-            // cookie에 없는 경우 비교할 필요 x return true
-            // if (!getCookie(`${sessionStorage.getItem('id')}enAToken`) && !getCookie(`${sessionStorage.getItem('id')}enRToken`)) return true;
-
-            const enAToken = getCookie(`${sessionStorage.getItem('id')}enAToken`);
-            const enRToken = getCookie(`${sessionStorage.getItem('id')}enRToken`);
-            // access token은 vue에서는 복호화된 것을 저장되나, cookie에는 암호화가 올라가기 때문에 복호화 해줌.
-            const deAToken = this.decryptData(enAToken)
-
-            // 복호화 실패시
-            if (!deAToken) return this.$store.commit('token/mutateTokenState', 1);
-
-            // 쿠키 저장 값과 내 저장값을 비교 후 동일한 경우는 처리 불필요.
-            // 다른 경우 -> talk에서 신규 발급받은 경우!
-            if (deAToken !== this.jwt && enRToken !== this.$store.state.token.enRToken) {
-                this.jwt = deAToken;
-                sessionStorage.setItem('jwt', deAToken);
-                // deleteCookie(`${sessionStorage.getItem('id')}enAToken`);
-
-                
-                this.$store.commit('token/setRToken', enRToken);
-                deleteCookie(`${sessionStorage.getItem('id')}enRToken`);
-            }
-            
-            return true;
-        },
         // workflow전용 jwt 확인. <- workflow는 manager-back과 직접적인 통신이 이루어 지지 않으므로 jwt 해독해서 확인
         checkJwt() {
             const self = this;
@@ -193,39 +151,13 @@ Vue.mixin({
     }
 })
 
-// assets/scripts/data/cookie의 내용을 못 가여와서 해당 파일 내용 복제.
-/* 쿠키 저장함수 (쿠키이름, 쿠키저장변수값, 쿠키유효기간설정) */
-function setCookie(cookieName, cookieValue, exdays) {
-    const exdate = new Date()
-    exdate.setDate(exdate.getDate() + exdays)
-    const value =
-        escape(cookieValue) +
-        (exdays == null ? "" : "; expires= " + exdate.toUTCString())
-    document.cookie = cookieName + "=" + value
-}
-
-    /* 저장된 쿠키값 불러오는 함수 (쿠키이름) */
-function getCookie(cookieName) {
-    let i
-    let x
-    let y
-    const ARRcookies = document.cookie.split(";")
-    for (i = 0; i < ARRcookies.length; i++) {
-        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="))
-        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1)
-        x = x.replace(/^\s+|\s+$/g, "")
-
-        if (x === cookieName) {
-        return unescape(y)
-        }
+// 와트톡과의 token 공유
+function toastMessage(aj, rj) {
+    if (window.opener) {
+        const params = {
+            at: aj,
+            rt: rj
+        };
+        window.opener.postMessage({ type: 'changeToken', data: params }, 'http://localhost:4500/');
     }
-}
-
-    /* 저장된 쿠키값 삭제하는 함수 (쿠키이름) */
-function deleteCookie(cookieName) {
-    console.log(`delete cookie func`)
-    const date = new Date()
-    date.setDate(date.getDate() - 100)
-    const Cookie = cookieName + "=; expires= " + date.toUTCString()
-    document.cookie = Cookie
-}
+};

@@ -411,12 +411,6 @@ export default {
       sessionStorage.setItem("showMemo2", this.showMemo2)
       sessionStorage.setItem("showTbm", this.showTbm)
     },
-    toastMessage() {
-          window.addEventListener('message', function(event) {
-            // if (event.hostname != window.location.hostname) return;
-            console.log(`message received ${event}`)
-          })
-      },
   },
   beforeMount() {
     this.showSafetyPatrol = sessionStorage.getItem("showSafetyPatrol") && sessionStorage.getItem("showSafetyPatrol") == "true" ? true : false
@@ -434,10 +428,12 @@ export default {
     this.getAppInfo()
   },
   mounted() {
-    // this.toastMessage()
-    window.addEventListener('message', (event) => {
-      // if (event.hostname != window.location.hostname) return;
-      console.log(`message received ${event}`)
+    window.addEventListener('message' , (event) => {
+      const res = event.data;
+      if (res.type == 'changeToken' && res.data.at && res.data.rt) {
+        sessionStorage.setItem('jwt', res.data.at);
+        this.$store.commit('token/setRToken', res.data.rt);
+      }
     })
     this.pathName= window.location.pathname
     this.location = window.location.hostname

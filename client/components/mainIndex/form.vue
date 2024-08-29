@@ -691,6 +691,7 @@ export default {
     }
   },
   mounted() {
+    sessionStorage.clear()
     // token 먼저 초기화
     this.$store.commit('token/initToken');
     const currentLang = sessionStorage.getItem("languageCode");
