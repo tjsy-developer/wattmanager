@@ -153,11 +153,10 @@ Vue.mixin({
 
 // 와트톡과의 token 공유
 function toastMessage(aj, rj) {
-    if (window.opener) {
-        const params = {
-            at: aj,
-            rt: rj
-        };
-        window.opener.postMessage({ type: 'changeToken', data: params }, 'http://localhost:4500/');
-    }
+    const params = {
+        id: sessionStorage.getItem('id'),
+        at: aj,
+        rt: rj
+    };
+    window.postMessage({ type: 'changeToken', data: params });
 };

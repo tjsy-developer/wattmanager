@@ -430,6 +430,7 @@ export default {
   mounted() {
     window.addEventListener('message' , (event) => {
       const res = event.data;
+      if (res.data.id != sessionStorage.getItem('id')) return;
       if (res.type == 'changeToken' && res.data.at && res.data.rt) {
         sessionStorage.setItem('jwt', res.data.at);
         this.$store.commit('token/setRToken', res.data.rt);
