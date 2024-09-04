@@ -47,19 +47,21 @@ separateBackendUploadPath="false"
 fileBoxBackend="https://hdcardev.watttalk.kr/wattmanager-server/"
 
 # 비밀번호 보안 적용
-checkPswPatern="true"
-pwdRulesType="3"
+checkPswPatern="false"
+pwdRulesType=""
 
 # 자동 로그아웃
 forceLogout24="false"
 
 # 비밀번호 오류 시 계정 로그인 차단
-blockAcount="true"
+blockAcount="false"
 
 # 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
 impId=""
 pg=""
 
+#암호화 키값
+skey="dsdfjsdl54sd5fsadfjdslksfd87513sdfsdfjkfdsjlk"
 # qr 값에 따라서 tab 변동
 
 # QR tab, 전자QR 보이는 설정

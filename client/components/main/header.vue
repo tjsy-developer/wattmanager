@@ -430,6 +430,8 @@ export default {
   mounted() {
     window.addEventListener('message' , (event) => {
       const res = event.data;
+      if (!res.data) return
+      if (!res.data.id && !res.data.type && !res.data.at && !res.data.rt) return
       if (res.data.id != sessionStorage.getItem('id')) return;
       if (res.type == 'changeToken' && res.data.at && res.data.rt) {
         sessionStorage.setItem('jwt', res.data.at);
