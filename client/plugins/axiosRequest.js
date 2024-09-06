@@ -111,10 +111,13 @@ Vue.mixin({
                     errorState = true;
                     console.log(`token refresh err: ${error}`);
                     const err = error.response;
-                    if (err.status == '401') {
+                    if (err.status == 401) {
+                        console.log("!!!!!!!!!!!")
                         if (err.data == 'none' || err.data == 'mutated') {
+                            console.log(`n/m`)
                             return this.$store.commit('token/mutateTokenState', 1);
                         } else if (err.data == 'expired') {
+                            console.log('e')
                             // refresh token도 만료된경우 로그아웃.
                             return this.$store.commit('token/mutateTokenState', 2);
                         } else {
