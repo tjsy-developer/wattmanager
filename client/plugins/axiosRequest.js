@@ -107,6 +107,7 @@ Vue.mixin({
                     console.log("============================================================================")
                     console.log(`token refresh err`)
                     console.log(error)
+                    console.log(error.response)
                     errorState = true;
                     console.log(`token refresh err: ${error}`);
                     const err = error.response;
