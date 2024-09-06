@@ -90,6 +90,7 @@ Vue.mixin({
                     deviceType: ''
                 })
                 .then((res) => {
+                    console.log(res)
                     // new access token, refresh token setting
                     this.jwt = res.data[0];
                     sessionStorage.setItem('jwt', this.jwt);
@@ -106,10 +107,12 @@ Vue.mixin({
                     const err = error.response;
                     if (err.status == 401) {
                         if (err.data == 'none' || err.data == 'mutated') {
-                            this.$store.commit('token/mutateTokenState', 1);
+                            return this.$store.commit('token/mutateTokenState', 1);
                         } else if (err.data == 'expired') {
                             // refresh token도 만료된경우 로그아웃.
-                            this.$store.commit('token/mutateTokenState', 2);
+                            return this.$store.commit('token/mutateTokenState', 2);
+                        } else {
+                            return  console.log(err)
                         }
                     }
                 })
@@ -123,7 +126,6 @@ Vue.mixin({
 
         // workflow전용 jwt 확인. <- workflow는 manager-back과 직접적인 통신이 이루어 지지 않으므로 jwt 해독해서 확인
         checkJwt() {
-            const self = this;
             let expTime; // jwt exp time
             const presentTime = Math.floor((new Date()).getTime() / 1000); // 현재 unixTime sec
             this.jwt = sessionStorage.getItem("jwt");
