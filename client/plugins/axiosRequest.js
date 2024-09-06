@@ -111,7 +111,7 @@ Vue.mixin({
                     errorState = true;
                     console.log(`token refresh err: ${error}`);
                     const err = error.response;
-                    if (err.status == 401) {
+                    if (err.status == '401') {
                         if (err.data == 'none' || err.data == 'mutated') {
                             return this.$store.commit('token/mutateTokenState', 1);
                         } else if (err.data == 'expired') {
