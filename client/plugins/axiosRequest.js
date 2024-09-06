@@ -82,7 +82,9 @@ Vue.mixin({
 
             // 복호화에 실패한 경우
             if (!decRToken) return this.$store.commit('token/mutateTokenState', 1);
-        
+            
+            console.log(`decode success`);
+
             // deviceType은 watttalk 때문에 생겼다. manager에서는 빈값 유지
             await axios
                 .post(this.backendUrl + axiosJson.account.token_refresh, {
