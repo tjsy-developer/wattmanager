@@ -104,6 +104,7 @@ Vue.mixin({
                     toastMessage()
                 })
                 .catch((error) => {
+                    console.log("============================================================================")
                     errorState = true;
                     console.log(`token refresh err: ${error}`);
                     const err = error.response;
