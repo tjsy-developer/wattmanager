@@ -146,8 +146,8 @@ export default {
             process.env.powertalkLogin_local +
               jwtToken +
               "&login_type=3&lang=" +
-              lang,
-            "_self" + 'rToken=logout'
+              lang + 'rToken=logout' +
+            "_self"
           )
         } else {
           if (window.location.hostname == 'dlencmedia.watttalk.kr') {
@@ -155,16 +155,16 @@ export default {
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
-              lang,
-              "_self" + 'rToken=logout'
+              lang + 'rToken=logout' +
+            "_self"
             )
           } else {
             window.open(
               process.env.powertalkLogin +
                 jwtToken +
                 "&login_type=3&lang=" +
-                lang,
-              "_self" + 'rToken=logout'
+                lang + 'rToken=logout' +
+              "_self"
             )
           }
         }
