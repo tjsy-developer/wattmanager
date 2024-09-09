@@ -9,6 +9,7 @@ import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   layout: "main",
@@ -96,7 +97,7 @@ export default {
     //     app_seq: self.compData.appSeq,
     //     jwt: this.token
     //   })
-    await this.axiosRequest('post', params)
+    await axiosRequest('post', params)
       .then(function(res) {
         self.compData.selected = [
           res.data[0].app_code_seq,
