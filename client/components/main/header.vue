@@ -140,13 +140,15 @@ export default {
       const languageCode = sessionStorage.getItem("languageCode")
       sessionStorage.clear()
       sessionStorage.setItem("languageCode", languageCode)
+      const rT = this.$store.state.token.enRToken
       if (process.env.powertlakState === "loginCheck") {
         if (window.location.hostname === "localhost") {
           window.open(
             process.env.powertalkLogin_local +
               jwtToken +
               "&login_type=3&lang=" +
-              lang + '?rToken=logout_self'
+              lang + '?rToken=' + rT ,
+              '_self'
           )
         } else {
           if (window.location.hostname == 'dlencmedia.watttalk.kr') {
@@ -154,14 +156,16 @@ export default {
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
-              lang + '?rToken=logout_self'
+              lang + '?rToken=' + rT ,
+              '_self'
             )
           } else {
             window.open(
               process.env.powertalkLogin +
                 jwtToken +
                 "&login_type=3&lang=" +
-                lang + '?rToken=logout_self'
+                lang + '?rToken=' + rT ,
+                '_self'
             )
           }
         }
