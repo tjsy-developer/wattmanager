@@ -112,13 +112,13 @@ export default {
       }
     },
     checkTokenState(res) {
-      // // 정상
-      // if (res == 0) return;
-      // // 변조 || 없음
-      // if (res == 1) alert(this.$t('jwtTokenErr')[0]);
-      // // 만료
-      // if (res == 2) alert(this.$t('jwtTokenErr')[1]);
-      // this.logoutBtnClick()
+      // 정상
+      if (res == 0) return;
+      // 변조 || 없음
+      if (res == 1) alert(this.$t('jwtTokenErr')[0]);
+      // 만료
+      if (res == 2) alert(this.$t('jwtTokenErr')[1]);
+      this.logoutBtnClick()
     }
   },
   methods: {
