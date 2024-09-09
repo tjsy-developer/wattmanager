@@ -67,6 +67,16 @@ export default {
           },
           api: process.env.backendURL + "userRest/user_password_check_change"
         }
+        // this.$axios
+        //   .post(
+        //     process.env.backendURL + "userRest/user_password_check_change",
+        //     {
+        //       jwt: sessionStorage.getItem("jwt"),
+        //       user_seq: Number(sessionStorage.getItem("userSeq")),
+        //       password: this.password,
+        //       password_new: this.newPassword
+        //     }
+        //   )
         await this.axiosRequest('post', params)
           .then(function(res) {
             if (res.data) {
@@ -76,6 +86,10 @@ export default {
                 },
                 api: process.env.backendURL + "accountRest/resetPasswordChangeDate"
               }
+              // self.$axios
+              //   .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
+              //     id: sessionStorage.getItem("id")
+              //   })
               self.axiosRequest('post', parameter)
                 .then((res) => {
                   console.log(res)

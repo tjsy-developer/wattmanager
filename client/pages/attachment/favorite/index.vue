@@ -46,11 +46,6 @@ export default {
                     + `?token=${sessionStorage.getItem("jwt")}`,
                   {
                     responseType: "blob"
-                  },
-                  {
-                    headers: {
-                      jwt: sessionStorage.getItem("jwt")
-                    }
                   }
                 )
                 // 예외처리
@@ -109,11 +104,6 @@ export default {
                   `${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`,
                   {
                     responseType: "blob"
-                  },
-                  {
-                    headers: {
-                      jwt: sessionStorage.getItem("jwt")
-                    }
                   }
                 )
                 // 예외처리

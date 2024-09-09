@@ -40,20 +40,14 @@ export default {
             },
             api: ocess.env.backendURL + axiosJson.attachment.att_update
           }
-          this.axios
-            .post(process.env.backendURL + axiosJson.attachment.att_update,
-              {
-                att_seq: this.attSeq,
-                title: getInfo.getInputValue(0),
-                category: getInfo.getInputValue(1),
-                jwt: sessionStorage.getItem("jwt")
-              },
-              {
-                headers: {
-                  jwt: sessionStorage.getItem("jwt")
-                }
-              }
-            )
+          // this.axios
+          //   .post(process.env.backendURL + axiosJson.attachment.att_update, {
+          //     att_seq: this.attSeq,
+          //     title: getInfo.getInputValue(0),
+          //     category: getInfo.getInputValue(1),
+          //     jwt: sessionStorage.getItem("jwt")
+          //   })
+          await axiosRequest('post', params)
             .then(function(res) {
               if (res) {
                 alert(getSelf.$t("attachment")[1])
@@ -112,12 +106,21 @@ export default {
         },
         api: process.env.backendURL + axiosJson.attachment.att_info_one
       }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      //     att_seq: self.compData.attSeq,
+      //     jwt: sessionStorage.getItem("jwt")
+      //   })
       await this.axiosRequest('post', params)
         .then(function(res) {
           const parameter = {
             responseType: "blob",
             api: `${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`,
           }
+          // self.compData.axios
+          //   .get(`${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`, {
+          //     responseType: "blob"
+          //   })
           self.axiosRequest('get', parameter)
             .then(function(blobres) {
               console.log(blobres)

@@ -218,6 +218,12 @@ export default {
         },
         api: this.fileuploadApi + "fileupload/"
       }
+      // this.$axios
+      //   .post(this.fileuploadApi + "fileupload/", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data"
+      //     }
+      //   })
       await this.axiosRequest('post', params)
         .then(function(res) {
           // ���� ���ε�� �ε��ٻ���

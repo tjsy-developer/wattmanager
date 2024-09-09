@@ -60,7 +60,13 @@ export default {
       const params = {
         data: this.compData.getListDataParams,
         api: process.env.backendURL + this.compData.getListCountUrl
-      } 
+      }
+      // return this.$axios
+        // .post(
+        //   process.env.backendURL + this.compData.getListCountUrl,
+        //   this.compData.getListDataParams
+        // )
+        
       return await this.axiosRequest('post', params)
         .then(response => {
           console.log(response)
@@ -76,6 +82,12 @@ export default {
         data: this.compData.getListDataParams,
         api: process.env.backendURL + this.compData.getListDataUrl
       }
+      // return this.$axios
+        // .post(
+        //   process.env.backendURL + this.compData.getListDataUrl,
+        //   this.compData.getListDataParams
+        // )
+        
       return await this.axiosRequest('post', params)
         .then(response => {
           console.log(response)

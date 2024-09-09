@@ -82,6 +82,11 @@ export default {
       },
       api: process.env.backendURL + axiosJson.hq.hq_info_one
     }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.hq.hq_info_one, {
+    //     hq_seq: self.compData.hqSeq,
+    //     jwt: sessionStorage.getItem("jwt")
+    //   })
     await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res.data)

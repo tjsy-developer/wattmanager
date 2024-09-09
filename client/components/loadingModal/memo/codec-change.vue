@@ -69,24 +69,13 @@ export default {
             // }
             
             this.codecStep = 1
-            const params = {
-                data: {
-                    formData
-                },
-                headers: {
-                    "Content-Type": "multipart/form-data; charset=UTF-8;",
+            this.$axios
+			.post(process.env.fileUploadBackend + "fileupload/video_encoding", formData, {
+				headers: {
+					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": sessionStorage.getItem("jwt")
-                },
-                api: process.env.fileUploadBackend + "fileupload/video_encoding"
-            }
-            // this.$axios
-			// .post(process.env.fileUploadBackend + "fileupload/video_encoding", formData, {
-			// 	headers: {
-			// 		"Content-Type": "multipart/form-data; charset=UTF-8;",
-			// 		"jwt": sessionStorage.getItem("jwt")
-			// 	}
-			// })
-            this.axiosRequest('post', params)
+				}
+			})
             .then((res)=> {
                 console.log(res)
                 if(res.data.RESULT == "1000") {

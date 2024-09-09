@@ -103,6 +103,11 @@ export default {
       },
       api: process.env.backendURL + axiosJson.device.dev_info_one
     }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.device.dev_info_one, {
+    //     dev_seq: self.compData.devSeq,
+    //     jwt: this.token
+    //   })
     await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res)

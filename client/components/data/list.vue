@@ -519,6 +519,11 @@ export default {
           },
           api: process.env.backendURL + axiosJson.attachment.att_delete
         }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        //     att_seq: e.seq,
+        //     jwt: token
+        //   })
         await this.axiosRequest('post', params)
           .then(function(res) {
             if (res) {
@@ -625,6 +630,10 @@ export default {
           },
           api: process.env.backendURL + getTitleBarFilter.getFilterListUrl
         }
+        // this.$axios
+        //   .post(process.env.backendURL + getTitleBarFilter.getFilterListUrl, {
+        //     jwt: token
+        //   })
         await this.axiosRequest('post', params)
           .then(function(res) {
             console.log(res)
@@ -779,6 +788,18 @@ export default {
               ? process.env.backendURL + axiosJson.attachment.att_return_page_number
               : process.env.backendURL + axiosJson.attachment.att_return_page_number_picture,
       }
+      // this.$axios
+      //   .post(
+      //     e.fileType === "video"
+            // ? process.env.backendURL +
+            //     axiosJson.attachment.att_return_page_number
+            // : process.env.backendURL +
+            //     axiosJson.attachment.att_return_page_number_picture,
+      //     {
+      //       att_seq: e.seq,
+      //       jwt: token
+      //     }
+      //   )
       this.axiosRequest('post', params)
         .then(response => {
           if (response.data)

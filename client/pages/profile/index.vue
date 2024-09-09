@@ -107,44 +107,74 @@ export default {
               if (formData) {
                 const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
                 
-                getSelf.$axios
-                  .post(backendAPI, formData, { headers })
+                const params = {
+                  data: { 
+                    formData
+                  },
+                  headers: headers,
+                  api: backendAPI
+                }
+                // getSelf.$axios
+                //   .post(backendAPI, formData, { headers })
+                await getSelf.axiosRequest('post', params)
                   .then((res) => {
                     const fileName = process.env.profilePhotoUrl + res.data.FILE_NAME
-                    getSelf.$axios
-                      // .post("userRest/user_update_my", {
-                      .post(process.env.backendURL + "userRest/user_update_my",
-                        {
-                          user_seq: this.userSeq,
-                          name: getInfo.getInputValue(4),
-                          name_en:
-                            // eslint-disable-next-line eqeqeq
-                            getSelf.deviceType == 3 && getSelf.auth != 4
-                              ? getInfo.getInputValue(5)
-                              : null,
-                          email:
-                            // eslint-disable-next-line eqeqeq
-                            getSelf.deviceType == 3 && getSelf.auth != 4
-                              ? getInfo.getInputValue(6)
-                              : getInfo.getInputValue(5),
-                          // image: this.selected[7],
-                          image: fileName,
-                          phone_number:
-                            deviceType != 2 && getSelf.compData.check2Factor !== false
-                              ? getInfo.getInputValue(7)
-                              : "",
-                          birthday:
-                            deviceType != 2 && getSelf.compData.check2Factor !== false
-                            ? getInfo.getInputValue(8)
+                    const parameter = {
+                      data: {
+                        user_seq: this.userSeq,
+                        name: getInfo.getInputValue(4),
+                        name_en:
+                          // eslint-disable-next-line eqeqeq
+                          getSelf.deviceType == 3 && getSelf.auth != 4
+                            ? getInfo.getInputValue(5)
+                            : null,
+                        email:
+                          // eslint-disable-next-line eqeqeq
+                          getSelf.deviceType == 3 && getSelf.auth != 4
+                            ? getInfo.getInputValue(6)
+                            : getInfo.getInputValue(5),
+                        // image: this.selected[7],
+                        image: fileName,
+                        phone_number:
+                          deviceType != 2 && getSelf.compData.check2Factor !== false
+                            ? getInfo.getInputValue(7)
                             : "",
-                          jwt: sessionStorage.getItem("jwt")
-                        },
-                        {
-                          headers: {
-                            jwt: sessionStorage.getItem("jwt")
-                          }
-                        }
-                      )
+                        birthday:
+                          deviceType != 2 && getSelf.compData.check2Factor !== false
+                          ? getInfo.getInputValue(8)
+                          : "",
+                        jwt: sessionStorage.getItem("jwt")
+                      },
+                      api: process.env.backendURL + "userRest/user_update_my"
+                    }
+                    // getSelf.$axios
+                    //   // .post("userRest/user_update_my", {
+                    //   .post(process.env.backendURL + "userRest/user_update_my", {
+                    //     user_seq: this.userSeq,
+                    //     name: getInfo.getInputValue(4),
+                    //     name_en:
+                    //       // eslint-disable-next-line eqeqeq
+                    //       getSelf.deviceType == 3 && getSelf.auth != 4
+                    //         ? getInfo.getInputValue(5)
+                    //         : null,
+                    //     email:
+                    //       // eslint-disable-next-line eqeqeq
+                    //       getSelf.deviceType == 3 && getSelf.auth != 4
+                    //         ? getInfo.getInputValue(6)
+                    //         : getInfo.getInputValue(5),
+                    //     // image: this.selected[7],
+                    //     image: fileName,
+                    //     phone_number:
+                    //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                    //         ? getInfo.getInputValue(7)
+                    //         : "",
+                    //     birthday:
+                    //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                    //       ? getInfo.getInputValue(8)
+                    //       : "",
+                    //     jwt: sessionStorage.getItem("jwt")
+                    //   })
+                    getSelf.axiosRequest('post', parameter)
                       .then(function(res) {
                         console.log(res.data == "Duplicate phone_number")
                         if (res.data === "Success") alert(getSelf.$t("attachment")[1])
@@ -165,42 +195,66 @@ export default {
                     alert(getSelf.$t("attachment")[2])
                   })
               } else {
-                getSelf.$axios
-                  // .post("userRest/user_update_my", {
-                  .post(process.env.backendURL + "userRest/user_update_my",
-                    {
-                      user_seq: this.userSeq,
-                      name: getInfo.getInputValue(4),
-                      name_en:
-                        // eslint-disable-next-line eqeqeq
-                        getSelf.deviceType == 3 && getSelf.auth != 4
-                          ? getInfo.getInputValue(5)
-                          : null,
-                      email:
-                        // eslint-disable-next-line eqeqeq
-                        getSelf.deviceType == 3 && getSelf.auth != 4
-                          ? getInfo.getInputValue(6)
-                          : getInfo.getInputValue(5),
-                      // image: this.selected[7],
-                      image: deviceType != 2
-                        ? this.selected[9]
-                        : this.selected[7],
-                      phone_number:
-                        deviceType != 2 && getSelf.compData.check2Factor !== false
-                          ? getInfo.getInputValue(7)
-                          : "",
-                      birthday:
-                        deviceType != 2 && getSelf.compData.check2Factor !== false
-                        ? getInfo.getInputValue(8)
+                const parameter = {
+                  data: {
+                    user_seq: this.userSeq,
+                    name: getInfo.getInputValue(4),
+                    name_en:
+                      // eslint-disable-next-line eqeqeq
+                      getSelf.deviceType == 3 && getSelf.auth != 4
+                        ? getInfo.getInputValue(5)
+                        : null,
+                    email:
+                      // eslint-disable-next-line eqeqeq
+                      getSelf.deviceType == 3 && getSelf.auth != 4
+                        ? getInfo.getInputValue(6)
+                        : getInfo.getInputValue(5),
+                    // image: this.selected[7],
+                    image: deviceType != 2
+                      ? this.selected[9]
+                      : this.selected[7],
+                    phone_number:
+                      deviceType != 2 && getSelf.compData.check2Factor !== false
+                        ? getInfo.getInputValue(7)
                         : "",
-                      jwt: sessionStorage.getItem("jwt")
-                    },
-                    {
-                      headers: {
-                        jwt: sessionStorage.getItem("jwt")
-                      }
-                    }
-                  )
+                    birthday:
+                      deviceType != 2 && getSelf.compData.check2Factor !== false
+                      ? getInfo.getInputValue(8)
+                      : "",
+                    jwt: sessionStorage.getItem("jwt")
+                  },
+                  api: process.env.backendURL + "userRest/user_update_my"
+                }
+                // getSelf.$axios
+                //   // .post("userRest/user_update_my", {
+                //   .post(process.env.backendURL + "userRest/user_update_my", {
+                //     user_seq: this.userSeq,
+                //     name: getInfo.getInputValue(4),
+                //     name_en:
+                //       // eslint-disable-next-line eqeqeq
+                //       getSelf.deviceType == 3 && getSelf.auth != 4
+                //         ? getInfo.getInputValue(5)
+                //         : null,
+                //     email:
+                //       // eslint-disable-next-line eqeqeq
+                //       getSelf.deviceType == 3 && getSelf.auth != 4
+                //         ? getInfo.getInputValue(6)
+                //         : getInfo.getInputValue(5),
+                //     // image: this.selected[7],
+                //     image: deviceType != 2
+                //       ? this.selected[9]
+                //       : this.selected[7],
+                //     phone_number:
+                //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                //         ? getInfo.getInputValue(7)
+                //         : "",
+                //     birthday:
+                //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                //       ? getInfo.getInputValue(8)
+                //       : "",
+                //     jwt: sessionStorage.getItem("jwt")
+                //   })
+                getSelf.axiosRequest('post', parameter)
                   .then(function(res) {
                     if (res.data === "Success") alert(getSelf.$t("attachment")[1])
                     else if (res.data === "Exceeded quota") alert(getSelf.$t("ExceededQuota"))
@@ -305,6 +359,12 @@ export default {
       },
       api: process.env.backendURL + axiosJson.user.user_info_one
     }
+    // this.$axios
+    //   // .post(axiosJson.user.user_info_one, {
+    //   .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    //     user_seq: getUserSeq,
+    //     jwt: sessionStorage.getItem("jwt")
+    //   })
     this.axiosRequest('post', params)
       .then(async function(res) {
 

@@ -70,6 +70,12 @@ export default {
         },
         api: process.env.backendURL + axiosJson.memo.memo_update
       }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.memo.memo_update, {
+      //     memo_seq: this.compData.seq,
+      //     memo_contents: getValue,
+      //     jwt: sessionStorage.getItem("jwt")
+      //   })
       await this.axiosRequest('post', params)
         .then(function(res) {
           if (res) {
@@ -92,6 +98,11 @@ export default {
           },
           api: process.env.backendURL + axiosJson.memo.memo_join_file_delete
         }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.memo.memo_join_file_delete, {
+        //     memo_seq: this.compData.seq,
+        //     jwt: sessionStorage.getItem("jwt")
+        //   })
         await this.axiosRequest('post', params)
           .then(function(res) {
             if (res) {
@@ -102,6 +113,11 @@ export default {
                 },
                 api: process.env.backendURL + axiosJson.memo.memo_delete
               }
+              // self.$axios
+              //   .post(process.env.backendURL + axiosJson.memo.memo_delete, {
+              //     memo_seq: self.compData.seq,
+              //     jwt: sessionStorage.getItem("jwt")
+              //   })
               self.axiosRequest('post', parameter)
                 .then(function(res2) {
                   if (res2) {
@@ -144,6 +160,11 @@ export default {
           },
           api: process.env.backendURL + axiosJson.memo.file_delete
         }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.memo.file_delete, {
+        //     file_seq: file.file_seq,
+        //     jwt: sessionStorage.getItem("jwt")
+        //   })
         await this.axiosRequest('post', params)
           .then(function(res) {
             if (res.data === "pass") {

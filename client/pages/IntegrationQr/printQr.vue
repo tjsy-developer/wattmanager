@@ -93,6 +93,11 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.chapterInfo
             }
+            // this.$axios
+            //     .post(this.backendURL + axiosJson.qrManagement.chapterInfo, {
+            //         jwt: this.jwt,
+            //         chapter_seq: this.chapter_seq
+            //     })
             await this.axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data
@@ -118,6 +123,11 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.qrList
             }
+            // this.$axios
+            //     .post(this.backendURL + axiosJson.qrManagement.qrList, {
+            //         jwt: this.jwt,
+            //         chapter_seq: this.chapter_seq
+            //     })
             await this.axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)

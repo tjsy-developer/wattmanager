@@ -54,6 +54,11 @@ export default {
                },
                api: process.env.backendURL + axiosJson.user.user_info_one
             }
+            // this.$axios
+            // .post(process.env.backendURL + axiosJson.user.user_info_one, {
+            //     user_seq: this.propsData.user_seq,
+            //     jwt: sessionStorage.getItem("jwt")
+            // })
             await this.axiosRequest('post', parameter)
             .then(function (response) {
                 const params = {
@@ -119,6 +124,12 @@ export default {
                 api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
             }
             // 앱 정보 확인
+            // this.$axios
+            //     .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+            //         en_seq: Number(sessionStorage.getItem("enSeq")),
+            //         hq_seq: Number(sessionStorage.getItem("hqSeq")),
+            //         br_seq: Number(sessionStorage.getItem("brSeq"))
+            //     })
             await this.axiosRequest('post', params)
                 .then((res) => {
                     if (res.data.length > 0) {
@@ -132,6 +143,10 @@ export default {
                                 },
                                 api: process.env.backendURL + axiosJson.account.getPasswordChangeDate
                             }
+                            // self.$axios
+                            // .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
+                            //     id: self.propsData.id
+                            // })
                             self.axiosRequest('post', parameter)
                             .then((response) => {
                                 const changedDate =  response.data // 비밀번호 변경한 날자 (unixtime으로 옴 초까지만!!!!!!)

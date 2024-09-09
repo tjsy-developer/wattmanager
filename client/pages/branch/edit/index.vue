@@ -83,6 +83,11 @@ export default {
       },
       api: process.env.backendURL + axiosJson.branch.br_info_one
     }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.branch.br_info_one, {
+    //     br_seq: self.compData.brSeq,
+    //     jwt: sessionStorage.getItem("jwt")
+    //   })
     await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res)

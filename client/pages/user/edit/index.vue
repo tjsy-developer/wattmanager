@@ -238,6 +238,11 @@ export default {
       },
       api: process.env.backendURL + axiosJson.user.user_info_one
     }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    //     user_seq: self.compData.userSeq,
+    //     jwt: this.token
+    //   })
     this.axiosRequest('post', params)
       .then(async function (res) {
         if (self.$store.state.user.permissionLevel <= res.data.auth) {
@@ -395,6 +400,15 @@ export default {
                             },
                             api: process.env.backendURL + "userRest/user_info_one_app_list"
                           }
+                          // self.$axios
+                          //   .post(
+                          //     process.env.backendURL +
+                          //       "userRest/user_info_one_app_list",
+                          //     {
+                          //       br_seq: res.data.br_seq,
+                          //       jwt: sessionStorage.getItem("jwt")
+                          //     }
+                          //   )
                           self.axiosRequest('post', parameter)
                             .then(function(userInfoOneAppList) {
                               if (userInfoOneAppList.data) {

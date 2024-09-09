@@ -175,6 +175,10 @@ export default {
       if (userId && userPwd) {
         const self = this
         this.$axios
+          // .post(axiosJson.account.user_id_pw_check, {
+          // 	id: this.id,
+          // 	password: this.password
+          // })
           .post(process.env.backendURL + axiosJson.account.user_id_pw_check, {
             id: userId,
             password: userPwd
