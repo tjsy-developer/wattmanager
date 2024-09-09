@@ -55,6 +55,7 @@ const getInfo = {
     )
   },
   hq(enSeq) {
+    console.log(enSeq)
     return (
         axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}, headers: ''})
         .then(function(res) {
@@ -73,6 +74,7 @@ const getInfo = {
     )
   },
   branch(hqSeq) {
+    console.log(hqSeq)
     return (
       axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}, headers: ''})
         .then(function(res) {

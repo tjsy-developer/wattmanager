@@ -101,24 +101,19 @@ export async function requestNewJwt(type, params) {
             toastMessage()
         })
         .catch((error) => {
-            console.log("============================================================================")
-            console.log(`token refresh err`)
-            console.log(error)
-            console.log(error.response)
-            errorState = true;
-            console.log(`token refresh err: ${error}`);
+            console.log(`axios send fail. err: ${error}`);
             const err = error.response;
-            if (error.response.status == 401) {
+            if (err.status == 401) {
                 console.log("!!!!!!!!!!!")
-                if (error.response.data == 'none' || error.response.data == 'mutated') {
+                if (err.data == 'none' || err.data == 'mutated')  {
                     console.log(`n/m`)
                     return window.$nuxt.$store.commit('token/mutateTokenState', 1);
-                } else if (error.response.data == 'expired') {
+                } else if (err.data == 'expired') {
                     console.log('e')
                     // refresh token도 만료된경우 로그아웃.
                     return window.$nuxt.$store.commit('token/mutateTokenState', 2);
                 } else {
-                    return  console.log(error)
+                    return  console.log(err)
                 }
             }
         })
