@@ -147,7 +147,7 @@ export default {
             process.env.powertalkLogin_local +
               jwtToken +
               "&login_type=3&lang=" +
-              lang + '?rToken=' + rT ,
+              lang + '&rToken=' + rT ,
               '_self'
           )
         } else {
@@ -156,7 +156,7 @@ export default {
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
-              lang + '?rToken=' + rT ,
+              lang + '&rToken=' + rT ,
               '_self'
             )
           } else {
@@ -164,7 +164,7 @@ export default {
               process.env.powertalkLogin +
                 jwtToken +
                 "&login_type=3&lang=" +
-                lang + '?rToken=' + rT ,
+                lang + '&rToken=' + rT ,
                 '_self'
             )
           }
