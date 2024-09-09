@@ -6,6 +6,7 @@ import CryptoJS from 'crypto-js';
 let jwt = null;
 let rToken = null;
 const key = process.env.skey
+const backendUrl = process.env.backendURL
 
  // type은 post get 두방식. params는 api, data 2가지로 구성.
 export async function axiosRequest(type, params) {

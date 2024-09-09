@@ -117,7 +117,7 @@ export default {
                     br_seq: Number(sessionStorage.getItem("brSeq"))
                 },
                 api: process.env.backendURL + axiosJson.app.app_powertalkweb_info,
-                headers: {}
+                headers: ''
             }
             await axiosRequest('post', params)
                 .then((res) => {
@@ -131,7 +131,7 @@ export default {
                                     id: self.propsData.id
                                 },
                                 api: process.env.backendURL + axiosJson.account.getPasswordChangeDate,
-                                headers: {}
+                                headers: ''
                             }
                             axiosRequest('post', parameter)
                             .then((response) => {
