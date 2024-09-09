@@ -182,7 +182,7 @@ export function encryptData(data) {
 };
 
 // 복호화.
-export function decryptData(data) {
+function decryptData(data) {
     console.log('function decrypt')
     try {
       const decryptBytes = CryptoJS.AES.decrypt(data, key);
