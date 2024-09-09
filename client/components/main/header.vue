@@ -147,7 +147,7 @@ export default {
               jwtToken +
               "&login_type=3&lang=" +
               lang,
-            "_self"
+            "_self" + 'rToken=logout'
           )
         } else {
           if (window.location.hostname == 'dlencmedia.watttalk.kr') {
@@ -156,7 +156,7 @@ export default {
               jwtToken +
               "&login_type=3&lang=" +
               lang,
-              "_self"
+              "_self" + 'rToken=logout'
             )
           } else {
             window.open(
@@ -164,7 +164,7 @@ export default {
                 jwtToken +
                 "&login_type=3&lang=" +
                 lang,
-              "_self"
+              "_self" + 'rToken=logout'
             )
           }
         }

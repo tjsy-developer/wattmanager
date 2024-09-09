@@ -10,6 +10,7 @@
 
 
 <script>
+import { checkJwt } from '../../plugins/axiosRequest'
 export default {
     layout: "main",
     data () {
@@ -116,7 +117,7 @@ export default {
             if (scrollTop) {
                 this.scrollInToTop(height)
             }
-            this.checkJwt()
+            checkJwt()
         },
         childPath(url) {
             const replaceURL = url.replaceAll('&init=true', '')
