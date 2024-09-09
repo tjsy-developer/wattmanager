@@ -152,16 +152,6 @@ export default {
               },
               api:  getListData[i].file_path + "/capture_images/" + getListData[i].file_name.split(".")[0] + ".png",
             }
-            // await self.axios
-            //   .get(
-            //     getListData[i].file_path +
-            //       "/capture_images/" +
-            //       getListData[i].file_name.split(".")[0] +
-            //       ".png",
-            //     {
-            //       responseType: "blob"
-            //     }
-            //   )
             self.axiosRequest('get', params)
               .then(function(blobres) {
                 if (blobres) {

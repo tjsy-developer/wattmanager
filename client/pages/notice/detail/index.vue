@@ -123,11 +123,6 @@ export default {
       },
       api: process.env.backendURL + axiosJson.notice.noti_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + "noticeRest/noti_info_one", {
-    //     noti_seq: self.seq,
-    //     jwt: token
-    //   })
     await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res)

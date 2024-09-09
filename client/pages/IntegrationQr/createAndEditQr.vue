@@ -94,11 +94,6 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.qrList
             }
-            // this.$axios
-            //     .post(this.backendURL + axiosJson.qrManagement.qrList, {
-            //         jwt: this.jwt,
-            //         chapter_seq: this.chapter_seq
-            //     })
             await this.axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data.qr_list
@@ -233,11 +228,6 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.qrSave
             }
-            // this.$axios
-            //     .post(this.backendURL + axiosJson.qrManagement.qrSave, {
-            //         jwt: this.jwt,
-            //         data_list: qrParams
-            //     })
             await this.axiosRequest('post', params)
                 .then((res) => {
                     this.operateDialog(this.$t("qrMessage")[0], "confirm")
@@ -278,11 +268,6 @@ export default {
                     },
                     api: this.backendURL + axiosJson.qrManagement.qrDataDelete
                 }
-                // this.$axios
-                // .post(this.backendURL + axiosJson.qrManagement.qrDataDelete, {
-                //     jwt: this.jwt,
-                //     data_seq: seq
-                // })
                 this.axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)

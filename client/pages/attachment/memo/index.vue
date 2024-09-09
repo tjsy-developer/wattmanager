@@ -123,11 +123,6 @@ export default {
         },
         api: process.env.backendURL + axiosJson.memo.memo_join_file
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.memo.memo_join_file, {
-      //     memo_seq: memo.seq,
-      //     jwt: sessionStorage.getItem("jwt")
-      //   })
       await this.axiosRequest('post', params)
         .then(async function (res) {
           // 모든 `getBlob` 요청을 위한 배열을 준비합니다.

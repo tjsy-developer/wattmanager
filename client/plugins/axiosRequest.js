@@ -109,9 +109,8 @@ Vue.mixin({
                     console.log(error)
                     console.log(error.response)
                     errorState = true;
-                    console.log(`token refresh err: ${error}`);
                     const err = error.response;
-                    if (err.status == 401) {
+                    if (error.response.status == 401) {
                         console.log("!!!!!!!!!!!")
                         if (err.data == 'none' || err.data == 'mutated') {
                             console.log(`n/m`)

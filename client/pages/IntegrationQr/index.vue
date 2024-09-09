@@ -69,11 +69,6 @@ export default {
                 },
                 api: process.env.backendURL + axiosJson.qrManagement.searchQR
             }
-            // this.$axios
-            //     .post(process.env.backendURL + axiosJson.qrManagement.searchQR, {
-            //         jwt: sessionStorage.getItem("jwt"),
-            //         chapter_name: this.chapterName
-            //     })
             await this.axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data.chapter_list

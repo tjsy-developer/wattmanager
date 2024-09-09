@@ -227,12 +227,6 @@ export default {
         },
         api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-      //     en_seq: Number(sessionStorage.getItem("enSeq")),
-      //     hq_seq: Number(sessionStorage.getItem("hqSeq")),
-      //     br_seq: Number(sessionStorage.getItem("brSeq"))
-      //   })
         await this.axiosRequest('post', params)
         .then((res) => {
           if (res.data.length > 0) {
@@ -291,15 +285,7 @@ export default {
         })
     },
     async getUserName() {
-      const params = {
-        data: {
-          user_seq: Number(sessionStorage.getItem("userSeq")),
-          jwt: sessionStorage.getItem("jwt")
-        },
-        api: process.env.backendURL + axiosJson.user.user_info_one
-      }
       this.$axios
-          // .post(axiosJson.user.user_info_one, {
           .post(process.env.backendURL + axiosJson.user.user_info_one, {
               user_seq: Number(sessionStorage.getItem("userSeq")),
               jwt: sessionStorage.getItem("jwt")
@@ -310,7 +296,6 @@ export default {
               }
             }
           )
-      // await this.axiosRequest('post', params)
         .then(function(res) {
             sessionStorage.setItem("userName", res.data.name)
             console.log(res.data.name)

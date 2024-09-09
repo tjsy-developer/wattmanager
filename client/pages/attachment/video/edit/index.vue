@@ -26,23 +26,20 @@ export default {
           if (getInfo.getInputValue(0) === "")
             return alert(getSelf.$t("attachment")[0])
 
-          const params = {
-            data: {
-              att_seq: this.attSeq,
-              title: getInfo.getInputValue(0),
-              category: getInfo.getInputValue(1),
-              jwt: sessionStorage.getItem("jwt")
-            },
-            api: process.env.backendURL + axiosJson.attachment.att_update
-          }
-          // this.axios
-          //   .post(process.env.backendURL + axiosJson.attachment.att_update, {
-          //     att_seq: this.attSeq,
-          //     title: getInfo.getInputValue(0),
-          //     category: getInfo.getInputValue(1),
-          //     jwt: sessionStorage.getItem("jwt")
-          //   })
-          await this.axiosRequest('post', params)
+          this.axios
+            .post(process.env.backendURL + axiosJson.attachment.att_update,
+              {
+                att_seq: this.attSeq,
+                title: getInfo.getInputValue(0),
+                category: getInfo.getInputValue(1),
+                jwt: sessionStorage.getItem("jwt")
+              },
+              {
+                headers: {
+                  jwt: sessionStorage.getItem("jwt")
+                }
+              }
+            )
             .then(function(res) {
               if (res) {
                 alert(getSelf.$t("attachment")[1])
@@ -101,11 +98,6 @@ export default {
         },
         api: process.env.backendURL + axiosJson.attachment.att_info_one
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
-      //     att_seq: self.compData.attSeq,
-      //     jwt: sessionStorage.getItem("jwt")
-      //   })
       await this.axiosRequest('post', params)
         .then(function(res) {
           self.compData.selected = [

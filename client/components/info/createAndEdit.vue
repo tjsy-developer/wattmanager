@@ -260,14 +260,6 @@ export default {
           },
           api: process.env.backendURL + axiosJson.app.app_info_copy
         }
-        // this.$axios
-        //   .post(process.env.backendURL + axiosJson.app.app_info_copy, {
-        //     app_code_seq: appCodeSeq,
-        //     en_seq: appCopyEnSeq,
-        //     hq_seq: appCopyHqSeq,
-        //     br_seq: appCopyBrSeq,
-        //     jwt: sessionStorage.getItem("jwt")
-        //   })
         await this.axiosRequest('post', params)
           .then(function(res) {
             console.log(res.data)

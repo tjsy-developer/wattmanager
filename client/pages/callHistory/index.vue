@@ -181,8 +181,6 @@ export default {
 				},
 				api: process.env.backendURL + axiosJson.call.callHistory_list
 			}
-			// this.$axios
-			// .post(process.env.backendURL + axiosJson.call.callHistory_list, params)
 			await this.axiosRequest('post', params)
 			.then((res)=> {
 				console.log(res)

@@ -91,6 +91,11 @@ export default {
                   {
                     timeout: 1000,
                     responseType: "blob",
+                  },
+                  {
+                    headers: {
+                      jwt: sessionStorage.getItem("jwt")
+                    }
                   }
                 )
                 // 예외처리
