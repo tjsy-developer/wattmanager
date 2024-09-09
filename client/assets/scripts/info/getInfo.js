@@ -38,7 +38,7 @@ const getInfo = {
   },
   enterprise() {
     return (
-      axiosRequest('post', {api: process.env.backendURL + "accountRest/en_list"})
+      axiosRequest('post', {api: process.env.backendURL + "accountRest/en_list", headers: {}})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -56,7 +56,7 @@ const getInfo = {
   },
   hq(enSeq) {
     return (
-        axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}})
+        axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}, headers: {}})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -74,7 +74,7 @@ const getInfo = {
   },
   branch(hqSeq) {
     return (
-      axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}})
+      axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}, headers: {}})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
