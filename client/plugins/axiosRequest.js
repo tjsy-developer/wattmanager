@@ -108,17 +108,17 @@ export async function requestNewJwt(type, params) {
             errorState = true;
             console.log(`token refresh err: ${error}`);
             const err = error.response;
-            if (err.status == 401) {
+            if (error.response.status == 401) {
                 console.log("!!!!!!!!!!!")
-                if (err.data == 'none' || err.data == 'mutated') {
+                if (error.response.data == 'none' || error.response.data == 'mutated') {
                     console.log(`n/m`)
                     return window.$nuxt.$store.commit('token/mutateTokenState', 1);
-                } else if (err.data == 'expired') {
+                } else if (error.response.data == 'expired') {
                     console.log('e')
                     // refresh token도 만료된경우 로그아웃.
                     return window.$nuxt.$store.commit('token/mutateTokenState', 2);
                 } else {
-                    return  console.log(err)
+                    return  console.log(error)
                 }
             }
         })
