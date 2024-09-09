@@ -96,6 +96,7 @@
 import filtersJson from "@/assets/jsons/info/callHistory/filters"
 import getFilters from "@/assets/scripts/info/getFilters"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -181,9 +182,7 @@ export default {
 				},
 				api: process.env.backendURL + axiosJson.call.callHistory_list
 			}
-			// this.$axios
-			// .post(process.env.backendURL + axiosJson.call.callHistory_list, params)
-			await this.axiosRequest('post', params)
+			await axiosRequest('post', params)
 			.then((res)=> {
 				console.log(res)
 				// res.data[0] :: 통화이력 Array

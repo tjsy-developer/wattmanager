@@ -52,6 +52,7 @@
 
 <script>
 import axiosJson from "@/assets/jsons/axios";
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   data() {
@@ -100,22 +101,17 @@ export default {
 			},
 			api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
 		}
-    	// this.$axios
-    	// 	.post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-        //   en_seq: Number(sessionStorage.getItem("enSeq")),
-        //   hq_seq: Number(sessionStorage.getItem("hqSeq")),
-        //   br_seq: Number(sessionStorage.getItem("brSeq"))
-        // })
-		this.axiosRequest('post', params)
+		axiosRequest('post', params)
     		.then((res) => {
+				if (!res.data[0]) return this.showMemo = true
     			const jsonAppList = res.data[0].app_detail_json
-          const appList = JSON.parse(jsonAppList)
-		      // 와트매니저1 메모 보여줄지 여부
-		      if (appList["showMemo1"] == "True") {
-		        this.showMemo = true
-		      } else {
-		        this.showMemo = false
-		      }
+          		const appList = JSON.parse(jsonAppList)
+				// 와트매니저1 메모 보여줄지 여부
+				if (appList["showMemo1"] == "True") {
+					this.showMemo = true
+				} else {
+					this.showMemo = false
+				}
     		})
     }
   },

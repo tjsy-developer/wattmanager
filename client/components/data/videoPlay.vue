@@ -114,6 +114,7 @@ import favorite from "@/assets/scripts/data/favorite"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
 import axiosJson from "@/assets/jsons/axios"
 import fileDownload from "@/assets/scripts/data/download"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 if (process.client) {
   const { MediaPlayer } = require('dashjs');
@@ -163,17 +164,7 @@ export default {
               responseType: "blob",
               api: getListData[i].file_path + "/capture_images/" + getListData[i].file_name.split(".mp4")[0] + ".png"
             }
-            // await self.axios
-            //   .get(
-            //     getListData[i].file_path +
-            //       "/capture_images/" +
-            //       getListData[i].file_name.split(".mp4")[0] +
-            //       ".png",
-            //     {
-            //       responseType: "blob"
-            //     }
-            //   )
-            await self.axiosRequest('get', params)
+            await axiosRequest('get', params)
               // 예외처리
               .catch(function(error) {
                 if (error.response) {
@@ -310,12 +301,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.attachment.att_info_one
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
-      //     att_seq: getSeq,
-      //     jwt: token
-      //   })
-      await this.axiosRequest('post', params)
+      await axiosRequest('post', params)
         .then(async function(res) {
           if (!res.data.length) history.back()
           if (
@@ -436,12 +422,7 @@ export default {
           },
           api: process.env.backendURL + axiosJson.attachment.att_delete
         }
-        // self.$axios
-        //   .post(process.env.backendURL + axiosJson.attachment.att_delete, {
-        //     att_seq: parseInt(this.$route.query.seq),
-        //     jwt: token
-        //   })
-        await self.axiosRequest('post', params)
+        await axiosRequest('post', params)
           .then(function(res) {
             if (res) {
               alert(self.$t("listComp")[14])
@@ -463,15 +444,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.attachment.att_return_page_number
       }
-      // return this.$axios
-      //   .post(
-      //     process.env.backendURL + axiosJson.attachment.att_return_page_number,
-      //     {
-      //       att_seq: seq,
-      //       jwt: sessionStorage.getItem("jwt")
-      //     }
-      //   )
-      return await this.axiosRequest('post', params)
+      return await axiosRequest('post', params)
         .then(response => {
           return response.data
         })
@@ -614,12 +587,7 @@ export default {
           responseType: "blob",
           api: self.selected.thumbnail
         }
-        // 썸네일 blob
-        // this.$axios
-        //   .get(self.selected.thumbnail, {
-        //     responseType: "blob"
-        //   })
-        this.axiosRequest('get', params)
+        axiosRequest('get', params)
           // 예외처리
           .catch(function(error) {
             // 썸네일 이미지가 없어도, 영상을 불러와서 접근할 수 있도록 수정
@@ -664,25 +632,6 @@ export default {
 
                 self.selected.videoCheck = "success"
                 self.selected.thumbnail = ""
-
-                // self.$axios
-                //   .get(self.selected.video, {
-                //     responseType: "blob"
-                //   })
-                //   .then(function(blobres) {
-                //     if (blobres) {
-                //       // Thumnail Image Blob URL create
-                //       const videoBlobURL = URL.createObjectURL(blobres.data)
-                //       // console.log("blobURL: " + i + " start : ", blobURL)
-
-                //       // console.log("videoBlobURL: ", videoBlobURL)
-                //       self.videoBlob.push(videoBlobURL)
-
-                //       self.selected.video = videoBlobURL
-                //       self.selected.videoCheck = "success"
-                //       self.selected.thumbnail = ""
-                //     }
-                //   })
               }
             } else if (error.request) {
               console.log("getSelected Video thumbnail request error")
@@ -731,26 +680,6 @@ export default {
               }
 
               self.selected.videoCheck = "success"
-
-              // // 비디오 영상 blob
-              // self.$axios
-              //   .get(self.selected.video, {
-              //     responseType: "blob"
-              //   })
-              //   .then(function(blobres) {
-              //     if (blobres) {
-              //       // Thumnail Image Blob URL create
-              //       const videoBlobURL = URL.createObjectURL(blobres.data)
-              //       // console.log("blobURL: " + i + " start : ", blobURL)
-
-              //       // console.log("videoBlobURL: ", videoBlobURL)
-              //       self.videoBlob.push(videoBlobURL)
-
-              //       self.selected.video = videoBlobURL
-              //       self.selected.videoCheck = "success"
-              //       self.selected.thumbnail = imageBlobURL
-              //     }
-              //   })
             }
           })
       }

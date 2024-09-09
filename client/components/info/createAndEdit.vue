@@ -98,6 +98,7 @@
 import axiosJson from "@/assets/jsons/axios";
 import { danalVerify } from "@/assets/scripts/danalVerify";
 import getInfo from "@/assets/scripts/info/getInfo";
+import { axiosRequest } from "@/plugins/axiosRequest"
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 
@@ -260,15 +261,7 @@ export default {
           },
           api: process.env.backendURL + axiosJson.app.app_info_copy
         }
-        // this.$axios
-        //   .post(process.env.backendURL + axiosJson.app.app_info_copy, {
-        //     app_code_seq: appCodeSeq,
-        //     en_seq: appCopyEnSeq,
-        //     hq_seq: appCopyHqSeq,
-        //     br_seq: appCopyBrSeq,
-        //     jwt: sessionStorage.getItem("jwt")
-        //   })
-        await this.axiosRequest('post', params)
+        await axiosRequest('post', params)
           .then(function(res) {
             console.log(res.data)
 

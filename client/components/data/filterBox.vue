@@ -87,6 +87,7 @@
 <script>
 import getDate from "@/assets/scripts/initialize/date"
 import initSessionStorage from "@/assets/scripts/initialize/sessionStorage"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   props: [
@@ -291,11 +292,7 @@ export default {
           },
           api: process.env.backendURL + this.getFilterListUrl
         }
-        // this.$axios
-        //   .post(process.env.backendURL + this.getFilterListUrl, {
-        //     jwt: token
-        //   })
-        await this.axiosRequest('post', params)
+        await axiosRequest('post', params)
           .then(function(res) {
             // 추가사항
             const arr = []

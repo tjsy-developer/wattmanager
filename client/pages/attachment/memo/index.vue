@@ -55,6 +55,7 @@ import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import memoModal from "@/components/data/memoModal"
 import axiosJson from "@/assets/jsons/axios"
 import changeViewType from "@/components/data/changeViewType"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 const baseUrl = process.env.powermemo
@@ -123,12 +124,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.memo.memo_join_file
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.memo.memo_join_file, {
-      //     memo_seq: memo.seq,
-      //     jwt: sessionStorage.getItem("jwt")
-      //   })
-      await this.axiosRequest('post', params)
+      await axiosRequest('post', params)
         .then(async function (res) {
           // 모든 `getBlob` 요청을 위한 배열을 준비합니다.
           const blobPromises = res.data.map(async (element) => {

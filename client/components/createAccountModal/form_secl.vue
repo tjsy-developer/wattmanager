@@ -99,7 +99,6 @@ export default {
           }
         }
         this.$axios
-          // .post(axiosJson.account.user_id_check, {
           .post(process.env.backendURL + axiosJson.account.user_id_check, {
             id: this.id
           })
@@ -132,7 +131,6 @@ export default {
             // eslint-disable-next-line no-global-assign
             self = this
             this.$axios
-              // .post(axiosJson.account.user_id_check, {
               .post(
                 process.env.backendURL + axiosJson.account.user_name_check,
                 {
@@ -173,7 +171,6 @@ export default {
           // eslint-disable-next-line no-global-assign
           self = this
           this.$axios
-            // .post(axiosJson.account.user_id_check, {
             .post(process.env.backendURL + axiosJson.account.user_email_check, {
               email: this.EMail,
               en_seq: this.enterpriseCompData.selectedValue
@@ -213,7 +210,6 @@ export default {
           // eslint-disable-next-line no-global-assign
           self = this
           this.$axios
-            // .post(axiosJson.account.user_id_check, {
             .post(
               process.env.backendURL + axiosJson.account.en_list_where_enName,
               {
@@ -306,7 +302,6 @@ export default {
           return alert(this.$t("account")[29])
         }
         this.$axios
-          // .post(axiosJson.account.user_insert, {
           .post(process.env.backendURL + axiosJson.account.user_insert, {
             id: this.id,
             password: this.password,

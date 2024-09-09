@@ -28,7 +28,7 @@
 import axiosJson from "@/assets/jsons/axios";
 import { danalVerify } from "@/assets/scripts/danalVerify";
 import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
-
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
     props: {
         propsData: {
@@ -54,12 +54,7 @@ export default {
                },
                api: process.env.backendURL + axiosJson.user.user_info_one
             }
-            // this.$axios
-            // .post(process.env.backendURL + axiosJson.user.user_info_one, {
-            //     user_seq: this.propsData.user_seq,
-            //     jwt: sessionStorage.getItem("jwt")
-            // })
-            await this.axiosRequest('post', parameter)
+            await axiosRequest('post', parameter)
             .then(function (response) {
                 const params = {
                         queryParams: self.propsData.queryParams,
@@ -121,16 +116,10 @@ export default {
                     hq_seq: Number(sessionStorage.getItem("hqSeq")),
                     br_seq: Number(sessionStorage.getItem("brSeq"))
                 },
-                api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
+                api: process.env.backendURL + axiosJson.app.app_powertalkweb_info,
+                headers: {}
             }
-            // 앱 정보 확인
-            // this.$axios
-            //     .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-            //         en_seq: Number(sessionStorage.getItem("enSeq")),
-            //         hq_seq: Number(sessionStorage.getItem("hqSeq")),
-            //         br_seq: Number(sessionStorage.getItem("brSeq"))
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     if (res.data.length > 0) {
                         const jsonAppList = res.data[0].app_detail_json
@@ -141,13 +130,10 @@ export default {
                                 data: {
                                     id: self.propsData.id
                                 },
-                                api: process.env.backendURL + axiosJson.account.getPasswordChangeDate
+                                api: process.env.backendURL + axiosJson.account.getPasswordChangeDate,
+                                headers: {}
                             }
-                            // self.$axios
-                            // .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
-                            //     id: self.propsData.id
-                            // })
-                            self.axiosRequest('post', parameter)
+                            axiosRequest('post', parameter)
                             .then((response) => {
                                 const changedDate =  response.data // 비밀번호 변경한 날자 (unixtime으로 옴 초까지만!!!!!!)
                                 const now = Math.floor(new Date().getTime() / 1000) // 현재 시간

@@ -141,7 +141,6 @@ export default {
         // eslint-disable-next-line no-global-assign
         self = this
         this.$axios
-          // .post(axiosJson.account.user_id_check, {
           .post(process.env.backendURL + axiosJson.account.user_id_check, {
             id: this.id
           })
@@ -166,7 +165,6 @@ export default {
                     console.log(err)
                   })
               } else {
-                console.log("===================================")
                 alert(self.$t("account")[3])
                 document.getElementById("accountPWD").focus()
               }
@@ -194,7 +192,6 @@ export default {
             // eslint-disable-next-line no-global-assign
             self = this
             this.$axios
-              // .post(axiosJson.account.user_id_check, {
               .post(
                 process.env.backendURL + axiosJson.account.user_name_check,
                 {
@@ -251,7 +248,6 @@ export default {
         if (this.EMail) {
           // eslint-disable-next-line no-global-assign
           this.$axios
-            // .post(axiosJson.account.user_id_check, {
             .post(process.env.backendURL + axiosJson.account.user_email_check, {
               email: this.EMail,
               en_seq: this.enterpriseCompData.selectedValue

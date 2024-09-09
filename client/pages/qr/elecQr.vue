@@ -40,6 +40,7 @@
 </template>
 <script>
 import QRCode from "qrcode";
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   layout: "main",
@@ -156,13 +157,7 @@ export default {
         },
         api: this.fileuploadApi + "fileupload/qrcode"
       }
-      // this.$axios
-      //   .post(this.fileuploadApi + "fileupload/qrcode", formData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data"
-      //     }
-      //   })
-      this.axiosRequest('post', params)
+      axiosRequest('post', params)
         .then(function(res) {
           console.log(res)
           self.curQrInfo.QRName = []

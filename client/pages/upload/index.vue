@@ -47,6 +47,7 @@ import filtersJson from "@/assets/jsons/info/upload/filters"
 // import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import getFilters from "@/assets/scripts/info/getFilters"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   layout: "main",
@@ -218,13 +219,7 @@ export default {
         },
         api: this.fileuploadApi + "fileupload/"
       }
-      // this.$axios
-      //   .post(this.fileuploadApi + "fileupload/", formData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data"
-      //     }
-      //   })
-      await this.axiosRequest('post', params)
+      await axiosRequest('post', params)
         .then(function(res) {
           // ���� ���ε�� �ε��ٻ���
           self.loadingBarStatus = false

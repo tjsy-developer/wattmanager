@@ -104,6 +104,7 @@ import favorite from "@/assets/scripts/data/favorite"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
 import axiosJson from "@/assets/jsons/axios"
 import fileDownload from "@/assets/scripts/data/download"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -162,7 +163,7 @@ export default {
             //       responseType: "blob"
             //     }
             //   )
-            self.axiosRequest('get', params)
+            axiosRequest('get', params)
               .then(function(blobres) {
                 if (blobres) {
                   // Thumnail Image Blob URL create
@@ -267,11 +268,14 @@ export default {
       const token = sessionStorage.getItem("jwt")
       const self = this
       console.log("getSelected !!")
-      this.$axios
-        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      const parameter = {
+        data: {
           att_seq: getSeq,
           jwt: token
-        })
+        },
+        api: process.env.backendURL + axiosJson.attachment.att_info_one
+      }
+      axiosRequest('post', parameter)
         .then(function(res) {
           if (!res.data.length) history.back()
           if (

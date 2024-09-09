@@ -21,6 +21,7 @@
     </div>
 </template>
 <script>
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 const baseUrl = process.env.powermemo
 export default {
@@ -69,13 +70,15 @@ export default {
             // }
             
             this.codecStep = 1
-            this.$axios
-			.post(process.env.fileUploadBackend + "fileupload/video_encoding", formData, {
-				headers: {
-					"Content-Type": "multipart/form-data; charset=UTF-8;",
+            const params = {
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": sessionStorage.getItem("jwt")
-				}
-			})
+                },
+                api: process.env.fileUploadBackend + "fileupload/video_encoding"
+            }
+            axiosRequest('post', params)
             .then((res)=> {
                 console.log(res)
                 if(res.data.RESULT == "1000") {

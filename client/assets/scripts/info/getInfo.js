@@ -1,4 +1,5 @@
 import axios from "axios"
+import { axiosRequest } from "../../../plugins/axiosRequest"
 // eslint-disable-next-line no-unused-vars
 
 
@@ -37,9 +38,7 @@ const getInfo = {
   },
   enterprise() {
     return (
-      axios
-        // .post("accountRest/en_list")
-        .post(process.env.backendURL + "accountRest/en_list")
+      axiosRequest('post', {api: process.env.backendURL + "accountRest/en_list"})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -57,9 +56,7 @@ const getInfo = {
   },
   hq(enSeq) {
     return (
-      axios
-        // .post("accountRest/hq_list", { en_seq: enSeq })
-        .post(process.env.backendURL + "accountRest/hq_list", { en_seq: enSeq })
+        axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -77,9 +74,7 @@ const getInfo = {
   },
   branch(hqSeq) {
     return (
-      axios
-        // .post("accountRest/br_list", { hq_seq: hqSeq })
-        .post(process.env.backendURL + "accountRest/br_list", { hq_seq: hqSeq })
+      axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)
@@ -97,11 +92,7 @@ const getInfo = {
   },
   appCode() {
     return (
-      axios
-        // .post("appRest/app_code_list")
-        .post(process.env.backendURL + "appRest/app_code_list", {
-          jwt: sessionStorage.getItem("jwt")
-        })
+      axiosRequest('post', {api: process.env.backendURL + "appRest/app_code_list", data: {jwt: sessionStorage.getItem("jwt")}})
         .then(function(res) {
           const result = []
           for (let i = 0; i < res.data.length; i++)

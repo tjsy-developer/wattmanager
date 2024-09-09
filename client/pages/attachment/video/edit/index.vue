@@ -8,6 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   layout: "main",
@@ -35,14 +36,7 @@ export default {
             },
             api: process.env.backendURL + axiosJson.attachment.att_update
           }
-          // this.axios
-          //   .post(process.env.backendURL + axiosJson.attachment.att_update, {
-          //     att_seq: this.attSeq,
-          //     title: getInfo.getInputValue(0),
-          //     category: getInfo.getInputValue(1),
-          //     jwt: sessionStorage.getItem("jwt")
-          //   })
-          await this.axiosRequest('post', params)
+          await axiosRequest('post', params)
             .then(function(res) {
               if (res) {
                 alert(getSelf.$t("attachment")[1])
@@ -101,12 +95,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.attachment.att_info_one
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
-      //     att_seq: self.compData.attSeq,
-      //     jwt: sessionStorage.getItem("jwt")
-      //   })
-      await this.axiosRequest('post', params)
+      await axiosRequest('post', params)
         .then(function(res) {
           self.compData.selected = [
             {

@@ -37,6 +37,7 @@ import getFilters from "@/assets/scripts/info/getFilters";
 import btnsClick from "@/assets/scripts/info/btnsClick";
 import getInfo from "@/assets/scripts/info/getInfo";
 import axiosJson from "@/assets/jsons/axios.json"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   layout: "main",
@@ -123,12 +124,7 @@ export default {
       },
       api: process.env.backendURL + axiosJson.notice.noti_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + "noticeRest/noti_info_one", {
-    //     noti_seq: self.seq,
-    //     jwt: token
-    //   })
-    await this.axiosRequest('post', params)
+    await axiosRequest('post', params)
       .then(function(res) {
         console.log(res)
         self.selected = [

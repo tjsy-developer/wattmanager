@@ -8,6 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -40,13 +41,6 @@ export default {
             },
             api: ocess.env.backendURL + axiosJson.attachment.att_update
           }
-          // this.axios
-          //   .post(process.env.backendURL + axiosJson.attachment.att_update, {
-          //     att_seq: this.attSeq,
-          //     title: getInfo.getInputValue(0),
-          //     category: getInfo.getInputValue(1),
-          //     jwt: sessionStorage.getItem("jwt")
-          //   })
           await axiosRequest('post', params)
             .then(function(res) {
               if (res) {
@@ -106,12 +100,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.attachment.att_info_one
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
-      //     att_seq: self.compData.attSeq,
-      //     jwt: sessionStorage.getItem("jwt")
-      //   })
-      await this.axiosRequest('post', params)
+      await axiosRequest('post', params)
         .then(function(res) {
           const parameter = {
             responseType: "blob",
@@ -121,7 +110,7 @@ export default {
           //   .get(`${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`, {
           //     responseType: "blob"
           //   })
-          self.axiosRequest('get', parameter)
+          axiosRequest('get', parameter)
             .then(function(blobres) {
               console.log(blobres)
               if (blobres) {

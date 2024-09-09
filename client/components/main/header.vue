@@ -57,6 +57,7 @@ import jwt_decode from "jwt-decode"
 import cookieSetting from "@/assets/scripts/data/cookie"
 import axiosJson from "@/assets/jsons/axios";
 import { mapState } from "vuex"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -227,13 +228,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-      //     en_seq: Number(sessionStorage.getItem("enSeq")),
-      //     hq_seq: Number(sessionStorage.getItem("hqSeq")),
-      //     br_seq: Number(sessionStorage.getItem("brSeq"))
-      //   })
-        await this.axiosRequest('post', params)
+        await axiosRequest('post', params)
         .then((res) => {
           if (res.data.length > 0) {
             const jsonAppList = res.data[0].app_detail_json
@@ -298,19 +293,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.user.user_info_one
       }
-      this.$axios
-          // .post(axiosJson.user.user_info_one, {
-          .post(process.env.backendURL + axiosJson.user.user_info_one, {
-              user_seq: Number(sessionStorage.getItem("userSeq")),
-              jwt: sessionStorage.getItem("jwt")
-            },
-            {
-              headers: {
-                "jwt": sessionStorage.getItem("jwt")
-              }
-            }
-          )
-      // await this.axiosRequest('post', params)
+      axiosRequest('post', params)
         .then(function(res) {
             sessionStorage.setItem("userName", res.data.name)
             console.log(res.data.name)

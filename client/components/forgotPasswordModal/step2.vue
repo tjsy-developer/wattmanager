@@ -37,7 +37,6 @@ export default {
       ) {
         const self = this
         this.$axios
-          // .post("accountRest/change_password", {
           .post(process.env.backendURL + "accountRest/change_password", {
             id: this.compData.id,
             password: this.password

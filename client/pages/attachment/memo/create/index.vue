@@ -34,6 +34,7 @@
 <script>
 
 import codecCheckModal from "@/components/loadingModal/memo/codec-check"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
 
   layout: "main",
@@ -102,14 +103,7 @@ export default {
 				},
 				api: process.env.fileUploadBackend + "fileupload/get_codec_name"
 			}
-			// this.$axios
-			// .post(process.env.fileUploadBackend + "fileupload/get_codec_name", formData, {
-			// 	headers: {
-			// 		"Content-Type": "multipart/form-data; charset=UTF-8;",
-			// 		"jwt": sessionStorage.getItem("jwt")
-			// 	}
-			// })
-			await this.axiosRequest('post', params)
+			await axiosRequest('post', params)
 			.then((res) => {
 				console.log(res)
 				if(res.data.RESULT == "1000") {
@@ -203,14 +197,7 @@ export default {
 			},
 			api: process.env.fileUploadBackend + "fileupload/memo_insert"
 		}
-        // this.$axios
-        // .post(process.env.fileUploadBackend + "fileupload/memo_insert", formData, {
-        //     headers: {
-        //         "Content-Type": "multipart/form-data; charset=UTF-8;",
-        //         "jwt": sessionStorage.getItem("jwt")
-        //     }
-        // })
-		await this.axiosRequest('post', params)
+		await axiosRequest('post', params)
         .then(function(res) {
             if (res) {
                 console.log(res)

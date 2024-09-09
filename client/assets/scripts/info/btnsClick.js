@@ -1,5 +1,6 @@
 import axiosJson from "@/assets/jsons/axios"
 import axios from "axios"
+import { axiosRequest } from "../../../plugins/axiosRequest"
 
 const btnsClick = {
   lang: [
@@ -29,8 +30,11 @@ const btnsClick = {
         // eslint-disable-next-line no-throw-literal
         if (!getInput[i].value) throw "input undefined"
       }
-      axios
-        .post(path, params)
+      const parameter = {
+        data: params,
+        api: path
+      }
+      axiosRequest('post', parameter)
         .then(function(res) {
           if (res.data) {
             alert(btnsClick.lang[0])
@@ -71,9 +75,11 @@ const btnsClick = {
         // eslint-disable-next-line no-throw-literal
         if (!getInput[i].value) throw "input undefined"
       }
-
-      axios
-        .post(path, params)
+      const parameter = {
+        data: params,
+        api: path
+      }
+      axiosRequest('post', parameter)
         .then(function(res) {
           if (res.data) {
             alert(btnsClick.lang[3])
@@ -155,17 +161,24 @@ const btnsClick = {
       }
 
       const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
-      const headers = params.formDataHeader
+      const header = params.formDataHeader
       if (params.imgFormData) {
         console.log("사용자 프로필 이미지 존재. 이미지 저장 실행")
-        axios
-          .post(backendAPI, params.imgFormData, { headers })
+        const parameter = {
+          data: params.imgFormData,
+          headers: header,
+          api: backendAPI
+        }
+        axiosRequest('post', parameter)
           .then((res) => {
             console.log("profileImg save success")
             const fileName = process.env.profilePhotoUrl + res.data.FILE_NAME
             params.image = fileName
-            axios
-              .post(path, params)
+            const parameter = {
+              data: params,
+              api: path
+            }
+            axiosRequest('post', parameter)
               .then(function(res) {
                 if (res) {
                   if (res.data === "Success") {
@@ -195,8 +208,11 @@ const btnsClick = {
           })
           return
       } else {
-        axios
-          .post(path, params)
+        const parameter = {
+          data: params,
+          api: path
+        }
+        axiosRequest('post', parameter)
           .then(function(res) {
             if (res) {
               if (res.data === "Success") {
@@ -232,8 +248,11 @@ const btnsClick = {
     }
   },
   delete(path, params) {
-    axios
-      .post(path, params)
+    const parameter = {
+      data: params,
+      api: path
+    }
+    axiosRequest('post', parameter)
       .then(function(res) {
         if (res.data) {
           alert(btnsClick.lang[5])

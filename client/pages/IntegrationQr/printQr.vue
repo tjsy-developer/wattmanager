@@ -59,6 +59,7 @@
 import axiosJson from "@/assets/jsons/axios"
 import printJS from "print-js"
 import QRCode from "qrcode"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
     layout: "main",
     data() {
@@ -93,12 +94,7 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.chapterInfo
             }
-            // this.$axios
-            //     .post(this.backendURL + axiosJson.qrManagement.chapterInfo, {
-            //         jwt: this.jwt,
-            //         chapter_seq: this.chapter_seq
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data
                     const qrTitle = data.chapter_list.qr_title
@@ -123,12 +119,7 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.qrList
             }
-            // this.$axios
-            //     .post(this.backendURL + axiosJson.qrManagement.qrList, {
-            //         jwt: this.jwt,
-            //         chapter_seq: this.chapter_seq
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)
                     const data = res.data.data.qr_list
