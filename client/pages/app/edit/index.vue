@@ -92,11 +92,6 @@ export default {
       },
       api: process.env.backendURL + axiosJson.app.app_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + axiosJson.app.app_info_one, {
-    //     app_seq: self.compData.appSeq,
-    //     jwt: this.token
-    //   })
     await axiosRequest('post', params)
       .then(function(res) {
         self.compData.selected = [
