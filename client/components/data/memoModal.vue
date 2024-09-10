@@ -5,16 +5,16 @@
       <button class="colseButton" @click="closeClick">X</button>
     </div>
     <div class="col row full-width contentsContainer">
-      <div v-if="files.length != 0" v-for="(file, fileKey) in files" :key="fileKey" class="col-12 row file">
-        <img v-if="file.file_type == 'P'" class="col-12" :src="webServerFilePathJson.original + file.original_name" />
+      <div v-if="files.length != 0" v-for="(file, fileKey) in files" :key="file.fileKey" class="col-12 row file">
+        <img v-if="file.file_type == 'P'" class="col-12" :src="file.originalBlob" :key="file.originalBlob" />
         <video
           v-else-if="file.file_type == 'V'"
           class="col-12"
           :src="webServerFilePathJson.original + file.original_name"
-          :poster="webServerFilePathJson.thumbnail + file.thumbnail_name"
+          :poster="file.thumbnailBlob"
           controls
         />
-        <img v-else :src="webServerFilePathJson.thumbnail + file.thumbnail_name" />
+        <img v-else :src="file.thumbnailBlob" />
         <button v-if="file.file_type == 'F'" class="pdfViewFile" @click="openPdf(webServerFilePathJson.original + file.original_name)">
           PDF {{ $t("open") }}
         </button>
@@ -59,15 +59,24 @@ export default {
     }
   },
   methods: {
-    saveBtnClick() {
+    async saveBtnClick() {
       const getValue = document.getElementById("memoModalTextarea").value
       const self = this
-      this.$axios
-        .post(process.env.backendURL + axiosJson.memo.memo_update, {
+      const params = {
+        data: {
           memo_seq: this.compData.seq,
           memo_contents: getValue,
           jwt: sessionStorage.getItem("jwt")
-        })
+        },
+        api: process.env.backendURL + axiosJson.memo.memo_update
+      }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.memo.memo_update, {
+      //     memo_seq: this.compData.seq,
+      //     memo_contents: getValue,
+      //     jwt: sessionStorage.getItem("jwt")
+      //   })
+      await this.axiosRequest('post', params)
         .then(function(res) {
           if (res) {
             alert(self.$t("attachment")[1])
@@ -78,22 +87,38 @@ export default {
           console.log("memoModal page error : ", error)
         })
     },
-    deleteBtnClick() {
+    async deleteBtnClick() {
       const self = this
       const result = confirm(self.$t("memoModalComp")[8])
       if (result) {
-        this.$axios
-          .post(process.env.backendURL + axiosJson.memo.memo_join_file_delete, {
+        const params = {
+          data: {
             memo_seq: this.compData.seq,
             jwt: sessionStorage.getItem("jwt")
-          })
+          },
+          api: process.env.backendURL + axiosJson.memo.memo_join_file_delete
+        }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.memo.memo_join_file_delete, {
+        //     memo_seq: this.compData.seq,
+        //     jwt: sessionStorage.getItem("jwt")
+        //   })
+        await this.axiosRequest('post', params)
           .then(function(res) {
             if (res) {
-              self.$axios
-                .post(process.env.backendURL + axiosJson.memo.memo_delete, {
+              const parameter = {
+                data: {
                   memo_seq: self.compData.seq,
                   jwt: sessionStorage.getItem("jwt")
-                })
+                },
+                api: process.env.backendURL + axiosJson.memo.memo_delete
+              }
+              // self.$axios
+              //   .post(process.env.backendURL + axiosJson.memo.memo_delete, {
+              //     memo_seq: self.compData.seq,
+              //     jwt: sessionStorage.getItem("jwt")
+              //   })
+              self.axiosRequest('post', parameter)
                 .then(function(res2) {
                   if (res2) {
                     alert(self.$t("memoModalComp")[4])
@@ -113,7 +138,7 @@ export default {
     },
     saveFileClick(file) {
       const link = document.createElement("a")
-      const dataUrl = this.webServerFilePathJson.original + file.original_name
+      const dataUrl = file.originalBlob || this.webServerFilePathJson.original + file.original_name
       link.style.display = "none"
       link.href = dataUrl
       link.download = file.original_name
@@ -124,15 +149,23 @@ export default {
         window.URL.revokeObjectURL(dataUrl)
       })
     },
-    deleteFileClick(file, fileKey) {
+    async deleteFileClick(file, fileKey) {
       const self = this
       const result = confirm(self.$t("memoModalComp")[9])
       if (result) {
-        this.$axios
-          .post(process.env.backendURL + axiosJson.memo.file_delete, {
+        const params = {
+          data: {
             file_seq: file.file_seq,
             jwt: sessionStorage.getItem("jwt")
-          })
+          },
+          api: process.env.backendURL + axiosJson.memo.file_delete
+        }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.memo.file_delete, {
+        //     file_seq: file.file_seq,
+        //     jwt: sessionStorage.getItem("jwt")
+        //   })
+        await this.axiosRequest('post', params)
           .then(function(res) {
             if (res.data === "pass") {
               alert(self.$t("memoModalComp")[6])

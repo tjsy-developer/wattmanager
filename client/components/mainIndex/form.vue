@@ -206,13 +206,13 @@
 <script>
 import axiosJson from "@/assets/jsons/axios";
 import cookieSetting from "@/assets/scripts/data/cookie";
+import getInfo from "@/assets/scripts/info/getInfo";
 import createAccountModal from "@/components/createAccountModal/form";
 import forgotPasswordModal from "@/components/forgotPasswordModal/form";
 import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-import getInfo from "@/assets/scripts/info/getInfo";
 
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
@@ -443,6 +443,7 @@ export default {
             /* ID 기억기능 쿠키저장 */
             // cookieSetting.setCookie("logined", userId, 3)
 
+            self.$store.dispatch('user/login', { permissionLevel:  response.data[1].auth })
             /* 로그인 사용자의 정보 저장 */
             sessionStorage.setItem("jwt", response.data[2]);
             sessionStorage.setItem("userSeq", response.data[1].user_seq);
@@ -453,12 +454,19 @@ export default {
             sessionStorage.setItem("id", response.data[1].id);
             sessionStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
+            const enRtoken = self.encryptData(response.data[3]);
+            self.$store.commit('token/setRToken', enRtoken);
             const urlParameter = "&id=" + sessionStorage.getItem("id") + "&auth=" + sessionStorage.getItem("auth") +
               "&hqSeq=" + sessionStorage.getItem("hqSeq") +
               "&enSeq=" + sessionStorage.getItem("enSeq") + "&brSeq=" + sessionStorage.getItem("brSeq") +
               "&logined=" + sessionStorage.getItem("logined") + "&userSeq=" + sessionStorage.getItem("userSeq") +
-              "&deviceType=" + sessionStorage.getItem("deviceType")
+              "&deviceType=" + sessionStorage.getItem("deviceType") + `&rToken=${response.data[3]}`
             
+            // if (cookieSetting.getCookie(`${sessionStorage.getItem('id')}enAToken`)) cookieSetting.deleteCookie(`${sessionStorage.getItem('id')}enAToken`)
+            // if (cookieSetting.getCookie(`${sessionStorage.getItem('id')}enRToken`)) cookieSetting.deleteCookie(`${sessionStorage.getItem('id')}enRToken`)
+            
+            
+
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
             getInfo.appSetting({
@@ -566,28 +574,16 @@ export default {
 
                       // 와트톡
                     } else {
-                      if (window.location.hostname == "kepco.watttalk.kr") {
-                        window.open(
-                          process.env.kepcoLogin + self.params + urlParameter,
-                          "_self"
-                        );
-                      } else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
-                        window.open(
-                          "https://seoyoneh.watttalk.kr:7220/login/login-check?jwt_token=" + self.params + urlParameter,
-                          "_self"
-                        );
-                      } else {
-                        window.open(
-                          process.env.powertalkLogin + self.params + urlParameter,
-                          "_self"
-                        );
-                      }
+                      window.open(
+                        process.env.powertalkLogin + self.params + urlParameter,
+                        "_self"
+                      );
                     }
                     /* powertalk1으로 이동 */
                   } else {
-                    const randomNumber =
-                      Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
-                    window.open("/powertalk/index.html?" + randomNumber, "_self");
+                    // const randomNumber =
+                    //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+                    // window.open("/powertalk/index.html?" + randomNumber, "_self");
                   }
                 }
               })
@@ -695,6 +691,9 @@ export default {
     }
   },
   mounted() {
+    sessionStorage.clear()
+    // token 먼저 초기화
+    this.$store.commit('token/initToken');
     const currentLang = sessionStorage.getItem("languageCode");
     if (sessionStorage.getItem("languageCode") != null) {
       this.langImg = sessionStorage.getItem("languageCode");
@@ -748,15 +747,8 @@ export default {
       }
     }
     // 한국 전력공사 로고이미지 변경
-    if (window.location.hostname == "kepco.watttalk.kr") {
-      this.useEnterprise = "kepco";
-    } else if (window.location.hostname == "dlenc.watttalk.kr") {
-      // dlenc 분기처리!!
+    if (window.location.hostname == "dlencmedia.watttalk.kr") {
       this.useEnterprise = "dlenc";
-    } else if (window.location.hostname == "dlencmedia.watttalk.kr") {
-      this.useEnterprise = "dlenc";
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     if (sessionStorage.getItem("managerLogOut")) {
       if (sessionStorage.getItem("logoutId")) {

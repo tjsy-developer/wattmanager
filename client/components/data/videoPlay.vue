@@ -158,16 +158,22 @@ export default {
 
           for (let i = 0; i < getListData.length; i++) {
             // get Thnumnail Image
-            await self.axios
-              .get(
-                getListData[i].file_path +
-                  "/capture_images/" +
-                  getListData[i].file_name.split(".mp4")[0] +
-                  ".png",
-                {
-                  responseType: "blob"
-                }
-              )
+            const videoBlob = await self.convertImageToBlob(`${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`)
+            const params = {
+              responseType: "blob",
+              api: getListData[i].file_path + "/capture_images/" + getListData[i].file_name.split(".mp4")[0] + ".png"
+            }
+            // await self.axios
+            //   .get(
+            //     getListData[i].file_path +
+            //       "/capture_images/" +
+            //       getListData[i].file_name.split(".mp4")[0] +
+            //       ".png",
+            //     {
+            //       responseType: "blob"
+            //     }
+            //   )
+            await self.axiosRequest('get', params)
               // 예외처리
               .catch(function(error) {
                 if (error.response) {
@@ -178,8 +184,7 @@ export default {
                   if (error.response.status === 404) {
                     self.rightList.push({
                       seq: getListData[i].att_seq,
-                      video:
-                        getListData[i].file_path +
+                      video: videoBlob ||  getListData[i].file_path +
                         "/" +
                         getListData[i].file_name,
                       thumbnail: require("@/assets/images/attach_noImage.png"),
@@ -208,8 +213,7 @@ export default {
 
                   self.rightList.push({
                     seq: getListData[i].att_seq,
-                    video:
-                      getListData[i].file_path + "/" + getListData[i].file_name,
+                    video: videoBlob,
                     thumbnail:
                       self.rightListThumnailBlob[
                         self.rightListThumnailBlob.length - 1
@@ -291,7 +295,7 @@ export default {
           : []
       }
     },
-    getSelected() {
+    async getSelected() {
       const getSeq = Number(this.$route.query.seq)
       if (!getSeq) {
         return
@@ -299,12 +303,20 @@ export default {
       const token = sessionStorage.getItem("jwt")
       const self = this
       console.log("getSelected !!")
-      this.$axios
-        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      const params = {
+        data: {
           att_seq: getSeq,
           jwt: token
-        })
-        .then(function(res) {
+        },
+        api: process.env.backendURL + axiosJson.attachment.att_info_one
+      }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      //     att_seq: getSeq,
+      //     jwt: token
+      //   })
+      await this.axiosRequest('post', params)
+        .then(async function(res) {
           if (!res.data.length) history.back()
           if (
             // eslint-disable-next-line eqeqeq
@@ -313,14 +325,15 @@ export default {
             res.data[0].file_type != "video"
           )
             history.back()
-
+          const videoBlob = await self.convertImageToBlob(`${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`)
+          // const videoBlob = await self.convertImageToBlob(`https://sg.auto-hmg.io:8205/storage/patrol/20240805173152048_4079_seelee.mp4?token=${sessionStorage.getItem("jwt")}`)
           /* preparing - 암호화 이미지 보여주는 부분 */
           if (self.selected === undefined) {
             // console.log("selected undefined")
             self.selected = {
               seq: res.data[0].att_seq,
               videoCheck: "preparing",
-              video: res.data[0].file_path + "/" + res.data[0].file_name,
+              video: videoBlob,
               thumbnail:
                 res.data[0].file_path +
                 "/capture_images/" +
@@ -334,7 +347,8 @@ export default {
               date: res.data[0].save_time,
               favorite: res.data[0].favYN !== "0",
               fileName: res.data[0].file_name,
-              videoName: res.data[0].file_path + "/" + res.data[0].file_name
+              videoName: res.data[0].file_path + "/" + res.data[0].file_name,
+              originalBlob: videoBlob
             }
 
             self.compData.isVideoPlayDataLoaded = true
@@ -347,7 +361,7 @@ export default {
             self.selected = {
               seq: res.data[0].att_seq,
               videoCheck: "preparing",
-              video: res.data[0].file_path + "/" + res.data[0].file_name,
+              video: videoBlob,
               thumbnail:
                 res.data[0].file_path +
                 "/capture_images/" +
@@ -361,7 +375,8 @@ export default {
               date: res.data[0].save_time,
               favorite: res.data[0].favYN !== "0",
               fileName: res.data[0].file_name,
-              videoName: res.data[0].file_path + "/" + res.data[0].file_name
+              videoName: res.data[0].file_path + "/" + res.data[0].file_name,
+              originalBlob: videoBlob
             }
 
             self.compData.isVideoPlayDataLoaded = true
@@ -408,17 +423,25 @@ export default {
         "_self"
       )
     },
-    removeBtnClick(e) {
+    async removeBtnClick(e) {
       const self = this
       const token = sessionStorage.getItem("jwt")
       const result = confirm(self.$t("listComp")[18])
       console.log(result)
       if (result) {
-        self.$axios
-          .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        const params = {
+          data: {
             att_seq: parseInt(this.$route.query.seq),
             jwt: token
-          })
+          },
+          api: process.env.backendURL + axiosJson.attachment.att_delete
+        }
+        // self.$axios
+        //   .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        //     att_seq: parseInt(this.$route.query.seq),
+        //     jwt: token
+        //   })
+        await self.axiosRequest('post', params)
           .then(function(res) {
             if (res) {
               alert(self.$t("listComp")[14])
@@ -432,15 +455,23 @@ export default {
       } else {
       }
     },
-    getPageNumber(seq) {
-      return this.$axios
-        .post(
-          process.env.backendURL + axiosJson.attachment.att_return_page_number,
-          {
-            att_seq: seq,
-            jwt: sessionStorage.getItem("jwt")
-          }
-        )
+    async getPageNumber(seq) {
+      const params = {
+        data: {
+          att_seq: seq,
+          jwt: sessionStorage.getItem("jwt")
+        },
+        api: process.env.backendURL + axiosJson.attachment.att_return_page_number
+      }
+      // return this.$axios
+      //   .post(
+      //     process.env.backendURL + axiosJson.attachment.att_return_page_number,
+      //     {
+      //       att_seq: seq,
+      //       jwt: sessionStorage.getItem("jwt")
+      //     }
+      //   )
+      return await this.axiosRequest('post', params)
         .then(response => {
           return response.data
         })
@@ -579,11 +610,16 @@ export default {
       console.log("getRightBarListEnd Function !")
       if (result === 1) {
         const self = this
+        const params = {
+          responseType: "blob",
+          api: self.selected.thumbnail
+        }
         // 썸네일 blob
-        this.$axios
-          .get(self.selected.thumbnail, {
-            responseType: "blob"
-          })
+        // this.$axios
+        //   .get(self.selected.thumbnail, {
+        //     responseType: "blob"
+        //   })
+        this.axiosRequest('get', params)
           // 예외처리
           .catch(function(error) {
             // 썸네일 이미지가 없어도, 영상을 불러와서 접근할 수 있도록 수정

@@ -90,16 +90,25 @@ export default {
       this.$t("device")[3]
     ])
   },
-  mounted() {
+  async mounted() {
+    this.refreshToken()
     getInfo.setAuthority()
     getInfo.setLang(this.$t("getInfo"))
     const self = this
     this.token = sessionStorage.getItem("jwt")
-    this.$axios
-      .post(process.env.backendURL + axiosJson.device.dev_info_one, {
+    const params = {
+      data: {
         dev_seq: self.compData.devSeq,
         jwt: this.token
-      })
+      },
+      api: process.env.backendURL + axiosJson.device.dev_info_one
+    }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.device.dev_info_one, {
+    //     dev_seq: self.compData.devSeq,
+    //     jwt: this.token
+    //   })
+    await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res)
         self.compData.selected = [

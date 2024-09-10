@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams";
 
 export default {
   layout: "main",
@@ -28,18 +28,22 @@ export default {
           order_by_status: "",
           page: 0
         },
+        convertBlob: undefined,
         async setListData(getListData) {
           const self = this
           for (let i = 0; i < getListData.length; i++) {
             let errorFlag = false
+            let videoBlob = undefined
             if (getListData[i].file_type === "video") {
               // get blobThumbnailURL
+              videoBlob = await self.convertBlob(`${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`)
               await this.axios
                 .get(
                   getListData[i].file_path +
                     "/capture_images/" +
                     getListData[i].file_name.split(".")[0] +
-                    ".png",
+                    ".png"
+                    + `?token=${sessionStorage.getItem("jwt")}`,
                   {
                     responseType: "blob"
                   }
@@ -97,7 +101,7 @@ export default {
               // get blobPictureURL
               await self.axios
                 .get(
-                  getListData[i].file_path + "/" + getListData[i].file_name,
+                  `${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`,
                   {
                     responseType: "blob"
                   }
@@ -172,6 +176,10 @@ export default {
                   getListData[i].file_type === "picture"
                     ? getListData[i].file_path + "/" + getListData[i].file_name
                     : undefined,
+                originalBlob: 
+                  getListData[i].file_type === "picture"
+                    ? self.blobPictureURL[self.blobPictureURL.length - 1]
+                    : videoBlob || undefined,
                 title: getListData[i].title,
                 code: getListData[i].category,
                 people: getListData[i].joined_members,
@@ -188,7 +196,9 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
+    this.compData.convertBlob = this.convertImageToBlob
   },
   beforeDestroy() {
     if (this.blobThumbnailURL !== undefined) {

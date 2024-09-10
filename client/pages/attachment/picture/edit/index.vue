@@ -23,7 +23,7 @@ export default {
         createAndEditSpanSize: 120,
         type: "pictureEdit",
         selected: [],
-        editBtnClick() {
+        async editBtnClick() {
           // if (getInfo.getInputValue(0) == "")
           // 	return alert(this.$t("attachment")[0])
           // const getSelf = this.self
@@ -31,13 +31,23 @@ export default {
           const getSelf = this.self
           if (getInfo.getInputValue(0) === "")
             return alert(getSelf.$t("attachment")[0])
-          this.axios
-            .post(process.env.backendURL + axiosJson.attachment.att_update, {
+          const params = {
+            data: {
               att_seq: this.attSeq,
               title: getInfo.getInputValue(0),
               category: getInfo.getInputValue(1),
               jwt: sessionStorage.getItem("jwt")
-            })
+            },
+            api: ocess.env.backendURL + axiosJson.attachment.att_update
+          }
+          // this.axios
+          //   .post(process.env.backendURL + axiosJson.attachment.att_update, {
+          //     att_seq: this.attSeq,
+          //     title: getInfo.getInputValue(0),
+          //     category: getInfo.getInputValue(1),
+          //     jwt: sessionStorage.getItem("jwt")
+          //   })
+          await axiosRequest('post', params)
             .then(function(res) {
               if (res) {
                 alert(getSelf.$t("attachment")[1])
@@ -85,20 +95,35 @@ export default {
       filtersJson
     )
   },
-  mounted() {
+  async mounted() {
+    this.refreshToken()
     if (sessionStorage.auth) {
       const self = this
-      this.$axios
-        .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      const params = {
+        data: {
           att_seq: self.compData.attSeq,
           jwt: sessionStorage.getItem("jwt")
-        })
+        },
+        api: process.env.backendURL + axiosJson.attachment.att_info_one
+      }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.attachment.att_info_one, {
+      //     att_seq: self.compData.attSeq,
+      //     jwt: sessionStorage.getItem("jwt")
+      //   })
+      await this.axiosRequest('post', params)
         .then(function(res) {
-          self.compData.axios
-            .get(res.data[0].file_path + "/" + res.data[0].file_name, {
-              responseType: "blob"
-            })
+          const parameter = {
+            responseType: "blob",
+            api: `${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`,
+          }
+          // self.compData.axios
+          //   .get(`${res.data[0].file_path}/${res.data[0].file_name}?token=${sessionStorage.getItem("jwt")}`, {
+          //     responseType: "blob"
+          //   })
+          self.axiosRequest('get', parameter)
             .then(function(blobres) {
+              console.log(blobres)
               if (blobres) {
                 // picture Blob URL create
                 const blobURL = URL.createObjectURL(blobres.data)

@@ -5,8 +5,9 @@
     </button>
     <span class="col-12 text-center title">{{ $t("change password") }}</span>
     <input class="col-12 password" :placeholder="$t('profilePassword')[0]" type="password" v-model="password" />
-    <input class="col-12 newPassword" :placeholder="$t('profilePassword')[1]" type="password" v-model="newPassword" />
+    <input class="col-12 newPassword" :placeholder="$t('profilePassword')[1]" type="password" v-model="newPassword" @input="passWordPaternCheck"/>
     <input class="col-12 newPasswordCheck" :placeholder="$t('profilePassword')[2]" type="password" v-model="newPasswordCheck" />
+    <span class="description" v-if="checkPatern">{{ pwdRulesDescript }}</span>
     <button class="col-12 button" @click="confirm">{{ $t("confirm") }}</button>
   </div>
 </template>
@@ -19,7 +20,10 @@ export default {
     return {
       password: undefined,
       newPassword: undefined,
-      newPasswordCheck: undefined
+      newPasswordCheck: undefined,
+      checkPatern: process.env.checkPswPatern,
+      pwdRulesDescript: process.env.pwdRulesType ? this.$t("checkPswPatern")[Number(process.env.pwdRulesType)] : '',
+      validPassword: false,
     }
   },
   methods: {
@@ -27,13 +31,26 @@ export default {
       this.$modal.hide("forgotPasswordModal")
       window.location.href = "/profile"
     },
-    confirm() {
+    // 비밀번호 규칙이 있을 경우만
+    passWordPaternCheck() {
+      console.log(this.checkPatern != 'true')
+      if (this.checkPatern != 'true') this.validPassword = true
+      else this.validPassword = this.isValidPassword(this.newPassword)
+    },
+   async confirm() {
       if (
         this.newPassword &&
         this.newPasswordCheck &&
         this.newPassword !== this.newPasswordCheck
-      )
+      ) {
         alert(this.$t("account")[8])
+        return
+      } 
+        
+      else if (this.validPassword == false) {
+        document.getElementsByClassName("newPassword")[0].focus()
+        return alert(this.$t("incorrectPwdFormat"))
+      }
       else if (
         this.password &&
         this.newPassword &&
@@ -41,22 +58,39 @@ export default {
         this.newPassword === this.newPasswordCheck
       ) {
         const self = this
-        this.$axios
-          .post(
-            process.env.backendURL + "userRest/user_password_check_change",
-            {
-              jwt: sessionStorage.getItem("jwt"),
-              user_seq: Number(sessionStorage.getItem("userSeq")),
-              password: this.password,
-              password_new: this.newPassword
-            }
-          )
+        const params = {
+          data: {
+            jwt: sessionStorage.getItem("jwt"),
+            user_seq: Number(sessionStorage.getItem("userSeq")),
+            password: this.password,
+            password_new: this.newPassword
+          },
+          api: process.env.backendURL + "userRest/user_password_check_change"
+        }
+        // this.$axios
+        //   .post(
+        //     process.env.backendURL + "userRest/user_password_check_change",
+        //     {
+        //       jwt: sessionStorage.getItem("jwt"),
+        //       user_seq: Number(sessionStorage.getItem("userSeq")),
+        //       password: this.password,
+        //       password_new: this.newPassword
+        //     }
+        //   )
+        await this.axiosRequest('post', params)
           .then(function(res) {
             if (res.data) {
-              self.$axios
-                .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
+              const parameter = {
+                data: {
                   id: sessionStorage.getItem("id")
-                })
+                },
+                api: process.env.backendURL + "accountRest/resetPasswordChangeDate"
+              }
+              // self.$axios
+              //   .post(process.env.backendURL + "accountRest/resetPasswordChangeDate", {
+              //     id: sessionStorage.getItem("id")
+              //   })
+              self.axiosRequest('post', parameter)
                 .then((res) => {
                   console.log(res)
                   console.log(res.data)
@@ -120,14 +154,17 @@ input[type=password]
   
 
 .password
-	margin-top: 35px
-  
+	margin-top: 20px
 
 .newPassword,
   
 .newPasswordCheck
 	margin-top: 8px
   
+.description
+  margin-top: 10px
+  color: #E91E63
+  font-weight: 700
 
 .button
 	margin-top: 14px

@@ -1,42 +1,68 @@
 # port는 따로 nuxt.config.js에 설정해줘야한다. 자동화하면 배포 오류
-port=8323
-backendURL_local=http://localhost:8090/
-backendURL=https://meet.watttalk.kr:8321/
-manager2serverURL=/wattmanager2-server/
+port="3000"
+
+# 와트매니저 백엔드
+backendURL_local=""
+backendURL="https://meet.watttalk.kr/wattmanager-server/"
+
+# 와트매니저2 백엔드
+manager2serverURL="/wattmanager2-server/"
+
+# 와트톡
 powertlakState="loginCheck"
-powertalkLogin_local="http://localhost:4500/login/login-check?jwt_token="
-powertalkLogin="https://meet.watttalk.kr:8324/login/login-check?jwt_token="
-powermemo=https://meetcloud.watttalk.kr/sftp/meet
-powermemoSavefolder=D:\\\\cloud\\\\sftp\\\\meet
-qr_filePath=https://meetcloud.watttalk.kr/powertalk/meet/QR/folder
-qr=default
-att_access_user=true
-att_videoPlayPath=https://meetcloud.watttalk.kr/powertalk/meet/Dashs/Src/
-att_filePath=https://meetcloud.watttalk.kr/powertalk/meet/filebox/
-detailFilePath=D:\\\\cloud\\\\powertalk\\\\meet\\\\filebox
-fileUploadBackend=https://meetcloud.watttalk.kr:8326/
-profilePhotoSavefolder=D:\\Storage\\sftp\\meet
-profilePhotoUrl=https://meet.watttalk.kr:8222/storage/sftp/meet
-useEnterprise=watt
-use_bento4=false
-elecQR=true
-elecFilePath=D:\\\\cloud\\\\powertalk\\\\meet\\\\QR\\\\file
-elecFolderPath=D:\\\\cloud\\\\powertalk\\\\meet\\\\QR\\\\folder
-fileBoxBackend=https://meetcloud.watttalk.kr:8326/
-separateBackendUploadPath=false
-logsheetURL=https://meet.watttalk.kr:8322/wattmanager2/safetycheck
-logsheet=true
-smarttbmURL=https://meet.watttalk.kr:8322/wattmanager2/smarttbm
-checkPswPatern=false
-forceLogout24=false
-# impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다.
+powertalkLogin_local=""
+powertalkLogin="https://meet.watttalk.kr/watttalk/login/login-check?jwt_token="
+
+# 와트 메모
+powermemo="https://meet.watttalk.kr/storage/powermemo"
+powermemoSavefolder="/storage/powermemo"
+
+# QR
+qr="default"
+elecQR="false"
+elecFilePath="/storage/watttalk/QR/file"
+elecFolderPath="/storage/watttalk/QR/file"
+
+# 자료 관리
+# 일반 사용자 자료 관리 접근 권한 (true: 부여, false: 미부여)
+att_access_user="true"
+att_videoPlayPath="https://meet.watttalk.kr/storage/watttalk/Dashs/Src/"
+att_filePath="https://meet.watttalk.kr/storage/watttalk/filebox/"
+detailFilePath="/storage/watttalk/filebox"
+fileUploadBackend="https://meet.watttalk.kr/wattmanager-server/"
+
+# 프로필 사진
+profilePhotoSavefolder="/storage/watttalk/profile"
+profilePhotoUrl="https://meet.watttalk.kr/storage/watttalk/profile/"
+
+# 로고
+useEnterprise="watt"
+
+# 동영상 보안
+use_bento4="false"
+
+# 파일함
+# 파일 업로드 백엔드 분기 (false: backendURL 사용, true: fileBoxBackend 사용)
+separateBackendUploadPath="false"
+fileBoxBackend="https://meet.watttalk.kr/wattmanager-server/"
+
+# 비밀번호 보안 적용
+checkPswPatern="false"
+pwdRulesType=""
+
+# 자동 로그아웃
+forceLogout24="false"
+
+# 비밀번호 오류 시 계정 로그인 차단
+blockAcount="false"
+
+# 본인 인증 (impId와 pg는 danal 계정 설정으로 "dlenc.watttalk"만 사용. 다른 곳들은 "" 공백값 지정해야한다)
 impId=""
 pg=""
-kepcoLogin="https://kepco.watttalk.kr:8324/login/login-check?jwt_token="
 
 # qr 값에 따라서 tab 변동
 
-# QR tab (전자파일, 전자폴더) 만 보이는 설정
+# QR tab, 전자QR 보이는 설정
 # qr=default
 
 # QR tab, 안전QR 보이는 설정

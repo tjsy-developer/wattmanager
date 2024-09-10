@@ -45,10 +45,10 @@
           :class="[ compData.listFilters[compData.listFilters.length-1].width?'col-auto':'col' ]"
           :style="{ width: compData.listFilters[compData.listFilters.length-1].width+'px' }"
         >
-          <a v-if="contents[contents.length-1].auth && $route.name != 'upload'" :href="$route.name + '/edit?seq=' + contents[contents.length-1].seq">
+          <nuxt-link v-if="contents[contents.length-1].auth && $route.name != 'upload'" :to="$route.name + '/edit?seq=' + contents[contents.length-1].seq">
             <img src="@/assets/images/member_list_icon_edit.png" />
-          </a>
-          <a v-else-if="contents[contents.length-1].auth == false && $route.name == 'user'" :href="$route.name + '/edit?seq=' + contents[contents.length-1].seq"></a>
+          </nuxt-link>
+          <nuxt-link v-else-if="contents[contents.length-1].auth == false && $route.name == 'user'" :to="$route.name + '/edit?seq=' + contents[contents.length-1].seq"></nuxt-link>
           <div v-else-if="$route.name == 'upload'" class="upload">
             <button v-if="$route.query.viewType == 'upload'" style="padding-right: 10px;" disabled>
               <img src="@/assets/images/list_icon_download.png" />
@@ -63,9 +63,9 @@
               <img src="@/assets/images/ic_trash.png" />
             </button>
           </div>
-          <a v-else :href="$route.name + '/edit?seq=' + contents[0]">
+          <nuxt-link v-else :to="$route.name + '/edit?seq=' + contents[0]">
             <img src="@/assets/images/member_list_icon_edit.png" />
-          </a>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -163,11 +163,14 @@ export default {
         }
         // upload는 삭제할 일이 없다
         // file_path
-        // dev (filebox, upload)-> "D:\\\\Storage\\\\powertalk\\\\dev\\\\filebox",
-        // meet (filebox) process.env.fileBoxBackend + process.env.detailFilePath "D:\\\\cloud\\\\powertalk\\\\meet\\\\filebox"
-        // meet (upload) process.env.backendURL
-        this.$axios
-          .post(this.fileuploadApi + axiosJson.upload.upload_delete, dataParams)
+        
+        const params = {
+          data: dataParams,
+          api: this.fileuploadApi + axiosJson.upload.upload_delete
+        }
+        // this.$axios
+        //   .post(this.fileuploadApi + axiosJson.upload.upload_delete, dataParams)
+        this.axiosRequest('post', params)
           .then(function(res) {
             if (res.data === "success") {
               window.location.reload()
@@ -180,13 +183,20 @@ export default {
           })
       }
     },
-    downloadBtn(fileUrl) {
-      this.$axios({
-        url: fileUrl,
-        method: "GET",
+    async downloadBtn(fileUrl) {
+      const params = {
         responseType: "blob",
-        credmential: true
-      }).then(response => {
+        api: fileUrl,
+
+      }
+      // this.$axios({
+      //   url: fileUrl,
+      //   method: "GET",
+      //   responseType: "blob",
+      //   credmential: true  // 오타인 듯. 일단 false로 전달해보자...
+      // })
+      this.axiosRequest('get', params)
+      .then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]))
         const link = document.createElement("a")
         const fileName = fileUrl.split("/")

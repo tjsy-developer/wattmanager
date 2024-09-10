@@ -10,9 +10,9 @@
         </div>
         <input class="idInput col" id="accountID" :placeholder="$t('account')[13]" v-model="id" @keyup.enter="idCheckBtnClick" />
         <button class="idChkBtn col-auto" @click="idCheckBtnClick">{{ $t("account")[18] }}</button>
-        <input class="input" id="accountPWD" :placeholder="$t('account')[14]" v-model="password" @change="passWordPaternCheck()" type="password" />
+        <input class="input" id="accountPWD" :placeholder="$t('account')[14]" v-model="password" @input="passWordPaternCheck" type="password" />
         <!-- 비밀번호 규칙이 있는 경우만 -->
-        <span v-if="checkPatern == 'true' || pswPaternHd == 'true'" class="pswPatern">{{ $t("checkPswPatern")[0] }}</span>
+        <span v-if="checkPatern == 'true'" class="pswPatern">{{ pwdRulesDescript }}</span>
         <input class="input" :placeholder="$t('account')[15]" v-model="passwordCheck" type="password" />
         <input class="nameInput col" id="accountName" :placeholder="$t('account')[16]" v-model="name" @keyup.enter="nameCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="nameCheckBtnClick">{{ $t("account")[18] }}</button>
@@ -121,9 +121,10 @@ export default {
       ret: undefined,
       checkPhone: undefined,
       checkPatern: process.env.checkPswPatern,
-      pswPaternHd: process.env.pswPaternHD || 'false',
       syncManager2: false,
-      manager2ServerUrl: "https://dev.watttalk.kr:8222"
+      manager2ServerUrl: "https://dev.watttalk.kr:8222",
+      validPassword: false, 
+      pwdRulesDescript: process.env.pwdRulesType ? this.$t("checkPswPatern")[Number(process.env.pwdRulesType)] : ''
     }
   },
   methods: {
@@ -354,10 +355,16 @@ export default {
           return alert(this.$t("account")[7])
         }
 
+        if (this.validPassword == false) {
+          document.getElementById("accountPWD").focus()
+          return alert(this.$t("incorrectPwdFormat"))
+        }
+
         if (this.password !== this.passwordCheck) {
           document.getElementById("accountPWD").focus()
           return alert(this.$t("account")[8])
         }
+
         if (this.name !== this.nameCheck) {
           document.getElementById("accountName").focus()
           return alert(this.$t("account")[25])
@@ -395,6 +402,12 @@ export default {
           document.getElementById("accountID").focus()
           return alert(this.$t("account")[7])
         }
+
+        if (this.validPassword == false) {
+          document.getElementById("accountPWD").focus()
+          return alert(this.$t("incorrectPwdFormat"))
+        }
+
         if (this.password !== this.passwordCheck) {
           document.getElementById("accountPWD").focus()
           return alert(this.$t("account")[8])
@@ -567,19 +580,15 @@ export default {
     },
     // 비밀번호 규칙이 있을 경우만
     passWordPaternCheck() {
-      if (this.checkPatern != "true" && this.pswPaternHD != "true") return
+      if (this.checkPatern != "true") this.validPassword = true
+      else this.validPassword = this.isValidPassword(this.password)
     }
   },
   mounted() {
     getInfo.setLang(this.$t("getInfo"))
     // dlenc 분기처리!!
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     if (process.env.manager2serverURL !== "") {
       this.syncManager2 = true
@@ -589,6 +598,7 @@ export default {
         this.manager2ServerUrl = window.location.origin +  process.env.manager2serverURL
       }
     }
+
     // 본인인증 후 data를 받아오기 위한 event
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
   },

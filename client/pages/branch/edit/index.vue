@@ -8,6 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
+import { param } from "jquery"
 
 
 export default {
@@ -61,7 +62,8 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
+    this.refreshToken()
     btnsClick.setLang([
       this.$t("btnsClick")[0],
       this.$t("btnsClick")[1],
@@ -74,11 +76,19 @@ export default {
     ])
 
     const self = this
-    this.$axios
-      .post(process.env.backendURL + axiosJson.branch.br_info_one, {
+    const params = {
+      data: {
         br_seq: self.compData.brSeq,
         jwt: sessionStorage.getItem("jwt")
-      })
+      },
+      api: process.env.backendURL + axiosJson.branch.br_info_one
+    }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.branch.br_info_one, {
+    //     br_seq: self.compData.brSeq,
+    //     jwt: sessionStorage.getItem("jwt")
+    //   })
+    await this.axiosRequest('post', params)
       .then(function(res) {
         console.log(res)
         self.compData.selected = [

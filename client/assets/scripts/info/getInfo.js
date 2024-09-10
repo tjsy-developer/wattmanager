@@ -247,7 +247,7 @@ const getInfo = {
     }
   },
   getInputValue(index) {
-    return document.querySelectorAll("input")[index].value
+    return document.querySelectorAll("input")[index]?.value
   },
   getTextareaValue(index) {
     return document.querySelectorAll("textarea")[index].value

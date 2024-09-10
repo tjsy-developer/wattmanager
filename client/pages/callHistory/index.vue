@@ -34,9 +34,9 @@
 				<div class="col-12 row justify-end list">
 					<div class="col-4 row items-end">
 						<span class="row items-end col-auto subTitle">{{ compData.listTitle }}</span>
-						<a v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :href="$route.name + '/create'">
+						<nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :to="$route.name + '/create'">
 							{{ $t("createAndEditComp")[0] }}
-						</a>
+						</nuxt-link>
 					</div>
 					<div class="col-8 row justify-end items-end">
 						<span class="displayDetails">◎ 전체 통화 건수 : {{ entireCallCount }} 건</span>
@@ -70,9 +70,9 @@
 				<div v-if="false" class="col-12 row justify-end list">
 					<div class="col-12 row items-end">
 						<span class="row items-end col-auto subTitle">참여자 통화 시간</span>
-						<a v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :href="$route.name + '/create'">
+						<nuxt-link v-if="compData.auth == 4 || compData.auth == 3" class="col-auto createBtn" :to="$route.name + '/create'">
 							{{ $t("createAndEditComp")[0] }}
-						</a>
+						</nuxt-link>
 					</div>
 				</div>
 				<div v-if="false" class="col-12 row content-start list individual-list">
@@ -145,6 +145,7 @@ export default {
         }
     },
 	mounted() {
+		this.refreshToken()
 		this.setPeriod(1)
 		this.getCallHistory()
 	},
@@ -154,7 +155,7 @@ export default {
 			window.print(); // blocking
 			document.getElementById('__nuxt').style.overflow = 'auto'
 		},
-		getCallHistory() {
+		async getCallHistory() {
 			const [startDateTs, endDateTs] = this.convertToTimestamp()
 
 			if (!startDateTs || !endDateTs) {
@@ -162,18 +163,27 @@ export default {
 				return
 			}
 
-			const params = {
-				// en_seq: parseInt(sessionStorage.getItem("enSeq")),
-				en_seq: parseInt(sessionStorage.getItem("enSeq")),
-				start_time: startDateTs,
-				end_time: endDateTs,
-				device_id: this.selectedPartic ? this.selectedPartic : null
-			}
+			// const params = {
+			// 	// en_seq: parseInt(sessionStorage.getItem("enSeq")),
+			// 	en_seq: parseInt(sessionStorage.getItem("enSeq")),
+			// 	start_time: startDateTs,
+			// 	end_time: endDateTs,
+			// 	device_id: this.selectedPartic ? this.selectedPartic : null
+			// }
 			// 로딩바 on
 			this.$nuxt.$emit("selectLoadingBar", true)
-
-			this.$axios
-			.post(process.env.backendURL + axiosJson.call.callHistory_list, params)
+			const params = {
+				data: {
+					en_seq: parseInt(sessionStorage.getItem("enSeq")),
+					start_time: startDateTs,
+					end_time: endDateTs,
+					device_id: this.selectedPartic ? this.selectedPartic : null
+				},
+				api: process.env.backendURL + axiosJson.call.callHistory_list
+			}
+			// this.$axios
+			// .post(process.env.backendURL + axiosJson.call.callHistory_list, params)
+			await this.axiosRequest('post', params)
 			.then((res)=> {
 				console.log(res)
 				// res.data[0] :: 통화이력 Array

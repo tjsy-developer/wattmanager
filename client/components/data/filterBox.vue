@@ -272,7 +272,7 @@ export default {
         }
       }
     },
-    searchBtnClick() {
+    async searchBtnClick() {
       const getFilterBoxSearchInput = document.getElementById(
         "filterBoxSearchInput" + this.titleBarFilterKey
       )
@@ -285,10 +285,17 @@ export default {
       if (this.compData !== "calendar" && getFilterBoxSearchInput) {
         const self = this
         const token = sessionStorage.getItem("jwt")
-        this.$axios
-          .post(process.env.backendURL + this.getFilterListUrl, {
+        const params = {
+          data: {
             jwt: token
-          })
+          },
+          api: process.env.backendURL + this.getFilterListUrl
+        }
+        // this.$axios
+        //   .post(process.env.backendURL + this.getFilterListUrl, {
+        //     jwt: token
+        //   })
+        await this.axiosRequest('post', params)
           .then(function(res) {
             // 추가사항
             const arr = []

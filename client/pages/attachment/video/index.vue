@@ -8,9 +8,9 @@
 
 <script>
 // import VueCookie from "vue-cookie"
-import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
-import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters"
-import axiosJson from "@/assets/jsons/axios"
+import axiosJson from "@/assets/jsons/axios";
+import setGetListDataParamsFilters from "@/assets/scripts/data/setGetListDataParamsFilters";
+import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams";
 
 
 export default {
@@ -36,6 +36,7 @@ export default {
           hq_alias: [],
           save_time: []
         },
+        convertFileBlob: undefined,
         videolFileName: "",
         async setListData(getListData) {
           const self = this
@@ -80,12 +81,13 @@ export default {
               })
             } else if (getListData[i].rate === 100) {
               // get Thnumnail Image
+              const videoOriginalBlob = await this.convertFileBlob(`${getListData[i].file_path}/${getListData[i].file_name}?token=${sessionStorage.getItem("jwt")}`)
               await this.axios
                 .get(
                   getListData[i].file_path +
                     "/capture_images/" +
                     this.videolFileName +
-                    ".png",
+                  ".png" + `?token=${sessionStorage.getItem("jwt")}`,
                   {
                     timeout: 1000,
                     responseType: "blob",
@@ -143,8 +145,9 @@ export default {
                     console.log("video index axios error: ", error)
                   }
                 })
-                .then(function(blobres) {
+                .then(async function(blobres) {
                   if (blobres) {
+                    
                     // Thumnail Image Blob URL create
                     const blobURL = URL.createObjectURL(blobres.data)
                     // console.log("blobURL: " + i + " start : ", blobURL)
@@ -172,7 +175,8 @@ export default {
                         getListData[i].file_path +
                         "/" +
                         getListData[i].file_name,
-                      running_time: getListData[i].running_time
+                      running_time: getListData[i].running_time,
+                      originalBlob: videoOriginalBlob,
                     })
                   }
                 })
@@ -205,6 +209,8 @@ export default {
   mounted() {
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
     setGetListDataParamsFilters(this.compData.getListDataParams)
+    this.refreshToken()
+    this.compData.convertFileBlob =  this.convertImageToBlob
   },
   beforeDestroy() {
     if (this.blobImageURL !== undefined) {

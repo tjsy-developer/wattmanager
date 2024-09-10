@@ -232,7 +232,7 @@ export default {
       danalVerify(params, 2)
     },
     // - 앱정보 복사
-    appInfoCopy() {
+    async appInfoCopy() {
       // 복사할 기업,본부,지사,앱코드 선택체크
       const self = this
       const appCopyEnSeq = this.enList.selectedValue
@@ -250,14 +250,25 @@ export default {
       } else if (appCopyBrSeq === undefined) {
         alert(self.$t("appCopy noneSelectBox")[3])
       } else {
-        this.$axios
-          .post(process.env.backendURL + axiosJson.app.app_info_copy, {
+        const params = {
+          data: {
             app_code_seq: appCodeSeq,
             en_seq: appCopyEnSeq,
             hq_seq: appCopyHqSeq,
             br_seq: appCopyBrSeq,
             jwt: sessionStorage.getItem("jwt")
-          })
+          },
+          api: process.env.backendURL + axiosJson.app.app_info_copy
+        }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.app.app_info_copy, {
+        //     app_code_seq: appCodeSeq,
+        //     en_seq: appCopyEnSeq,
+        //     hq_seq: appCopyHqSeq,
+        //     br_seq: appCopyBrSeq,
+        //     jwt: sessionStorage.getItem("jwt")
+        //   })
+        await this.axiosRequest('post', params)
           .then(function(res) {
             console.log(res.data)
 
@@ -346,13 +357,8 @@ export default {
   },
   mounted() {
     // dlenc 분기처리!!
-    if (window.location.hostname == "dlenc.watttalk.kr") {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
     // window.addEventListener("changedCompData", this.changedCompData)

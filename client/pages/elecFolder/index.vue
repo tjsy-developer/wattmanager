@@ -69,6 +69,9 @@ export default {
       Height: 151
     }
   },
+  mounted() {
+    this.refreshToken()
+  },
   methods: {
     // QR 생성
     QRCreateBtnClick() {

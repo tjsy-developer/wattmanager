@@ -73,7 +73,7 @@ export default {
         type: "edit",
         selected: [],
         nameSpaceCheck: this.$t("no spaces text"),
-        editBtnClick() {
+        async editBtnClick() {
           const deviceType = sessionStorage.getItem("deviceType")
           console.log(this.selected, "selected")
           const getSelf = this.self
@@ -81,7 +81,7 @@ export default {
           try {
             for (let i = 4; i < getInput.length - 1; i++) {
               // eslint-disable-next-line no-throw-literal
-              if (!getInput[i].value && getSelf.auth != 4) throw "input undefined"
+              // if (!getInput[i].value && getSelf.auth != 4) throw "input undefined"
             }
             const pattern = /\s/g
             if (getInfo.getInputValue(4).match(pattern)) {
@@ -106,13 +106,21 @@ export default {
               }
               if (formData) {
                 const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
-                getSelf.$axios
-                  .post(backendAPI, formData, { headers })
+                
+                const params = {
+                  data: { 
+                    formData
+                  },
+                  headers: headers,
+                  api: backendAPI
+                }
+                // getSelf.$axios
+                //   .post(backendAPI, formData, { headers })
+                await getSelf.axiosRequest('post', params)
                   .then((res) => {
                     const fileName = process.env.profilePhotoUrl + res.data.FILE_NAME
-                    getSelf.$axios
-                      // .post("userRest/user_update_my", {
-                      .post(process.env.backendURL + "userRest/user_update_my", {
+                    const parameter = {
+                      data: {
                         user_seq: this.userSeq,
                         name: getInfo.getInputValue(4),
                         name_en:
@@ -136,7 +144,37 @@ export default {
                           ? getInfo.getInputValue(8)
                           : "",
                         jwt: sessionStorage.getItem("jwt")
-                      })
+                      },
+                      api: process.env.backendURL + "userRest/user_update_my"
+                    }
+                    // getSelf.$axios
+                    //   // .post("userRest/user_update_my", {
+                    //   .post(process.env.backendURL + "userRest/user_update_my", {
+                    //     user_seq: this.userSeq,
+                    //     name: getInfo.getInputValue(4),
+                    //     name_en:
+                    //       // eslint-disable-next-line eqeqeq
+                    //       getSelf.deviceType == 3 && getSelf.auth != 4
+                    //         ? getInfo.getInputValue(5)
+                    //         : null,
+                    //     email:
+                    //       // eslint-disable-next-line eqeqeq
+                    //       getSelf.deviceType == 3 && getSelf.auth != 4
+                    //         ? getInfo.getInputValue(6)
+                    //         : getInfo.getInputValue(5),
+                    //     // image: this.selected[7],
+                    //     image: fileName,
+                    //     phone_number:
+                    //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                    //         ? getInfo.getInputValue(7)
+                    //         : "",
+                    //     birthday:
+                    //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                    //       ? getInfo.getInputValue(8)
+                    //       : "",
+                    //     jwt: sessionStorage.getItem("jwt")
+                    //   })
+                    getSelf.axiosRequest('post', parameter)
                       .then(function(res) {
                         console.log(res.data == "Duplicate phone_number")
                         if (res.data === "Success") alert(getSelf.$t("attachment")[1])
@@ -157,9 +195,8 @@ export default {
                     alert(getSelf.$t("attachment")[2])
                   })
               } else {
-                getSelf.$axios
-                  // .post("userRest/user_update_my", {
-                  .post(process.env.backendURL + "userRest/user_update_my", {
+                const parameter = {
+                  data: {
                     user_seq: this.userSeq,
                     name: getInfo.getInputValue(4),
                     name_en:
@@ -185,7 +222,39 @@ export default {
                       ? getInfo.getInputValue(8)
                       : "",
                     jwt: sessionStorage.getItem("jwt")
-                  })
+                  },
+                  api: process.env.backendURL + "userRest/user_update_my"
+                }
+                // getSelf.$axios
+                //   // .post("userRest/user_update_my", {
+                //   .post(process.env.backendURL + "userRest/user_update_my", {
+                //     user_seq: this.userSeq,
+                //     name: getInfo.getInputValue(4),
+                //     name_en:
+                //       // eslint-disable-next-line eqeqeq
+                //       getSelf.deviceType == 3 && getSelf.auth != 4
+                //         ? getInfo.getInputValue(5)
+                //         : null,
+                //     email:
+                //       // eslint-disable-next-line eqeqeq
+                //       getSelf.deviceType == 3 && getSelf.auth != 4
+                //         ? getInfo.getInputValue(6)
+                //         : getInfo.getInputValue(5),
+                //     // image: this.selected[7],
+                //     image: deviceType != 2
+                //       ? this.selected[9]
+                //       : this.selected[7],
+                //     phone_number:
+                //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                //         ? getInfo.getInputValue(7)
+                //         : "",
+                //     birthday:
+                //       deviceType != 2 && getSelf.compData.check2Factor !== false
+                //       ? getInfo.getInputValue(8)
+                //       : "",
+                //     jwt: sessionStorage.getItem("jwt")
+                //   })
+                getSelf.axiosRequest('post', parameter)
                   .then(function(res) {
                     if (res.data === "Success") alert(getSelf.$t("attachment")[1])
                     else if (res.data === "Exceeded quota") alert(getSelf.$t("ExceededQuota"))
@@ -271,30 +340,34 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
+    this.refreshToken()
     window.addEventListener("imageInputed", (e) => {
       console.log(e)
       this.compData.imageFile = e.detail
     })
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     const getUserSeq = Number(sessionStorage.getItem("userSeq"))
     this.compData.userSeq = getUserSeq
     const self = this
-    this.$axios
-      // .post(axiosJson.user.user_info_one, {
-      .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    const params = {
+      data: {
         user_seq: getUserSeq,
         jwt: sessionStorage.getItem("jwt")
-      })
-      .then(function(res) {
-        console.log(res)
+      },
+      api: process.env.backendURL + axiosJson.user.user_info_one
+    }
+    // this.$axios
+    //   // .post(axiosJson.user.user_info_one, {
+    //   .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    //     user_seq: getUserSeq,
+    //     jwt: sessionStorage.getItem("jwt")
+    //   })
+    this.axiosRequest('post', params)
+      .then(async function(res) {
+
         sessionStorage.setItem("deviceType", res.data.device_type)
 
             if (res.data.image) {
@@ -302,6 +375,7 @@ export default {
               if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
                 checkAdmin = true
               }
+              res.data.image = await self.convertImageToBlob(res.data.image)
               // 글라스 혹은 admin 계정
               if (checkAdmin == true || res.data.device_type == 2){
                 self.compData.listFilters.splice(8, 2)
@@ -325,8 +399,8 @@ export default {
                   res.data.name,
                   res.data.name_en,
                   res.data.email,
-                  res.data.phone_number,
-                  res.data.birthday,
+                  res.data.phone_number || '',
+                  res.data.birthday || '',
                   res.data.image ? res.data.image : undefined
                 ]
               }

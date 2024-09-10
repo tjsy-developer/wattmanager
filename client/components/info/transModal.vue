@@ -37,7 +37,7 @@
       <div class="text3 row justify-center col-12">
         <span class="col-12">{{ $t("changed domain Text")[2] }}</span>
         <span class="col-12">{{ $t("changed domain Text")[3] }}</span>
-        <a :href="this.afterUrl">{{ $t("changed domain Text")[4] }}</a>
+        <nuxt-link :to="this.afterUrl">{{ $t("changed domain Text")[4] }}</nuxt-link>
       </div>
     </div>
   </div>

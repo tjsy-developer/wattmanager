@@ -86,12 +86,20 @@ export default {
         this.getData()
     },
     methods: {
-        getData() {
-            this.$axios
-                .post(this.backendURL + axiosJson.qrManagement.qrList, {
+        async getData() {
+            const params = {
+                data: {
                     jwt: this.jwt,
                     chapter_seq: this.chapter_seq
-                })
+                },
+                api: this.backendURL + axiosJson.qrManagement.qrList
+            }
+            // this.$axios
+            //     .post(this.backendURL + axiosJson.qrManagement.qrList, {
+            //         jwt: this.jwt,
+            //         chapter_seq: this.chapter_seq
+            //     })
+            await this.axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data.qr_list
                     console.log(data)
@@ -178,7 +186,7 @@ export default {
                 this.dataList[titleIndex].qr_data[qrIndex] = ""
             }
         },
-        saveQrData() {
+        async saveQrData() {
             const qrParams = []
             let checkNull = false
             this.dataList.forEach((ele, tIndex) => {
@@ -218,11 +226,19 @@ export default {
             if (checkNull) {
                 return this.operateDialog(this.$t("qrMessage")[7], "error")
             }
-            this.$axios
-                .post(this.backendURL + axiosJson.qrManagement.qrSave, {
+            const params = {
+                data: {
                     jwt: this.jwt,
                     data_list: qrParams
-                })
+                },
+                api: this.backendURL + axiosJson.qrManagement.qrSave
+            }
+            // this.$axios
+            //     .post(this.backendURL + axiosJson.qrManagement.qrSave, {
+            //         jwt: this.jwt,
+            //         data_list: qrParams
+            //     })
+            await this.axiosRequest('post', params)
                 .then((res) => {
                     this.operateDialog(this.$t("qrMessage")[0], "confirm")
                     setTimeout(() => {
@@ -251,15 +267,23 @@ export default {
                 this.dataList.push(dataParams)
             }
         },
-        deletRow(seq, crud, index) {
+        async deletRow(seq, crud, index) {
             if (crud == "create") {
                 this.dataList.splice(index, 1)
             } else {
-                this.$axios
-                .post(this.backendURL + axiosJson.qrManagement.qrDataDelete, {
-                    jwt: this.jwt,
-                    data_seq: seq
-                })
+                const params = {
+                    data: {
+                        jwt: this.jwt,
+                        data_seq: seq
+                    },
+                    api: this.backendURL + axiosJson.qrManagement.qrDataDelete
+                }
+                // this.$axios
+                // .post(this.backendURL + axiosJson.qrManagement.qrDataDelete, {
+                //     jwt: this.jwt,
+                //     data_seq: seq
+                // })
+                this.axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)
                     this.dataList.splice(index, 1)

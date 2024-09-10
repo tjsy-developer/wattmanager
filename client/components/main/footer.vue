@@ -28,15 +28,8 @@ export default {
 		}
 	},
 	mounted() {
-		if (window.location.hostname == "kepco.watttalk.kr") {
-			this.useEnterprise = "kepco";
-		} else if (window.location.hostname == "dlenc.watttalk.kr") {
-			// dlenc 분기처리!!
-			this.useEnterprise = "dlenc";
-		} else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+		if (window.location.hostname == 'dlencmedia.watttalk.kr') {
 			this.useEnterprise = "dlenc"
-		} else  if (window.location.hostname == "kwater.watttalk.kr") {
-			this.useEnterprise = "kwater"
 		}
 	}
 }

@@ -45,13 +45,21 @@ export default {
         close() {
             this.$modal.hide("verifyModal")
         },
-        verify() {
+        async verify() {
             const self = this
-            this.$axios
-            .post(process.env.backendURL + axiosJson.user.user_info_one, {
+            const parameter = {
+               data: {
                 user_seq: this.propsData.user_seq,
                 jwt: sessionStorage.getItem("jwt")
-            })
+               },
+               api: process.env.backendURL + axiosJson.user.user_info_one
+            }
+            // this.$axios
+            // .post(process.env.backendURL + axiosJson.user.user_info_one, {
+            //     user_seq: this.propsData.user_seq,
+            //     jwt: sessionStorage.getItem("jwt")
+            // })
+            await this.axiosRequest('post', parameter)
             .then(function (response) {
                 const params = {
                         queryParams: self.propsData.queryParams,
@@ -105,25 +113,41 @@ export default {
                 );
             }
         },
-        checkPswChange() {
+        async checkPswChange() {
             const self = this
-            // 앱 정보 확인
-            this.$axios
-                .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+            const params = {
+                data: {
                     en_seq: Number(sessionStorage.getItem("enSeq")),
                     hq_seq: Number(sessionStorage.getItem("hqSeq")),
                     br_seq: Number(sessionStorage.getItem("brSeq"))
-                })
+                },
+                api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
+            }
+            // 앱 정보 확인
+            // this.$axios
+            //     .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+            //         en_seq: Number(sessionStorage.getItem("enSeq")),
+            //         hq_seq: Number(sessionStorage.getItem("hqSeq")),
+            //         br_seq: Number(sessionStorage.getItem("brSeq"))
+            //     })
+            await this.axiosRequest('post', params)
                 .then((res) => {
                     if (res.data.length > 0) {
                         const jsonAppList = res.data[0].app_detail_json
                         const appList = JSON.parse(jsonAppList)
                         // 앱정보의 비밀번호 변경 안내 가 true이고 글라스가 아니며 admin이 아닌경우 비밀번호 변경일을 가져 옴
                         if (appList["pswChangeAlert"] == "True" && sessionStorage.getItem("deviceType") != 2 && sessionStorage.getItem("auth") !== 4) {
-                            self.$axios
-                            .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
-                                id: self.propsData.id
-                            })
+                            const parameter = {
+                                data: {
+                                    id: self.propsData.id
+                                },
+                                api: process.env.backendURL + axiosJson.account.getPasswordChangeDate
+                            }
+                            // self.$axios
+                            // .post(process.env.backendURL + axiosJson.account.getPasswordChangeDate, {
+                            //     id: self.propsData.id
+                            // })
+                            self.axiosRequest('post', parameter)
                             .then((response) => {
                                 const changedDate =  response.data // 비밀번호 변경한 날자 (unixtime으로 옴 초까지만!!!!!!)
                                 const now = Math.floor(new Date().getTime() / 1000) // 현재 시간

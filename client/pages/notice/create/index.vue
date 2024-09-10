@@ -95,6 +95,10 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
+    if (this.$store.state.user.permissionLevel < 3) {
+      this.$router.replace('/err/404');
+    }
     this.enSeq = sessionStorage.getItem("enSeq")
     this.id = sessionStorage.getItem("id")
     this.auth = sessionStorage.getItem("auth")

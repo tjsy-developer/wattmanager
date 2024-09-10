@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import QRCode from "qrcode"
+import QRCode from "qrcode";
 
 export default {
   layout: "main",
@@ -69,6 +69,7 @@ export default {
     }
   },
   mounted() {
+    this.refreshToken()
     this.uploadFiles = this.$refs.uploadFiles.files
   },
   methods: {
@@ -136,7 +137,6 @@ export default {
 
       this.fileuploadApi = process.env.fileBoxBackend
 
-      // this.fileuploadApi = "http://192.168.20.79:8090/PowerManagerBackend/"
       // 업로드 api를 호출
       const self = this
 
@@ -146,12 +146,23 @@ export default {
       }
 
       this.$nuxt.$emit("setLoadingBar", true)
-      this.$axios
-        .post(this.fileuploadApi + "fileupload/qrcode", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
+      const params = {
+        data: {
+          formData
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'jwt': sessionStorage.getItem('jwt')
+        },
+        api: this.fileuploadApi + "fileupload/qrcode"
+      }
+      // this.$axios
+      //   .post(this.fileuploadApi + "fileupload/qrcode", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data"
+      //     }
+      //   })
+      this.axiosRequest('post', params)
         .then(function(res) {
           console.log(res)
           self.curQrInfo.QRName = []

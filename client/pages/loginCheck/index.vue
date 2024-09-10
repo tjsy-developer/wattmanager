@@ -10,6 +10,8 @@ export default {
     },
     methods: {
         getUrlParameter() {
+            sessionStorage.removeItem('jwt');
+            sessionStorage.setItem('jwt', this.$route.query.jwt);
             sessionStorage.setItem("id", this.$route.query.id)
 			sessionStorage.setItem("auth", this.$route.query.auth)
 			sessionStorage.setItem("hqSeq", this.$route.query.hqSeq)
@@ -18,17 +20,18 @@ export default {
 			sessionStorage.setItem("logined", this.$route.query.logined)
 			sessionStorage.setItem("userSeq", this.$route.query.userSeq)
 			sessionStorage.setItem("deviceType", this.$route.query.deviceType)
+            const enRToken =  this.encryptData(this.$route.query.rToken);
+            this.$store.commit('token/setRToken', enRToken)
             let checkParameter = true
-            
-            const cookieName = this.$route.query.id + "jwt"
 
-            const getCookieJwt = cookieSetting.getCookie(cookieName)
+            // const getCookieJwt = cookieSetting.getCookie(cookieName)
 
-            if (getCookieJwt !== this.$route.query.jwt) {
-                alert(this.$t("loginCheck")[0])
-                sessionStorage.clear()
-                open("/", "_self")
-            } else {
+            // if (getCookieJwt !== this.$route.query.jwt) {
+            //     alert(this.$t("loginCheck")[0])
+            //     sessionStorage.clear()
+            //     this.$store.dispatch('user/logout')
+            //     open("/", "_self")
+            // } else {
                 if (this.$route.query.lang == undefined || this.$route.query.lang == "" || this.$route.query.lang == null) {
                     checkParameter =  false
                 }
@@ -56,7 +59,9 @@ export default {
                 if (this.$route.query.deviceType == undefined || this.$route.query.deviceType == "" || this.$route.query.deviceType == null) {
                     checkParameter =  false
                 }
+                
                 if (checkParameter) {
+                    this.$store.dispatch('user/login', { permissionLevel:  this.$route.query.auth })
                     const currentTime = Math.floor(Date.now() / 1000)
                     if (process.env.forceLogout24 == true) {
                         const cookieName = sessionStorage.getItem("id") + "ManagerLoginTime"
@@ -69,12 +74,14 @@ export default {
                         // 비밀번호 변경 안내 모달을 통해 접근 한 경우 내정보 > 비밀번호 변경을 실행시켜준다
                         window.open("/profile?changePsw=true", "_self")
                     }
+                    
                 } else {
                     alert(this.$t("loginCheck")[0])
                     sessionStorage.clear()
+                    this.$store.dispatch('user/logout')
                     open("/", "_self")
                 }
-            }
+            // }
         }
     }
 }

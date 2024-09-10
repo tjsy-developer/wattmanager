@@ -507,16 +507,24 @@ export default {
         }
       )
     },
-    removeBtnClick(e) {
+    async removeBtnClick(e) {
       const self = this
       const token = sessionStorage.getItem("jwt")
       const result = confirm(self.$t("listComp")[18])
       if (result) {
-        this.$axios
-          .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        const params = {
+          data: {
             att_seq: e.seq,
             jwt: token
-          })
+          },
+          api: process.env.backendURL + axiosJson.attachment.att_delete
+        }
+        // this.$axios
+        //   .post(process.env.backendURL + axiosJson.attachment.att_delete, {
+        //     att_seq: e.seq,
+        //     jwt: token
+        //   })
+        await this.axiosRequest('post', params)
           .then(function(res) {
             if (res) {
               alert(self.$t("listComp")[14])
@@ -611,15 +619,22 @@ export default {
       }
     },
     // 필터 클릭시 list setting
-    setTitleBarFilterList(index) {
+    async setTitleBarFilterList(index) {
       const getTitleBarFilter = this.titleBarFilters[index]
       const token = sessionStorage.getItem("jwt")
 
-      if (getTitleBarFilter.getFilterListUrl)
-        this.$axios
-          .post(process.env.backendURL + getTitleBarFilter.getFilterListUrl, {
+      if (getTitleBarFilter.getFilterListUrl){
+        const params = {
+          data: {
             jwt: token
-          })
+          },
+          api: process.env.backendURL + getTitleBarFilter.getFilterListUrl
+        }
+        // this.$axios
+        //   .post(process.env.backendURL + getTitleBarFilter.getFilterListUrl, {
+        //     jwt: token
+        //   })
+        await this.axiosRequest('post', params)
           .then(function(res) {
             console.log(res)
             if (getTitleBarFilter.filterList.length)
@@ -730,6 +745,7 @@ export default {
           .catch(function(error) {
             console.log("data list.vue created error : ", error)
           })
+      }
     },
     // 필터 박스 열기 버튼
     filterBtnClick(e, index) {
@@ -761,20 +777,30 @@ export default {
           initSessionStorage.remove("selectedFiltersOptions")
       }
     },
-    shareBtnClick(e) {
+    async shareBtnClick(e) {
       const token = sessionStorage.getItem("jwt")
-      this.$axios
-        .post(
-          e.fileType === "video"
-            ? process.env.backendURL +
-                axiosJson.attachment.att_return_page_number
-            : process.env.backendURL +
-                axiosJson.attachment.att_return_page_number_picture,
-          {
-            att_seq: e.seq,
-            jwt: token
-          }
-        )
+      const params = {
+        data: {
+          att_seq: e.seq,
+          jwt: token
+        },
+        api: e.fileType === "video" 
+              ? process.env.backendURL + axiosJson.attachment.att_return_page_number
+              : process.env.backendURL + axiosJson.attachment.att_return_page_number_picture,
+      }
+      // this.$axios
+      //   .post(
+      //     e.fileType === "video"
+            // ? process.env.backendURL +
+            //     axiosJson.attachment.att_return_page_number
+            // : process.env.backendURL +
+            //     axiosJson.attachment.att_return_page_number_picture,
+      //     {
+      //       att_seq: e.seq,
+      //       jwt: token
+      //     }
+      //   )
+      this.axiosRequest('post', params)
         .then(response => {
           if (response.data)
             showShareModal(

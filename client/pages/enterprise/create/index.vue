@@ -61,6 +61,9 @@ export default {
       this.$t("listComp")[14],
       this.$t("listComp")[15]
     ])
+  },
+  mounted() {
+    this.refreshToken()
   }
 }
 </script>

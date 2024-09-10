@@ -1,26 +1,16 @@
 /* 2021.01.26 common Func :: ksh */
+import axios from 'axios';
 import Vue from "vue";
+import jwt_decode from 'jwt-decode';
+import CryptoJS from 'crypto-js';
 
 Vue.mixin({
+  data() {
+    return {
+      key: process.env.skey,
+    }
+  },
   methods: {
-    // checkLoginTime() {
-    //   // 현재 시간
-    //   const currentTime = Math.floor(Date.now() / 1000)
-
-    //   // 로그인 시에 기록된 시간
-    //   const loginTime = cookieSetting.getCookie("managerLoginTime")
-
-    //   const unix24Hour = 1 * 60
-    //   if (loginTime == "calling") {
-    //     return
-    //   } else if(loginTime == "logout") {
-    //     window.dispatchEvent(new Event("forceLogoutEvent"))
-    //   } else if (currentTime > loginTime + unix24Hour) {
-    //     cookieSetting.deleteCookie("managerLoginTime")
-    //     cookieSetting.setCookie("managerLoinTime", "logout")
-    //     window.dispatchEvent(new Event("forceLogoutEvent"))
-    //   }
-    // }
     /**
      * 특정 도메인의 경우 iframe 도메인네임을 접속 도메인값으로 변경
      * @param url 로그시트 iframe 호출 URL 
@@ -77,7 +67,8 @@ Vue.mixin({
           "&user_id=" + sessionStorage.getItem("id") +
           "&user_name=" + sessionStorage.getItem("userName") +
           "&version=1&lang=" + sessionStorage.getItem("languageCode") +
-          "&task_type=" + type
+          "&task_type=" + type + 
+          "&lang=" + sessionStorage.getItem("languageCode")
       if (sessionStorage.getItem('init')) {
         url = url + '&init=true'
       }
@@ -85,6 +76,85 @@ Vue.mixin({
         url = url + "&iframe_title=" + logSheetTitle + templateID
       }
       return url
+    },
+    isValidPassword(value) {
+      const rulesType = Number(process.env.pwdRulesType)
+      let passwordRegex
+      switch (rulesType) {
+        case 0:
+          passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{10,}$/;
+          return passwordRegex.test(value)
+        case 1:
+          passwordRegex = /^.{10,}$/
+          return passwordRegex.test(value)
+        case 2:
+          passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/
+          return passwordRegex.test(value)
+        case 3:
+          passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/; 
+          return passwordRegex.test(value)
+        default:
+          return true
+      }
+    },
+    async convertImageToBlob(src) {
+      try {
+        const params = {
+          responseType: "blob",
+          api: src + `?token=${sessionStorage.getItem("jwt")}`
+        }
+        // const result = await axios
+        //   .get(
+        //     src + `?token=${sessionStorage.getItem("jwt")}`,
+        //     {
+        //       timeout: 4000,
+        //       responseType: "blob",
+        //     }
+        // )
+        const result = await axiosRequest('get', params)
+        let blobURL = ''
+        if (result.status === 200) {
+          blobURL = URL.createObjectURL(result.data)
+        }
+        return blobURL
+      } catch (err) {
+        return ''
+      }
+      
+    },
+    // 임시 기능. access token, refresh token 활성화 후 제거!!!!
+    refreshToken() {
+    },
+
+    // 암호화.
+    encryptData(data) {
+        console.log('function encrypt')
+        let encryptData;
+        try {
+          encryptData = CryptoJS.AES.encrypt(data, this.key).toString();
+          return encryptData;
+        } catch (err) {
+          console.log(`encrypt error: ${err.message}`);
+          encryptData = false;
+        }
+        return encryptData;
+
+    },
+
+    // 복호화.
+    decryptData(data) {
+        console.log('function decrypt')
+        try {
+          const decryptBytes = CryptoJS.AES.decrypt(data, this.key);
+        
+          const decryptData = decryptBytes.toString(CryptoJS.enc.Utf8);
+
+          return decryptData;
+        } catch  (err) {
+          // 복호화 못한 경우
+          console.log(`decrypt error: ${err.message}`);
+          return false;
+        }
     }
   },
 });

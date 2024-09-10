@@ -49,16 +49,11 @@ export default {
         }
     },
     mounted() {
+        this.refreshToken()
         this.loading = true
         this.setIframeUrl()
         window.addEventListener("message", (e) => {
-            console.log(e)
-            const originURL = window.location.origin
             this.childData(e.data)
-            // if (e.origin == originURL) {
-            //     console.log(e.data)
-                
-            // }
         })
     },
     methods: {
@@ -74,6 +69,8 @@ export default {
                     initLogSheetURL = presentUrl + "/wattmanager2/safetypatrol"
                     break
                 case 2:
+                    initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
+                    break
                 case 4:
                     initLogSheetURL = presentUrl + "/wattmanager2/safetycheck"
                     break
@@ -100,21 +97,14 @@ export default {
             }
         },
         setReloadedPath(logsheetIframeURL) {
-            const type = Number(sessionStorage.getItem("taskType"))
-            // type 1: 안전패트롤, 2: 일일점검, 3: 메모, 4: tbm
-            if (!sessionStorage.getItem("path_name").includes("/temp") && !sessionStorage.getItem("path_name").includes("/setting") && !sessionStorage.getItem("path_name").includes("/logsheet/template")) {
-                // 일일점검, tbm 최초화면
-                this.logsheetURL = logsheetIframeURL
-            } else {
-                // 일일점검, tbm 상세보기 화면
-                this.logsheetURL = 'http://localhost:5000' + sessionStorage.getItem("path_name")
-            }
+            this.logsheetURL = window.location.origin + sessionStorage.getItem("path_name")
         },
         childData(params) {
             const url = params.current_path
             const scrollTop = params.scrollTop
             const height = params.height
             if (params == "workflow content modified") {
+                this.refreshToken()
                 this.setIframeUrl()
             }
             if (url) {
@@ -126,12 +116,14 @@ export default {
             if (scrollTop) {
                 this.scrollInToTop(height)
             }
+            this.checkJwt()
         },
         childPath(url) {
             const replaceURL = url.replaceAll('&init=true', '')
             if (sessionStorage.getItem("init") == "true"|| sessionStorage.getItem("init") == null) {
                 this.$nuxt.$emit("selectLoadingBar", false)
                 this.loading = false
+                sessionStorage.setItem("init", false)
                 sessionStorage.setItem("path_name", replaceURL)
             } else {
 				sessionStorage.setItem("path_name", replaceURL)

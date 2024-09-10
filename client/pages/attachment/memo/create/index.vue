@@ -80,7 +80,7 @@ export default {
 			)
 		},
 		// mp4파일 삽입 시 인코딩가능한 코덱인지 확인
-		checkEncodingCodec(file) {
+		async checkEncodingCodec(file) {
 			// param: 업로드할 파일, 폴더경로
 			const formData = new FormData()
 			formData.append("upload_file", file)
@@ -92,14 +92,24 @@ export default {
 
 			// test Code
 			// const res = {RESULT : '1000', CODEC_NAME: 'hevc'}
-
-			this.$axios
-			.post(process.env.fileUploadBackend + "fileupload/get_codec_name", formData, {
+			const params = {
+				data: {
+					formData
+				},
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": sessionStorage.getItem("jwt")
-				}
-			})
+				},
+				api: process.env.fileUploadBackend + "fileupload/get_codec_name"
+			}
+			// this.$axios
+			// .post(process.env.fileUploadBackend + "fileupload/get_codec_name", formData, {
+			// 	headers: {
+			// 		"Content-Type": "multipart/form-data; charset=UTF-8;",
+			// 		"jwt": sessionStorage.getItem("jwt")
+			// 	}
+			// })
+			await this.axiosRequest('post', params)
 			.then((res) => {
 				console.log(res)
 				if(res.data.RESULT == "1000") {
@@ -148,7 +158,7 @@ export default {
 				e.target.previousSibling.value = ""
 			}
 		},
-    createBtnClick() {
+    async createBtnClick() {
         const formData = new FormData()
 
         // 로그인한 사용자의 토큰 정보를 formData에 넣는다
@@ -183,13 +193,24 @@ export default {
         this.$nuxt.$emit("setLoadingBar", true)
         const self = this
         // 메모 생성 api
-        this.$axios
-        .post(process.env.fileUploadBackend + "fileupload/memo_insert", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data; charset=UTF-8;",
-                "jwt": sessionStorage.getItem("jwt")
-            }
-        })
+		const params = {
+			data: {
+				formData
+			},
+			headers: {
+				"Content-Type": "multipart/form-data; charset=UTF-8;",
+				"jwt": sessionStorage.getItem("jwt")
+			},
+			api: process.env.fileUploadBackend + "fileupload/memo_insert"
+		}
+        // this.$axios
+        // .post(process.env.fileUploadBackend + "fileupload/memo_insert", formData, {
+        //     headers: {
+        //         "Content-Type": "multipart/form-data; charset=UTF-8;",
+        //         "jwt": sessionStorage.getItem("jwt")
+        //     }
+        // })
+		await this.axiosRequest('post', params)
         .then(function(res) {
             if (res) {
                 console.log(res)
@@ -213,6 +234,7 @@ export default {
     }
   },
   mounted() {
+	this.refreshToken()
   }
 }
 </script>

@@ -8,5 +8,8 @@
 <script>
 export default {
     layout: "main",
+	mounted() {
+		this.refreshToken()
+	}
 }
 </script>

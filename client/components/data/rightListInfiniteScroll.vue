@@ -41,10 +41,15 @@ export default {
         this.compData.getRightListDataParams
       )
       console.log("request" + this.compData.getRightListDataParams.page)
-      const response = await this.$axios.post(
-        this.url,
-        this.compData.getRightListDataParams
-      )
+      const params = {
+        data: this.compData.getRightListDataParams,
+        api: this.url
+      }
+      // const response = await this.$axios.post(
+      //   this.url,
+      //   this.compData.getRightListDataParams
+      // )
+      const response = await this.axiosRequest('post', params)
       console.log("fetchData", response.data)
       this.compData.setRightListData(response.data)
     },
@@ -69,8 +74,13 @@ export default {
         }
         // console.log("this.url", this.url)
         // console.log("getRightList", this.compData.getRightListDataParams)
-        this.$axios
-          .post(this.url, this.compData.getRightListDataParams)
+        const params = {
+          data: this.compData.getRightListDataParams,
+          api: this.url
+        }
+        // this.$axios
+        //   .post(this.url, this.compData.getRightListDataParams)
+        this.axiosRequest('post', params)
           .then(response => {
             if (response.data.length) {
               this.compData.setRightListData(response.data)

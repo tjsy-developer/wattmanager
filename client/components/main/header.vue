@@ -32,14 +32,14 @@
         <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
         <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
         <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
-        <a
+        <nuxt-link
           class="col-auto"
-          :href="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
+          :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
           @click="clearsessionStorage"
         >
           {{ $t("headerComp")[6] }}
-        </a>
-        <a v-if="authority == '3'" :href="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</a>
+        </nuxt-link>
+        <nuxt-link v-if="authority == '3'" :to="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</nuxt-link>
         <!-- <button  @click="closeTab()">닫기</button> -->
         <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
@@ -57,6 +57,7 @@ import jwt_decode from "jwt-decode"
 import cookieSetting from "@/assets/scripts/data/cookie"
 import axiosJson from "@/assets/jsons/axios";
 import { mapState } from "vuex"
+
 
 export default {
   data() {
@@ -86,13 +87,38 @@ export default {
       tbmMenuKo: "",
       tbmMenuEn: "",
       location: "",
-      pathName: ""
+      pathName: "",
+      forceLogoutTime: ""
     }
   },
   computed: {
 		...mapState({
 			allState: (state) => state
-		})
+		}),
+    getTokenState() {
+      return this.$store.state.expiredToken
+    },
+    checkTokenState() {
+      return this.$store.state.token.tokenState
+    }
+  },
+  watch: {
+    getTokenState(res) {
+      if (res) {
+        alert(this.$t('jwtTokenErr')[1])
+        this.$store.commit("setTokenState", false)
+        this.logoutBtnClick()
+      }
+    },
+    checkTokenState(res) {
+      // // 정상
+      // if (res == 0) return;
+      // // 변조 || 없음
+      // if (res == 1) alert(this.$t('jwtTokenErr')[0]);
+      // // 만료
+      // if (res == 2) alert(this.$t('jwtTokenErr')[1]);
+      // this.logoutBtnClick()
+    }
   },
   methods: {
     switchLocale(locale) {
@@ -123,33 +149,9 @@ export default {
             "_self"
           )
         } else {
-          if(window.location.hostname == 'kepco.watttalk.kr') {
-             window.open(
-              process.env.kepcoLogin +
-                jwtToken +
-                "&login_type=3&lang=" +
-                lang,
-              "_self"
-             )
-          }  else if (window.location.hostname == 'dlenc.watttalk.kr') {
+          if (window.location.hostname == 'dlencmedia.watttalk.kr') {
             window.open(
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-              "_self"
-            )
-          } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-            window.open(
-              'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
-              jwtToken +
-              "&login_type=3&lang=" +
-              lang,
-              "_self"
-            )
-          }  else if (window.location.hostname == 'seoyoneh.watttalk.kr') {
-            window.open(
-              'https://' + window.location.hostname + ':7220/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
               lang,
@@ -205,7 +207,7 @@ export default {
       const loginTime = cookieSetting.getCookie(cookieName)
       if (!loginTime) return
       const forceLogoutEvent = new CustomEvent("forceLogoutEvent", {detail: true})
-      const unix24Hour = 8 * 60 * 60
+      const unix24Hour = Number(this.forceLogoutTime) * 60 * 60
       if (loginTime == "calling") {
         return
       } else if(loginTime == "logout") {
@@ -216,13 +218,22 @@ export default {
         window.dispatchEvent(forceLogoutEvent)
       }
     },
-    getAppInfo() {
-      this.$axios
-        .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+    async getAppInfo() {
+      const params = {
+        data: {
           en_seq: Number(sessionStorage.getItem("enSeq")),
           hq_seq: Number(sessionStorage.getItem("hqSeq")),
-          br_seq: Number(sessionStorage.getItem("brSeq"))
-        })
+          br_seq: Number(sessionStorage.getItem("brSeq")),
+        },
+        api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
+      }
+      // this.$axios
+      //   .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
+      //     en_seq: Number(sessionStorage.getItem("enSeq")),
+      //     hq_seq: Number(sessionStorage.getItem("hqSeq")),
+      //     br_seq: Number(sessionStorage.getItem("brSeq"))
+      //   })
+        await this.axiosRequest('post', params)
         .then((res) => {
           if (res.data.length > 0) {
             const jsonAppList = res.data[0].app_detail_json
@@ -279,20 +290,34 @@ export default {
           }
         })
     },
-    getUserName() {
+    async getUserName() {
+      const params = {
+        data: {
+          user_seq: Number(sessionStorage.getItem("userSeq")),
+          jwt: sessionStorage.getItem("jwt")
+        },
+        api: process.env.backendURL + axiosJson.user.user_info_one
+      }
       this.$axios
           // .post(axiosJson.user.user_info_one, {
           .post(process.env.backendURL + axiosJson.user.user_info_one, {
               user_seq: Number(sessionStorage.getItem("userSeq")),
               jwt: sessionStorage.getItem("jwt")
-          })
-          .then(function(res) {
-              sessionStorage.setItem("userName", res.data.name)
-              console.log(res.data.name)
-          })
-          .catch(function(error) {
-              console.log("user profile page error : ", error)
-          })
+            },
+            {
+              headers: {
+                "jwt": sessionStorage.getItem("jwt")
+              }
+            }
+          )
+      // await this.axiosRequest('post', params)
+        .then(function(res) {
+            sessionStorage.setItem("userName", res.data.name)
+            console.log(res.data.name)
+        })
+        .catch(function(error) {
+            console.log("user profile page error : ", error)
+        })
     },
     setAppInfo(appList) {
       if (appList["safetyPatrol"] == "True") {
@@ -379,11 +404,13 @@ export default {
       } else {
         this.showTbm = false
       }
+      // 강제 로그아웃 활성화 시 로그아웃 진행 시간 가져옴
+      this.forceLogoutTime = appList["forceLogout"] ? Number(appList["forceLogout"]) : 8
       sessionStorage.setItem("showSafetyPatrol", this.showSafetyPatrol)
       sessionStorage.setItem("showDailyCheck", this.showDailyCheck)
       sessionStorage.setItem("showMemo2", this.showMemo2)
       sessionStorage.setItem("showTbm", this.showTbm)
-    }
+    },
   },
   beforeMount() {
     this.showSafetyPatrol = sessionStorage.getItem("showSafetyPatrol") && sessionStorage.getItem("showSafetyPatrol") == "true" ? true : false
@@ -401,6 +428,14 @@ export default {
     this.getAppInfo()
   },
   mounted() {
+    window.addEventListener('message' , (event) => {
+      const res = event.data;
+      if (res.data.id != sessionStorage.getItem('id')) return;
+      if (res.type == 'changeToken' && res.data.at && res.data.rt) {
+        sessionStorage.setItem('jwt', res.data.at);
+        this.$store.commit('token/setRToken', res.data.rt);
+      }
+    })
     this.pathName= window.location.pathname
     this.location = window.location.hostname
     // 로그인한 계정이 admin인지 확인
@@ -425,7 +460,7 @@ export default {
       sessionStorage.setItem("enSeq", decodeData.en_seq)
       sessionStorage.setItem("brSeq", decodeData.br_seq)
       sessionStorage.setItem("deviceType", decodeData.device_type)
-      sessionStorage.setItem("jwt", this.$route.query.jwt_token)
+      // sessionStorage.setItem("jwt", this.$route.query.jwt_token)
 
       // 2021.04.14 ksh :: 로그인 버튼 숨김 설정
       sessionStorage.setItem("logoutStatus", 0)
@@ -469,16 +504,7 @@ export default {
       this.attViewAuth = false
     }
      // 한국 전력공사 로고이미지 변경
-    if(window.location.hostname == 'kepco.watttalk.kr') {
-      this.useEnterprise = "kepco"
-    }
-    if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
-    }
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
-      this.useEnterprise = "dlenc"
-    }else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
     }
     if (process.env.forceLogout24) {

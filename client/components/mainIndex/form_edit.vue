@@ -132,8 +132,8 @@ export default {
                   }
                 } else {
                   const randomNumber =
-                    Math.floor(Math.random() * (10000 - 1 + 1)) + 1
-                  window.open("/powertalk/index.html?" + randomNumber, "_self")
+                  //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1
+                  // window.open("/powertalk/index.html?" + randomNumber, "_self")
                 }
                 // window.open(
                 //   process.env.powertalk.loginCheck +

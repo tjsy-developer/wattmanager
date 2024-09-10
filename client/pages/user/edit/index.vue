@@ -19,6 +19,7 @@ export default {
       token: "",
       defaultUserProfileBlob: "",
       compData: {
+        self: this,        
         useEnterprise: process.env.useEnterprise,
         userSeq: Number(this.$route.query.seq),
         listTitle: this.$t("user")[0],
@@ -35,6 +36,7 @@ export default {
         isGuest: "",
         editBtnClick() {
           let checkGuest = ""
+          const getSelf = this.self
           if (sessionStorage.getItem("editUserDeviceType") != 2) {
             if (getInfo.getInputValue(6) == "true") {
               checkGuest = 1
@@ -86,7 +88,7 @@ export default {
           if (getInfo.getInputValue(1).match(pattern)) {
           } else {
             if (getInfo.getInputValue(0).includes("wattsupport")) {
-              this.compData.check2Factor = false
+              getSelf.compData.check2Factor = false
             }
             // 글라스가 아닌경우
             if (sessionStorage.getItem("editUserDeviceType") != 2) {
@@ -201,18 +203,14 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
+    this.refreshToken()
     window.addEventListener("imageInputed", (e) => {
       console.log(e)
       this.compData.imageFile = e.detail
     })
-    if (window.location.hostname == 'dlenc.watttalk.kr') {
-      // dlenc 분기처리!!
+    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
       this.useEnterprise = "dlenc"
-    } else if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    } else  if (window.location.hostname == "kwater.watttalk.kr") {
-      this.useEnterprise = "kwater"
     }
     const self = this
     getInfo.setAuthority()
@@ -233,12 +231,23 @@ export default {
       this.$t("attachment")[5]
     ])
     this.token = sessionStorage.getItem("jwt")
-    this.$axios
-      .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    const params = {
+      data: {
         user_seq: self.compData.userSeq,
         jwt: this.token
-      })
-      .then(function (res) {
+      },
+      api: process.env.backendURL + axiosJson.user.user_info_one
+    }
+    // this.$axios
+    //   .post(process.env.backendURL + axiosJson.user.user_info_one, {
+    //     user_seq: self.compData.userSeq,
+    //     jwt: this.token
+    //   })
+    this.axiosRequest('post', params)
+      .then(async function (res) {
+        if (self.$store.state.user.permissionLevel <= res.data.auth) {
+          self.$router.replace('/err/404');
+        }
         sessionStorage.setItem("editUserDeviceType", res.data.device_type)
         if (res.data.phone_number) {
               self.phoneNumber = res.data.phone_number
@@ -248,6 +257,9 @@ export default {
             }
             if (res.data.guest) {
               self.compData.isGuest = res.data.guest
+            }
+            if (res.data.image) {
+              res.data.image = await self.convertImageToBlob(res.data.image)
             }
             // 글라스가 아닌 경우
             if (res.data.device_type != 2) {
@@ -381,15 +393,23 @@ export default {
                               getInfo.permission
                             ]
                           )
-                          self.$axios
-                            .post(
-                              process.env.backendURL +
-                                "userRest/user_info_one_app_list",
-                              {
-                                br_seq: res.data.br_seq,
-                                jwt: sessionStorage.getItem("jwt")
-                              }
-                            )
+                          const parameter = {
+                            data: {
+                              br_seq: res.data.br_seq,
+                              jwt: sessionStorage.getItem("jwt")
+                            },
+                            api: process.env.backendURL + "userRest/user_info_one_app_list"
+                          }
+                          // self.$axios
+                          //   .post(
+                          //     process.env.backendURL +
+                          //       "userRest/user_info_one_app_list",
+                          //     {
+                          //       br_seq: res.data.br_seq,
+                          //       jwt: sessionStorage.getItem("jwt")
+                          //     }
+                          //   )
+                          self.axiosRequest('post', parameter)
                             .then(function(userInfoOneAppList) {
                               if (userInfoOneAppList.data) {
                               console.log(userInfoOneAppList)
