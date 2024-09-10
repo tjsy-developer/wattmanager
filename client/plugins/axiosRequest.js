@@ -89,7 +89,6 @@ export async function requestNewJwt(type, params) {
             deviceType: ''
         })
         .then((res) => {
-            console.log(res)
             // new access token, refresh token setting
             jwt = res.data[0];
             sessionStorage.setItem('jwt', jwt);
@@ -97,19 +96,16 @@ export async function requestNewJwt(type, params) {
             // refresh_token 암호화
             const enRtoken = encryptData(res.data[1]);
 
-            window.$nuxt$store.commit('token/setRToken', enRtoken);
+            window.$nuxt.$store.commit('token/setRToken', enRtoken);
             toastMessage()
         })
         .catch((error) => {
             console.log(`axios send fail. err: ${error}`);
             const err = error.response;
             if (err.status == 401) {
-                console.log("!!!!!!!!!!!")
                 if (err.data == 'none' || err.data == 'mutated')  {
-                    console.log(`n/m`)
                     return window.$nuxt.$store.commit('token/mutateTokenState', 1);
                 } else if (err.data == 'expired') {
-                    console.log('e')
                     // refresh token도 만료된경우 로그아웃.
                     return window.$nuxt.$store.commit('token/mutateTokenState', 2);
                 } else {
