@@ -37,70 +37,76 @@ const getInfo = {
     getInfo.brList.selectedText = lang[14]
   },
   async enterprise() {
-      await axiosRequest('post', {api: process.env.backendURL + "accountRest/en_list", headers: ''})
-        .then(function(res) {
-          const result = []
-          for (let i = 0; i < res.data.length; i++)
-            result.push({
-              text: res.data[i].alias,
-              en_text: res.data[i].alias_en,
-              value: res.data[i].en_seq
-            })
-          return result
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
+    const response = await axiosRequest('post', {api: process.env.backendURL + "accountRest/en_list", headers: ''})
+      .then(function(res) {
+        const result = []
+        for (let i = 0; i < res.data.length; i++)
+          result.push({
+            text: res.data[i].alias,
+            en_text: res.data[i].alias_en,
+            value: res.data[i].en_seq
+          })
+        console.log(result, "==========================================")
+        return result
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
+    return response
   },
   async hq(enSeq) {
     console.log(enSeq, "============================================")
-        await axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}, headers: ''})
-        .then(function(res) {
-          const result = []
-          for (let i = 0; i < res.data.length; i++)
-            result.push({
-              text: res.data[i].alias,
-              en_text: res.data[i].alias_en,
-              value: res.data[i].en_seq
-            })
-          return result
+    const response = await axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}, headers: ''})
+    .then(function(res) {
+      const result = []
+      for (let i = 0; i < res.data.length; i++)
+        result.push({
+          text: res.data[i].alias,
+          en_text: res.data[i].alias_en,
+          value: res.data[i].en_seq
         })
-        .catch(function(error) {
-          console.log(error)
-        })
+      return result
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+    return response
   },
   async branch(hqSeq) {
     console.log(hqSeq, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-      await axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}, headers: ''})
-        .then(function(res) {
-          const result = []
-          for (let i = 0; i < res.data.length; i++)
-            result.push({
-              text: res.data[i].alias,
-              en_text: res.data[i].alias_en,
-              value: res.data[i].en_seq
-            })
-          return result
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
+    const response = await axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}, headers: ''})
+      .then(function(res) {
+        const result = []
+        for (let i = 0; i < res.data.length; i++)
+          result.push({
+            text: res.data[i].alias,
+            en_text: res.data[i].alias_en,
+            value: res.data[i].en_seq
+          })
+        return result
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
+    return response
   },
   async appCode() {
-      await axiosRequest('post', {api: process.env.backendURL + "appRest/app_code_list", data: {jwt: sessionStorage.getItem("jwt")}})
-        .then(function(res) {
-          const result = []
-          for (let i = 0; i < res.data.length; i++)
-            result.push({
-              text: res.data[i].app_name,
-              en_text: res.data[i].app_name,
-              value: res.data[i].app_code_seq
-            })
-          return result
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
+    const response = await axiosRequest('post', {api: process.env.backendURL + "appRest/app_code_list", data: {jwt: sessionStorage.getItem("jwt")}})
+      .then(function(res) {
+        const result = []
+        for (let i = 0; i < res.data.length; i++)
+          result.push({
+            text: res.data[i].app_name,
+            en_text: res.data[i].app_name,
+            value: res.data[i].app_code_seq
+          })
+        console.log()
+        return result
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
+    return response
   },
   /**
    * powertalkweb 앱 정보 설정 값
@@ -108,15 +114,16 @@ const getInfo = {
    * @returns 
    */
   async appSetting(params) {
-    await axiosRequest('post', {api: process.env.backendURL + "appRest/app_powertalkweb_info", data: {...params}})
-        .then(function (res) {
-          return res.data?.[0]?.app_detail_json || {}
-        })
-        .catch(function(error) {
-          console.log(error)
-          return {}
-        })
+    const response = await axiosRequest('post', {api: process.env.backendURL + "appRest/app_powertalkweb_info", data: {...params}})
+      .then(function (res) {
+        return res.data?.[0]?.app_detail_json || {}
+      })
+      .catch(function(error) {
+        console.log(error)
+        return {}
+      })
         .finally()
+    return response
   },
   deviceType() {
     return ["PC", "Mobile", "Glass"]
