@@ -118,6 +118,7 @@ export async function requestNewJwt(type, params) {
 
     if (errorState) return; // err인 경우 그냥 return 시킨다.
     console.log(`resend axios`);
+    if (params.data.jwt) params.data.jwt = jwt
     return await sendAxios(type, params); // 정상적으로 토큰 재발급받았을 시 기존 요청 다시 보낸다.
 };
 
