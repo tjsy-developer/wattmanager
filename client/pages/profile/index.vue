@@ -91,9 +91,6 @@ export default {
               let formData = new FormData()
               const savePath = process.env.profilePhotoSavefolder
               const profileImg = this.imageFile
-
-
-              console.log(profileImg)
               
               const headers = {
                 "Content-Type": "multipart/form-data",
@@ -109,9 +106,7 @@ export default {
                 const backendAPI = process.env.backendURL + axiosJson.fileupload.profile_photos
                 
                 const params = {
-                  data: { 
-                    formData
-                  },
+                  data: formData,
                   headers: headers,
                   api: backendAPI
                 }
@@ -284,7 +279,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     window.addEventListener("imageInputed", (e) => {
       console.log(e)
       this.compData.imageFile = e.detail

@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted() {
-    this.refreshToken()
+    
     this.uploadFiles = this.$refs.uploadFiles.files
   },
   methods: {
@@ -102,7 +102,7 @@ export default {
       this.readyState = true
     },
     fileUpload() {
-      const formData = new FormData()
+      let formData = new FormData()
       // type value --> 전자파일: 1, 전자폴더 0
       formData.append("type", this.type)
 
@@ -148,9 +148,7 @@ export default {
 
       this.$nuxt.$emit("setLoadingBar", true)
       const params = {
-        data: {
-          formData
-        },
+        data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
           'jwt': sessionStorage.getItem('jwt')

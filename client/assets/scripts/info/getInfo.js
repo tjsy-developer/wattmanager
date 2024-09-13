@@ -46,7 +46,6 @@ const getInfo = {
             en_text: res.data[i].alias_en,
             value: res.data[i].en_seq
           })
-        console.log(result, "==========================================")
         return result
       })
       .catch(function(error) {
@@ -55,7 +54,6 @@ const getInfo = {
     return response
   },
   async hq(enSeq) {
-    console.log(enSeq, "============================================")
     const response = await axiosRequest('post', {api: process.env.backendURL + "accountRest/hq_list", data: {en_seq: enSeq}, headers: ''})
     .then(function(res) {
       const result = []
@@ -73,7 +71,6 @@ const getInfo = {
     return response
   },
   async branch(hqSeq) {
-    console.log(hqSeq, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     const response = await axiosRequest('post', {api: process.env.backendURL + "accountRest/br_list", data: {hq_seq: hqSeq}, headers: ''})
       .then(function(res) {
         const result = []

@@ -109,6 +109,7 @@ export async function requestNewJwt(type, params) {
                     // refresh token도 만료된경우 로그아웃.
                     return window.$nuxt.$store.commit('token/mutateTokenState', 2);
                 } else {
+                    errorState = true;
                     return  console.log(err)
                 }
             }
@@ -117,8 +118,10 @@ export async function requestNewJwt(type, params) {
     if (!type && !params) return; // workflow page에서 요청이 들어온 경우
 
     if (errorState) return; // err인 경우 그냥 return 시킨다.
+
+    if (params.data.jwt) params.data.jwt = jwt; // server에 전달하는 parameter에 jwt가 있는 경우, 신규 발급한 jwt로 변경해준다.
+
     console.log(`resend axios`);
-    if (params.data.jwt) params.data.jwt = jwt
     return await sendAxios(type, params); // 정상적으로 토큰 재발급받았을 시 기존 요청 다시 보낸다.
 };
 

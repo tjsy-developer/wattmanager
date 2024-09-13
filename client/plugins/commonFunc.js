@@ -1,5 +1,6 @@
 /* 2021.01.26 common Func :: ksh */
 import Vue from "vue";
+import { axiosRequest } from "./axiosRequest";
 
 Vue.mixin({
   methods: {
@@ -110,12 +111,10 @@ Vue.mixin({
         }
         return blobURL
       } catch (err) {
+        console.log(err)
         return ''
       }
       
-    },
-    // 임시 기능. access token, refresh token 활성화 후 제거!!!!
-    refreshToken() {
-    },
+    }
   },
 });

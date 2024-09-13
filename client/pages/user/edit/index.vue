@@ -205,7 +205,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     window.addEventListener("imageInputed", (e) => {
       console.log(e)
       this.compData.imageFile = e.detail

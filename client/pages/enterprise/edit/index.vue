@@ -73,7 +73,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     btnsClick.setLang([
       this.$t("btnsClick")[0],
       this.$t("btnsClick")[1],

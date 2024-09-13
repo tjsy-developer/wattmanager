@@ -57,7 +57,7 @@ export default {
                 this.$t("codecChange")[7]
                 return
             }
-            const formData = new FormData()
+            let formData = new FormData()
             // 로그인한 사용자의 토큰 정보를 formData에 넣는다
             formData.append("jwt", sessionStorage.getItem("jwt"))
             // 파워매니저에서 업로드 했다라고 구분

@@ -28,7 +28,7 @@
           style="background: white; max-height: 300px; height: auto; min-height: 30px; padding: 5px"
           id="fileBoxFileName"
         ></div>
-        <input class="col fileSelectBtn" type="file" accept="*" @change='fileSelect()' ref="uploadFiles" multiple />
+        <input class="col fileSelectBtn" type="file" accept="*" @change='fileSelect($event)' ref="uploadFiles" multiple />
         <div class="col-12 divisionLine"></div>
       </div>
       <div class="col-12 row inputOptions items-center"></div>
@@ -113,62 +113,39 @@ export default {
   },
   methods: {
     // ���� ���ý� input text�� ���ϸ��� �־��ش�.
-    fileSelect() {
-      this.uploadFiles = this.$refs.uploadFiles.files
-
-      if (this.uploadOrFilebox === "filebox") {
-        // FormData�� �� Ȯ��
-        const fileBoxFileNameBox = document.getElementById("fileBoxFileName")
-        fileBoxFileNameBox.innerHTML = ""
-        // const extensionArr = [
-        //   "jpg",
-        //   "pdf",
-        //   "png",
-        //   "ppt",
-        //   "doc",
-        //   "docx",
-        //   "xls",
-        //   "xlsx",
-        //   "zip"
-        // ]
-        for (const pair of this.uploadFiles) {
-          // const dotSplitFileName = pair.name.split(".")
-          // const extension = dotSplitFileName[dotSplitFileName.length - 1]
-          // const checkExtension = extensionArr.indexOf(extension)
-          // if (checkExtension !== -1) {
-          //   const imgTag = document.createElement("img")
-          //   // const spanTag = document.createElement("span")
-          //   imgTag.src = require("@/assets/images/icons8-" +
-          //     extensionArr[checkExtension] +
-          //     "-48.png")
-          //   imgTag.style.height = "20px"
-          //   fileBoxFileNameBox.append(imgTag)
-          // }
-          fileBoxFileNameBox.innerHTML += "&nbsp;" + pair.name + "<br>"
-          console.log(fileBoxFileNameBox.value)
+    fileSelect(input) {
+      console.log(input)
+      // this.uploadFiles = this.$refs.uploadFiles.files
+      if (input.target.files[0]) {
+        for (let iLoop = 0; iLoop < input.target.files.length; ++iLoop) {
+          console.log(input.target.files[iLoop])
+          this.uploadFiles.push(input.target.files[iLoop])
+        }
+        console.log(this.uploadFiles)
+        if (this.uploadOrFilebox === "filebox") {
+          // FormData�� �� Ȯ��
+          const fileBoxFileNameBox = document.getElementById("fileBoxFileName")
+          fileBoxFileNameBox.innerHTML = ""
+          this.uploadFiles.forEach((ele) => {
+            fileBoxFileNameBox.innerHTML += "&nbsp;" + ele.name + "<br>"
+          })
         }
       }
     },
     async submit() {
       // eslint-disable-next-line prefer-const
-      const formData = new FormData()
-      // ���Ͼ��ε� �޴�: upload Ÿ�� �Ķ���͸�, ������ �޴� : filebox Ÿ�� �Ķ���͸� ����
+      let formData = new FormData()
+      
       formData.append(
-        "type",
-        // eslint-disable-next-line eqeqeq
-        this.uploadOrfileBox == "upload" ? "upload" : "filebox"
+        "type", this.uploadOrfileBox == "upload" ? "upload" : "filebox"
       )
-      // �α����� ������� ��ū ������ formData�� �ִ´�
       formData.append("jwt", sessionStorage.getItem("jwt"))
 
-      // �Ŀ��Ŵ������� ���ε� �ߴٶ�� ����
       formData.append("pmUpload", true)
 
-      // ���ε��� ������ ���õ�������
       if (this.uploadFiles.length === 0) {
         alert(this.$t("noUploadFile"))
         return
-        // ���Ͼ��ε� ���������� �󼼰�θ� ���Է�������
       } else if (this.detailPath === "" && this.uploadOrfileBox === "upload") {
         alert(this.$t("upload text")[0])
         return
@@ -176,16 +153,16 @@ export default {
 
       formData.append(
         "detailPath",
-        // eslint-disable-next-line eqeqeq
         this.uploadOrfileBox == "upload"
           ? this.detailPath.trim()
           : process.env.detailFilePath
       )
-      // ������ ������ ���ʴ�� �ִ´�
+
       for (let i = 0; i < this.uploadFiles.length; i++) {
+        console.log(this.uploadFiles[i])
         formData.append("uploadFiles", this.uploadFiles[i])
       }
-
+      console.log(formData, '=====================================')
       // FormData�� �� Ȯ��
       // for (const pair of formData.entries()) {
       //   console.log(pair[0] + ", " + pair[1])
@@ -210,9 +187,8 @@ export default {
       // ���ε� api�� ȣ��
       const self = this
       const params = {
-        data: {
-          formData
-        },
+        data: formData
+        ,
         headers: {
           "Content-Type": "multipart/form-data",
           'jwt': sessionStorage.getItem('jwt')
@@ -243,7 +219,7 @@ export default {
     }
   },
   mounted() {
-    this.refreshToken()
+    
     this.compData.getListDataParams.jwt = sessionStorage.getItem("jwt")
     this.compData.getListDataParams.page = Number(this.$route.query.page)
     this.uploadOrfileBox = this.$route.query.viewType

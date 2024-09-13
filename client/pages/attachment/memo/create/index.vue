@@ -83,7 +83,7 @@ export default {
 		// mp4파일 삽입 시 인코딩가능한 코덱인지 확인
 		async checkEncodingCodec(file) {
 			// param: 업로드할 파일, 폴더경로
-			const formData = new FormData()
+			let formData = new FormData()
 			formData.append("upload_file", file)
 			formData.append("save_folder", process.env.powermemoSavefolder)
 
@@ -94,9 +94,7 @@ export default {
 			// test Code
 			// const res = {RESULT : '1000', CODEC_NAME: 'hevc'}
 			const params = {
-				data: {
-					formData
-				},
+				data: formData,
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": sessionStorage.getItem("jwt")
@@ -153,7 +151,7 @@ export default {
 			}
 		},
     async createBtnClick() {
-        const formData = new FormData()
+        let formData = new FormData()
 
         // 로그인한 사용자의 토큰 정보를 formData에 넣는다
         formData.append("jwt", sessionStorage.getItem("jwt"))
@@ -188,9 +186,7 @@ export default {
         const self = this
         // 메모 생성 api
 		const params = {
-			data: {
-				formData
-			},
+			data: formData,
 			headers: {
 				"Content-Type": "multipart/form-data; charset=UTF-8;",
 				"jwt": sessionStorage.getItem("jwt")
@@ -221,7 +217,7 @@ export default {
     }
   },
   mounted() {
-	this.refreshToken()
+	
   }
 }
 </script>

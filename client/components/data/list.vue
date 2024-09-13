@@ -365,7 +365,6 @@ export default {
   },
   methods: {
     setData(val, index) {
-      console.log("**********************")
       this.titleBarFilters[index].filterList = []
       for (let i = 0; i < val.length; i++) {
         console.log(val[i])

@@ -69,7 +69,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     getInfo.setAuthority()
     getInfo.setLang(this.$t("getInfo"))
     btnsClick.setLang([
@@ -194,107 +194,7 @@ export default {
       .catch(function(error) {
         console.log("app edit page error : ", error)
       })
-      // .then(function() {
-      //   getInfo
-      //     .appCode()
-      //     .then(appCodeRes => {
-      //       getInfo.appCodeCompData.options = appCodeRes
-      //     })
-      //     .then(() => {
-      //       getInfo
-      //         .enterprise()
-      //         .then(enterpriseRes => {
-      //           getInfo.enterpriseCompData.options = enterpriseRes
-      //         })
-      //         .then(() => {
-      //           getInfo
-      //             .hq(self.compData.selected[1])
-      //             .then(hqRes => {
-      //               getInfo.hqCompData.options = hqRes
-      //             })
-      //             .then(() => {
-      //               getInfo
-      //                 .branch(self.compData.selected[2])
-      //                 .then(branchRes => {
-      //                   getInfo.branchCompData.options = branchRes
-      //                 })
-      //                 .then(() => {
-      //                   self.compData.listFilters = setComboBox(
-      //                     getFilters(
-      //                       [
-      //                         self.$t("infoFilters")[0],
-      //                         self.$t("infoCreateAndEditFilters")[0],
-      //                         self.$t("infoFilters")[1],
-      //                         self.$t("infoFilters")[2],
-      //                         self.$t("infoFilters")[3],
-      //                         self.$t("infoCreateAndEditFilters")[1],
-      //                         self.$t("infoCreateAndEditFilters")[2],
-      //                         self.$t("infoFilters")[5],
-      //                         self.$t("infoFilters")[6],
-      //                         self.$t("useOnPC"),
-      //                         self.$t("useOnGlass"),
-      //                         self.$t("appDetailJson"),
-      //                         self.$t("appDetailJsonUsage")
-      //                       ],
-      //                       createAndEditFiltersJson
-      //                     ),
-      //                     self.compData.selected,
-      //                     [
-      //                       getInfo.appCodeCompData,
-      //                       getInfo.enterpriseCompData,
-      //                       getInfo.hqCompData,
-      //                       getInfo.branchCompData,
-      //                       {
-      //                         placeholder: self.$t("app")[4],
-      //                         options: [
-      //                           {
-      //                             text: self.$t("app")[6],
-      //                             en_text: self.$t("app")[6],
-      //                             value: 1
-      //                           },
-      //                           {
-      //                             text: self.$t("app")[7],
-      //                             en_text: self.$t("app")[7],
-      //                             value: 0
-      //                           }
-      //                         ],
-      //                         selectedText: undefined,
-      //                         selectedValue: self.compData.selected[8]
-      //                       },
-      //                       {
-      //                         placeholder: self.$t("app")[5],
-      //                         options: [
-      //                           {
-      //                             text: self.$t("app")[6],
-      //                             en_text: self.$t("app")[6],
-      //                             value: 1
-      //                           },
-      //                           {
-      //                             text: self.$t("app")[7],
-      //                             en_text: self.$t("app")[7],
-      //                             value: 0
-      //                           }
-      //                         ],
-      //                         selectedText: undefined,
-      //                         selectedValue: self.compData.selected[9]
-      //                       },
-      //                       {
-      //                         safety: self.$t("jsonExplanation")[0],
-      //                         daily: self.$t("jsonExplanation")[1],
-      //                         memo: self.$t("jsonExplanation")[2],
-      //                         tbm: self.$t("jsonExplanation")[3]
-      //                       }
-      //                     ]
-      //                   )
-      //                 })
-      //             })
-      //         })
-      //     })
-      // })
   }
-  // mounted() {
-  //    getInfo.setAuthority()
-  // }
 }
 </script>
 

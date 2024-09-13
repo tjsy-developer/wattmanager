@@ -90,7 +90,7 @@ export default {
     )
   },
   async mounted() {
-    this.refreshToken()
+    
     if (sessionStorage.auth) {
       const self = this
       const params = {
