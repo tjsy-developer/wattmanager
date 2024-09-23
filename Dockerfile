@@ -12,7 +12,7 @@ RUN \
 	rm -rf node_modules && \
 	npm cache clean --force && \
 	npm i && \
-	cp -a ./changed_node_modules/node_modules ./ && \
+	cp -a ./changed_node_modules ./node_modules && \
 	npm run build
 
 #EXPOSE 80 
@@ -22,3 +22,5 @@ RUN \
 
 #일반
 CMD ["bash", "-c", "cd /root/app && npm start"]
+
+EXPOSE 3000
