@@ -2,6 +2,11 @@
 
 와트매니저 웹 프론트엔드
 
+## Before deploy
+- [Dokcerfile](./Dockerfile) wattmanager-front의 경우 종속성을 갖는 opensource가 존재한다. 이에 dockerfile 12번째 줄 확인 요망.
+    - [prinJs](./client/pages/IntegrationQr/README.md) ssr을 기반으로하는 opensource로 Reamdme 확인.
+    - [changed_node_modules](./changed_node_modules) 변경된 node_module 모음
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.

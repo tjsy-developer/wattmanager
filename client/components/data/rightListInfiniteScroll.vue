@@ -12,6 +12,7 @@
 
 <script>
 import InfiniteLoading from "vue-infinite-loading"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -45,11 +46,7 @@ export default {
         data: this.compData.getRightListDataParams,
         api: this.url
       }
-      // const response = await this.$axios.post(
-      //   this.url,
-      //   this.compData.getRightListDataParams
-      // )
-      const response = await this.axiosRequest('post', params)
+      const response = await axiosRequest('post', params)
       console.log("fetchData", response.data)
       this.compData.setRightListData(response.data)
     },
@@ -78,9 +75,7 @@ export default {
           data: this.compData.getRightListDataParams,
           api: this.url
         }
-        // this.$axios
-        //   .post(this.url, this.compData.getRightListDataParams)
-        this.axiosRequest('post', params)
+        axiosRequest('post', params)
           .then(response => {
             if (response.data.length) {
               this.compData.setRightListData(response.data)

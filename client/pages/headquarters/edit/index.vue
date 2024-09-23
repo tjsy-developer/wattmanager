@@ -8,6 +8,7 @@ import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -62,7 +63,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     btnsClick.setLang([
       this.$t("btnsClick")[0],
       this.$t("btnsClick")[1],
@@ -82,12 +83,7 @@ export default {
       },
       api: process.env.backendURL + axiosJson.hq.hq_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + axiosJson.hq.hq_info_one, {
-    //     hq_seq: self.compData.hqSeq,
-    //     jwt: sessionStorage.getItem("jwt")
-    //   })
-    await this.axiosRequest('post', params)
+    await axiosRequest('post', params)
       .then(function(res) {
         console.log(res.data)
         self.compData.selected = [

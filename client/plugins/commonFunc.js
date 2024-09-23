@@ -1,15 +1,8 @@
 /* 2021.01.26 common Func :: ksh */
-import axios from 'axios';
 import Vue from "vue";
-import jwt_decode from 'jwt-decode';
-import CryptoJS from 'crypto-js';
+import { axiosRequest } from "./axiosRequest";
 
 Vue.mixin({
-  data() {
-    return {
-      key: process.env.skey,
-    }
-  },
   methods: {
     /**
      * 특정 도메인의 경우 iframe 도메인네임을 접속 도메인값으로 변경
@@ -118,43 +111,10 @@ Vue.mixin({
         }
         return blobURL
       } catch (err) {
+        console.log(err)
         return ''
       }
       
-    },
-    // 임시 기능. access token, refresh token 활성화 후 제거!!!!
-    refreshToken() {
-    },
-
-    // 암호화.
-    encryptData(data) {
-        console.log('function encrypt')
-        let encryptData;
-        try {
-          encryptData = CryptoJS.AES.encrypt(data, this.key).toString();
-          return encryptData;
-        } catch (err) {
-          console.log(`encrypt error: ${err.message}`);
-          encryptData = false;
-        }
-        return encryptData;
-
-    },
-
-    // 복호화.
-    decryptData(data) {
-        console.log('function decrypt')
-        try {
-          const decryptBytes = CryptoJS.AES.decrypt(data, this.key);
-        
-          const decryptData = decryptBytes.toString(CryptoJS.enc.Utf8);
-
-          return decryptData;
-        } catch  (err) {
-          // 복호화 못한 경우
-          console.log(`decrypt error: ${err.message}`);
-          return false;
-        }
     }
   },
 });

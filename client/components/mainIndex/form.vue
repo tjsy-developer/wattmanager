@@ -213,7 +213,7 @@ import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-
+import { encryptData } from "../../plugins/axiosRequest";
 
 // import createAccountModalSecl from "@/components/createAccountModal/form_secl"
 
@@ -454,7 +454,7 @@ export default {
             sessionStorage.setItem("id", response.data[1].id);
             sessionStorage.setItem("deviceType", response.data[1].device_type);
             sessionStorage.setItem("logined", response.data[1].id);
-            const enRtoken = self.encryptData(response.data[3]);
+            const enRtoken = encryptData(response.data[3]);
             self.$store.commit('token/setRToken', enRtoken);
             const urlParameter = "&id=" + sessionStorage.getItem("id") + "&auth=" + sessionStorage.getItem("auth") +
               "&hqSeq=" + sessionStorage.getItem("hqSeq") +

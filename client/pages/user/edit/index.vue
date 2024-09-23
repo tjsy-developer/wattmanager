@@ -10,6 +10,7 @@ import btnsClick from "@/assets/scripts/info/btnsClick"
 import getFilters from "@/assets/scripts/info/getFilters"
 import getInfo from "@/assets/scripts/info/getInfo"
 import setComboBox from "@/assets/scripts/info/setComboBox"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -204,7 +205,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     window.addEventListener("imageInputed", (e) => {
       console.log(e)
       this.compData.imageFile = e.detail
@@ -238,249 +239,235 @@ export default {
       },
       api: process.env.backendURL + axiosJson.user.user_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + axiosJson.user.user_info_one, {
-    //     user_seq: self.compData.userSeq,
-    //     jwt: this.token
-    //   })
-    this.axiosRequest('post', params)
+    axiosRequest('post', params)
       .then(async function (res) {
         if (self.$store.state.user.permissionLevel <= res.data.auth) {
           self.$router.replace('/err/404');
         }
         sessionStorage.setItem("editUserDeviceType", res.data.device_type)
         if (res.data.phone_number) {
-              self.phoneNumber = res.data.phone_number
-            }
-            if (res.data.birthday) {
-              self.birthday = res.data.birthday
-            }
-            if (res.data.guest) {
-              self.compData.isGuest = res.data.guest
-            }
-            if (res.data.image) {
-              res.data.image = await self.convertImageToBlob(res.data.image)
-            }
-            // 글라스가 아닌 경우
-            if (res.data.device_type != 2) {
-              self.compData.selected = [
-                res.data.id,
-                res.data.en_seq,
-                res.data.hq_seq,
-                res.data.br_seq,
-                res.data.name,
-                res.data.auth,
-                res.data.approval_status,
-                res.data.email,
-                res.data.glass_app_range,
-                res.data.order_by_num,
-                res.data.phone_number,
-                res.data.birthday,
-                res.data.guest,
-                res.data.image ? res.data.image : undefined,
-                res.data.pc_app_range,
-                res.data.device_type,
-              ]
-            } else {
-              // 글라스인 경우
-              self.compData.selected = [
-                res.data.id,
-                res.data.en_seq,
-                res.data.hq_seq,
-                res.data.br_seq,
-                res.data.name,
-                res.data.auth,
-                res.data.approval_status,
-                res.data.email,
-                res.data.glass_app_range,
-                res.data.order_by_num,
-                res.data.image ? res.data.image : undefined,
-                res.data.pc_app_range,
-                res.data.device_type,
-              ]
-            }
-            if (res.data.image) {
-              const profileImage =  res.data.image
-            } else {
-              if (res.data.device_type !== 2) {
-                self.compData.selected[12] = undefined
-              } else {
-                // 이미지 없을때 초기값 설정
-                self.compData.selected[10] = undefined
-              }
-            }
+          self.phoneNumber = res.data.phone_number
+        }
+        if (res.data.birthday) {
+          self.birthday = res.data.birthday
+        }
+        if (res.data.guest) {
+          self.compData.isGuest = res.data.guest
+        }
+        if (res.data.image) {
+          res.data.image = await self.convertImageToBlob(res.data.image)
+        }
+        // 글라스가 아닌 경우
+        if (res.data.device_type != 2) {
+          self.compData.selected = [
+            res.data.id,
+            res.data.en_seq,
+            res.data.hq_seq,
+            res.data.br_seq,
+            res.data.name,
+            res.data.auth,
+            res.data.approval_status,
+            res.data.email,
+            res.data.glass_app_range,
+            res.data.order_by_num,
+            res.data.phone_number,
+            res.data.birthday,
+            res.data.guest,
+            res.data.image ? res.data.image : undefined,
+            res.data.pc_app_range,
+            res.data.device_type,
+          ]
+        } else {
+          // 글라스인 경우
+          self.compData.selected = [
+            res.data.id,
+            res.data.en_seq,
+            res.data.hq_seq,
+            res.data.br_seq,
+            res.data.name,
+            res.data.auth,
+            res.data.approval_status,
+            res.data.email,
+            res.data.glass_app_range,
+            res.data.order_by_num,
+            res.data.image ? res.data.image : undefined,
+            res.data.pc_app_range,
+            res.data.device_type,
+          ]
+        }
+        if (res.data.image) {
+          const profileImage =  res.data.image
+        } else {
+          if (res.data.device_type !== 2) {
+            self.compData.selected[12] = undefined
+          } else {
+            // 이미지 없을때 초기값 설정
+            self.compData.selected[10] = undefined
+          }
+        }
+        getInfo
+          .enterprise()
+          .then(enterpriseRes => {
+            getInfo.enterpriseCompData.options = enterpriseRes
+          })
+          .then(() => {
             getInfo
-              .enterprise()
-              .then(enterpriseRes => {
-                getInfo.enterpriseCompData.options = enterpriseRes
+              .hq(res.data.en_seq)
+              .then(hqRes => {
+                getInfo.hqCompData.options = hqRes
               })
               .then(() => {
                 getInfo
-                  .hq(res.data.en_seq)
-                  .then(hqRes => {
-                    getInfo.hqCompData.options = hqRes
+                  .branch(res.data.hq_seq)
+                  .then(branchRes => {
+                    getInfo.branchCompData.options = branchRes
                   })
                   .then(() => {
-                    getInfo
-                      .branch(res.data.hq_seq)
-                      .then(branchRes => {
-                        getInfo.branchCompData.options = branchRes
+                    if (res.data.device_type == 3) {
+                      self.compData.listFilters = setComboBox(
+                        getFilters(
+                          [
+                            self.$t("infoFilters")[0],
+                            "ID",
+                            self.$t("infoFilters")[1],
+                            self.$t("infoFilters")[2],
+                            self.$t("infoFilters")[3],
+                            self.$t("infoFilters")[9],
+                            self.$t("infoFilters")[10],
+                            self.$t("infoFilters")[8],
+                            self.$t("infoFilters")[14],
+                            self.$t("user")[3],
+                            self.$t("infoFilters")[11],
+                            self.$t("profile text")[6],
+                            self.$t("profile text")[8],
+                            self.$t("profile text")[9],
+                            self.$t("profile text")[7],
+                            self.$t("infoFilters")[7]
+                          ],
+                          filtersJson
+                        ),
+                        self.compData.selected,
+                        [
+                          getInfo.enterpriseCompData,
+                          getInfo.hqCompData,
+                          getInfo.branchCompData,
+                          getInfo.authority,
+                          getInfo.permission
+                        ]
+                      )
+                      self.appSetting({
+                        en_seq: res.data.en_seq,
+                        hq_seq: res.data.hq_seq,
+                        br_seq: res.data.br_seq
                       })
-                      .then(() => {
-                        if (res.data.device_type == 3) {
-                          self.compData.listFilters = setComboBox(
-                            getFilters(
-                              [
-                                self.$t("infoFilters")[0],
-                                "ID",
-                                self.$t("infoFilters")[1],
-                                self.$t("infoFilters")[2],
-                                self.$t("infoFilters")[3],
-                                self.$t("infoFilters")[9],
-                                self.$t("infoFilters")[10],
-                                self.$t("infoFilters")[8],
-                                self.$t("infoFilters")[14],
-                                self.$t("user")[3],
-                                self.$t("infoFilters")[11],
-                                self.$t("profile text")[6],
-                                self.$t("profile text")[8],
-                                self.$t("profile text")[9],
-                                self.$t("profile text")[7],
-                                self.$t("infoFilters")[7]
-                              ],
-                              filtersJson
-                            ),
-                            self.compData.selected,
-                            [
-                              getInfo.enterpriseCompData,
-                              getInfo.hqCompData,
-                              getInfo.branchCompData,
-                              getInfo.authority,
-                              getInfo.permission
-                            ]
-                          )
-                          self.appSetting({
-                            en_seq: res.data.en_seq,
-                            hq_seq: res.data.hq_seq,
-                            br_seq: res.data.br_seq
-                          })
-                        } else if (res.data.device_type === 2) {
-                          self.compData.listFilters = setComboBox(
-                            getFilters(
-                              [
-                                self.$t("infoFilters")[0],
-                                "ID",
-                                self.$t("infoFilters")[1],
-                                self.$t("infoFilters")[2],
-                                self.$t("infoFilters")[3],
-                                self.$t("infoFilters")[9],
-                                self.$t("infoFilters")[10],
-                                self.$t("infoFilters")[8],
-                                self.$t("infoFilters")[14],
-                                self.$t("user")[3],
-                                self.$t("infoFilters")[11],
-                                self.$t("profile text")[7],
-                                self.$t("infoFilters")[7]
-                              ],
-                              glassEditFilters
-                            ),
-                            self.compData.selected,
-                            [
-                              getInfo.enterpriseCompData,
-                              getInfo.hqCompData,
-                              getInfo.branchCompData,
-                              getInfo.authority,
-                              getInfo.permission
-                            ]
-                          )
-                          const parameter = {
-                            data: {
-                              br_seq: res.data.br_seq,
-                              jwt: sessionStorage.getItem("jwt")
-                            },
-                            api: process.env.backendURL + "userRest/user_info_one_app_list"
-                          }
-                          // self.$axios
-                          //   .post(
-                          //     process.env.backendURL +
-                          //       "userRest/user_info_one_app_list",
-                          //     {
-                          //       br_seq: res.data.br_seq,
-                          //       jwt: sessionStorage.getItem("jwt")
-                          //     }
-                          //   )
-                          self.axiosRequest('post', parameter)
-                            .then(function(userInfoOneAppList) {
-                              if (userInfoOneAppList.data) {
-                              console.log(userInfoOneAppList)
-                                const getGlassAppRange = self.compData.selected[8]?.split(
-                                  "|"
-                                ) || []
-                                self.compData.listFilters[9].checkboxCompData.selected = getGlassAppRange.slice(
-                                  0,
-                                  getGlassAppRange.length - 1
-                                )
+                    } else if (res.data.device_type === 2) {
+                      self.compData.listFilters = setComboBox(
+                        getFilters(
+                          [
+                            self.$t("infoFilters")[0],
+                            "ID",
+                            self.$t("infoFilters")[1],
+                            self.$t("infoFilters")[2],
+                            self.$t("infoFilters")[3],
+                            self.$t("infoFilters")[9],
+                            self.$t("infoFilters")[10],
+                            self.$t("infoFilters")[8],
+                            self.$t("infoFilters")[14],
+                            self.$t("user")[3],
+                            self.$t("infoFilters")[11],
+                            self.$t("profile text")[7],
+                            self.$t("infoFilters")[7]
+                          ],
+                          glassEditFilters
+                        ),
+                        self.compData.selected,
+                        [
+                          getInfo.enterpriseCompData,
+                          getInfo.hqCompData,
+                          getInfo.branchCompData,
+                          getInfo.authority,
+                          getInfo.permission
+                        ]
+                      )
+                      const parameter = {
+                        data: {
+                          br_seq: res.data.br_seq,
+                          jwt: sessionStorage.getItem("jwt")
+                        },
+                        api: process.env.backendURL + "userRest/user_info_one_app_list"
+                      }
+                      axiosRequest('post', parameter)
+                        .then(function(userInfoOneAppList) {
+                          if (userInfoOneAppList.data) {
+                          console.log(userInfoOneAppList)
+                            const getGlassAppRange = self.compData.selected[8]?.split(
+                              "|"
+                            ) || []
+                            self.compData.listFilters[9].checkboxCompData.selected = getGlassAppRange.slice(
+                              0,
+                              getGlassAppRange.length - 1
+                            )
 
-                                const setSelectedUserInfoOneAppList = []
-                                const setUnSelectedUserInfoOneAppList = []
-                                for (
-                                  let i = 0;
-                                  i < userInfoOneAppList.data.length;
-                                  i++
-                                ) {
-                                  const getCurrentAppSeq = String(
-                                    userInfoOneAppList.data[i].app_seq
-                                  )
-                                  const getCurrentIndex = getGlassAppRange.indexOf(
-                                    getCurrentAppSeq
-                                  )
-
-                                  const setUserInfoOneAppListObj = {
-                                    text:
-                                      self.$i18n.locale === "ko"
-                                        ? userInfoOneAppList.data[i].app_name_kor
-                                        : userInfoOneAppList.data[i].app_name_eng,
-                                    value: userInfoOneAppList.data[i].app_seq,
-                                    sort: 0
-                                  }
-
-                                  if (getGlassAppRange.includes(getCurrentAppSeq)) {
-                                    setUserInfoOneAppListObj.sort =
-                                      getCurrentIndex + 1
-                                    setSelectedUserInfoOneAppList.push(
-                                      setUserInfoOneAppListObj
-                                    )
-                                  } else
-                                    setUnSelectedUserInfoOneAppList.push(
-                                      setUserInfoOneAppListObj
-                                    )
-                                }
-
-                                setSelectedUserInfoOneAppList.sort((a, b) => {
-                                  return a.sort > b.sort
-                                    ? 1
-                                    : a.sort < b.sort
-                                    ? -1
-                                    : 0
-                                })
-
-                                self.compData.listFilters[9].checkboxCompData.list = setSelectedUserInfoOneAppList.concat(
-                                  setUnSelectedUserInfoOneAppList
-                                )
-                              }
-                            })
-                            .catch(function(userInfoOneAppListError) {
-                              console.log(
-                                "ajax user_info_one_app_list_error : ",
-                                userInfoOneAppListError
+                            const setSelectedUserInfoOneAppList = []
+                            const setUnSelectedUserInfoOneAppList = []
+                            for (
+                              let i = 0;
+                              i < userInfoOneAppList.data.length;
+                              i++
+                            ) {
+                              const getCurrentAppSeq = String(
+                                userInfoOneAppList.data[i].app_seq
                               )
+                              const getCurrentIndex = getGlassAppRange.indexOf(
+                                getCurrentAppSeq
+                              )
+
+                              const setUserInfoOneAppListObj = {
+                                text:
+                                  self.$i18n.locale === "ko"
+                                    ? userInfoOneAppList.data[i].app_name_kor
+                                    : userInfoOneAppList.data[i].app_name_eng,
+                                value: userInfoOneAppList.data[i].app_seq,
+                                sort: 0
+                              }
+
+                              if (getGlassAppRange.includes(getCurrentAppSeq)) {
+                                setUserInfoOneAppListObj.sort =
+                                  getCurrentIndex + 1
+                                setSelectedUserInfoOneAppList.push(
+                                  setUserInfoOneAppListObj
+                                )
+                              } else
+                                setUnSelectedUserInfoOneAppList.push(
+                                  setUserInfoOneAppListObj
+                                )
+                            }
+
+                            setSelectedUserInfoOneAppList.sort((a, b) => {
+                              return a.sort > b.sort
+                                ? 1
+                                : a.sort < b.sort
+                                ? -1
+                                : 0
                             })
-                        } else {
-                          self.compData.listFilters[9].edit = false
-                        }
-                      })
+
+                            self.compData.listFilters[9].checkboxCompData.list = setSelectedUserInfoOneAppList.concat(
+                              setUnSelectedUserInfoOneAppList
+                            )
+                          }
+                        })
+                        .catch(function(userInfoOneAppListError) {
+                          console.log(
+                            "ajax user_info_one_app_list_error : ",
+                            userInfoOneAppListError
+                          )
+                        })
+                    } else {
+                      self.compData.listFilters[9].edit = false
+                    }
                   })
               })
+          })
       })
       .catch(function(error) {
         console.log("user edit page error : ", error)

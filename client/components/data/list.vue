@@ -266,6 +266,7 @@ import favorite from "@/assets/scripts/data/favorite"
 import axiosJson from "@/assets/jsons/axios"
 // import downloadWithAxios from "@/assets/scripts/data/downloadWithAxios"
 import fileDownload from "@/assets/scripts/data/download"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -364,7 +365,6 @@ export default {
   },
   methods: {
     setData(val, index) {
-      console.log("**********************")
       this.titleBarFilters[index].filterList = []
       for (let i = 0; i < val.length; i++) {
         console.log(val[i])
@@ -519,12 +519,7 @@ export default {
           },
           api: process.env.backendURL + axiosJson.attachment.att_delete
         }
-        // this.$axios
-        //   .post(process.env.backendURL + axiosJson.attachment.att_delete, {
-        //     att_seq: e.seq,
-        //     jwt: token
-        //   })
-        await this.axiosRequest('post', params)
+        await axiosRequest('post', params)
           .then(function(res) {
             if (res) {
               alert(self.$t("listComp")[14])
@@ -630,11 +625,7 @@ export default {
           },
           api: process.env.backendURL + getTitleBarFilter.getFilterListUrl
         }
-        // this.$axios
-        //   .post(process.env.backendURL + getTitleBarFilter.getFilterListUrl, {
-        //     jwt: token
-        //   })
-        await this.axiosRequest('post', params)
+        await axiosRequest('post', params)
           .then(function(res) {
             console.log(res)
             if (getTitleBarFilter.filterList.length)
@@ -788,19 +779,7 @@ export default {
               ? process.env.backendURL + axiosJson.attachment.att_return_page_number
               : process.env.backendURL + axiosJson.attachment.att_return_page_number_picture,
       }
-      // this.$axios
-      //   .post(
-      //     e.fileType === "video"
-            // ? process.env.backendURL +
-            //     axiosJson.attachment.att_return_page_number
-            // : process.env.backendURL +
-            //     axiosJson.attachment.att_return_page_number_picture,
-      //     {
-      //       att_seq: e.seq,
-      //       jwt: token
-      //     }
-      //   )
-      this.axiosRequest('post', params)
+      axiosRequest('post', params)
         .then(response => {
           if (response.data)
             showShareModal(

@@ -75,6 +75,7 @@
 <script>
 
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
   components: {},
   props: ["compData"],
@@ -168,9 +169,7 @@ export default {
           data: dataParams,
           api: this.fileuploadApi + axiosJson.upload.upload_delete
         }
-        // this.$axios
-        //   .post(this.fileuploadApi + axiosJson.upload.upload_delete, dataParams)
-        this.axiosRequest('post', params)
+        axiosRequest('post', params)
           .then(function(res) {
             if (res.data === "success") {
               window.location.reload()
@@ -189,13 +188,7 @@ export default {
         api: fileUrl,
 
       }
-      // this.$axios({
-      //   url: fileUrl,
-      //   method: "GET",
-      //   responseType: "blob",
-      //   credmential: true  // 오타인 듯. 일단 false로 전달해보자...
-      // })
-      this.axiosRequest('get', params)
+      axiosRequest('get', params)
       .then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]))
         const link = document.createElement("a")

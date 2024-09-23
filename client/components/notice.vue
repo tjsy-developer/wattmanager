@@ -24,6 +24,7 @@
 </template></template>
 
 <script>
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   data() {
@@ -50,12 +51,7 @@ export default {
       },
       api: process.env.backendURL + "noticeRest/notice_list"
     }
-    // this.$axios
-    //   .$post(process.env.backendURL + "noticeRest/notice_list", {
-    //     // 2021.02.04 ksy- watt 기업번호 적용
-    //     en_seq: 1
-    //   })
-    await this.axiosRequest('post', params)
+    await axiosRequest('post', params)
       .then(res => {
         console.log(res)
         if (res.length > 0) self.isOpened = true

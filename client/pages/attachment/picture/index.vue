@@ -114,7 +114,7 @@ export default {
     }
   },
   mounted() {
-    this.refreshToken()
+    
     setGetListDataParams(this.$route.query, this.compData.getListDataParams)
     setGetListDataParamsFilters(this.compData.getListDataParams)
   },

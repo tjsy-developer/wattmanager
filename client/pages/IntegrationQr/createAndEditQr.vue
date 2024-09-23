@@ -64,6 +64,7 @@
 </template>
 <script>
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
     layout: "main",
     data() {
@@ -94,12 +95,7 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.qrList
             }
-            // this.$axios
-            //     .post(this.backendURL + axiosJson.qrManagement.qrList, {
-            //         jwt: this.jwt,
-            //         chapter_seq: this.chapter_seq
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data.qr_list
                     console.log(data)
@@ -233,12 +229,7 @@ export default {
                 },
                 api: this.backendURL + axiosJson.qrManagement.qrSave
             }
-            // this.$axios
-            //     .post(this.backendURL + axiosJson.qrManagement.qrSave, {
-            //         jwt: this.jwt,
-            //         data_list: qrParams
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     this.operateDialog(this.$t("qrMessage")[0], "confirm")
                     setTimeout(() => {
@@ -278,12 +269,7 @@ export default {
                     },
                     api: this.backendURL + axiosJson.qrManagement.qrDataDelete
                 }
-                // this.$axios
-                // .post(this.backendURL + axiosJson.qrManagement.qrDataDelete, {
-                //     jwt: this.jwt,
-                //     data_seq: seq
-                // })
-                this.axiosRequest('post', params)
+                axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)
                     this.dataList.splice(index, 1)
@@ -385,24 +371,6 @@ export default {
                 return true
             }
         }
-        // 요청에의해 전체 qr 제거기능 제거
-        // deleteQR() {
-        //     const result = confirm(this.$t("qrMessage")[2])
-        //     if (result != true) return
-        //     console.log(this.chapter_seq)
-        //     this.$axios
-        //         .post(this.backendURL + axiosJson.qrManagement.qrAllDataDelete, {
-        //             jwt: this.jwt,
-        //             chapter_seq: this.chapter_seq
-        //         })
-        //         .then((res) => {
-        //             console.log(res)
-        //             this.cancleBtnClick()
-        //         })
-        //         .catch((err) => {
-        //             console.log(err)
-        //         })
-        // }
     }
 }
 </script>

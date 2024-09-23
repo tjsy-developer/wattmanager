@@ -57,6 +57,7 @@ import jwt_decode from "jwt-decode"
 import cookieSetting from "@/assets/scripts/data/cookie"
 import axiosJson from "@/assets/jsons/axios";
 import { mapState } from "vuex"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -111,13 +112,13 @@ export default {
       }
     },
     checkTokenState(res) {
-      // // 정상
-      // if (res == 0) return;
-      // // 변조 || 없음
-      // if (res == 1) alert(this.$t('jwtTokenErr')[0]);
-      // // 만료
-      // if (res == 2) alert(this.$t('jwtTokenErr')[1]);
-      // this.logoutBtnClick()
+      // 정상
+      if (res == 0) return;
+      // 변조 || 없음
+      if (res == 1) alert(this.$t('jwtTokenErr')[0]);
+      // 만료
+      if (res == 2) alert(this.$t('jwtTokenErr')[1]);
+      this.logoutBtnClick()
     }
   },
   methods: {
@@ -139,14 +140,15 @@ export default {
       const languageCode = sessionStorage.getItem("languageCode")
       sessionStorage.clear()
       sessionStorage.setItem("languageCode", languageCode)
+      const rT = this.$store.state.token.enRToken
       if (process.env.powertlakState === "loginCheck") {
         if (window.location.hostname === "localhost") {
           window.open(
             process.env.powertalkLogin_local +
               jwtToken +
               "&login_type=3&lang=" +
-              lang,
-            "_self"
+              lang + '&rToken=' + rT ,
+              '_self'
           )
         } else {
           if (window.location.hostname == 'dlencmedia.watttalk.kr') {
@@ -154,16 +156,16 @@ export default {
               'https://' + window.location.hostname + ':8102/login/login-check?jwt_token=' +
               jwtToken +
               "&login_type=3&lang=" +
-              lang,
-              "_self"
+              lang + '&rToken=' + rT ,
+              '_self'
             )
           } else {
             window.open(
               process.env.powertalkLogin +
                 jwtToken +
                 "&login_type=3&lang=" +
-                lang,
-              "_self"
+                lang + '&rToken=' + rT ,
+                '_self'
             )
           }
         }
@@ -227,13 +229,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.app.app_powertalkweb_info
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.app.app_powertalkweb_info, {
-      //     en_seq: Number(sessionStorage.getItem("enSeq")),
-      //     hq_seq: Number(sessionStorage.getItem("hqSeq")),
-      //     br_seq: Number(sessionStorage.getItem("brSeq"))
-      //   })
-        await this.axiosRequest('post', params)
+        await axiosRequest('post', params)
         .then((res) => {
           if (res.data.length > 0) {
             const jsonAppList = res.data[0].app_detail_json
@@ -298,19 +294,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.user.user_info_one
       }
-      this.$axios
-          // .post(axiosJson.user.user_info_one, {
-          .post(process.env.backendURL + axiosJson.user.user_info_one, {
-              user_seq: Number(sessionStorage.getItem("userSeq")),
-              jwt: sessionStorage.getItem("jwt")
-            },
-            {
-              headers: {
-                "jwt": sessionStorage.getItem("jwt")
-              }
-            }
-          )
-      // await this.axiosRequest('post', params)
+      axiosRequest('post', params)
         .then(function(res) {
             sessionStorage.setItem("userName", res.data.name)
             console.log(res.data.name)
@@ -430,6 +414,8 @@ export default {
   mounted() {
     window.addEventListener('message' , (event) => {
       const res = event.data;
+      if (!res.data) return
+      if (!res.data.id && !res.data.type && !res.data.at && !res.data.rt) return
       if (res.data.id != sessionStorage.getItem('id')) return;
       if (res.type == 'changeToken' && res.data.at && res.data.rt) {
         sessionStorage.setItem('jwt', res.data.at);

@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted() {
-    this.refreshToken()
+    
   },
   methods: {
     // QR 생성

@@ -90,7 +90,6 @@ export default {
         // eslint-disable-next-line no-global-assign
         self = this
         this.$axios
-          // .post(axiosJson.account.user_id_check, {
           .post(process.env.backendURL + axiosJson.account.user_id_check, {
             id: this.id
           })

@@ -9,6 +9,7 @@ import setComboBox from "@/assets/scripts/info/setComboBox"
 import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 export default {
   layout: "main",
@@ -46,7 +47,7 @@ export default {
                   getInfo.getSelectValue(this.listFilters, 9)
                 ),
                 // eslint-disable-next-line prettier/prettier
-								use_on_glass: parseInt(getInfo.getSelectValue(this.listFilters, 10)),
+                                use_on_glass: parseInt(getInfo.getSelectValue(this.listFilters, 10)),
                 app_detail_json: getInfo.getTextareaValue(0),
                 jwt: token
               }
@@ -68,7 +69,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     getInfo.setAuthority()
     getInfo.setLang(this.$t("getInfo"))
     btnsClick.setLang([
@@ -91,12 +92,7 @@ export default {
       },
       api: process.env.backendURL + axiosJson.app.app_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + axiosJson.app.app_info_one, {
-    //     app_seq: self.compData.appSeq,
-    //     jwt: this.token
-    //   })
-    await this.axiosRequest('post', params)
+    await axiosRequest('post', params)
       .then(function(res) {
         self.compData.selected = [
           res.data[0].app_code_seq,
@@ -111,35 +107,18 @@ export default {
           res.data[0].use_on_glass,
           res.data[0].app_detail_json
         ]
-      })
-      .catch(function(error) {
-        console.log("app edit page error : ", error)
-      })
-      .then(function() {
-        getInfo
-          .appCode()
+        getInfo.appCode()
           .then(appCodeRes => {
             getInfo.appCodeCompData.options = appCodeRes
-          })
-          .then(() => {
-            getInfo
-              .enterprise()
+            getInfo.enterprise()
               .then(enterpriseRes => {
                 getInfo.enterpriseCompData.options = enterpriseRes
-              })
-              .then(() => {
-                getInfo
-                  .hq(self.compData.selected[1])
+                getInfo.hq(self.compData.selected[1])
                   .then(hqRes => {
                     getInfo.hqCompData.options = hqRes
-                  })
-                  .then(() => {
-                    getInfo
-                      .branch(self.compData.selected[2])
+                    getInfo.branch(self.compData.selected[2])
                       .then(branchRes => {
                         getInfo.branchCompData.options = branchRes
-                      })
-                      .then(() => {
                         self.compData.listFilters = setComboBox(
                           getFilters(
                             [
@@ -212,10 +191,10 @@ export default {
               })
           })
       })
+      .catch(function(error) {
+        console.log("app edit page error : ", error)
+      })
   }
-  // mounted() {
-  // 	getInfo.setAuthority()
-  // }
 }
 </script>
 

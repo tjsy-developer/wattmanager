@@ -66,6 +66,7 @@
 
 <script>
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
     layout: "main",
     data() {
@@ -92,12 +93,7 @@ export default {
                 },
                 api: process.env.backendURL + axiosJson.qrManagement.chapterInfo
             }
-            // this.$axios
-            //     .post(process.env.backendURL + axiosJson.qrManagement.chapterInfo, {
-            //         jwt: sessionStorage.getItem("jwt"),
-            //         chapter_seq: this.chapter_seq
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     const data= res.data.data.chapter_list
                     console.log(data)
@@ -160,16 +156,7 @@ export default {
                 },
                 api: process.env.backendURL + axiosJson.qrManagement.chapterSave
             }
-            // this.$axios
-            //     .post(process.env.backendURL + axiosJson.qrManagement.chapterSave, {
-            //         jwt: sessionStorage.getItem("jwt"),
-            //         crud: this.usageCrud,
-            //         chapter_seq: this.chapter_seq,
-            //         chapter_name: this.usageName,
-            //         qr_title: this.selectQrName,
-            //         key_list: keyParams
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
                         this.operateDialog(this.$t("qrMessage")[0], "confirm")
@@ -207,12 +194,7 @@ export default {
                     },
                     api: process.env.backendURL + axiosJson.qrManagement.qrKeyDelete
                 }
-                // this.$axios
-                // .post(process.env.backendURL + axiosJson.qrManagement.qrKeyDelete, {
-                //     jwt: sessionStorage.getItem("jwt"),
-                //     key_seq: keySeq
-                // })
-                await this.axiosRequest('post', params)
+                await axiosRequest('post', params)
                 .then((res) => {
                     if (res.data.resultCode == 1000) {
                         this.operateDialog(this.$t("qrMessage")[3], "confirm")
@@ -247,13 +229,7 @@ export default {
                 },
                 api: process.env.backendURL + axiosJson.qrManagement.chapterSave
             }
-            // this.$axios
-            //     .post(process.env.backendURL + axiosJson.qrManagement.chapterSave, {
-            //         jwt: sessionStorage.getItem("jwt"),
-            //         crud: "delete",
-            //         chapter_seq: this.chapter_seq
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     console.log(res)
                     this.operateDialog(this.$t("qrMessage")[3], "confirm")

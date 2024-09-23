@@ -6,7 +6,7 @@
         <span class="col-auto title">{{ $t("memo")[2] }}</span>
         <div class="col row justify-end">
           <changeViewType class="col-auto"></changeViewType>
-          <nuxt-link class="col-auto createBtn" :to="'attachment/memo/create'">{{ $t("createAndEditComp")[0] }}</nuxt-link>
+          <nuxt-link class="col-auto createBtn" :to="'./memo/create'">{{ $t("createAndEditComp")[0] }}</nuxt-link>
         </div>
         <div class="row col-12">
           <button v-if="$route.query.viewType == 'gallery'" class="row memoBtn" v-for="memo in compData.listData" @click="memoBtnClick(memo)">
@@ -55,6 +55,7 @@ import setGetListDataParams from "@/assets/scripts/info/setGetListDataParams"
 import memoModal from "@/components/data/memoModal"
 import axiosJson from "@/assets/jsons/axios"
 import changeViewType from "@/components/data/changeViewType"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 const baseUrl = process.env.powermemo
@@ -123,12 +124,7 @@ export default {
         },
         api: process.env.backendURL + axiosJson.memo.memo_join_file
       }
-      // this.$axios
-      //   .post(process.env.backendURL + axiosJson.memo.memo_join_file, {
-      //     memo_seq: memo.seq,
-      //     jwt: sessionStorage.getItem("jwt")
-      //   })
-      await this.axiosRequest('post', params)
+      await axiosRequest('post', params)
         .then(async function (res) {
           // 모든 `getBlob` 요청을 위한 배열을 준비합니다.
           const blobPromises = res.data.map(async (element) => {
@@ -186,7 +182,7 @@ export default {
     }
   },
   mounted() {
-    this.refreshToken()
+    
     // if (window.location.hostname === "localhost") {
     //   this.baseUrl =
     //     "https://powermanagercloud.powertalk.co.kr/sftp/powermanager/PowerMemo/" // watt

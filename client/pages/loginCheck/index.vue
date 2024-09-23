@@ -3,6 +3,7 @@
 </template>
 <script>
 import cookieSetting from "@/assets/scripts/data/cookie";
+import { encryptData } from "../../plugins/axiosRequest";
 
 export default {
     mounted() {
@@ -20,7 +21,7 @@ export default {
 			sessionStorage.setItem("logined", this.$route.query.logined)
 			sessionStorage.setItem("userSeq", this.$route.query.userSeq)
 			sessionStorage.setItem("deviceType", this.$route.query.deviceType)
-            const enRToken =  this.encryptData(this.$route.query.rToken);
+            const enRToken =  encryptData(this.$route.query.rToken);
             this.$store.commit('token/setRToken', enRToken)
             let checkParameter = true
 

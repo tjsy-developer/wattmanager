@@ -37,44 +37,6 @@ export default {
       // 상위컴포넌트에서 정의한 함수를 사용
       this.consentVal(val)
     }
-    // send() {
-    //   const self = this
-    //   if (!this.compData.inputId || !this.inputEMail)
-    //     return alert(this.$t("check ID/e-mail"))
-
-    //   this.$axios
-    //     // .post(accountRest/create_random_arr", {
-    //     .post(process.env.backendURL + "accountRest/create_random_arr", {
-    //       id: this.compData.inputId,
-    //       email: this.inputEMail
-    //     })
-    //     .then(function(res) {
-    //       if (res.data) {
-    //         alert(self.$t("check your e-mail"))
-    //         self.compData.id = self.compData.inputId
-    //         self.eMail = self.inputEMail
-    //         self.getCode = res.data
-    //       } else alert(self.$t("check ID/e-mail"))
-    //     })
-    //     .catch(function(error) {
-    //       console.log("step2.vue error : ", error)
-    //       alert("fail")
-    //     })
-    // },
-    // next() {
-    //   if (!this.compData.inputId || !this.inputEMail || !this.inputCode)
-    //     return alert(this.$t("account")[6])
-    //   else if (
-    //     this.compData.inputId !== this.compData.id ||
-    //     this.inputEMail !== this.eMail
-    //   )
-    //     return alert(this.$t("check ID/e-mail"))
-    //   else if (this.inputCode !== this.getCode)
-    //     return alert(this.$t("check your code"))
-    //   else if (this.inputCode && this.inputCode === this.getCode)
-    //     this.compData.canNextStep = true
-    //   else alert("fail")
-    // }
   }
 }
 </script>

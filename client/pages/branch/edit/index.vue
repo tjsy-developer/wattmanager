@@ -9,6 +9,7 @@ import getInfo from "@/assets/scripts/info/getInfo"
 import btnsClick from "@/assets/scripts/info/btnsClick"
 import axiosJson from "@/assets/jsons/axios"
 import { param } from "jquery"
+import { axiosRequest } from "@/plugins/axiosRequest"
 
 
 export default {
@@ -63,7 +64,7 @@ export default {
     }
   },
   async mounted() {
-    this.refreshToken()
+    
     btnsClick.setLang([
       this.$t("btnsClick")[0],
       this.$t("btnsClick")[1],
@@ -83,12 +84,7 @@ export default {
       },
       api: process.env.backendURL + axiosJson.branch.br_info_one
     }
-    // this.$axios
-    //   .post(process.env.backendURL + axiosJson.branch.br_info_one, {
-    //     br_seq: self.compData.brSeq,
-    //     jwt: sessionStorage.getItem("jwt")
-    //   })
-    await this.axiosRequest('post', params)
+    await axiosRequest('post', params)
       .then(function(res) {
         console.log(res)
         self.compData.selected = [

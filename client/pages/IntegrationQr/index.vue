@@ -48,6 +48,7 @@
 
 <script>
 import axiosJson from "@/assets/jsons/axios"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
     layout: "main",
     data() {
@@ -69,12 +70,7 @@ export default {
                 },
                 api: process.env.backendURL + axiosJson.qrManagement.searchQR
             }
-            // this.$axios
-            //     .post(process.env.backendURL + axiosJson.qrManagement.searchQR, {
-            //         jwt: sessionStorage.getItem("jwt"),
-            //         chapter_name: this.chapterName
-            //     })
-            await this.axiosRequest('post', params)
+            await axiosRequest('post', params)
                 .then((res) => {
                     const data = res.data.data.chapter_list
                     data.forEach((ele, index) => {

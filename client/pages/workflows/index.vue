@@ -10,6 +10,7 @@
 
 
 <script>
+import { checkJwt } from '../../plugins/axiosRequest'
 export default {
     layout: "main",
     data () {
@@ -49,7 +50,7 @@ export default {
         }
     },
     mounted() {
-        this.refreshToken()
+        
         this.loading = true
         this.setIframeUrl()
         window.addEventListener("message", (e) => {
@@ -104,7 +105,7 @@ export default {
             const scrollTop = params.scrollTop
             const height = params.height
             if (params == "workflow content modified") {
-                this.refreshToken()
+                
                 this.setIframeUrl()
             }
             if (url) {
@@ -116,7 +117,7 @@ export default {
             if (scrollTop) {
                 this.scrollInToTop(height)
             }
-            this.checkJwt()
+            checkJwt()
         },
         childPath(url) {
             const replaceURL = url.replaceAll('&init=true', '')

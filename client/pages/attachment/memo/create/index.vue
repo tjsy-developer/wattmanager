@@ -34,6 +34,7 @@
 <script>
 
 import codecCheckModal from "@/components/loadingModal/memo/codec-check"
+import { axiosRequest } from "@/plugins/axiosRequest"
 export default {
 
   layout: "main",
@@ -82,7 +83,7 @@ export default {
 		// mp4파일 삽입 시 인코딩가능한 코덱인지 확인
 		async checkEncodingCodec(file) {
 			// param: 업로드할 파일, 폴더경로
-			const formData = new FormData()
+			let formData = new FormData()
 			formData.append("upload_file", file)
 			formData.append("save_folder", process.env.powermemoSavefolder)
 
@@ -93,23 +94,14 @@ export default {
 			// test Code
 			// const res = {RESULT : '1000', CODEC_NAME: 'hevc'}
 			const params = {
-				data: {
-					formData
-				},
+				data: formData,
 				headers: {
 					"Content-Type": "multipart/form-data; charset=UTF-8;",
 					"jwt": sessionStorage.getItem("jwt")
 				},
 				api: process.env.fileUploadBackend + "fileupload/get_codec_name"
 			}
-			// this.$axios
-			// .post(process.env.fileUploadBackend + "fileupload/get_codec_name", formData, {
-			// 	headers: {
-			// 		"Content-Type": "multipart/form-data; charset=UTF-8;",
-			// 		"jwt": sessionStorage.getItem("jwt")
-			// 	}
-			// })
-			await this.axiosRequest('post', params)
+			await axiosRequest('post', params)
 			.then((res) => {
 				console.log(res)
 				if(res.data.RESULT == "1000") {
@@ -159,7 +151,7 @@ export default {
 			}
 		},
     async createBtnClick() {
-        const formData = new FormData()
+        let formData = new FormData()
 
         // 로그인한 사용자의 토큰 정보를 formData에 넣는다
         formData.append("jwt", sessionStorage.getItem("jwt"))
@@ -194,23 +186,14 @@ export default {
         const self = this
         // 메모 생성 api
 		const params = {
-			data: {
-				formData
-			},
+			data: formData,
 			headers: {
 				"Content-Type": "multipart/form-data; charset=UTF-8;",
 				"jwt": sessionStorage.getItem("jwt")
 			},
 			api: process.env.fileUploadBackend + "fileupload/memo_insert"
 		}
-        // this.$axios
-        // .post(process.env.fileUploadBackend + "fileupload/memo_insert", formData, {
-        //     headers: {
-        //         "Content-Type": "multipart/form-data; charset=UTF-8;",
-        //         "jwt": sessionStorage.getItem("jwt")
-        //     }
-        // })
-		await this.axiosRequest('post', params)
+		await axiosRequest('post', params)
         .then(function(res) {
             if (res) {
                 console.log(res)
@@ -234,7 +217,7 @@ export default {
     }
   },
   mounted() {
-	this.refreshToken()
+	
   }
 }
 </script>

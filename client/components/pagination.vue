@@ -13,6 +13,7 @@
 
 <script>
 import VueAdsPagination from "vue-ads-pagination"
+import { axiosRequest } from "@/plugins/axiosRequest"
 // import VueCookie from "vue-cookie"
 
 export default {
@@ -61,13 +62,8 @@ export default {
         data: this.compData.getListDataParams,
         api: process.env.backendURL + this.compData.getListCountUrl
       }
-      // return this.$axios
-        // .post(
-        //   process.env.backendURL + this.compData.getListCountUrl,
-        //   this.compData.getListDataParams
-        // )
         
-      return await this.axiosRequest('post', params)
+      return await axiosRequest('post', params)
         .then(response => {
           console.log(response)
           if (response.data) this.totalItems = response.data
@@ -82,13 +78,8 @@ export default {
         data: this.compData.getListDataParams,
         api: process.env.backendURL + this.compData.getListDataUrl
       }
-      // return this.$axios
-        // .post(
-        //   process.env.backendURL + this.compData.getListDataUrl,
-        //   this.compData.getListDataParams
-        // )
         
-      return await this.axiosRequest('post', params)
+      return await axiosRequest('post', params)
         .then(response => {
           console.log(response)
           if (response.data.length) {
