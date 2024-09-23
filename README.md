@@ -4,7 +4,7 @@
 
 ## Before deploy
 - [Dokcerfile](./Dockerfile) wattmanager-front의 경우 종속성을 갖는 opensource가 존재한다. 이에 dockerfile 12번째 줄 확인 요망.
-    - [prinJs](./client/pages/integrationQr/README.md) ssr을 기반으로하는 opensource로 Reamdme 확인.
+    - [prinJs](./client/pages/IntegrationQr/README.md) ssr을 기반으로하는 opensource로 Reamdme 확인.
     - [changed_node_modules](./changed_node_modules) 변경된 node_module 모음
 
 ## Getting started
