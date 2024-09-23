@@ -22,5 +22,3 @@ RUN \
 
 #일반
 CMD ["bash", "-c", "cd /root/app && npm start"]
-
-EXPOSE 3000
