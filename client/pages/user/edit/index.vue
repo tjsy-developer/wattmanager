@@ -323,7 +323,7 @@ export default {
                     getInfo.branchCompData.options = branchRes
                   })
                   .then(() => {
-                    if (res.data.device_type == 3) {
+                    if (res.data.device_type == 3 || res.data.device_type == 1) {
                       self.compData.listFilters = setComboBox(
                         getFilters(
                           [

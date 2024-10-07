@@ -118,7 +118,8 @@ export default {
           res.data[0].device_name_en,
           res.data[0].approval_status,
           res.data[0].order_by_num,
-          res.data[0].device_type
+          res.data[0].device_type,
+          res.data[0].device_sysinfo
         ]
       })
       .catch(function(error) {
@@ -157,7 +158,8 @@ export default {
                           "DEVICE NAME(eng)",
                           self.$t("infoFilters")[8],
                           self.$t("infoFilters")[11],
-                          self.$t("infoFilters")[7]
+                          self.$t("infoFilters")[7],
+                          self.$t("infoFilters")[17]
                         ],
                         filtersJson
                       ),

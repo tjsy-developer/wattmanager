@@ -1,6 +1,5 @@
 export default (list, selected, selectCompDataList) => {
   for (let i = 1; i < list.length - 1; i++) {
-    console.log(list[i].edit)
     if (list[i].edit === "select") {
       list[i].selectCompData = selectCompDataList.shift()
       if (selected)
