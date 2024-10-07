@@ -57,6 +57,9 @@
               </div>
             </div>
           </div>
+          <div v-else-if="$route.name == 'device-edit' && content.edit == 'show'" class="col show-box">
+            <span>{{ compData.selected[contentKey-1] }}</span>
+          </div>
           <input
             v-else
             class="col"
@@ -67,17 +70,15 @@
            <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
            <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
            <button
-            v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor == true"
-            class="changePhone-btn"
-            @click="changePhoneBtnClick"
+              v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor == true"
+              class="changePhone-btn"
+              @click="changePhoneBtnClick"
           >
             {{ $t("changePhoneNumber") }}
           </button>
         </div>
-
-        </div>
-        
       </div>
+    </div>
       <div class="col-12 divisionLine"></div>
       <div v-if="compData.type=='create'" class="col-12 createBtns">
         <button @click="createBtnClick">{{ $t("createAndEditComp")[0] }}</button>
@@ -558,4 +559,11 @@ export default {
       padding: 0px 5px 0px 5px
       background:#1DBFA4 0% 0% no-repeat padding-box
       color: #fff
+
+.show-box
+  background-color: #fff
+  padding: 10px
+  min-height: 40px
+  border: 1px solid #D9D9D9
+
 </style>

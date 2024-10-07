@@ -92,19 +92,14 @@ Vue.mixin({
     },
     async convertImageToBlob(src) {
       try {
-        const params = {
-          responseType: "blob",
-          api: src + `?token=${sessionStorage.getItem("jwt")}`
-        }
-        // const result = await axios
-        //   .get(
-        //     src + `?token=${sessionStorage.getItem("jwt")}`,
-        //     {
-        //       timeout: 4000,
-        //       responseType: "blob",
-        //     }
-        // )
-        const result = await axiosRequest('get', params)
+        const result = await axios
+          .get(
+            src + `?token=${sessionStorage.getItem("jwt")}`,
+            {
+              timeout: 4000,
+              responseType: "blob",
+            }
+        )
         let blobURL = ''
         if (result.status === 200) {
           blobURL = URL.createObjectURL(result.data)

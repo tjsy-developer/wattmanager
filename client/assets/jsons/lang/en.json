@@ -60,7 +60,8 @@
     "Company + Department",
     "Email",
     "Path + File Name",
-    "Date"
+    "Date",
+    "Device Information"
   ],
   "infoCreateAndEditFilters": ["App code", "App Name(kor)", "App Name(eng)"],
   "app": [
