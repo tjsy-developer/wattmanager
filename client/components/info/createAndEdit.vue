@@ -15,7 +15,17 @@
       <div v-if="compData.type != 'edit'" class="row justify-left infoImg" style="margin-top:50px; ">
         <img v-if="compData.type == 'pictureEdit'" :src="compData.selected[0]" />
       </div>
-      <div class="col-12 row" v-for="(content, contentKey) in compData.listFilters" :key="contentKey">
+      <div
+        class="col-12 row"
+        v-for="(content, contentKey) in compData.listFilters"
+        :key="contentKey"
+        :style="{
+          display: $route.name == 'device-edit' && 
+            content.edit == 'show' && 
+            contentKey == compData.listFilters.length -1 && 
+            compData.selected[contentKey-2] !== 2 ? 'none' : 'block'
+        }"
+      >
         <div  class="col-12 row" v-if="content.edit">
           <div class="col-12 divisionLine" v-show="content.edit !== 'none'"></div>
           <div class="col-12 row editOptions items-center" v-show="content.edit !== 'none'" >
@@ -57,7 +67,10 @@
               </div>
             </div>
           </div>
-          <div v-else-if="$route.name == 'device-edit' && content.edit == 'show'" class="col show-box">
+          <div
+            v-else-if="$route.name == 'device-edit' && content.edit == 'show'"
+            v-show="compData.selected[contentKey-2] == 2" class="col show-box"
+          >
             <span>{{ compData.selected[contentKey-1] }}</span>
           </div>
           <input
