@@ -691,10 +691,12 @@ export default {
     }
   },
   mounted() {
+    const currentLang = sessionStorage.getItem("languageCode") ? sessionStorage.getItem("languageCode") : 'ko'
     sessionStorage.clear()
+    sessionStorage.setItem("languageCode", currentLang)
     // token 먼저 초기화
     this.$store.commit('token/initToken');
-    const currentLang = sessionStorage.getItem("languageCode");
+
     if (sessionStorage.getItem("languageCode") != null) {
       this.langImg = sessionStorage.getItem("languageCode");
     }
