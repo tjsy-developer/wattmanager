@@ -39,7 +39,7 @@ async function sendAxios(type, params) {
         data: params.data ? params.data : '',
         headers: params.headers ? params.headers : { 'jwt': jwt },
         responseType: params.responseType ? params.responseType :'',
-        timeout: 4000
+        timeout: params.api.includes('attRest/att_video_list') ? 4000 : '' // 자료관리 > 영상관리 > 비디오 목록 갖고오는 것은, 4초가 넘어갈 경우 timeout 지정해준다.
     })
     .then((res) => {
         console.log(`axios send success`);
