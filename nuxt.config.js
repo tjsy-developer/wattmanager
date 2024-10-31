@@ -118,9 +118,6 @@ export default {
     sass: ["@assets/styles/style.sass"]
   },
 
-  router: {
-    base: "/"
-  },
 
   generate: {
     dir: ""

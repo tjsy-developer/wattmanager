@@ -14,24 +14,25 @@
       <img v-if="useEnterprise == 'kwater'" class="col-auto" src="@/assets/images/logos/k_water_logo_2.svg" style="height: 38px" />
       <img v-if="useEnterprise == 'hdcar'" class="col-auto" src="@/assets/images/logos/hdcar_header.svg" style="width: 138px" />
       <div class="col-auto row menus">
+        <!-- 전자 qr -->
         <a v-if="authority == '4' && elecQR" href="/qr/elecQr" class="col-auto">{{ $t("qrTab") }}</a>
+        <!-- 안전 qr -->
         <a v-if="authority == '4' && qrStatus == 'safety'" href="/qr" class="col-auto">{{ $t("safetyQR") }}</a>
+        <!-- 파워 qr -->
         <a v-if="authority == '4' && qrStatus == 'power'" href="/qr" class="col-auto">{{ $t("powerQR") }}</a>
+        <!-- 통합 qr -->
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
+        <!-- 파일 업로드 -->
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-        <a v-show="showSafetyPatrol || authority == '4'" href="/workflows" class="col-auto" id="safetyPatrol" @click="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</a>
+         <!-- 파일함 -->
+         <a v-if="authority == '4'" class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
+        <!-- 일일점검 -->
         <a v-show="showDailyCheck || authority == '4'" href="/workflows" id="dailyPatrol" class="col-auto" @click="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckMenuKo : dailyCheckMenuEn }}</a>
+        <!-- 메모 -->
         <a v-show="showMemo2 || authority == '4'" href="/workflows" id="memo2" class="col-auto" @click="openIframe(3)">{{ $i18n.locale == 'ko' ? memo2MenuKo : memo2MenuEn }}</a>
+        <a v-show="showSafetyPatrol || authority == '4'" href="/workflows" class="col-auto" id="safetyPatrol" @click="openIframe(1)" style="cursor: pointer;">{{  $i18n.locale == 'ko' ? safetyPatrolKo : safetyPatrolEn }}</a>
         <a v-show="showTbm || authority == '4'" href="/workflows" id="tbm" class="col-auto" @click="openIframe(4)">{{ $i18n.locale == 'ko' ? tbmMenuKo : tbmMenuEn }}</a>
-        <a class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
-        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
-        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
-        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
-        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
-        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
+        <!-- 자료관리 -->
         <nuxt-link
           class="col-auto"
           :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
@@ -39,8 +40,24 @@
         >
           {{ $t("headerComp")[6] }}
         </nuxt-link>
+        <!-- 공지사항 -->
+        <a class="col-auto" href="/notice?page=1">{{ $t("notice")[0] }}</a>
+        <!-- 통화이력 -->
         <nuxt-link v-if="authority == '3'" :to="'/callHistory?page=1'" class="col-auto">{{ $t("callHistory") }}</nuxt-link>
-        <!-- <button  @click="closeTab()">닫기</button> -->
+        <!-- 내 정보 -->
+        <a class="col-auto" href="/profile">{{ $t("profile") }}</a>
+        <!-- 회원 정보 -->
+        <a v-if="authority != '0' && deviceType != '2'" href="/user?page=1" class="col-auto">{{ $t("headerComp")[0] }}</a>
+        <!-- 디바이스 정보 -->
+        <a v-if="authority != '0' && authority != '1' && deviceType != '2'" href="/device?page=1" class="col-auto">{{ $t("headerComp")[1] }}</a>
+        <!-- 앱 정보 -->
+        <a v-if="authority == '4' && deviceType != '2'" href="/app?page=1" class="col-auto">{{ $t("headerComp")[2] }}</a>
+        <!-- 기업 정보 -->
+        <a v-if="authority == '4' && deviceType != '2'" href="/enterprise?page=1" class="col-auto">{{ $t("headerComp")[3] }}</a>
+        <!-- 본부 정보 -->
+        <a v-if="authority == '4' && deviceType != '2'" href="/headquarters?page=1" class="col-auto">{{ $t("headerComp")[4] }}</a>
+        <!-- 지사 정보 -->
+        <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
         <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <!-- 글라스 계정인 경우 로그아웃 버튼 활성화 -->
