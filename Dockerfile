@@ -15,7 +15,7 @@ RUN \
 	npm i && \
 	mv ./changed_node_modules/dashjs/changed_dist ./changed_node_modules/dashjs/dist && \
 	mv ./changed_node_modules/print-js/changed_dist ./changed_node_modules/print-js/dist && \
-	cp -a ./changed_node_modules ./node_modules && \
+	cp -a ./changed_node_modules/. ./node_modules/ && \
 	npm run build
 
 #EXPOSE 80 
