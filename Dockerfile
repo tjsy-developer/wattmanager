@@ -11,11 +11,7 @@ RUN \
 	cp ./configs/hdcar ./.env && \
 	cp ./nuxt_configs/global ./nuxt.config.js && \
 	rm -rf node_modules && \
-	npm cache clean --force && \
 	npm i && \
-	mv ./changed_node_modules/dashjs/changed_dist ./changed_node_modules/dashjs/dist && \
-	mv ./changed_node_modules/print-js/changed_dist ./changed_node_modules/print-js/dist && \
-	cp -a ./changed_node_modules/. ./node_modules/ && \
 	npm run build
 
 #EXPOSE 80 
