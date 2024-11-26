@@ -310,7 +310,7 @@ export default {
         align-items: center;
         font-size: 22px;
         color: black;
-        font: normal normal bold 22px/26px NanumSquare;
+        font: bold 22px/26px NanumSquare, sans-serif;
     }
     &__btnWrap {
         width: 100%;

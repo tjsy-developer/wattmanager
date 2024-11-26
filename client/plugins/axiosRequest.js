@@ -145,9 +145,6 @@ export function checkJwt() {
         } else if (decodeResult == false) {
             // decode 실패시 변조 혹은 없음으로 판단 후 로그아웃
             window.$nuxt.$store.commit('token/mutateTokenState', 1);
-        } else {
-            // 정상임
-            return;
         }
     }
 };
@@ -159,7 +156,7 @@ function toastMessage(aj, rj) {
         at: aj,
         rt: rj
     };
-    window.postMessage({ type: 'changeToken', data: params });
+    window.postMessage({ type: 'changeToken', data: params },window.location.hostname);
 };
 
 // 암호화.
