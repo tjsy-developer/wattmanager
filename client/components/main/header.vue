@@ -70,11 +70,11 @@
 
 <script>
 // eslint-disable-next-line camelcase
-import jwt_decode from "jwt-decode"
-import cookieSetting from "@/assets/scripts/data/cookie"
+import jwt_decode from "jwt-decode";
+import cookieSetting from "@/assets/scripts/data/cookie";
 import axiosJson from "@/assets/jsons/axios";
-import { mapState } from "vuex"
-import { axiosRequest } from "@/plugins/axiosRequest"
+import { mapState } from "vuex";
+import { axiosRequest } from "@/plugins/axiosRequest";
 
 
 export default {
@@ -429,7 +429,9 @@ export default {
     this.getAppInfo()
   },
   mounted() {
-    window.addEventListener('message' , (event) => {
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return;
+
       const res = event.data;
       if (!res.data) return
       if (!res.data.id && !res.data.type && !res.data.at && !res.data.rt) return
@@ -438,7 +440,7 @@ export default {
         sessionStorage.setItem('jwt', res.data.at);
         this.$store.commit('token/setRToken', res.data.rt);
       }
-    })
+    }, window.location.origin)
     this.pathName= window.location.pathname
     this.location = window.location.hostname
     // 로그인한 계정이 admin인지 확인

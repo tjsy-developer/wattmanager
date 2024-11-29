@@ -50,7 +50,7 @@
             <span v-if="!getPermission">{{ $t("guestNotice")[0] }}</span>
             <span v-else>{{ $t("guestNotice")[1] }}</span>
           </div>
-          <div v-else-if="content.edit == 'explanation'" class="explainDiv col">
+          <!-- <div v-else-if="content.edit == 'explanation'" class="explainDiv col">
             <div class="row" style="height: 100%;">
               <div class="explainDiv__wrap">
                 <div class="explainDiv__row">
@@ -66,7 +66,7 @@
                 <button @click="copyandPasteJson()">{{ $t("copyAppdetailJson") }}</button>
               </div>
             </div>
-          </div>
+          </div> -->
           <div
             v-else-if="$route.name == 'device-edit' && content.edit == 'show'"
             v-show="compData.selected[contentKey-2] == 2" class="col show-box"
@@ -112,7 +112,7 @@
 import axiosJson from "@/assets/jsons/axios";
 import { danalVerify } from "@/assets/scripts/danalVerify";
 import getInfo from "@/assets/scripts/info/getInfo";
-import { axiosRequest } from "@/plugins/axiosRequest"
+import { axiosRequest } from "@/plugins/axiosRequest";
 // import setComboBox from "@/assets/scripts/info/setComboBox"
 // import getFilters from "@/assets/scripts/info/getFilters"
 

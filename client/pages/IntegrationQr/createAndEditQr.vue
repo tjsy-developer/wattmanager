@@ -21,7 +21,7 @@
                     <div class="qrTable__header">
                         <div class="deleteRowBtnWrapBlue"> </div>
                         <div class="keyTxtWrap">
-                            <div class="col keyTxt"  v-for="(content, key) in keyList">
+                            <div class="col keyTxt" v-for="(content, key) in keyList" :key="key">
                                 <span>{{ content.key_value }}<br>({{ content.key_description }})</span>
                             </div>
                         </div>
@@ -63,8 +63,8 @@
     </div>
 </template>
 <script>
-import axiosJson from "@/assets/jsons/axios"
-import { axiosRequest } from "@/plugins/axiosRequest"
+import axiosJson from "@/assets/jsons/axios";
+import { axiosRequest } from "@/plugins/axiosRequest";
 export default {
     layout: "main",
     data() {
@@ -416,9 +416,8 @@ export default {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        font-size: 22px;
         color: black;
-        font: bold 22px/26px NanumSquare, sans-serif;
+        font: normal normal bold 22px/26px NanumSquare;
     }
     &__main {
         font: normal normal normal 14px/16px NanumSquare;

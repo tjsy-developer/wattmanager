@@ -18,7 +18,7 @@ export default {
     for (i = 0; i < ARRcookies.length; i++) {
       x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="))
       y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1)
-      x = x.replace(/^\s+|\s+$/g, "")
+      x = x.trim()
 
       if (x === cookieName) {
         return unescape(y)

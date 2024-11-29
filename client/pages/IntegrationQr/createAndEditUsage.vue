@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import axiosJson from "@/assets/jsons/axios"
-import { axiosRequest } from "@/plugins/axiosRequest"
+import axiosJson from "@/assets/jsons/axios";
+import { axiosRequest } from "@/plugins/axiosRequest";
 export default {
     layout: "main",
     data() {
@@ -294,9 +294,8 @@ export default {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        font-size: 22px;
         color: black;
-        font: bold 22px/26px NanumSquare, sans-serif;
+        font: normal normal bold 22px/26px NanumSquare
     }
     &__footer {
         width: 100%;
@@ -308,7 +307,7 @@ export default {
         .btnWrap {
             width: 350px;
             height: 100%;
-            font: normal normal bold 14px/18px NanumSquare;
+            font: normal normal bold 14px/18px NanumSquare
         }
     }
 }

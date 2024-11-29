@@ -28,8 +28,8 @@
                 </div>
             </div>
             <div class="divisionLine"></div>
-            <div class="col-12 justify-center QRWraps">
-                <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
+            <div class="col-12 justify-center QRWraps" v-if="isCreated">
+                <div v-for="(content, key) in qrCodeImg" :key="key" class="col-12 QRWrap" style="display: grid; justify-items: center;">
                     <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="margin-bottom: 2px;" />
                     <span :style="{fontSize: fontSize}" style="text-align: center;">{{ content.name }}</span>
                     <input type="checkbox" v-model="content.checkYN" @change="changeState()" />
@@ -37,15 +37,15 @@
             </div>
             <div class="printWrap">
                 <!-- 전체 qr 출력을 위한 코드. -->
-                <div class="col-12 justify-center printAll" id="printAll">
-                    <div v-if="isCreated" v-for="(content, key) in qrCodeImg" :key="key" class="col-12 PrintQRWrap" style="display: inline-block; padding: 24px 24px 24px 24px;">
+                <div class="col-12 justify-center printAll" id="printAll" v-if="isCreated">
+                    <div  v-for="(content, key) in qrCodeImg" :key="key" class="col-12 PrintQRWrap" style="display: inline-block; padding: 24px 24px 24px 24px;">
                         <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="display: block; margin-bottom: 2px;" />
                         <span :style="{fontSize: fontSize}" style="display: block; text-align: center;">{{ content.name }}</span>
                     </div>
                 </div>
                 <!-- 선택 qr 출력을 위한 코드. 화면상 보여지지 않음 -->
-                <div class="col-12 justify-center printSelected" id="printSelected">
-                    <div v-if="isCreated" v-for="(content, key) in selectedList" :key="key" class="col-12 PrintQRWrap" style="display: inline-block; padding: 24px 24px 24px 24px;">
+                <div class="col-12 justify-center printSelected" id="printSelected" v-if="isCreated">
+                    <div  v-for="(content, key) in selectedList" :key="key" class="col-12 PrintQRWrap" style="display: inline-block; padding: 24px 24px 24px 24px;">
                         <img class="safetyQR" :src="content.imgUrl" id="image" :style="{width:Width+'px',height:Height+'px', zindex:'1px'}" style="display: block; margin-bottom: 2px;" />
                         <span :style="{fontSize: fontSize}" style="display: block; text-align: center;">{{ content.name }}</span>
                     </div>
@@ -56,10 +56,10 @@
 </template>
 
 <script>
-import axiosJson from "@/assets/jsons/axios"
-import printJS from "print-js"
-import QRCode from "qrcode"
-import { axiosRequest } from "@/plugins/axiosRequest"
+import axiosJson from "@/assets/jsons/axios";
+import printJS from "print-js";
+import QRCode from "qrcode";
+import { axiosRequest } from "@/plugins/axiosRequest";
 export default {
     layout: "main",
     data() {
@@ -308,9 +308,8 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 22px;
         color: black;
-        font: bold 22px/26px NanumSquare, sans-serif;
+        font: normal normal bold 22px/26px NanumSquare
     }
     &__btnWrap {
         width: 100%;

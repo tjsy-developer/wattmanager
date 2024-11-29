@@ -632,16 +632,17 @@ export default {
     },
     // 패스워드 보기 활성화/비활성화
     pwdActivation(e) {
+      const PASSWORD_FIELD_PWD_TYPE = 'password';
+      const PASSWORD_FIELD_TEXT_TYPE = 'text'
       const pwdInput = document.getElementById("pwdInput");
       if (e.target.classList.contains("Active")) {
         e.target.classList.remove("Active");
         e.target.src = require("@/assets/images/ic_password_disabled.png");
-        pwdInput.type = "password";
+        pwdInput.type = PASSWORD_FIELD_PWD_TYPE;
       } else {
         e.target.classList.add("Active");
-        console.log(e);
         e.target.src = require("@/assets/images/ic_password.png");
-        pwdInput.type = "text";
+        pwdInput.type = PASSWORD_FIELD_TEXT_TYPE;
       }
     },
     openVerifyModal(params, userId, userPwd, lang, modalType, userSeq, checkChangePsw, urlParameter) {
