@@ -37,6 +37,7 @@
           class="col-auto"
           :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
           @click="clearsessionStorage"
+          v-if="authority == '4'"
         >
           {{ $t("headerComp")[6] }}
         </nuxt-link>
