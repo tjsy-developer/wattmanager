@@ -54,7 +54,7 @@ export default {
         this.loading = true
         this.setIframeUrl()
         window.addEventListener("message", (e) => {
-            if(e.origin !== window.location.origin)
+            // if(e.origin !== window.location.origin)
             this.childData(e.data)
         }, window.location.origin)
     },
