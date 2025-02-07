@@ -183,16 +183,20 @@
           class="text4 col-12 row justify-center"
           :style="{ marginTop: $i18n.locale == 'en' ? '30px' : '30px' }"
         >
-          <button v-if="useEnterprise == 'dlenc'" class="policy-btn" @click="policyBtnClick()">
+          <button v-if="useEnterprise == 'dlenc' || useEnterprise == 'hdcar'" class="policy-btn" @click="policyBtnClick()">
             <span>{{ $t("policy")[0] }}</span>
           </button>
-          <span class="justify-center">Watt Talk 2.0</span>
+          <span v-if="useEnterprise == 'hdcar'" class="justify-center">{{ langImg == 'ko' ? 'H톡' : 'H Talk' }}</span>
+          <span v-else> watt Talk 2.0</span>
         </div>
         <div class="text4 col-12">
           <span v-if="useEnterprise == 'dlenc'" class="justify-center">
             {{ $t("footer")[4] }}<br>
 				    {{ $t("footer")[5] }}<br><br>
             Copyright © 2020 WATT CO.LTD. All Rights Reserved.
+          </span>
+          <span v-else-if="useEnterprise == 'hdcar'" class="justify-center">
+            COPYRIGHT ⓒ HYUNDAI MOTOR COMPANY. ALL RIGHTS RESERVED.
           </span>
           <span v-else class="justify-center">
             Copyright © 2020 WATT CO.LTD. All Rights Reserved.
@@ -1055,6 +1059,7 @@ export default {
       font-size: 13px
 
 .policy-btn
-  color: white
-  font-size: 5px
+  color: #c7c7c7
+  font-size: 12px
+  margin-bottom: 7px
 </style>
