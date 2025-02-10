@@ -9,7 +9,7 @@ COPY ./ /root/app/
 RUN \
 	cd /root/app && \
 	cp ./configs/hdcar ./.env && \
-	cp ./nuxt_configs/global ./nuxt.config.js && \
+	cp ./nuxt_configs/hdcar ./nuxt.config.js && \
 	rm -rf node_modules && \
 	npm i && \
 	npm run build
