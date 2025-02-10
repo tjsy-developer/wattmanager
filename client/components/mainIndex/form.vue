@@ -602,10 +602,6 @@ export default {
           } else if (response.data[0] === 3) {
             alert(self.$t("loginBlock")[1])
           } else if (response.data[0] === 5) {
-            // psw가 일치하지 않는 경우!
-            if (self.loginErrBlock) {
-              self.countLoginErr = ++self.countLoginErr
-            }
             alert(self.$t("home")[1]);
           } else {
             // id || psw err
@@ -617,12 +613,12 @@ export default {
             // 미승인은 backend에서 해줌. 알려주는건 front가 조건 비교 필요.
             // err count를 blockAcount만 세는게 아니고 전체 다 세서 그럼.
             if (process.env.blockAcount) {
-              if (response.data[3] > 4 && process.env.useEnterprise == "dlenc") {
+              if (response.data[4] > 4 && process.env.useEnterprise == "dlenc") {
                 alert(self.$t("loginAlert")[0])
                 return
               }
-              else if (response.data[3] > 9 && process.env.useEnterprise == "hdcar") {
-                const remainTime = self.calcRemainTime(response.data[4])
+              else if (response.data[4] > 4 && process.env.useEnterprise == "hdcar") {
+                const remainTime = self.calcRemainTime(response.data[5])
                 alert(`${self.$t("loginBlock")[0]}\n남은 시간은 ${remainTime}분입니다.`)
                 return
               }

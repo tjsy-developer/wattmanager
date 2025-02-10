@@ -557,7 +557,7 @@
   ],
   "copyAppdetailJson": "Add at app details",
   "loginBlock":[
-    "Account has been locked for 1 hour due to 10 times login failure",
+    "Account has been locked for 1 hour due to 5 times login failure",
     "Your account has not been approved due to 90 days of non-access. Please contact your administrator."
   ],
   "incorrectPwdFormat" : "The password format is incorrect",
