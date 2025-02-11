@@ -10,13 +10,8 @@ const backendUrl = process.env.backendURL
 
  // type은 post get 두방식. params는 api, data 2가지로 구성.
 export async function axiosRequest(type, params) {
-    console.log(`Func axiosRequest api: ${params.api}; type: ${type}`);
-
     jwt = sessionStorage.getItem('jwt');
     let response;
-
-    // await checkCookie();
-
     try {
         response = await sendAxios(type, params);
     } catch {

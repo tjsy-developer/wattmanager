@@ -217,12 +217,12 @@ import guideAlertModal from "@/components/info/guideAlert";
 import notice from "@/components/notice";
 import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
-import { encryptData } from "../../plugins/axiosRequest";
-
-// import createAccountModalSecl from "@/components/createAccountModal/form_secl"
+import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
+import passwordResetModal from "@/components/modal/passwordResetModal";
+import { axiosRequest, encryptData } from "../../plugins/axiosRequest";
 
 export default {
-  components: { notice, personalInfoModal },
+  components: { notice, personalInfoModal, pswChangeModal },
   data() {
     return {
       // 수정
@@ -243,7 +243,7 @@ export default {
       reservUserId: "",
       check2Factor: "",
       bypassID: [],
-      changePsw: false
+      changePsw: false,
     };
   },
   methods: {
@@ -470,7 +470,7 @@ export default {
             // if (cookieSetting.getCookie(`${sessionStorage.getItem('id')}enRToken`)) cookieSetting.deleteCookie(`${sessionStorage.getItem('id')}enRToken`)
             
             
-
+            let appInfo = {}
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
             getInfo.appSetting({
@@ -479,7 +479,7 @@ export default {
               br_seq: response.data[1].br_seq
             })
               .then((appDetailJson) => {
-                const appInfo = JSON.parse(appDetailJson)
+                appInfo = JSON.parse(appDetailJson)
                 self.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
                 self.bypassID =  appDetailJson["2factorBypassId"]?.split(",")
               })
@@ -490,7 +490,7 @@ export default {
                 }
                 self.check2Factor = false
               })
-              .then(() => {
+              .then(async () => {
                 // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
                 let checkAdmin = false
                 if (userId == "administrator" || response.data[1].device_type === 2) {
@@ -566,29 +566,44 @@ export default {
                   } else {
                     self.params = response.data[2] + "&login_type=1&lang=" + lang;
                   }
-                  /* 와트톡 로그인 체크 페이지로 이동 */
-                  // eslint-disable-next-line no-lonely-if
-                  if (process.env.powertlakState === "loginCheck") {
-                    // 로컬
-                    if (window.location.hostname === "localhost") {
-                      window.open(
-                        process.env.powertalkLogin_local + self.params + urlParameter,
-                        "_self"
-                      );
 
-                      // 와트톡
-                    } else {
-                      window.open(
-                        process.env.powertalkLogin + self.params + urlParameter,
-                        "_self"
-                      );
+                  let openURL =
+                    window.location.hostname === "localhost" ?
+                      process.env.powertalkLogin_local + self.params + urlParameter
+                      : process.env.powertalkLogin + self.params + urlParameter
+                  
+                  const moveWatttalk = (url) => {
+                    if (process.env.powertlakState === "loginCheck") {
+                      window.open(url, "_self");
                     }
-                    /* powertalk1으로 이동 */
-                  } else {
-                    // const randomNumber =
-                    //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
-                    // window.open("/powertalk/index.html?" + randomNumber, "_self");
                   }
+
+                  const userId = response.data[1].id
+                  const usePwdChange = JSON.parse(appInfo?.pswChangeAlert?.toLowerCase()) || false
+                  const passwordResetPeriod= JSON.parse(appInfo?.changeDuration?.toLowerCase()) || 90
+                  if (usePwdChange) {
+                    const params = {
+                      data: {
+                        id: userId
+                      },
+                      api: process.env.backendURL + axiosJson.account.getPasswordChangeDate
+                    }
+                    const res = await axiosRequest('post', params)
+
+                    const changedDate =  res.data
+                    const now = Math.floor(new Date().getTime() / 1000)
+                    const unixChangeDuration = Number(passwordResetPeriod) * 24 * 60 * 60
+
+                    if (now > changedDate + unixChangeDuration) {
+                      self.openChangePswModal(userId, () => moveWatttalk(openURL) )
+                      return
+                    }
+                  }
+                  moveWatttalk(openURL)
+                  // powertalk 사용 시 
+                  // const randomNumber =
+                  //   Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+                  // window.open("/powertalk/index.html?" + randomNumber, "_self");
                 }
               })
           } else if (response.data[0] === 2) {
@@ -689,6 +704,69 @@ export default {
       const realseTime = unixTime + Number(3600) // 해제시각 (잠금시간 + 1시간)
       const remainTime = Number(realseTime - now) / 60 // 남은 시각은 unixTime임
       return Math.floor(remainTime) // 소숫점 제거
+    },
+    openChangePswModal(params, next, url) {
+      const modalsContainerStyle =
+          document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
+
+      const modalParameter = {
+          loginData: null,
+          modalType: "reset-psw"
+      }
+      this.$modal.show(
+          pswChangeModal,
+          {
+              propsData: modalParameter
+          },
+          {
+              name: "pswChangeModal",
+              width: 400,
+              height: 300,
+              clickToClose: false,
+              adaptive: true,
+          },
+          {
+            "before-close": (event) => {
+
+              if (event.params.type === "next") {
+                next()
+                modalsContainerStyle.display = "none";
+              } else if (event.params.type === "pwd-change") {
+                this.openChangePwdModal(next)
+              }
+            }
+          }
+      );
+    },
+    openChangePwdModal(next) {
+      const modalsContainerStyle =
+          document.getElementById("modalsContainer").style;
+      modalsContainerStyle.display = "block";
+
+      this.$modal.show(
+        passwordResetModal,
+        {
+          propsData: {
+            modalType: 'reset-psw'
+          }
+        },
+        {
+            name: "passwordResetModal",
+            width: 400,
+            height: 'auto',
+            clickToClose: false,
+            adaptive: true,
+        },
+        {
+          "before-close": (event) => {
+            if (event.params.type === "next") {
+              next()
+            }
+            modalsContainerStyle.display = "none";
+          }
+        }
+      );
     }
   },
   mounted() {

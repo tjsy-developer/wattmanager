@@ -27,8 +27,12 @@ export default {
     },
     methods: {
         close() {
-            this.$modal.hide("pswChangeModal")
-            this.login()
+            if (this.propsData.modalType === 'reset-psw') {
+                this.$modal.hide("pswChangeModal", { type: "next" })
+            } else {
+                this.$modal.hide("pswChangeModal")
+                this.login()
+            }
         },
         login() {
             if (this.propsData.modalType == 1) {
@@ -38,6 +42,10 @@ export default {
             }
         },
         changePsw() {
+            if (this.propsData.modalType === 'reset-psw') {
+                this.$modal.hide("pswChangeModal", { type: "pwd-change" })
+                return
+            }
             // 이런 경우는 거의 없지만 혹여라도 sessionStorage에 셋팅이 안된 경우를 위해
             const managerParameter =
 				"&jwt=" + sessionStorage.getItem("jwt") + "&id=" + sessionStorage.getItem("id") +
