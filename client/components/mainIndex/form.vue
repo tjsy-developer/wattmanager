@@ -219,6 +219,9 @@ import personalInfoModal from "@/components/personalInfoModal/form";
 import verifyModal from "@/components/verifyPhoneModal/verifyModal";
 import pswChangeModal from "@/components/pswChangeModal/pswChangeModal";
 import passwordResetModal from "@/components/modal/passwordResetModal";
+
+import Dialog from "@/components/dialog";
+import Step1 from "@/components/dialog/step1";
 import { axiosRequest, encryptData } from "../../plugins/axiosRequest";
 
 export default {
@@ -244,6 +247,7 @@ export default {
       check2Factor: "",
       bypassID: [],
       changePsw: false,
+      use2faOTP: false
     };
   },
   methods: {
@@ -481,6 +485,7 @@ export default {
               .then((appDetailJson) => {
                 appInfo = JSON.parse(appDetailJson)
                 self.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+                self.use2faOTP = JSON.parse(appInfo["2factorOtp"]?.toLowerCase()) || false
                 self.bypassID =  appDetailJson["2factorBypassId"]?.split(",")
               })
               .catch((err) => {
@@ -533,16 +538,43 @@ export default {
                   } else {
                     modalType = 3
                   }
-                  self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw, urlParameter);
-                  return
+                  if (!self.use2faOTP) {
+                    self.openVerifyModal(response.data[2], userId, userPwd, lang, modalType, response.data[1].user_seq, self.changePsw, urlParameter);
+                    return
+                  }
                 }
-                if (response.data[1].auth === 4)
+
+                const accountInfo = response.data[1]
+                if (accountInfo.auth === 4)
                   window.open("/attachment/video?page=1&viewType=gallery", "_self");
-                else if (response.data[1].device_type === 2) {
+                else if (accountInfo.device_type === 2) {
                   window.open("/attachment/memo?page=1&viewType=gallery", "_self");
                 }
                 // 수정
                 else {
+                  const otpPassId = appInfo["2factorOtpPassId"]?.toLowerCase() || ''
+                  const otpPassIds =  otpPassId?.split(",").map(item => item.trim());
+                  if (self.use2faOTP && !otpPassIds.includes(accountInfo.id)) {
+                    const res = await self.handleDialog({
+                      initComp: Step1,
+                      name: "Dialog",
+                      accountInfo: {
+                        ...accountInfo,
+                        name: response.data[6],
+                        phone_number: response.data[7]
+                      }
+                    },
+                    {
+                        name: "Dialog",
+                        maxWidth: 500,
+                        width: '100%',
+                        height: 300,
+                        clickToClose: false,
+                        adaptive: true,
+                      })
+
+                      if (res !== "success") return
+                  }
                   // 회원이 이메일로 회의실입장하려고 하는 경우
                   /* 1. reservUserId --> 이메일 타고 들어온 사용자의 아이디
                     2. isMember -> 이메일을 클릭하여 들어왔는지판단(회원판단) (true == 이메일로 접근) */
@@ -578,6 +610,7 @@ export default {
                     }
                   }
 
+                  // 비밀번호 변경 모달 적용 >
                   const userId = response.data[1].id
                   const usePwdChange = JSON.parse(appInfo?.pswChangeAlert?.toLowerCase()) || false
                   const passwordResetPeriod= JSON.parse(appInfo?.changeDuration?.toLowerCase()) || 90
@@ -767,6 +800,20 @@ export default {
           }
         }
       );
+    },
+    handleDialog(props, setting) {
+      return new Promise((resolve, reject) => {
+        this.$modal.show(
+            Dialog,
+            props,
+            setting,
+            {
+              "before-close": (event) => {
+                resolve(event?.params?.type)
+              }
+            }
+          );
+      })
     }
   },
   mounted() {

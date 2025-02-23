@@ -6,7 +6,6 @@ export default {
     const value =
       escape(cookieValue) +
       (exdays == null ? "" : "; expires= " + exdate.toUTCString())
-    console.log(value)
     document.cookie = cookieName + "=" + value
   },
   /* 저장된 쿠키값 불러오는 함수 (쿠키이름) */

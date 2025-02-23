@@ -1,23 +1,14 @@
-import Vue from "vue"
-import Vuex from "vuex"
+// import Vue from "vue"
+// import Vuex from "vuex"
 
-Vue.use(Vuex)
+// import token from './token';
+// import user from './user';
 
-export const state = () => ({
-    mutationState: false,
-    prevUrl: undefined,
-    expiredToken: false
-})
+// Vue.use(Vuex)
 
-
-export const  mutations = {
-    setMutationState(state, payload) {
-        state.mutationState = payload
-    },
-    setPrevUrl(state, payload) {
-        state.prevUrl = payload
-    },
-    setTokenState(state, payload) {
-        state.expiredToken = payload
-    }
-}
+// export const store = () => new Vuex.Store({
+//     modules: {
+//         token,
+//         user
+//     }
+// });

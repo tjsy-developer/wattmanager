@@ -1,3 +1,4 @@
+import Vue from "vue";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import axiosJson from '@/assets/jsons/axios';
@@ -184,3 +185,5 @@ function decryptData(data) {
       return false;
     }
 };
+
+Vue.prototype.$api = axiosRequest;

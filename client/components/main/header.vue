@@ -115,7 +115,7 @@ export default {
 			allState: (state) => state
 		}),
     getTokenState() {
-      return this.$store.state.expiredToken
+      return this.$store.state.token.expiredToken
     },
     checkTokenState() {
       return this.$store.state.token.tokenState
@@ -125,7 +125,7 @@ export default {
     getTokenState(res) {
       if (res) {
         alert(this.$t('jwtTokenErr')[1])
-        this.$store.commit("setTokenState", false)
+        this.$store.commit("token/setTokenState", false)
         this.logoutBtnClick()
       }
     },

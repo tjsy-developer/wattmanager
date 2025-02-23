@@ -10,7 +10,6 @@ input:not([type="file"]), textarea {
 	text-indent: 10px;
 	padding-left: 0px !important;
 	font-family: 'NanumSquare', sans-serif;
-	border: none !important;
 	outline: 1px solid #d9d9d9;
 }
 input[type="file"], span, a, button, select, option, p, label {

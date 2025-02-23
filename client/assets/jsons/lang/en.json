@@ -564,5 +564,28 @@
   "jwtTokenErr": [
     "Invalid login.",
     "Your login time has expired. Please log in again."
-  ]
+  ],
+  "본인인증": "Identity Verification",
+  "본인 확인": "Identity Verification",
+  "보안을 위해 OTP 인증을 진행합니다": "OTP verification will be performed for security purposes",
+  "회원정보에 등록된 휴대폰으로 OTP 번호를 전송합니다": "An OTP will be sent to the phone number registered in your profile",
+  "휴대폰으로 전송한 OTP 번호를 입력해주세요": "Please enter the OTP sent to your phone",
+  "휴대폰 번호를 변경하려면, 새 번호를 입력 후 OTP 번호를 전송해 주세요": "To change your phone number, please enter the new number and send the OTP",
+  "이름": "Name",
+  "휴대폰": "Phone",
+  "휴대폰 번호 변경": "Change Phone Number",
+  "확인": "Confirm",
+  "OTP 전송": "Send OTP",
+  "OTP 재전송": "Resend OTP",
+  "휴대폰 번호가 등록되어있지 않습니다": "No phone number is registered",
+  "휴대폰번호 변경 버튼을 클릭하여 인증해주세요": "Please click the 'Change Phone Number' button to authenticate",
+  "닫기": "Close",
+  "잘못된 휴대폰 번호": "Invalid phone number",
+  "이미 등록된 휴대폰 번호": "Phone number already registered",
+  "통신사 미등록 휴대폰 번호": "Unregistered phone number with carrier",
+  "OTP 일치하지 않음": "OTP does not match",
+  "인증 시간이 만료되었습니다": "Authentication time has expired",
+  "OTP 재전송 버튼을 클릭하여 인증번호를 다시 받아주세요": "Click the 'Resend OTP' button to receive the verification code again",
+  "휴대폰 번호 변경 완료": "Phone number change completed",
+  "OTP를 입력해주세요": "Please enter your OTP"
 }
