@@ -1,6 +1,7 @@
 /* 2021.01.26 common Func :: ksh */
 import Vue from "vue";
 import { axiosRequest } from "./axiosRequest";
+import axios from "axios"
 
 Vue.mixin({
   methods: {

@@ -110,7 +110,7 @@ export default {
                   headers: headers,
                   api: backendAPI
                 }
-                await getaxiosRequest('post', params)
+                await axiosRequest('post', params)
                   .then((res) => {
                     const fileName = process.env.profilePhotoUrl + res.data.FILE_NAME
                     const parameter = {
@@ -141,7 +141,7 @@ export default {
                       },
                       api: process.env.backendURL + "userRest/user_update_my"
                     }
-                    getaxiosRequest('post', parameter)
+                    axiosRequest('post', parameter)
                       .then(function(res) {
                         console.log(res.data == "Duplicate phone_number")
                         if (res.data === "Success") alert(getSelf.$t("attachment")[1])
