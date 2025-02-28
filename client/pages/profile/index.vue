@@ -73,6 +73,7 @@ export default {
         createAndEditSpanSize: 120,
         type: "edit",
         selected: [],
+        originalProfile: undefined,
         nameSpaceCheck: this.$t("no spaces text"),
         async editBtnClick() {
           const deviceType = sessionStorage.getItem("deviceType")
@@ -177,9 +178,7 @@ export default {
                         ? getInfo.getInputValue(6)
                         : getInfo.getInputValue(5),
                     // image: this.selected[7],
-                    image: deviceType != 2
-                      ? this.selected[9]
-                      : this.selected[7],
+                    image: getSelf.originalProfile,
                     phone_number:
                       deviceType != 2 && getSelf.compData.check2Factor !== false
                         ? getInfo.getInputValue(7)
@@ -307,7 +306,8 @@ export default {
               if (res.data.id == "administrator" || res.data.id.includes("wattsupport")) {
                 checkAdmin = true
               }
-              res.data.image = await self.convertImageToBlob(res.data.image)
+              self.originalProfile = res.data.image
+              const blobImage = await self.convertImageToBlob(res.data.image)
               // 글라스 혹은 admin 계정
               if (checkAdmin == true || res.data.device_type == 2){
                 self.compData.listFilters.splice(8, 2)
@@ -319,7 +319,7 @@ export default {
                   res.data.name,
                   res.data.name_en,
                   res.data.email,
-                  res.data.image ? res.data.image : undefined
+                  blobImage ? blobImage : undefined
                 ]
               } else {
                 // pc 일반
@@ -333,7 +333,7 @@ export default {
                   res.data.email,
                   res.data.phone_number || '',
                   res.data.birthday || '',
-                  res.data.image ? res.data.image : undefined
+                  blobImage ? blobImage : undefined
                 ]
               }
             } else {

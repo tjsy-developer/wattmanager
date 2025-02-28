@@ -35,6 +35,7 @@ export default {
         birthday: "",
         imageFile: "",
         isGuest: "",
+        originalProfile: undefined,
         editBtnClick() {
           let checkGuest = ""
           const getSelf = this.self
@@ -106,7 +107,7 @@ export default {
                   auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
                   glass_app_range: setGlassAppRange,
-                  image: this.selected[13] ? this.selected[13] : "",
+                  image: getSelf.originalProfile,
                   pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 5)),
                   device_type: Number(sessionStorage.getItem("editUserDeviceType")),
@@ -135,7 +136,7 @@ export default {
                   auth: Number(getInfo.getSelectValue(this.listFilters, 6)),
                   approval_status: getInfo.getSelectValue(this.listFilters, 7),
                   glass_app_range: setGlassAppRange,
-                  image: this.selected[10] ? this.selected[10] : "",
+                  image: getSelf.originalProfile,
                   pc_app_range: "",
                   order_by_num: Number(getInfo.getInputValue(inputLength - 2)),
                   device_type: Number(sessionStorage.getItem("editUserDeviceType")),
@@ -254,8 +255,10 @@ export default {
         if (res.data.guest) {
           self.compData.isGuest = res.data.guest
         }
+        let blobImage = undefined
         if (res.data.image) {
-          res.data.image = await self.convertImageToBlob(res.data.image)
+          self.originalProfile = res.data.image
+          blobImage = await self.convertImageToBlob(res.data.image)
         }
         // 글라스가 아닌 경우
         if (res.data.device_type != 2) {
@@ -273,7 +276,7 @@ export default {
             res.data.phone_number,
             res.data.birthday,
             res.data.guest,
-            res.data.image ? res.data.image : undefined,
+            blobImage ? blobImage : undefined,
             res.data.pc_app_range,
             res.data.device_type,
           ]
@@ -290,21 +293,19 @@ export default {
             res.data.email,
             res.data.glass_app_range,
             res.data.order_by_num,
-            res.data.image ? res.data.image : undefined,
+            blobImage ? blobImage : undefined,
             res.data.pc_app_range,
             res.data.device_type,
           ]
         }
-        if (res.data.image) {
-          const profileImage =  res.data.image
-        } else {
-          if (res.data.device_type !== 2) {
-            self.compData.selected[12] = undefined
-          } else {
-            // 이미지 없을때 초기값 설정
-            self.compData.selected[10] = undefined
-          }
-        }
+        // if (!res.data.image) {
+        //   if (res.data.device_type !== 2) {
+        //     self.compData.selected[12] = undefined
+        //   } else {
+        //     // 이미지 없을때 초기값 설정
+        //     self.compData.selected[10] = undefined
+        //   }
+        // }
         getInfo
           .enterprise()
           .then(enterpriseRes => {
