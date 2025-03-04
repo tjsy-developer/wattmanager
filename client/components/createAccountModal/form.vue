@@ -19,7 +19,7 @@
         <input class="emailInput" id="accountEMail" :placeholder="$t('account')[17]" v-model="EMail" @keyup.enter="emailCheckBtnClick" />
         <button class="nameChkBtn col-auto" @click="emailCheckBtnClick">{{ $t("account")[18] }}</button>
         <input
-          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor !== false"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor && !use2factorOtp"
           class="input"
           id="birthday"
           :placeholder="$t('account')[35]"
@@ -27,14 +27,15 @@
           type="birthday"
         />
         <input
-          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor !== false"
+          v-if="deviceTypeCompData.selectedValue == 3 && (check2Factor || use2factorOtp) "
           id="phoneNumber"
           :placeholder="$t('account')[33]"
           v-model="phoneNum"
-          :class="[checkAdminId !== true && check2Factor == true ? 'phoneInput' : 'input']"
+          @input="filterNonNumericInput"
+          :class="[checkAdminId !== true && check2Factor == true && !use2factorOtp ? 'phoneInput' : 'input']"
         /> 
         <button
-          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == true && checkAdminId == false"
+          v-if="deviceTypeCompData.selectedValue == 3 && check2Factor == true && checkAdminId == false && !use2factorOtp"
           class="phoneChkBtn col-auto"
           id="verifyBtn"
           @click="phoneCheckBtnClick"
@@ -101,6 +102,7 @@ export default {
       birthdayCheck: undefined,
       useEnterprise: process.env.useEnterprise,
       check2Factor: false,
+      use2factorOtp: false,
       checkAdminId: false,
       policyCheck: false,
       bypassId: [],
@@ -135,6 +137,13 @@ export default {
       sessionStorage.setItem("languageCode", locale)
       location.reload()
     },
+    filterNonNumericInput() {
+			this.phoneNum = this.phoneNum.replace(/[^0-9]/g, '');
+		},
+    validationCheckPhoneNum(number) {
+			let result = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+			return result.test(number);
+		},
     idCheckBtnClick() {
       if (this.id) {
 
@@ -308,12 +317,12 @@ export default {
     },
     async signUpBtnClick() {
       let checkVerify = sessionStorage.getItem("verify")
-      if (this.check2Factor !== false) {
+      if (this.check2Factor && !this.use2factorOtp) {
         checkVerify = "true"
         this.phoneCheck = this.phoneNum
         this.birthdayCheck = this.birthday
       }
-      if (this.checkAdminId == true) {
+      if (this.checkAdminId == true && !this.use2factorOtp) {
         checkVerify = "true"
         this.phoneCheck = this.phoneNum
         this.birthdayCheck = this.birthday
@@ -334,8 +343,22 @@ export default {
         return alert(this.$t("account")[6])
       }
 
-      if (this.deviceTypeCompData.selectedValue === 3 && this.check2Factor !== false) {
-        if (!this.phoneNum || !this.birthday) return alert(this.$t("account")[6])
+      if (this.deviceTypeCompData.selectedValue === 3 && (this.check2Factor || this.use2factorOtp)) {
+        if (this.check2Factor) {
+          if (!this.birthday) return alert(this.$t("account")[6])
+        }
+
+        if (this.use2factorOtp || this.check2Factor) {
+          if (!this.phoneNum)  {
+            document.getElementById("phoneNumber").focus()
+            return alert(this.$t("account")[6])
+          }
+          else if (!this.validationCheckPhoneNum(this.phoneNum)) {
+            document.getElementById("phoneNumber").focus()
+            return alert("잘못된 휴대폰 번호 형식입니다")
+          }
+        }
+        
         const checkPhoneStyle = this.filterKeyPress(this.phoneNum, 1)
         const checkBirthStyle = this.filterKeyPress(this.birthday, 2)
         if (checkBirthStyle == false) {
@@ -380,11 +403,11 @@ export default {
           document.getElementById("accountEMail").focus()
           return alert(this.$t("account")[29])
         }
-        if (checkVerify != "true") {
+        if (checkVerify != "true" && !this.use2factorOtp) {
           document.getElementById("verifyBtn").focus()
           return alert(this.$t("account")[38])
         }
-        if (this.phoneNum != this.phoneCheck) {
+        if (this.phoneNum != this.phoneCheck && !this.use2factorOtp) {
           document.getElementById("verifyBtn").focus()
           return alert(this.$t("account")[41])
         }
@@ -481,7 +504,7 @@ export default {
           })
       } else if (this.deviceTypeCompData.selectedValue === 3) {
         let res;
-        if (this.check2Factor !== false) {
+        if (this.check2Factor || this.use2factorOtp) {
           res = await this.$axios.post(
             process.env.backendURL + axiosJson.account.user_phone_number_check,
             {
@@ -508,12 +531,11 @@ export default {
           personal_information_checked: 1
         }
 
-        if (this.check2Factor === false) {
+        if (!this.check2Factor || !this.use2factorOtp) {
           delete params.phone_number
           delete params.birthday
           delete params.certification_uniquekey
         }
-
         this.$axios
           .post(process.env.backendURL + axiosJson.account.user_insert, params)
           .then(function(response) {
@@ -621,8 +643,9 @@ export default {
           })
           .then((appDetailJson) => {
             const appInfo = JSON.parse(appDetailJson)
-            this.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
-            if (this.check2Factor === false) {
+            this.check2Factor = appInfo["2factor"]?.toLowerCase() || false
+            this.use2factorOtp = appInfo["2factorOtp"]?.toLowerCase() || false
+            if (this.check2Factor === false || !this.use2factorOtp) {
               this.phoneNum = ''
               this.birthday = ''
             }
@@ -644,7 +667,7 @@ export default {
         this.checkAdminId = false
       }
       if (this.bypassId?.length != 0)
-      this.bypassId?.forEach(ele => {
+        this.bypassId?.forEach(ele => {
           if (ele == res) {
             this.checkAdminId = true
           } else {
