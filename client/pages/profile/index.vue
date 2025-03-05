@@ -22,6 +22,7 @@ export default {
         userSeq: undefined,
         listTitle: this.$t("profile"),
         check2Factor: false,
+        use2factorOtp: false,
         imageFile: "",
         listFilters: [
           {
@@ -253,25 +254,37 @@ export default {
       try {
         const appDetailJson = await getInfo.appSetting(params)
         const appInfo = JSON.parse(appDetailJson)
-        this.compData.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
+        this.compData.check2Factor = Boolean(appInfo["2factor"]?.toLowerCase()) || false
+        this.compData.use2factorOtp = Boolean(appInfo["2factorOtp"]?.toLowerCase()) || false
       } catch(error) {
-        this.compData.check2Factor = undefined
+        this.compData.check2Factor = false
+        this.compData.use2factorOtp = false
       } finally {
         sessionStorage.setItem("check2Factor", this.compData.check2Factor)
         this.compData.listFilters = this.compData.listFilters.map((value) => {
           if (!value.text) return value
           const columnText = value?.text.toLowerCase().replaceAll(" ", '')
-          if ((columnText === "휴대폰번호" || columnText === "생년월일" || columnText === "cellphone" || columnText === "birthday")) {
-            if (this.compData.check2Factor === false) {
+
+          if (this.compData.use2factorOtp) {
+            if ((columnText === "생년월일" || columnText === "birthday")) {
               return {
                 ...value,
                 edit: 'none'
               }
-            } return {
-              ...value, 
-              edit: 'disabled'
+            } else if ((columnText === "휴대폰번호" || columnText === "cellphone")) { 
+              return {
+                ...value,
+                edit: true
+              }
             }
-          } 
+          } else if (!this.compData.use2factorOtp && !this.compData.check2Factor) {
+            if ((columnText === "휴대폰번호" || columnText === "생년월일" || columnText === "cellphone" || columnText === "birthday")) {
+              return {
+                ...value,
+                edit: 'none'
+              }
+            }
+          }
           return value
         })
       }

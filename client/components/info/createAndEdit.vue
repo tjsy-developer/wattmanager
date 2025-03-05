@@ -79,11 +79,11 @@
             :value="compData.type == 'edit' ? compData.selected[contentKey - 1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
             :disabled="content.edit=='disabled'"
             v-show="content.edit !== 'none'"
-           />
-           <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
-           <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
-           <button
-              v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor == true"
+          />
+          <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
+          <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
+          <button
+              v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor && !compData.use2factorOtp"
               class="changePhone-btn"
               @click="changePhoneBtnClick"
           >
