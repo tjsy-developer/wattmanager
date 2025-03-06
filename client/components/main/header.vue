@@ -60,7 +60,7 @@
         <!-- 지사 정보 -->
         <a v-if="authority == '4' && deviceType != '2'" href="/branch?page=1" class="col-auto">{{ $t("headerComp")[5] }}</a>
         <!-- admin계정인 경우 로그아웃 버튼 활성화 -->
-        <button v-if="logoutStatus != 0 && checkAdmin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
+        <button v-if="(logoutStatus != 0 && checkAdmin) || useRouteTaskLogin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <!-- 글라스 계정인 경우 로그아웃 버튼 활성화 -->
         <button v-if="logoutStatus != 0 && glassLogin" class="col-auto" @click="logoutBtnClick">{{ $t("header")[0] }}</button>
         <button v-if="logoutStatus == 0" class="col-auto" @click="logoutBtnClose">{{ $t("header")[1] }}</button>
@@ -107,7 +107,8 @@ export default {
       tbmMenuEn: "",
       location: "",
       pathName: "",
-      forceLogoutTime: ""
+      forceLogoutTime: "",
+      useRouteTaskLogin: 0
     }
   },
   computed: {
@@ -252,6 +253,7 @@ export default {
           if (res.data.length > 0) {
             const jsonAppList = res.data[0].app_detail_json
             const appList = JSON.parse(jsonAppList)
+            this.useRouteTaskLogin = appList?.loginRouteTask || 0
             this.setAppInfo(appList)
           } else {
             if (this.authority == '4') {

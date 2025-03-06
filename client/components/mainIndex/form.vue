@@ -475,6 +475,7 @@ export default {
             
             
             let appInfo = {}
+            let taskRoute
             const cookieName = response.data[1].id + "jwt"
             cookieSetting.setCookie(cookieName, response.data[2])
             getInfo.appSetting({
@@ -486,7 +487,8 @@ export default {
                 appInfo = JSON.parse(appDetailJson)
                 self.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase())
                 self.use2faOTP = JSON.parse(appInfo["2factorOtp"]?.toLowerCase()) || false
-                self.bypassID =  appDetailJson["2factorBypassId"]?.split(",")
+                self.bypassID = appDetailJson["2factorBypassId"]?.split(",")
+                taskRoute = appInfo?.loginRouteTask || 0
               })
               .catch((err) => {
                 if (err == "TypeError: Cannot read properties of undefined (reading 'app_detail_json')") {
@@ -548,7 +550,7 @@ export default {
                 if (accountInfo.auth === 4)
                   window.open("/attachment/video?page=1&viewType=gallery", "_self");
                 else if (accountInfo.device_type === 2) {
-                  window.open("/attachment/memo?page=1&viewType=gallery", "_self");
+                  window.open("/attachment/video?page=1&viewType=gallery", "_self");
                 }
                 // 수정
                 else {
@@ -603,7 +605,16 @@ export default {
                     window.location.hostname === "localhost" ?
                       process.env.powertalkLogin_local + self.params + urlParameter
                       : process.env.powertalkLogin + self.params + urlParameter
-                  
+
+                  if (taskRoute && typeof taskRoute == 'number') {
+                    self.setTaskInfo(appInfo)
+                    sessionStorage.setItem("init", true)
+                    sessionStorage.removeItem("taskType")
+                    sessionStorage.removeItem("path_name")
+                    sessionStorage.removeItem("path_trans")
+                    sessionStorage.setItem("taskType", taskRoute)
+                    openURL = `${window.location.origin}/workflows`
+                  }
                   const moveWatttalk = (url) => {
                     if (process.env.powertlakState === "loginCheck") {
                       window.open(url, "_self");
