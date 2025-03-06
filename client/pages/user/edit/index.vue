@@ -182,8 +182,8 @@ export default {
       try {
         const appDetailJson = await getInfo.appSetting(params)
         const appInfo = JSON.parse(appDetailJson)
-       this.compData.check2Factor = Boolean(appInfo["2factor"]?.toLowerCase()) || false
-        this.compData.use2factorOtp = Boolean(appInfo["2factorOtp"]?.toLowerCase()) || false
+        this.compData.check2Factor = JSON.parse(appInfo["2factor"]?.toLowerCase()) || false
+        this.compData.use2factorOtp = JSON.parse(appInfo["2factorOtp"]?.toLowerCase()) || false
       } catch(error) {
         this.compData.check2Factor = false
         this.compData.use2factorOtp = false

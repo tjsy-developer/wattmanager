@@ -27,7 +27,7 @@
           type="birthday"
         />
         <input
-          v-if="deviceTypeCompData.selectedValue == 3 && (check2Factor || use2factorOtp) "
+          v-if="deviceTypeCompData.selectedValue == 3 && (check2Factor === true || use2factorOtp == true)"
           id="phoneNumber"
           :placeholder="$t('account')[33]"
           v-model="phoneNum"
@@ -531,8 +531,11 @@ export default {
           personal_information_checked: 1
         }
 
-        if (!this.check2Factor || !this.use2factorOtp) {
+        if (!this.check2Factor && !this.use2factorOtp) {
           delete params.phone_number
+          delete params.birthday
+          delete params.certification_uniquekey
+        } else if (this.use2factorOtp) {
           delete params.birthday
           delete params.certification_uniquekey
         }
@@ -551,7 +554,7 @@ export default {
                   hq_seq: self.hqCompData.selectedValue,
                   br_seq: self.branchCompData.selectedValue,
                   device_type: self.deviceTypeCompData.selectedValue,
-                  email: "",
+                  email: self.EMail,
                   privacy_essential_agree: 1,
                   privacy_optional_agree: 1,
                   birthday: "",
@@ -643,8 +646,9 @@ export default {
           })
           .then((appDetailJson) => {
             const appInfo = JSON.parse(appDetailJson)
-            this.check2Factor = Booelan(appInfo["2factor"]?.toLowerCase()) || false
-            this.use2factorOtp = Booelan(appInfo["2factorOtp"]?.toLowerCase()) || false
+            this.check2Factor = JSON.parse(appInfo["2factor"]?.toLowerCase()) || false
+            this.use2factorOtp = JSON.parse(appInfo["2factorOtp"]?.toLowerCase()) || false
+
             if (this.check2Factor === false || !this.use2factorOtp) {
               this.phoneNum = ''
               this.birthday = ''
@@ -656,7 +660,8 @@ export default {
             } else {
               console.log("2Factor Error :", err)
             }
-            this.check2Factor = undefined
+            this.check2Factor = false
+            this.use2factorOtp = false
           })
       }
     },

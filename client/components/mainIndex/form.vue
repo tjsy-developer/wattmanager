@@ -485,8 +485,8 @@ export default {
             })
               .then((appDetailJson) => {
                 appInfo = JSON.parse(appDetailJson)
-                self.check2Factor = Boolean(appInfo["2factor"].toLowerCase()) || false
-                self.use2faOTP = Boolean(appInfo["2factorOtp"]?.toLowerCase()) || false
+                self.check2Factor = JSON.parse(appInfo["2factor"].toLowerCase()) || false
+                self.use2faOTP = JSON.parse(appInfo["2factorOtp"]?.toLowerCase()) || false
                 self.bypassID = appDetailJson["2factorBypassId"]?.split(",")
                 taskRoute = appInfo?.loginRouteTask || 0
               })
@@ -496,6 +496,7 @@ export default {
                   console.log("2Factor Error :", err)
                 }
                 self.check2Factor = false
+                self.use2faOTP = false
               })
               .then(async () => {
                 // 접근 주소가 dlenc인 경우 본인 인증 모달로 먼저 보냄
