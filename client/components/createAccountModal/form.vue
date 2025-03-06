@@ -643,8 +643,8 @@ export default {
           })
           .then((appDetailJson) => {
             const appInfo = JSON.parse(appDetailJson)
-            this.check2Factor = appInfo["2factor"]?.toLowerCase() || false
-            this.use2factorOtp = appInfo["2factorOtp"]?.toLowerCase() || false
+            this.check2Factor = Booelan(appInfo["2factor"]?.toLowerCase()) || false
+            this.use2factorOtp = Booelan(appInfo["2factorOtp"]?.toLowerCase()) || false
             if (this.check2Factor === false || !this.use2factorOtp) {
               this.phoneNum = ''
               this.birthday = ''
