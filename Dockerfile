@@ -1,23 +1,32 @@
 FROM node:12.22.12
 
 # Dockerfile 작성자
-MAINTAINER devops <devops@wattsolution.co.kr> 
+LABEL devops <devops@wattsolution.co.kr>
 
-COPY ./ /root/app/
+# 비 루트 사용자 생성
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
-# changed_node_modules 하위의 changed_dist를 먼저 dist로 명칭변경 해주어야함. changed_dist로 올리는 이유는 gitignore에 dist가 선언되어있어서...
+# 비 루트 사용자로 설정
+USER nonroot
+
+# 애플리케이션 디렉토리 설정
+ARG APP_DIR=/home/nonroot/app
+WORKDIR $APP_DIR
+
+COPY client/ $APP_DIR/client/
+COPY configs/ $APP_DIR/configs/
+COPY nuxt_configs/ $APP_DIR/nuxt_configs/
+COPY .eslintrc.json/ $APP_DIR/
+COPY nuxt_configs.js/ $APP_DIR/
+COPY package.json $APP_DIR/
+COPY package-lock.json $APP_DIR/
+
 RUN \
-	cd /root/app && \
+	cd ${APP_DIR} && \
 	cp ./configs/hdcar ./.env && \
 	cp ./nuxt_configs/hdcar ./nuxt.config.js && \
 	rm -rf node_modules && \
 	npm i && \
 	npm run build
 
-#EXPOSE 80 
-
-# 와트매니저 캠 html 전용
-#CMD ["bash", "-c", "cp /root/app/VMS/* /root/app/cam-html/ && cd /root/app && npm start >> /root/logs/out.log 2>>/root/logs/error.log"]
-
-#일반
-CMD ["bash", "-c", "cd /root/app && npm start"]
+CMD ["npm", "start"]
