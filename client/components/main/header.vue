@@ -24,8 +24,8 @@
         <a v-if="authority == '4'" href="/integrationQr">{{ $t("printQR")[0] }}</a>
         <!-- 파일 업로드 -->
         <a v-if="authority == '4'" href="/upload?page=1&viewType=upload" class="col-auto">{{ $t("upload")}}</a>
-         <!-- 파일함 -->
-         <a v-if="authority == '4'" class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
+        <!-- 파일함 -->
+        <a v-if="authority == '4'" class="col-auto" href="/upload?page=1&viewType=filebox">{{ $t("fileBox") }}</a>
         <!-- 일일점검 -->
         <a v-show="showDailyCheck || authority == '4'" href="/workflows" id="dailyPatrol" class="col-auto" @click="openIframe(2)">{{ $i18n.locale == 'ko' ? dailyCheckMenuKo : dailyCheckMenuEn }}</a>
         <!-- 메모 -->
@@ -37,7 +37,6 @@
           class="col-auto"
           :to="attViewAuth == true || deviceType == '2' ? '/attachment/memo?page=1&viewType=gallery' : '/attachment/video?page=1&viewType=gallery'"
           @click="clearsessionStorage"
-          v-if="authority == '4'"
         >
           {{ $t("headerComp")[6] }}
         </nuxt-link>
