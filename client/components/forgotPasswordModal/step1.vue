@@ -22,41 +22,41 @@
 export default {
   props: ["compData"],
   data() {
-    return {
-      inputEMail: undefined,
-      eMail: undefined,
-      inputCode: undefined,
-      getCode: undefined
-    }
+	return {
+	  inputEMail: undefined,
+	  eMail: undefined,
+	  inputCode: undefined,
+	  getCode: undefined
+	}
   },
   methods: {
-    close() {
-      this.$modal.hide("forgotPasswordModal")
-    },
-    send() {
-      const self = this
-      if (!this.compData.inputId || !this.inputEMail)
-        return alert(this.$t("check ID/e-mail"))
+	close() {
+	  this.$modal.hide("forgotPasswordModal")
+	},
+	send() {
+	  const self = this
+	  if (!this.compData.inputId || !this.inputEMail)
+		return alert(this.$t("check ID/e-mail"))
 
-      this.$axios
-        .post(process.env.backendURL + "accountRest/create_random_arr", {
-          id: this.compData.inputId,
-          email: this.inputEMail
-        })
-        .then(function(res) {
+	  this.$axios
+		.post(process.env.backendURL + "accountRest/create_random_arr", {
+		  id: this.compData.inputId,
+		  email: this.inputEMail
+		})
+		.then(function(res) {
 			console.log(res)
-          if (res.data == true) {
-            alert(self.$t("check your e-mail"))
-            self.compData.id = self.compData.inputId
-            self.eMail = self.inputEMail
-          } else alert(self.$t("check ID/e-mail"))
-        })
-        .catch(function(error) {
-          console.log("step2.vue error : ", error)
-          alert("fail")
-        })
-    },
-    next() {
+		  if (res.data == true) {
+			alert(self.$t("check your e-mail"))
+			self.compData.id = self.compData.inputId
+			self.eMail = self.inputEMail
+		  } else alert(self.$t("check ID/e-mail"))
+		})
+		.catch(function(error) {
+		  console.log("step2.vue error : ", error)
+		  alert("fail")
+		})
+	},
+	next() {
 		if (!this.compData.inputId || !this.inputEMail || !this.inputCode) {
 			return alert(this.$t("account")[6])
 		} else if (
@@ -82,7 +82,7 @@ export default {
 					alert("오류 다시 시도 해주셈 error:", err)
 				})
 		}
-    }
+	}
   }
 }
 </script>

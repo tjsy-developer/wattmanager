@@ -1,109 +1,109 @@
 <template>
-  <div class="row justify-center content-start infoCreateAndEditContainer">
-    <div class="col-12 row justify-center titleBar">
-      <span>{{ compData.listTitle }}</span>
-    </div>
-    <div class="col-12 row justify-center content-start">
-      <span v-if="compData.createAndEditTitle" class="createTitle" :class="[ $route.name == 'app-edit' || $route.name == 'app-create' ? 'col':'col-12' ]">
-        {{ compData.createAndEditTitle }}
-      </span>
-      <span v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appInfoText">{{ $t("app")[3] }}</span>
-      <selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyEnterprise col-1" :compData="enList"></selectComp>
-      <selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyHeadquaters col-1" :compData="hqList"></selectComp>
-      <selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyBranch col-1" :compData="brList"></selectComp>
-      <button v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="col-1 appCopyBtn"  @click="appInfoCopy">{{ $t("appCopy") }}</button>
-      <div v-if="compData.type != 'edit'" class="row justify-left infoImg" style="margin-top:50px; ">
-        <img v-if="compData.type == 'pictureEdit'" :src="compData.selected[0]" />
-      </div>
-      <div
-        class="col-12 row"
-        v-for="(content, contentKey) in compData.listFilters"
-        :key="contentKey"
-        :style="{
-          display: $route.name == 'device-edit' && 
-            content.edit == 'show' && 
-            contentKey == compData.listFilters.length -1 && 
-            compData.selected[contentKey-2] !== 2 ? 'none' : 'block'
-        }"
-      >
-        <div  class="col-12 row" v-if="content.edit">
-          <div class="col-12 divisionLine" v-show="content.edit !== 'none'"></div>
-          <div class="col-12 row editOptions items-center" v-show="content.edit !== 'none'" >
-          <span class="col-auto" :style="{ minWidth: compData.createAndEditSpanSize + 'px' }">{{ content.text }}</span>
-          <selectComp v-if="content.edit == 'select'" class="col selectCompClass" :compData="content.selectCompData ? content.selectCompData : undefined"></selectComp>
-          <div v-else-if="content.edit == 'checkbox'" class="col">
-            <div class="appSettingContents" v-for="(checkbox, checkboxKey) in content.checkboxCompData.list" :key="checkboxKey">
-              <input class="appSettingSort" type="number" v-model="checkbox.sort" />
-              <label class="row items-center checkbox">
-                <input class="col-auto" type="checkbox" :value="checkbox.value" v-model="content.checkboxCompData.selected" />
-                <span class="col-auto">{{ checkbox.text }}</span>
-              </label>
-            </div>
-          </div>
-          <textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)" @click="resize($event)">{{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}</textarea>
-          <div v-else-if="content.edit == 'file'" class="fileTypeInputContainer">
-            <img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
-            <input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />
-          </div>
-          <div v-else-if="content.edit == 'check'" class="checkGuest">
-            <input type="checkbox" class="col-auto" v-bind:disabled="!getPermission" :value="compData.isGuest" @click="isGuest = !isGuest" v-model="compData.isGuest" />
-            <span v-if="!getPermission">{{ $t("guestNotice")[0] }}</span>
-            <span v-else>{{ $t("guestNotice")[1] }}</span>
-          </div>
-          <!-- <div v-else-if="content.edit == 'explanation'" class="explainDiv col">
-            <div class="row" style="height: 100%;">
-              <div class="explainDiv__wrap">
-                <div class="explainDiv__row">
-                  <div class="explainItem" v-html="formattedText(content.detail.safety)"></div>
-                  <div class="explainItem" v-html="formattedText(content.detail.daily)"></div>
-                </div>
-                <div class="explainDiv__row">
-                  <div class="explainItem" v-html="formattedText(content.detail.memo)"></div>
-                  <div class="explainItem" v-html="formattedText(content.detail.tbm)"></div>
-                </div>
-              </div>
-              <div class="explainDiv__btn">
-                <button @click="copyandPasteJson()">{{ $t("copyAppdetailJson") }}</button>
-              </div>
-            </div>
-          </div> -->
-          <div
-            v-else-if="$route.name == 'device-edit' && content.edit == 'show'"
-            v-show="compData.selected[contentKey-2] == 2" class="col show-box"
-          >
-            <span>{{ compData.selected[contentKey-1] }}</span>
-          </div>
-          <input
-            v-else
-            class="col"
-            :value="compData.type == 'edit' ? compData.selected[contentKey - 1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
-            :disabled="content.edit=='disabled'"
-            v-show="content.edit !== 'none'"
-           />
-           <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
-           <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
-           <button
-              v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor == true"
-              class="changePhone-btn"
-              @click="changePhoneBtnClick"
-          >
-            {{ $t("changePhoneNumber") }}
-          </button>
-        </div>
-      </div>
-    </div>
-      <div class="col-12 divisionLine"></div>
-      <div v-if="compData.type=='create'" class="col-12 createBtns">
-        <button @click="createBtnClick">{{ $t("createAndEditComp")[0] }}</button>
-        <button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
-      </div>
-      <div v-else class="col-12 editBtns">
-        <button @click="editBtnClick">{{ $t("createAndEditComp")[1] }}</button>
-        <button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
-        <button @click="deleteBtnClick">{{ $route.name == "profile" ? $t("change password") : $t("createAndEditComp")[3] }}</button>
-      </div>
-    </div>
-  </div>
+	<div class="row justify-center content-start infoCreateAndEditContainer">
+		<div class="col-12 row justify-center titleBar">
+			<span>{{ compData.listTitle }}</span>
+		</div>
+		<div class="col-12 row justify-center content-start">
+			<span v-if="compData.createAndEditTitle" class="createTitle" :class="[ $route.name == 'app-edit' || $route.name == 'app-create' ? 'col':'col-12' ]">
+				{{ compData.createAndEditTitle }}
+			</span>
+			<span v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appInfoText">{{ $t("app")[3] }}</span>
+			<selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyEnterprise col-1" :compData="enList"></selectComp>
+			<selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyHeadquaters col-1" :compData="hqList"></selectComp>
+			<selectComp v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="appCopyBranch col-1" :compData="brList"></selectComp>
+			<button v-if="$route.name == 'app-edit' || $route.name == 'app-create'" class="col-1 appCopyBtn"  @click="appInfoCopy">{{ $t("appCopy") }}</button>
+			<div v-if="compData.type != 'edit'" class="row justify-left infoImg" style="margin-top:50px; ">
+				<img v-if="compData.type == 'pictureEdit'" :src="compData.selected[0]" />
+			</div>
+			<div
+				class="col-12 row"
+				v-for="(content, contentKey) in compData.listFilters"
+				:key="contentKey"
+				:style="{
+					display: $route.name == 'device-edit' && 
+						content.edit == 'show' && 
+						contentKey == compData.listFilters.length -1 && 
+						compData.selected[contentKey-2] !== 2 ? 'none' : 'block'
+				}"
+			>
+				<div  class="col-12 row" v-if="content.edit">
+					<div class="col-12 divisionLine" v-show="content.edit !== 'none'"></div>
+					<div class="col-12 row editOptions items-center" v-show="content.edit !== 'none'" >
+					<span class="col-auto" :style="{ minWidth: compData.createAndEditSpanSize + 'px' }">{{ content.text }}</span>
+					<selectComp v-if="content.edit == 'select'" class="col selectCompClass" :compData="content.selectCompData ? content.selectCompData : undefined"></selectComp>
+					<div v-else-if="content.edit == 'checkbox'" class="col">
+						<div class="appSettingContents" v-for="(checkbox, checkboxKey) in content.checkboxCompData.list" :key="checkboxKey">
+							<input class="appSettingSort" type="number" v-model="checkbox.sort" />
+							<label class="row items-center checkbox">
+								<input class="col-auto" type="checkbox" :value="checkbox.value" v-model="content.checkboxCompData.selected" />
+								<span class="col-auto">{{ checkbox.text }}</span>
+							</label>
+						</div>
+					</div>
+					<textarea v-else-if="content.edit == 'textarea'" class="detailJson col textareaClass" id="textarea" :rows="rows" spellcheck="false" @keydown="resize($event)" @click="resize($event)">{{ compData.type == 'create' ? undefined : compData.selected[contentKey-1] }}</textarea>
+					<div v-else-if="content.edit == 'file'" class="fileTypeInputContainer">
+						<img id="fileTypeInputImg" :src="compData.selected[contentKey-1] ? compData.selected[contentKey-1] : require('@/assets/images/human_contact_list.png')" />
+						<input class="fileTypeInput" id="fileTypeInput" type="file" accept="image/*" @change="fileTypeInputChange($event, contentKey-1)" ref="fileTypeInput" />
+					</div>
+					<div v-else-if="content.edit == 'check'" class="checkGuest">
+						<input type="checkbox" class="col-auto" v-bind:disabled="!getPermission" :value="compData.isGuest" @click="isGuest = !isGuest" v-model="compData.isGuest" />
+						<span v-if="!getPermission">{{ $t("guestNotice")[0] }}</span>
+						<span v-else>{{ $t("guestNotice")[1] }}</span>
+					</div>
+					<!-- <div v-else-if="content.edit == 'explanation'" class="explainDiv col">
+						<div class="row" style="height: 100%;">
+							<div class="explainDiv__wrap">
+								<div class="explainDiv__row">
+									<div class="explainItem" v-html="formattedText(content.detail.safety)"></div>
+									<div class="explainItem" v-html="formattedText(content.detail.daily)"></div>
+								</div>
+								<div class="explainDiv__row">
+									<div class="explainItem" v-html="formattedText(content.detail.memo)"></div>
+									<div class="explainItem" v-html="formattedText(content.detail.tbm)"></div>
+								</div>
+							</div>
+							<div class="explainDiv__btn">
+								<button @click="copyandPasteJson()">{{ $t("copyAppdetailJson") }}</button>
+							</div>
+						</div>
+					</div> -->
+					<div
+						v-else-if="$route.name == 'device-edit' && content.edit == 'show'"
+						v-show="compData.selected[contentKey-2] == 2" class="col show-box"
+					>
+						<span>{{ compData.selected[contentKey-1] }}</span>
+					</div>
+					<input
+						v-else
+						class="col"
+						:value="compData.type == 'edit' ? compData.selected[contentKey - 1] : compData.type == 'create' ? undefined : contentKey == 4 ? getTimeZone(compData.selected[contentKey+1]) : compData.selected[contentKey + 1]"
+						:disabled="content.edit=='disabled'"
+						v-show="content.edit !== 'none'"
+					 />
+					 <!-- 회원정보 수정시는 본인 인증 버튼이 들어가지 않음 회원 정보 수정의 경우 8번이 다른 항목이므로 문자까지 비교... -->
+					 <!-- 또한 2Factor가 False이면 본인 인증 버튼이 비활성화 되야함 -->
+					 <button
+							v-if="contentKey == 8 && compData.type == 'edit' && compData.listFilters[8].text == $t('profile text')[6] && compData.check2Factor == true"
+							class="changePhone-btn"
+							@click="changePhoneBtnClick"
+					>
+						{{ $t("changePhoneNumber") }}
+					</button>
+				</div>
+			</div>
+		</div>
+			<div class="col-12 divisionLine"></div>
+			<div v-if="compData.type=='create'" class="col-12 createBtns">
+				<button @click="createBtnClick">{{ $t("createAndEditComp")[0] }}</button>
+				<button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
+			</div>
+			<div v-else class="col-12 editBtns">
+				<button @click="editBtnClick">{{ $t("createAndEditComp")[1] }}</button>
+				<button @click="cancleBtnClick">{{ $t("createAndEditComp")[2] }}</button>
+				<button @click="deleteBtnClick">{{ $route.name == "profile" ? $t("change password") : $t("createAndEditComp")[3] }}</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -117,274 +117,274 @@ import { axiosRequest } from "@/plugins/axiosRequest";
 // import getFilters from "@/assets/scripts/info/getFilters"
 
 export default {
-  props: ["compData"],
-  data() {
-    return {
-      profileImage: "",
-      rows: 5,
-      cnt: 0,
-      cellPhoneNum: undefined,
-      useEnterprise: undefined,
-      // useEnterprise: "dlenc",
-      // 앱 복사 기업 리스트
-      enList: getInfo.enterprise().then(res => {
-        getInfo.enList.options = res
-        this.enList = getInfo.enList
-      }),
-      // 앱 복사 본부, 지사 리스트 불러오기
-      hqList: getInfo.hqList,
-      brList: getInfo.brList,
-      checkAdmin: false,
-      getPermission: true,
-      isGuest: ""
-    }
-  },
-  methods: {
-    formattedText(parmas) {
-      return parmas.replace(/\n/g, '<br>');
-    },
-    createBtnClick() {
-      if (this.compData.createBtnClick) this.compData.createBtnClick()
-    },
-    editBtnClick() {
-      if (this.compData.editBtnClick) this.compData.editBtnClick()
-    },
-    cancleBtnClick() {
-      window.history.back()
-      sessionStorage.removeItem("check2Factor")
-    },
-    deleteBtnClick() {
-      if (this.compData.deleteBtnClick) this.compData.deleteBtnClick()
-    },
-    fileTypeInputChange(input, index) {
-      if (input.target.files[0]) {
-        const fileSize = input.target.files[0].size
-        const maxSize = 1 * 1024 * 1024
-        if (fileSize > maxSize) {
-          alert(this.$t("maxSize"))
-          document.getElementById("fileTypeInput").value = ""
-          return
-        }
+	props: ["compData"],
+	data() {
+		return {
+			profileImage: "",
+			rows: 5,
+			cnt: 0,
+			cellPhoneNum: undefined,
+			useEnterprise: undefined,
+			// useEnterprise: "dlenc",
+			// 앱 복사 기업 리스트
+			enList: getInfo.enterprise().then(res => {
+				getInfo.enList.options = res
+				this.enList = getInfo.enList
+			}),
+			// 앱 복사 본부, 지사 리스트 불러오기
+			hqList: getInfo.hqList,
+			brList: getInfo.brList,
+			checkAdmin: false,
+			getPermission: true,
+			isGuest: ""
+		}
+	},
+	methods: {
+		formattedText(parmas) {
+			return parmas.replace(/\n/g, '<br>');
+		},
+		createBtnClick() {
+			if (this.compData.createBtnClick) this.compData.createBtnClick()
+		},
+		editBtnClick() {
+			if (this.compData.editBtnClick) this.compData.editBtnClick()
+		},
+		cancleBtnClick() {
+			window.history.back()
+			sessionStorage.removeItem("check2Factor")
+		},
+		deleteBtnClick() {
+			if (this.compData.deleteBtnClick) this.compData.deleteBtnClick()
+		},
+		fileTypeInputChange(input, index) {
+			if (input.target.files[0]) {
+				const fileSize = input.target.files[0].size
+				const maxSize = 1 * 1024 * 1024
+				if (fileSize > maxSize) {
+					alert(this.$t("maxSize"))
+					document.getElementById("fileTypeInput").value = ""
+					return
+				}
 
-        const reader = new FileReader()
-        const imageInputed = new CustomEvent("imageInputed", { detail: input.target.files[0] })
-        window.dispatchEvent(imageInputed)
-        reader.readAsDataURL(input.target.files[0])
-        const self = this
+				const reader = new FileReader()
+				const imageInputed = new CustomEvent("imageInputed", { detail: input.target.files[0] })
+				window.dispatchEvent(imageInputed)
+				reader.readAsDataURL(input.target.files[0])
+				const self = this
 
-        // 파일 정보 가져오기 - blob 처리하기 위해서
-        const fileInfo = input.target.files.item(0)
-        reader.onload = function(e) {
-          // 로드 된 후에 blob 처리하여 url 생성
-          self.profileImage = URL.createObjectURL(fileInfo)
-          console.log(e.target.result)
-          self.compData.selected[index] = e.target.result
+				// 파일 정보 가져오기 - blob 처리하기 위해서
+				const fileInfo = input.target.files.item(0)
+				reader.onload = function(e) {
+					// 로드 된 후에 blob 처리하여 url 생성
+					self.profileImage = URL.createObjectURL(fileInfo)
+					console.log(e.target.result)
+					self.compData.selected[index] = e.target.result
 
-          // img url 변경
-          document.getElementById("fileTypeInputImg").src = self.profileImage
-        }
-      }
-    },
-    getTimeZone(standard) {
-      const now = new Date(standard * 1000)
-      const month = ("0" + (now.getMonth() + 1)).slice(-2)
-      const date = ("0" + now.getDate()).slice(-2)
-      const hours = ("0" + now.getHours()).slice(-2)
-      const minutes = ("0" + now.getMinutes()).slice(-2)
-      const seconds = ("0" + now.getSeconds()).slice(-2)
-      const milliseconds = now.getMilliseconds()
+					// img url 변경
+					document.getElementById("fileTypeInputImg").src = self.profileImage
+				}
+			}
+		},
+		getTimeZone(standard) {
+			const now = new Date(standard * 1000)
+			const month = ("0" + (now.getMonth() + 1)).slice(-2)
+			const date = ("0" + now.getDate()).slice(-2)
+			const hours = ("0" + now.getHours()).slice(-2)
+			const minutes = ("0" + now.getMinutes()).slice(-2)
+			const seconds = ("0" + now.getSeconds()).slice(-2)
+			const milliseconds = now.getMilliseconds()
 
-      const convertToDate =
-        now.getFullYear() +
-        "-" +
-        month +
-        "-" +
-        date +
-        " " +
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds +
-        "." +
-        milliseconds
+			const convertToDate =
+				now.getFullYear() +
+				"-" +
+				month +
+				"-" +
+				date +
+				" " +
+				hours +
+				":" +
+				minutes +
+				":" +
+				seconds +
+				"." +
+				milliseconds
 
-      console.log("getTimeZone:  date = " + now)
-      return convertToDate
-    },
-    // textArea keydown 이벤트 인식 및 rows 계산 함수 실행
-    resize(e) {
-      console.log(this.$route.name)
-      if (this.$route.name === "app-edit" || this.$route.name === "app-create") {
-        const changeAppDetailJson = document.getElementById("textarea")
-        this.computeTextRows(changeAppDetailJson.value)
-      }
-    },
-    // textArea rows 계산 함수
-    computeTextRows(textContent) {
-      if (this.$route.name === "app-edit" || this.$route.name === "app-create") {
-        // const rows = textContent.split("\n").length
+			console.log("getTimeZone:  date = " + now)
+			return convertToDate
+		},
+		// textArea keydown 이벤트 인식 및 rows 계산 함수 실행
+		resize(e) {
+			console.log(this.$route.name)
+			if (this.$route.name === "app-edit" || this.$route.name === "app-create") {
+				const changeAppDetailJson = document.getElementById("textarea")
+				this.computeTextRows(changeAppDetailJson.value)
+			}
+		},
+		// textArea rows 계산 함수
+		computeTextRows(textContent) {
+			if (this.$route.name === "app-edit" || this.$route.name === "app-create") {
+				// const rows = textContent.split("\n").length
 
-        const changeAppDetailJson = document.getElementById("textarea")
-        if (changeAppDetailJson == null) {
-        } else {
-          const csize =
-            changeAppDetailJson.scrollHeight >= 161
-              ? changeAppDetailJson.scrollHeight + "px"
-              : 131 + "px"
-          changeAppDetailJson.style.height = csize
-        }
-        // return Math.round(textContent.length / 161) + this.rows - 1
-      }
-    },
-    changePhoneBtnClick() {
-      const params = {
-          birthday: this.compData.selected[7],
-          compData: this.compData.selected,
-          lang: sessionStorage.getItem("languageCode"),
-          id: this.compData.selected[0]
-      }
-      danalVerify(params, 2)
-    },
-    // - 앱정보 복사
-    async appInfoCopy() {
-      // 복사할 기업,본부,지사,앱코드 선택체크
-      const self = this
-      const appCopyEnSeq = this.enList.selectedValue
-      const appCopyHqSeq = this.hqList.selectedValue
-      const appCopyBrSeq = this.brList.selectedValue
+				const changeAppDetailJson = document.getElementById("textarea")
+				if (changeAppDetailJson == null) {
+				} else {
+					const csize =
+						changeAppDetailJson.scrollHeight >= 161
+							? changeAppDetailJson.scrollHeight + "px"
+							: 131 + "px"
+					changeAppDetailJson.style.height = csize
+				}
+				// return Math.round(textContent.length / 161) + this.rows - 1
+			}
+		},
+		changePhoneBtnClick() {
+			const params = {
+					birthday: this.compData.selected[7],
+					compData: this.compData.selected,
+					lang: sessionStorage.getItem("languageCode"),
+					id: this.compData.selected[0]
+			}
+			danalVerify(params, 2)
+		},
+		// - 앱정보 복사
+		async appInfoCopy() {
+			// 복사할 기업,본부,지사,앱코드 선택체크
+			const self = this
+			const appCopyEnSeq = this.enList.selectedValue
+			const appCopyHqSeq = this.hqList.selectedValue
+			const appCopyBrSeq = this.brList.selectedValue
 
-      const appCodeSeq = getInfo.getSelectValue(this.compData.listFilters, 1)
+			const appCodeSeq = getInfo.getSelectValue(this.compData.listFilters, 1)
 
-      if (appCodeSeq === undefined) {
-        alert(self.$t("appCopy noneSelectBox")[0])
-      } else if (appCopyEnSeq === undefined) {
-        alert(self.$t("appCopy noneSelectBox")[1])
-      } else if (appCopyHqSeq === undefined) {
-        alert(self.$t("appCopy noneSelectBox")[2])
-      } else if (appCopyBrSeq === undefined) {
-        alert(self.$t("appCopy noneSelectBox")[3])
-      } else {
-        const params = {
-          data: {
-            app_code_seq: appCodeSeq,
-            en_seq: appCopyEnSeq,
-            hq_seq: appCopyHqSeq,
-            br_seq: appCopyBrSeq,
-            jwt: sessionStorage.getItem("jwt")
-          },
-          api: process.env.backendURL + axiosJson.app.app_info_copy
-        }
-        await axiosRequest('post', params)
-          .then(function(res) {
-            console.log(res.data)
+			if (appCodeSeq === undefined) {
+				alert(self.$t("appCopy noneSelectBox")[0])
+			} else if (appCopyEnSeq === undefined) {
+				alert(self.$t("appCopy noneSelectBox")[1])
+			} else if (appCopyHqSeq === undefined) {
+				alert(self.$t("appCopy noneSelectBox")[2])
+			} else if (appCopyBrSeq === undefined) {
+				alert(self.$t("appCopy noneSelectBox")[3])
+			} else {
+				const params = {
+					data: {
+						app_code_seq: appCodeSeq,
+						en_seq: appCopyEnSeq,
+						hq_seq: appCopyHqSeq,
+						br_seq: appCopyBrSeq,
+						jwt: sessionStorage.getItem("jwt")
+					},
+					api: process.env.backendURL + axiosJson.app.app_info_copy
+				}
+				await axiosRequest('post', params)
+					.then(function(res) {
+						console.log(res.data)
 
-            // eslint-disable-next-line prettier/prettier
-            // self.compData.listFilters[1].selectCompData.selectedValue = res.data.app_code_seq
-            document.querySelectorAll("input")[0].value = res.data.app_name_kor
-            document.querySelectorAll("input")[1].value = res.data.app_name_eng
-            // eslint-disable-next-line prettier/prettier
-            document.querySelectorAll("input")[2].value = res.data.app_package_name
-            document.querySelectorAll("input")[3].value = res.data.app_version
+						// eslint-disable-next-line prettier/prettier
+						// self.compData.listFilters[1].selectCompData.selectedValue = res.data.app_code_seq
+						document.querySelectorAll("input")[0].value = res.data.app_name_kor
+						document.querySelectorAll("input")[1].value = res.data.app_name_eng
+						// eslint-disable-next-line prettier/prettier
+						document.querySelectorAll("input")[2].value = res.data.app_package_name
+						document.querySelectorAll("input")[3].value = res.data.app_version
 
-            self.compData.listFilters[9].selectCompData.selectedText = String(
-              res.data.use_on_pc
-            )
-            self.compData.listFilters[10].selectCompData.selectedText = String(
-              res.data.use_on_glass
-            )
+						self.compData.listFilters[9].selectCompData.selectedText = String(
+							res.data.use_on_pc
+						)
+						self.compData.listFilters[10].selectCompData.selectedText = String(
+							res.data.use_on_glass
+						)
 
-            document.querySelectorAll("textarea")[0].value =
-              res.data.app_detail_json
+						document.querySelectorAll("textarea")[0].value =
+							res.data.app_detail_json
 
-            // if (res.data.use_on_glass === 0) {
-            //   self.compData.listFilters[10].selectCompData.selectedText = String(
-            //     res.data.use_on_glass
-            //   )
-            // } else {
-            //   self.compData.listFilters[10].selectCompData.selectedText = String(
-            //     res.data.use_on_glass
-            //   )
-            // }
-          })
-          .catch(function(error) {
-            console.log("app edit page error : ", error)
-          })
-      }
-    },
-    sessionStorageChange() {
-      this.compData.selected[7] = sessionStorage.getItem("phoneNum")
-      sessionStorage.removeItem("phoneNum")
-      this.$forceUpdate()
-    },
-    changedPermission() {
-      const permission = (document.getElementsByClassName("selectCompClass")[3].value)
-      if (permission != 0) {
-        this.getPermission = false
-        this.$nextTick(() => {
-          this.isGuest = false
-        })
-      } else {
-        this.getPermission = true
-      }
-    },
-    checkGuest(val) {
-      this.isGuest = !this.isGuest
-    },
-    copyandPasteJson() {
-      const workflowInitValue = `"safetyPatrol":"",\n"safetyPatrolTitle":"",\n"safetyPatrolTitleEn":"",\n"safetyPatrolMenuKo":"",\n"safetyPatrolMenuEn":"",\n"safetyPatrolTemplateID":"",\n"dailyCheck":"",\n"dailyCheckTitle":"",\n"dailyCheckTitleEn":"",\n"dailyCheckMenuKo":"",\n"dailyCheckMenuEn":"",\n"dailyCheckTemplateID":"",\n"memo2":"",\n"memo2Title":"",\n"memo2TitleEn":"",\n"memo2MenuKo":"",\n"memo2MenuEn":"",\n"memo2TemplatID":"",\n"tbm":"",\n"tbmTitle":"",\n"tbmTitleEn":"",\n"tbmMenuKo":"",\n"tbmMenuEn":"",\n"tbmTemplateID":""`
+						// if (res.data.use_on_glass === 0) {
+						//   self.compData.listFilters[10].selectCompData.selectedText = String(
+						//     res.data.use_on_glass
+						//   )
+						// } else {
+						//   self.compData.listFilters[10].selectCompData.selectedText = String(
+						//     res.data.use_on_glass
+						//   )
+						// }
+					})
+					.catch(function(error) {
+						console.log("app edit page error : ", error)
+					})
+			}
+		},
+		sessionStorageChange() {
+			this.compData.selected[7] = sessionStorage.getItem("phoneNum")
+			sessionStorage.removeItem("phoneNum")
+			this.$forceUpdate()
+		},
+		changedPermission() {
+			const permission = (document.getElementsByClassName("selectCompClass")[3].value)
+			if (permission != 0) {
+				this.getPermission = false
+				this.$nextTick(() => {
+					this.isGuest = false
+				})
+			} else {
+				this.getPermission = true
+			}
+		},
+		checkGuest(val) {
+			this.isGuest = !this.isGuest
+		},
+		copyandPasteJson() {
+			const workflowInitValue = `"safetyPatrol":"",\n"safetyPatrolTitle":"",\n"safetyPatrolTitleEn":"",\n"safetyPatrolMenuKo":"",\n"safetyPatrolMenuEn":"",\n"safetyPatrolTemplateID":"",\n"dailyCheck":"",\n"dailyCheckTitle":"",\n"dailyCheckTitleEn":"",\n"dailyCheckMenuKo":"",\n"dailyCheckMenuEn":"",\n"dailyCheckTemplateID":"",\n"memo2":"",\n"memo2Title":"",\n"memo2TitleEn":"",\n"memo2MenuKo":"",\n"memo2MenuEn":"",\n"memo2TemplatID":"",\n"tbm":"",\n"tbmTitle":"",\n"tbmTitleEn":"",\n"tbmMenuKo":"",\n"tbmMenuEn":"",\n"tbmTemplateID":""`
 
-      console.log("*** copyandPasteJson > check value by className")
-      const originValue = document.getElementsByClassName("detailJson")[0].value
+			console.log("*** copyandPasteJson > check value by className")
+			const originValue = document.getElementsByClassName("detailJson")[0].value
 
-      if (originValue == "") {
-        console.log("*** empty json create json")
-        document.getElementsByClassName("detailJson")[0].value = `{\n${workflowInitValue}\n}`
-      } else {
-        console.log("*** json exist add at the end")
-        let splitOriginValue = originValue.split("}")
-        splitOriginValue = splitOriginValue[0].slice(0, splitOriginValue[0].length-2)
-        const joinedValue = `${splitOriginValue},\n${workflowInitValue}\n}`
-        document.getElementsByClassName("detailJson")[0].value = joinedValue
-      }
-      this.$nextTick(() => {
-        this.resize()
-      })
-    }
-  },
-  updated() {
-    // if (this.$route.name === "app-edit") {
-    //   const textContent = this.compData.selected[10]
-    //   this.rows =
-    //     String(textContent).length / 161 +
-    //     String(textContent).split("\n").length
-    //   if (this.cnt < 2) {
-    //   }
-    // }
-  },
-  mounted() {
-    // dlenc 분기처리!!
-    if (window.location.hostname == 'dlencmedia.watttalk.kr') {
-      this.useEnterprise = "dlenc"
-    }
-    window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
-    // window.addEventListener("changedCompData", this.changedCompData)
-    window.addEventListener("changedPermission", this.changedPermission)
-    sessionStorage.removeItem("mutationState")
-    // 비밀번호 변경하기 버튼을 통해 접근한 경우 비밀번호 변경 모달을 실행시킨다
-    const checkPswChange = this.$route.query.changePsw
-    if (checkPswChange) {
-      this.compData.deleteBtnClick()
-    }
-    this.isGuest = this.compData.isGUest
-  },
-  beforeDestroy() {
-    if (this.profileImage !== "") {
-      URL.revokeObjectURL(this.profileImage)
-    }
-    window.removeEventListener("sessionStorageUpdated", this.sessionStorageChange)
-    // window.removeEventListener("changedCompData", this.changedCompData)
-  }
+			if (originValue == "") {
+				console.log("*** empty json create json")
+				document.getElementsByClassName("detailJson")[0].value = `{\n${workflowInitValue}\n}`
+			} else {
+				console.log("*** json exist add at the end")
+				let splitOriginValue = originValue.split("}")
+				splitOriginValue = splitOriginValue[0].slice(0, splitOriginValue[0].length-2)
+				const joinedValue = `${splitOriginValue},\n${workflowInitValue}\n}`
+				document.getElementsByClassName("detailJson")[0].value = joinedValue
+			}
+			this.$nextTick(() => {
+				this.resize()
+			})
+		}
+	},
+	updated() {
+		// if (this.$route.name === "app-edit") {
+		//   const textContent = this.compData.selected[10]
+		//   this.rows =
+		//     String(textContent).length / 161 +
+		//     String(textContent).split("\n").length
+		//   if (this.cnt < 2) {
+		//   }
+		// }
+	},
+	mounted() {
+		// dlenc 분기처리!!
+		if (window.location.hostname == 'dlencmedia.watttalk.kr') {
+			this.useEnterprise = "dlenc"
+		}
+		window.addEventListener("sessionStorageUpdated", this.sessionStorageChange)
+		// window.addEventListener("changedCompData", this.changedCompData)
+		window.addEventListener("changedPermission", this.changedPermission)
+		sessionStorage.removeItem("mutationState")
+		// 비밀번호 변경하기 버튼을 통해 접근한 경우 비밀번호 변경 모달을 실행시킨다
+		const checkPswChange = this.$route.query.changePsw
+		if (checkPswChange) {
+			this.compData.deleteBtnClick()
+		}
+		this.isGuest = this.compData.isGUest
+	},
+	beforeDestroy() {
+		if (this.profileImage !== "") {
+			URL.revokeObjectURL(this.profileImage)
+		}
+		window.removeEventListener("sessionStorageUpdated", this.sessionStorageChange)
+		// window.removeEventListener("changedCompData", this.changedCompData)
+	}
 }
 </script>
 
@@ -526,57 +526,57 @@ export default {
 	margin-bottom: 20px
 	margin-left: 10px
 .changePhone-btn
-  width: 130px
-  height: 38px
-  font-size: 14px
-  text-align: center
-  background: #008BCF
-  margin-left: 10px
-  color: white
+	width: 130px
+	height: 38px
+	font-size: 14px
+	text-align: center
+	background: #008BCF
+	margin-left: 10px
+	color: white
 .checkGuest
-  display: flex
-  align-items: center
-  input
-    margin-right: 10px
+	display: flex
+	align-items: center
+	input
+		margin-right: 10px
 
 .explainDiv
-  height: 100%
-  &__wrap
-    width: 87%
-  &__row
-    width: 100%
-    display: flex
-    justify-content: flex-start
-    align-items: center
-    &:first-child
-      margin-bottom: 20px
-      margin-top: 10px
+	height: 100%
+	&__wrap
+		width: 87%
+	&__row
+		width: 100%
+		display: flex
+		justify-content: flex-start
+		align-items: center
+		&:first-child
+			margin-bottom: 20px
+			margin-top: 10px
 
-    .explainItem
-      width: 45%
-      height: auto
-      background-color: #fff
-      padding: 5px 0px 5px 10px
-      border-radius: 4px
-      &:first-child
-        margin-right: 30px
-  &__btn
-    width: 13%
-    height: 100%
-    display: flex
-    justify-content: flex-start
-    align-items: center
-    button
-      width: auto
-      min-height: 38px
-      padding: 0px 5px 0px 5px
-      background:#1DBFA4 0% 0% no-repeat padding-box
-      color: #fff
+		.explainItem
+			width: 45%
+			height: auto
+			background-color: #fff
+			padding: 5px 0px 5px 10px
+			border-radius: 4px
+			&:first-child
+				margin-right: 30px
+	&__btn
+		width: 13%
+		height: 100%
+		display: flex
+		justify-content: flex-start
+		align-items: center
+		button
+			width: auto
+			min-height: 38px
+			padding: 0px 5px 0px 5px
+			background:#1DBFA4 0% 0% no-repeat padding-box
+			color: #fff
 
 .show-box
-  background-color: #fff
-  padding: 10px
-  min-height: 40px
-  border: 1px solid #D9D9D9
+	background-color: #fff
+	padding: 10px
+	min-height: 40px
+	border: 1px solid #D9D9D9
 
 </style>

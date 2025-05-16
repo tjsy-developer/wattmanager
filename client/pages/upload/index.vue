@@ -295,5 +295,5 @@ export default {
 	height: 110px
 
 div:disabled
-  background: white
+	background: white
 </style>

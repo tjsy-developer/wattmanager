@@ -126,7 +126,8 @@ export default {
 }
 </script>
 <style scoped lang="sass">
-input::file-selector-button, #files
+input::file-selector-button,
+#files
     display: none
 
 .modal-codec

@@ -51,6 +51,7 @@ export default {
     font-size: 15px
     width: inherit
     height: inherit
+
     &_content
         background-color: #eff0f1
         width: inherit

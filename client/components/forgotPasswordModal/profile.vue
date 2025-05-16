@@ -143,14 +143,13 @@ input[type=password]
 	margin-top: 20px
 
 .newPassword,
-  
 .newPasswordCheck
 	margin-top: 8px
-  
+
 .description
-  margin-top: 10px
-  color: #E91E63
-  font-weight: 700
+	margin-top: 10px
+	color: #E91E63
+	font-weight: 700
 
 .button
 	margin-top: 14px

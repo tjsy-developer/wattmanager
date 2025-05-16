@@ -25,10 +25,14 @@
         -moz-transform: rotate(360deg)
 
 @keyframes loading-text-opacity
-    0%  {opacity: 0}
-    20% {opacity: 1}
-    50% {opacity: 1}
-    100%{opacity: 0}
+    0%
+        opacity: 0
+    20%
+        opacity: 1
+    50%
+        opacity: 1
+    100%
+        opacity: 0
 
 .lodingBox
     position: fixed

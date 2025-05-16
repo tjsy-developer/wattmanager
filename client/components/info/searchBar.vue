@@ -84,7 +84,4 @@ export default {
 	background: #1DBFA4 0% 0% no-repeat padding-box
 	margin-left: 16px
 	border-radius: 2px
-
-@media (min-width: 0)
-	width: none !important
 </style>
